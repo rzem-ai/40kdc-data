@@ -94,13 +94,14 @@ Cover now confers **−1 BS to attackers**, not +1 save to defenders. Any 10e Ab
 
 - [ ] `schemas/$defs/common.schema.json` (phase enum, lines 44–48) — decide: extend with 11e additions, or split into edition-versioned `$defs`. Document resolution in `VERSIONING.md`. Previews don't show new top-level phases, but Pile In timing reshuffles within Fight.
 - [ ] `schemas/core/stratagem.schema.json` `type` enum (`battle-tactic | strategic-ploy | epic-deed | wargear`) — confirm 11e card categories before bumping; allow free-form fallback if GW reshuffles.
-- [ ] `schemas/core/unit.schema.json` — add `attachment_role: "leader" | "support"` for character units that join other units. Support implies an attachment-required invariant (a Support character is not a legal standalone list entry); decide whether to encode this as a separate `attachment_required: boolean` or as an implicit rule on the enum value, and document the choice.
+- [x] `schemas/core/unit.schema.json` — added `attachment_role: "leader" | "support" | null` for character units that join other units (#5). **Decision**: the must-attach invariant for Support is encoded *implicitly on the enum value* (`"support"` is documented to imply the unit is not a legal standalone list entry; list-builders enforce), not as a separate `attachment_required: boolean`. Simpler schema, splittable later if 11e adds a standalone Support.
 - [ ] `schemas/core/weapon.schema.json` — audit free-form ability list against 11e additions; no enum lock to break. Specific 11e keywords TBD on dataslate publish.
-- [ ] `schemas/core/enhancement.schema.json` — add `upgrade_tag: boolean` and `max_targets: integer` (default 1).
-- [ ] `schemas/core/detachment.schema.json` — add `detachment_points: integer` (1–3) and `force_dispositions: array of $ref` to force-disposition entities.
-- [ ] `schemas/core/game-version.schema.json` — already accepts `11th` via the existing pattern. Add a `data/core/game-versions.json` entry for the first 11e dataslate (`pre-launch-provisional` as the seed dataslate while porting from the 10e archive).
+- [x] `schemas/core/enhancement.schema.json` — added `upgrade_tag: boolean` and `max_targets: integer` (default 1) (#5).
+- [x] `schemas/core/detachment.schema.json` — added `detachment_points: integer | null` (1–3) and `force_dispositions: array of entity-id` referencing force-disposition entities (#5).
+- [x] `schemas/core/leader-attachment.schema.json` — removed `max_leaders_per_unit` (#5). The 10e Support workaround is superseded by `attachment_role` on the character unit; the data-side companion transform is Section 6.2.
+- [ ] `schemas/core/game-version.schema.json` — already accepts `11th` via the existing pattern. **Done in #5**: widened `$defs/dataslate-version` to accept named kebab-case slugs (e.g. `pre-launch-provisional`) alongside quarterly tags — the prior `^\d{4}-q[1-4]$` rejected the provisional seed name; added the dataslate to `data/core/_example/game-versions.example.json`. **Still open**: create the real `data/core/game-versions.json` entry once the port runs.
 - [ ] New `$defs/battle-size` — `incursion` (1000 pts / 2 DP), `strike-force` (2000 pts / 3 DP).
-- [ ] Add `points_provisional: boolean` (default `false`) sibling on every points-bearing schema (`unit`, `enhancement`, `unit-composition`). Set `true` during the 10e→11e port (Section 6); flipped to `false` when real 11e points land.
+- [x] Added `points_provisional: boolean` (default `false`) sibling on the points-bearing schemas `unit` and `enhancement` (#5). **Correction**: `unit-composition` was listed here but carries no `points` field (per-composition costs live in `unit.points`), so it gets no flag. Set `true` during the 10e→11e port (Section 6); flipped to `false` when real 11e points land.
 
 **New schemas:**
 
@@ -115,7 +116,7 @@ Cover now confers **−1 BS to attackers**, not +1 save to defenders. Any 10e Ab
   - `awards`: list of VP-award blocks, each with `trigger`, `when` (DSL condition), `vp` value
   - `text`: original consortium-authored prose, single-author → maintainer review
   - Primary mission cards reuse this shape.
-- [ ] `schemas/core/force-disposition.schema.json` — `id`: enum of the 5 confirmed values; `name`: display string; `text`: community-authored description.
+- [x] `schemas/core/force-disposition.schema.json` — `id`: enum of the 5 confirmed values; `name`: display string; `text`: community-authored description (#5).
 
 ## Section 3 — Ability DSL primitives
 
