@@ -1,0 +1,75 @@
+[
+  {
+    "id": "vital-link",
+    "name": "Vital Link",
+    "card_type": "primary",
+    "awards": [
+      {
+        "trigger": { "timing": "end-of-turn", "player_turn": "your-turn" },
+        "when": { "type": "controls-objective", "parameters": { "count_min": 1, "objective_role": "central" } },
+        "vp": 2
+      },
+      {
+        "trigger": { "timing": "end-of-turn", "player_turn": "your-turn" },
+        "when": { "type": "controls-objective", "parameters": { "count_min": 1, "objective_role": "central" } },
+        "vp_per": 1,
+        "per": "operation-marker-within-range-of-controlled-central-objective",
+        "cumulative": true
+      },
+      {
+        "trigger": { "timing": "end-of-phase", "phase": "command", "player_turn": "your-turn", "battle_round": { "min": 2 } },
+        "when": { "type": "controls-objective", "parameters": { "count_min": 1, "exclude": "home" } },
+        "vp": 4
+      },
+      {
+        "trigger": { "timing": "end-of-phase", "phase": "command", "player_turn": "your-turn", "battle_round": { "min": 2 } },
+        "when": { "type": "controls-objective", "parameters": { "count_min": 1, "objective_role": "central", "exclude": "home" } },
+        "vp": 4,
+        "cumulative": true
+      },
+      {
+        "trigger": { "timing": "end-of-battle", "player_turn": "your-turn" },
+        "when": { "type": "controls-objective", "parameters": { "count_min": 1, "objective": "opponent-home" } },
+        "vp": 10
+      }
+    ],
+    "text": "Priority Assets primary. Early scoring rewards holding the central objectives and massing operation markers around them; from the second battle round, scoring broadens to any objective beyond your own home, with a bonus when one of those is central. Seizing the opponent's home objective pays out at the end of the battle.",
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "destroyers-wrath",
+    "name": "Destroyer's Wrath",
+    "card_type": "primary",
+    "awards": [
+      {
+        "trigger": { "timing": "end-of-turn", "player_turn": "your-turn" },
+        "when": { "type": "units-destroyed", "parameters": { "side": "enemy", "window": "this-turn", "count_min": 1 } },
+        "vp": 3
+      },
+      {
+        "trigger": { "timing": "end-of-phase", "phase": "command", "player_turn": "your-turn", "battle_round": { "min": 2 } },
+        "when": { "type": "controls-objective", "parameters": { "count_min": 1, "exclude": "home" } },
+        "vp": 4
+      },
+      {
+        "trigger": { "timing": "end-of-phase", "phase": "command", "player_turn": "your-turn", "battle_round": { "min": 2 } },
+        "when": { "type": "objective-majority", "parameters": { "relative_to": "opponent" } },
+        "vp": 6
+      },
+      {
+        "trigger": { "timing": "end-of-turn", "player_turn": "your-turn", "battle_round": { "min": 2 } },
+        "when": {
+          "type": "units-destroyed-comparison",
+          "parameters": {
+            "subject": { "side": "enemy", "window": "this-turn" },
+            "comparator": "greater-than",
+            "reference": { "side": "friendly", "window": "previous-turn" }
+          }
+        },
+        "vp": 4
+      }
+    ],
+    "text": "Purge the Foe primary. This is the asymmetric counterpart a Purge the Foe player reads against a Priority Assets opponent. It scores for destroying enemy units each turn, then from the second battle round adds objective control beyond your home and an objective-majority bonus, plus a reward for out-trading your opponent turn over turn.",
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  }
+]

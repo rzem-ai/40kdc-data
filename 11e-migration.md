@@ -43,27 +43,28 @@ Each Force Disposition has community-authored description text (IP stance: origi
 
 - **VP caps**: 45 VP per game per Primary, 15 VP per battle round per Primary; same caps for Secondaries. *(Unconfirmed: stream commentary suggested a single 15/round cap combined across primary + secondary; schema keeps 45-game / 15-round defaults pending the printed pack.)*
 - **Asymmetric primaries**: when sides pick different dispositions, they get different primary objectives — each reads their own disposition card.
-- **Missions are per-cell, not five global primaries.** Each cell of the matrix names its own mission. The two cards photographed so far yield **10 confirmed mission names**:
+- **Missions are per-cell, not five global primaries.** Each cell of the matrix names its own mission. The two full disposition cards plus a third confirmed via a mission-card photo yield **11 confirmed mission names**:
   - Priority Assets card: `secure-asset`, `vital-link`, `extract-relic`, `vanguard-operation`, `sabotage`.
   - Reconnaissance card: `reconnaissance-sweep`, `triangulation`, `surveil-the-foe`, `gather-intel`, `search-and-scour`.
-- **Encoding (landed).** Two normalized entities, linked by id (the cell→mission relationship is 1:1): `mission` (the objective — name, VP caps, deployment maps, scoring) and `mission-matchup` (one selector row — `disposition`, `opponent_disposition`, `mission_id`). The matchup is the thin lookup; mission-intrinsic detail lives once on the mission.
+  - Purge the Foe (one cell): `destroyers-wrath` — confirmed from the **Destroyer's Wrath** mission card, whose icons read as a Purge the Foe player vs a Priority Assets opponent. It is the asymmetric counterpart to `vital-link` (the Priority Assets player's primary in that same pairing).
+- **Encoding (landed).** Two normalized entities, linked by id (the cell→mission relationship is 1:1): `mission` (the objective — name, VP caps, deployment maps) and `mission-matchup` (one selector row — `disposition`, `opponent_disposition`, `mission_id`). The matchup is the thin lookup; mission-intrinsic detail lives once on the mission. **Scoring is not on the mission** — it lives on the matching `secondary-card` with `card_type: primary` (see Section 2), so the mission stays a pure objective record.
 - **Launch deployment patterns**: Dawn of War, Hammer and Anvil, Tipping Point (the wider `deployment-pattern` reference set has 6). Stream framing implies ~3 maps per mission, tying deployment to the mission (carried via `mission.deployment_pattern_ids`).
 - Three recommended terrain layouts ship at launch.
 
-**Force Disposition matchup matrix (current state, 10/25 cells confirmed).** Rows = the player's own disposition, columns = the opponent's; each cell is the mission that player plays. All ✅ cells are written to `data/core/mission-matchups.json`.
+**Force Disposition matchup matrix (current state, 11/25 cells confirmed).** Rows = the player's own disposition, columns = the opponent's; each cell is the mission that player plays. All ✅ cells are written to `data/core/mission-matchups.json`.
 
 | Player ↓ \ Opponent → | take-and-hold | disruption | purge-the-foe | priority-assets | reconnaissance |
 |---|---|---|---|---|---|
 | **take-and-hold** | ? | ? | ? | ? | ? |
 | **disruption** | ? | ? | ? | ? | ? |
-| **purge-the-foe** | ? | ? | ? | ? | ? |
+| **purge-the-foe** | ? | ? | ? | `destroyers-wrath` ✅ | ? |
 | **priority-assets** | `secure-asset` ✅ | `extract-relic` ✅ | `vital-link` ✅ | `sabotage` ✅ | `vanguard-operation` ✅ |
 | **reconnaissance** | `reconnaissance-sweep` ✅ | `surveil-the-foe` ✅ | `triangulation` ✅ | `search-and-scour` ✅ | `gather-intel` ✅ |
 
-- **✅** — confirmed and written in `data/core/mission-matchups.json`. The two photographed cards (`priority-assets`, `reconnaissance` players) are now complete: all five opponent icons resolved via the Force Dispositions legend card.
-- **?** — the `take-and-hold` / `disruption` / `purge-the-foe` player cards were not photographed; those 15 missions are unknown.
+- **✅** — confirmed and written in `data/core/mission-matchups.json`. The two photographed disposition cards (`priority-assets`, `reconnaissance` players) are complete: all five opponent icons resolved via the Force Dispositions legend card. The `purge-the-foe × priority-assets` cell was added separately from the **Destroyer's Wrath** mission-card photo (player/opponent icons), giving the first cell of the otherwise-unphotographed Purge the Foe row.
+- **?** — the `take-and-hold` / `disruption` player cards were not photographed, and only one `purge-the-foe` cell is known; those 14 missions are unknown.
 
-The three unphotographed player cards fill the remaining 15 cells.
+The unphotographed player cards fill the remaining 14 cells.
 
 ### Secondaries
 
@@ -135,9 +136,9 @@ Cover now confers **−1 BS to attackers**, not +1 save to defenders. Any 10e Ab
   - `card_type`: `secondary | primary` (default `secondary`) — the discriminator that lets primary mission cards reuse this shape (the tracker's "primary cards reuse this shape" note). **Added beyond the original field list** so a mixed deck is queryable.
   - `subtype`: free-form string (not enum-locked until 11e categories are confirmed).
   - `action`: `starts` (phase), `player_turn`, `units` (eligibility predicate → DSL `condition`), `use_limit`, `completes` (DSL `condition`), `effect` (DSL `effect` — e.g. `terrain-area-tag` to mark transient terrain state). Reuses the Ability DSL via cross-`$ref` from `core/` → `enrichment/ability-dsl/`.
-  - `awards`: VP-award blocks, each `{ trigger: { phase, player_turn? }, when?: DSL condition, vp: integer ≥0 }`.
+  - `awards`: VP-award blocks, each `{ trigger, when?: DSL condition, (vp | vp_per+per), per_max?, cumulative? }`. **Extended for the first real mission cards** (Vital Link / Destroyer's Wrath): the `trigger` gained `timing` (`start/end-of-turn`, `start/end-of-phase`, `end-of-battle`) and a `battle_round` window so a card's section headers round-trip (`ANY BATTLE ROUND` = no window; `SECOND BATTLE ROUND ONWARDS` = `{ min: 2 }`; `END OF THE BATTLE` = `timing: end-of-battle`); `phase` is now optional but required when `timing` is phase-relative (`if/then`). Awards score a flat `vp` **xor** a count-scaled `vp_per` (VP per `per` instance, optional `per_max`); the card's "+ … CUMULATIVE" rows are separate awards flagged `cumulative` (descriptive — awards sum independently). Three scoring predicates added to the DSL `condition` enum: `units-destroyed`, `units-destroyed-comparison`, `objective-majority` (params documented in `condition.schema.json`'s `$comment`).
   - `when_drawn`: **bespoke** deck-operation block `{ operation: reshuffle|replace|redraw|draw-extra|swap, card_ids?, condition? }`. **Decision**: deck operations are *not* modelled via the Ability DSL `effect` language — the DSL's `single-effect` requires a combat `target` (attacker/defender/unit…) that a deck manipulation has none of. Likewise `when_drawn.condition` is a **bespoke army-composition predicate** `{ subject: self|opponent, quantifier: any|none, unit_filter: { model_count_min/max, wounds_min, keywords } }`, **not** the DSL `condition`: redraw validity is a draw-time check over the *list*, not runtime board state (e.g. 10e 'Cull the Horde' redrew when the opponent fielded no 14+-model unit). Clean split: runtime predicates (`action.units`/`completes`, `awards[].when`) use the DSL condition; the draw-time predicate is bespoke.
-  - Wiring: `secondary-cards` prefix added to `validate.ts` SCHEMA_MAP, `$id` to `schema-loader.test.ts`, valid/invalid fixtures (the valid fixture exercises the core→enrichment DSL refs). No real card data yet — the deck contents need a leak/the printed pack.
+  - Wiring: `secondary-cards` prefix added to `validate.ts` SCHEMA_MAP, `$id` to `schema-loader.test.ts`, valid/invalid fixtures (the valid fixture exercises the core→enrichment DSL refs). **First card data landed**: `data/core/secondary-cards.json` holds the two primary mission cards `vital-link` and `destroyers-wrath` (full `awards`, mechanics-only, no GW prose). The secondary deck contents still need a leak/the printed pack.
 - [x] `schemas/core/force-disposition.schema.json` — `id`: enum of the 5 confirmed values; `name`: display string; `text`: community-authored description (#5).
 
 ## Section 3 — Ability DSL primitives
@@ -280,11 +281,12 @@ Section 6 (port) and Section 3 (DSL primitives) are both complete. The remaining
    - ~~Charge-timing review~~ ✅ done — all 35 reviewed, zero redundant (charge→Fights First is edition-stable, not new in 11e; flag was a coarse keyword scan).
    - Detachment DP + Force Disposition assignment: 190 detachments — gated on GW publishing the mapping.
    - Stratagem type-enum reconciliation: 1140 stratagems — gated on the 11e card categories being confirmed (Section 2's open stratagem item).
-3. **Section 2 — remaining schema work**: ~~phase-enum decision~~ ✅ (no change — phases identical to 10e) and ~~`$defs/battle-size`~~ ✅ both done. Remaining: weapon-abilities audit (gated on 11e weapon keywords publishing), stratagem `type`-enum confirmation, and the new schemas. ✅ done: `deployment-pattern`, `mission` (the objective entity), `mission-matchup` (the 5×5 disposition→mission matrix, normalized out of the mission per the card photos), and `secondary-card` (per-card shape; reuses the Ability DSL for action/awards, bespoke `when_drawn` deck-op block; `card_type` lets primary cards reuse it). Remaining: `terrain-layout` (schema-only; footprint permutations are unknowable until a deck leaks, so build with open footprints and no data yet).
+3. **Section 2 — remaining schema work**: ~~phase-enum decision~~ ✅ (no change — phases identical to 10e) and ~~`$defs/battle-size`~~ ✅ both done. Remaining: weapon-abilities audit (gated on 11e weapon keywords publishing), stratagem `type`-enum confirmation, and the new schemas. ✅ done: `deployment-pattern`, `mission` (the objective entity), `mission-matchup` (the 5×5 disposition→mission matrix, normalized out of the mission per the card photos), `secondary-card` (per-card shape; reuses the Ability DSL for action/awards, bespoke `when_drawn` deck-op block; `card_type` lets primary cards reuse it). Remaining: `terrain-layout` (schema-only; footprint permutations are unknowable until a deck leaks, so build with open footprints and no data yet).
    - **Mission data follow-ups** (gated on more card photos / the printed pack):
      - ~~Identify the 3 unmapped disposition icons~~ ✅ done — Force Dispositions legend card: green shield+skull = `take-and-hold`, blue hexagon+X = `disruption`, red inverted-triangle+sword = `purge-the-foe` (gold diamond = `priority-assets`, teal eye = `reconnaissance`).
-     - ~~6 known-mission cells held~~ ✅ done — with the icons resolved, the two photographed cards are fully written: **10/25 matchups** now in `data/core/mission-matchups.json` (the `priority-assets` and `reconnaissance` player rows complete). All 10 mission entities are in `data/core/missions.json`.
-     - **15 cells from the 3 unphotographed cards** (`take-and-hold` / `disruption` / `purge-the-foe` players) — missions unknown; need those three cards.
+     - ~~6 known-mission cells held~~ ✅ done — with the icons resolved, the two photographed cards are fully written: the `priority-assets` and `reconnaissance` player rows are complete. A third cell, `purge-the-foe × priority-assets → destroyers-wrath`, was added from the Destroyer's Wrath mission-card photo: **11/25 matchups** now in `data/core/mission-matchups.json`, and all 11 mission entities are in `data/core/missions.json`.
+     - ~~First mission-card scoring encoded~~ ✅ done — `data/core/secondary-cards.json` holds `vital-link` and `destroyers-wrath` as `card_type: primary` cards with full `awards`. Required schema extensions (trigger `timing`/`battle_round`, `vp_per`/`cumulative`, three DSL `condition` predicates) landed in Section 2.
+     - **14 cells from the unphotographed cards** (`take-and-hold` / `disruption` players, plus the remaining 4 `purge-the-foe` cells) — missions unknown; need those cards.
      - **Per-mission deployment maps** — populate `mission.deployment_pattern_ids` (~3 each) once the mission↔map pairings are confirmed.
      - **VP cap reconciliation** — confirm 45-game / 15-round-per-primary vs the stream's combined-15/round reading.
 4. **Section 4 — tooling / publish**: npm + Rust crate publish, CI extensions (block on DSL parse errors, auto-publish on tag), extend `SCHEMA_MAP` for the new entity prefixes.

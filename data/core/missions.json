@@ -78,5 +78,13 @@
     "vp_per_round_cap": 15,
     "deployment_pattern_ids": [],
     "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "destroyers-wrath",
+    "name": "Destroyer's Wrath",
+    "vp_per_game_cap": 45,
+    "vp_per_round_cap": 15,
+    "deployment_pattern_ids": [],
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
   }
 ]

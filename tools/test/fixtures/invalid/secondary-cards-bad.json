@@ -62,5 +62,41 @@
     "name": "Extra Property",
     "unexpected_field": true,
     "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "bad-award-both-vp-forms",
+    "name": "Both VP Forms",
+    "awards": [{ "trigger": { "phase": "command" }, "vp": 3, "vp_per": 1, "per": "marker" }],
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "bad-award-vp-per-without-per",
+    "name": "Vp Per Without Per",
+    "awards": [{ "trigger": { "timing": "end-of-turn" }, "vp_per": 1 }],
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "bad-trigger-timing-enum",
+    "name": "Bad Trigger Timing",
+    "awards": [{ "trigger": { "timing": "mid-turn" }, "vp": 1 }],
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "bad-trigger-phase-required-by-timing",
+    "name": "Phase Required By Timing",
+    "awards": [{ "trigger": { "timing": "end-of-phase" }, "vp": 1 }],
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "bad-trigger-battle-round-range",
+    "name": "Battle Round Out Of Range",
+    "awards": [{ "trigger": { "timing": "end-of-turn", "battle_round": { "min": 7 } }, "vp": 1 }],
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "bad-trigger-empty",
+    "name": "Empty Trigger",
+    "awards": [{ "trigger": {}, "vp": 1 }],
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
   }
 ]

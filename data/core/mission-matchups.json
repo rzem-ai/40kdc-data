@@ -68,5 +68,12 @@
     "opponent_disposition": "reconnaissance",
     "mission_id": "gather-intel",
     "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "purge-the-foe-vs-priority-assets",
+    "disposition": "purge-the-foe",
+    "opponent_disposition": "priority-assets",
+    "mission_id": "destroyers-wrath",
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
   }
 ]

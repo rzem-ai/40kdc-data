@@ -7,12 +7,39 @@
   "$defs": {
     "scoring-trigger": {
       "type": "object",
-      "description": "When a VP award is evaluated.",
+      "description": "When a VP award is evaluated. A bare `phase` is the legacy shorthand for 'during this phase'; richer triggers add `timing` (the moment within a phase/turn/game), `player_turn`, and a `battle_round` window. A card's section headers map onto these: 'ANY BATTLE ROUND' omits `battle_round`; 'SECOND BATTLE ROUND ONWARDS' is { min: 2 }; 'END OF THE BATTLE' is timing: end-of-battle.",
       "properties": {
-        "phase": { "$ref": "../defs/common.schema.json#/$defs/phase" },
-        "player_turn": { "$ref": "../defs/common.schema.json#/$defs/player-turn" }
+        "phase": {
+          "$ref": "../defs/common.schema.json#/$defs/phase",
+          "description": "The phase the trigger is relative to. Required when `timing` is start-of-phase or end-of-phase; omitted for turn- or battle-level timings."
+        },
+        "timing": {
+          "type": "string",
+          "enum": ["start-of-turn", "end-of-turn", "start-of-phase", "end-of-phase", "end-of-battle"],
+          "description": "The moment the award is checked. 'End of your turn' = end-of-turn; 'End of your Command phase' = end-of-phase with phase: command; 'End of the battle' = end-of-battle."
+        },
+        "player_turn": { "$ref": "../defs/common.schema.json#/$defs/player-turn" },
+        "battle_round": {
+          "type": "object",
+          "description": "Battle-round window in which the trigger is active. Absent means any battle round (1-5). 'Second battle round onwards' is { min: 2 }.",
+          "properties": {
+            "min": { "type": "integer", "minimum": 1, "maximum": 5 },
+            "max": { "type": "integer", "minimum": 1, "maximum": 5 }
+          },
+          "minProperties": 1,
+          "additionalProperties": false
+        }
       },
-      "required": ["phase"],
+      "minProperties": 1,
+      "allOf": [
+        {
+          "if": {
+            "required": ["timing"],
+            "properties": { "timing": { "enum": ["start-of-phase", "end-of-phase"] } }
+          },
+          "then": { "required": ["phase"] }
+        }
+      ],
       "additionalProperties": false
     },
     "army-composition-predicate": {
@@ -116,15 +143,44 @@
     "awards": {
       "type": "array",
       "minItems": 1,
-      "description": "VP-award blocks: each scores `vp` when `trigger` fires and the optional `when` condition holds.",
+      "description": "VP-award blocks: each scores when `trigger` fires and the optional `when` condition holds. An award scores either a flat `vp` or a count-scaled `vp_per` (VP per instance of the thing named by `per`). Awards accrue independently and sum; a card's '+ ... CUMULATIVE' rows are modelled as separate awards flagged `cumulative` for faithful round-trip.",
       "items": {
         "type": "object",
         "properties": {
           "trigger": { "$ref": "#/$defs/scoring-trigger" },
           "when": { "$ref": "../enrichment/ability-dsl/condition.schema.json" },
-          "vp": { "type": "integer", "minimum": 0 }
+          "vp": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Flat VP scored when the award fires."
+          },
+          "vp_per": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "VP scored per instance of the thing named by `per` (e.g. 1 VP per operation marker within range of a controlled objective)."
+          },
+          "per": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "What `vp_per` counts, as a kebab-case descriptor (e.g. 'operation-marker-within-range-of-controlled-central-objective'). Required when `vp_per` is present."
+          },
+          "per_max": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Optional cap on how many instances `vp_per` counts."
+          },
+          "cumulative": {
+            "type": "boolean",
+            "default": false,
+            "description": "Marks an award the card shows as an additive '+' bonus to the preceding award in the same trigger block (the card's CUMULATIVE rows). Purely descriptive — all awards accrue independently and are summed."
+          }
         },
-        "required": ["trigger", "vp"],
+        "oneOf": [
+          { "required": ["vp"] },
+          { "required": ["vp_per", "per"] }
+        ],
+        "required": ["trigger"],
         "additionalProperties": false
       }
     },

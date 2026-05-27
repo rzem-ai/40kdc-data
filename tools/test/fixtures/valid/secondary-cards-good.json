@@ -60,5 +60,36 @@
     "id": "good-minimal-card",
     "name": "Good Minimal Card",
     "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "good-primary-scoring",
+    "name": "Good Primary Scoring",
+    "card_type": "primary",
+    "awards": [
+      {
+        "trigger": { "timing": "end-of-turn", "player_turn": "your-turn" },
+        "when": { "type": "units-destroyed", "parameters": { "side": "enemy", "window": "this-turn", "count_min": 1 } },
+        "vp": 3
+      },
+      {
+        "trigger": { "timing": "end-of-phase", "phase": "command", "battle_round": { "min": 2 } },
+        "when": { "type": "objective-majority", "parameters": { "relative_to": "opponent" } },
+        "vp": 6
+      },
+      {
+        "trigger": { "timing": "end-of-turn" },
+        "when": { "type": "controls-objective", "parameters": { "objective_role": "central", "count_min": 1 } },
+        "vp_per": 1,
+        "per": "operation-marker-within-range",
+        "per_max": 3,
+        "cumulative": true
+      },
+      {
+        "trigger": { "timing": "end-of-battle" },
+        "when": { "type": "units-destroyed-comparison", "parameters": { "subject": { "side": "enemy", "window": "this-turn" }, "comparator": "greater-than", "reference": { "side": "friendly", "window": "previous-turn" } } },
+        "vp": 4
+      }
+    ],
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
   }
 ]
