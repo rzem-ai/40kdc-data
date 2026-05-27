@@ -1,20 +1,27 @@
-//! Repo automation. Currently one task: `codegen`, which regenerates
-//! `crates/wh40kdc/src/generated.rs` from the bundled JSON Schema.
+//! Repo automation. Two tasks:
+//! - `codegen` regenerates `crates/wh40kdc/src/generated.rs` from the bundled
+//!   JSON Schema (the schema itself is produced upstream by
+//!   `cd tools && npm run bundle:schemas`).
+//! - `bundle-data` regenerates `crates/wh40kdc/src/data/bundle.generated.json`
+//!   from the repository's `data/` tree (the Rust analogue of the TS
+//!   `npm run codegen:data`). Committed and CI-drift-checked.
 //!
-//! Run with `cargo run -p xtask -- codegen`. The bundled schema itself is
-//! produced upstream by `cd tools && npm run bundle:schemas`.
+//! Run with `cargo run -p xtask -- <task>`.
 
-use std::path::PathBuf;
+use std::collections::BTreeMap;
+use std::path::{Path, PathBuf};
 
 use anyhow::{bail, Context, Result};
 use schemars::schema::RootSchema;
+use serde_json::Value;
 use typify::{TypeSpace, TypeSpaceSettings};
 
 fn main() -> Result<()> {
     match std::env::args().nth(1).as_deref() {
         Some("codegen") => codegen(),
+        Some("bundle-data") => bundle_data(),
         other => bail!(
-            "unknown task {:?}; expected `codegen`",
+            "unknown task {:?}; expected `codegen` or `bundle-data`",
             other.unwrap_or("<none>")
         ),
     }
@@ -64,5 +71,116 @@ fn codegen() -> Result<()> {
         .with_context(|| format!("writing {}", out_path.display()))?;
 
     println!("Wrote {}", out_path.display());
+    Ok(())
+}
+
+/// Map a data file's base name (sans `.json`) to its `RawData` field key.
+/// Mirrors `tools/src/codegen-data.ts` `FILE_TO_COLLECTION`, but with the
+/// snake_case keys the Rust `RawData` struct deserializes from. Files not listed
+/// here (schemas, scratch json) are not bundled.
+const FILE_TO_COLLECTION: &[(&str, &str)] = &[
+    ("units", "units"),
+    ("weapons", "weapons"),
+    ("factions", "factions"),
+    ("abilities", "abilities"),
+    ("phase-mappings", "phase_mappings"),
+    ("detachments", "detachments"),
+    ("stratagems", "stratagems"),
+    ("enhancements", "enhancements"),
+    ("leader-attachments", "leader_attachments"),
+    ("unit-compositions", "unit_compositions"),
+    ("wargear-options", "wargear_options"),
+    ("game-versions", "game_versions"),
+    ("missions", "missions"),
+    ("mission-matchups", "mission_matchups"),
+    ("secondary-cards", "secondary_cards"),
+    ("deployment-patterns", "deployment_patterns"),
+    ("force-dispositions", "force_dispositions"),
+    ("resource-pools", "resource_pools"),
+    ("timing-flags", "timing_flags"),
+    ("interaction-flags", "interaction_flags"),
+];
+
+/// Directory names holding examples/scratch data that must never be bundled.
+/// (`_core` is deliberately *not* excluded — its shared abilities are bundled.)
+const EXCLUDED_DIRS: &[&str] = &["_example", "_port-audit"];
+
+/// Bundle every authored `data/` file into one embedded JSON object.
+///
+/// Output is deterministic: files are visited in sorted path order and every
+/// collection key is present (empty arrays included), so the committed bundle
+/// only changes when the underlying data does — which is what the CI drift check
+/// keys on.
+fn bundle_data() -> Result<()> {
+    let root = workspace_root();
+    let out_path = root.join("crates/wh40kdc/src/data/bundle.generated.json");
+
+    // Pre-seed every collection so the bundle surface is stable.
+    let mut bundle: BTreeMap<&str, Vec<Value>> = FILE_TO_COLLECTION
+        .iter()
+        .map(|&(_, key)| (key, Vec::new()))
+        .collect();
+
+    let mut files = Vec::new();
+    for sub in ["core", "enrichment"] {
+        let dir = root.join("data").join(sub);
+        if dir.exists() {
+            collect_files(&dir, &mut files)?;
+        }
+    }
+    files.sort();
+
+    for file in &files {
+        let stem = file
+            .file_stem()
+            .and_then(|s| s.to_str())
+            .context("data file has no UTF-8 stem")?;
+        let Some(&(_, key)) = FILE_TO_COLLECTION.iter().find(|&&(name, _)| name == stem) else {
+            continue; // schema / scratch json we don't bundle
+        };
+        let raw =
+            std::fs::read_to_string(file).with_context(|| format!("reading {}", file.display()))?;
+        let parsed: Value = serde_json::from_str(&raw)
+            .with_context(|| format!("parsing {} as JSON", file.display()))?;
+        let Value::Array(items) = parsed else {
+            bail!("expected a JSON array in {}", file.display());
+        };
+        bundle.get_mut(key).expect("key pre-seeded").extend(items);
+    }
+
+    let object: serde_json::Map<String, Value> = bundle
+        .into_iter()
+        .map(|(k, v)| (k.to_string(), Value::Array(v)))
+        .collect();
+    let json = serde_json::to_string(&Value::Object(object.clone()))
+        .context("serializing the data bundle")?;
+    if let Some(parent) = out_path.parent() {
+        std::fs::create_dir_all(parent)
+            .with_context(|| format!("creating {}", parent.display()))?;
+    }
+    std::fs::write(&out_path, json).with_context(|| format!("writing {}", out_path.display()))?;
+
+    let counts = object
+        .iter()
+        .map(|(k, v)| format!("{k}={}", v.as_array().map_or(0, Vec::len)))
+        .collect::<Vec<_>>()
+        .join(", ");
+    println!("Wrote {}\n  {counts}", out_path.display());
+    Ok(())
+}
+
+/// Recursively collect `.json` files under `dir`, skipping excluded dirs.
+fn collect_files(dir: &Path, out: &mut Vec<PathBuf>) -> Result<()> {
+    for entry in std::fs::read_dir(dir).with_context(|| format!("reading dir {}", dir.display()))? {
+        let path = entry?.path();
+        let name = path.file_name().and_then(|n| n.to_str()).unwrap_or("");
+        if path.is_dir() {
+            if !EXCLUDED_DIRS.contains(&name) {
+                collect_files(&path, out)?;
+            }
+        } else if name.ends_with(".json") && !name.ends_with(".example.json") {
+            out.push(path);
+        }
+    }
     Ok(())
 }

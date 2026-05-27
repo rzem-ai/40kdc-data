@@ -1,0 +1,330 @@
+//! Integration tests for the linked data API over the real embedded bundle.
+//!
+//! Rust mirror of `tools/test/data-model.test.ts`. Runs against
+//! `Dataset::embedded()` so the assertions exercise the same real data the npm
+//! package ships, proving the two implementations agree on the join graph.
+
+#![cfg(feature = "bundled-data")]
+
+use wh40kdc::{normalize_name, Dataset, Phase, RawData};
+
+// --- normalize_name ---------------------------------------------------------
+
+#[test]
+fn normalize_strips_diacritics() {
+    assert_eq!(normalize_name("Khârn the Betrayer"), "kharn the betrayer");
+    assert_eq!(normalize_name("Brôkhyr"), "brokhyr");
+    assert_eq!(normalize_name("Ûthar"), "uthar");
+}
+
+#[test]
+fn normalize_removes_quote_variants() {
+    assert_eq!(normalize_name("Be’lakor"), "belakor");
+    assert_eq!(normalize_name("Kor’sarro Khan"), "korsarro khan");
+    assert_eq!(normalize_name("Aetaos'rau'keres"), "aetaosraukeres");
+}
+
+#[test]
+fn normalize_collapses_whitespace_and_hyphens() {
+    assert_eq!(normalize_name("Brôkhyr Iron-master"), "brokhyr iron master");
+    assert_eq!(normalize_name("  the   betrayer  "), "the betrayer");
+}
+
+#[test]
+fn normalize_is_idempotent() {
+    assert_eq!(
+        normalize_name(&normalize_name("Khârn the Betrayer")),
+        "kharn the betrayer"
+    );
+}
+
+// --- find / find_all --------------------------------------------------------
+
+#[test]
+fn find_matches_by_exact_id() {
+    let ds = Dataset::embedded();
+    assert_eq!(
+        ds.find_unit("kharn-the-betrayer").unwrap().id.as_str(),
+        "kharn-the-betrayer"
+    );
+}
+
+#[test]
+fn find_matches_by_exact_normalized_name() {
+    let ds = Dataset::embedded();
+    assert_eq!(
+        ds.find_unit("Khârn the Betrayer").unwrap().id.as_str(),
+        "kharn-the-betrayer"
+    );
+}
+
+#[test]
+fn find_falls_back_to_substring() {
+    let ds = Dataset::embedded();
+    assert_eq!(
+        ds.find_unit("Betrayer").unwrap().id.as_str(),
+        "kharn-the-betrayer"
+    );
+}
+
+#[test]
+fn find_returns_none_on_miss() {
+    let ds = Dataset::embedded();
+    assert!(ds.find_unit("definitely-not-a-real-unit").is_none());
+    assert!(ds.find_unit("").is_none());
+}
+
+#[test]
+fn find_all_surfaces_every_match_for_a_shared_name() {
+    let ds = Dataset::embedded();
+    // ministorum-priest is shared across multiple factions; dedupe on
+    // (faction_id, id) keeps each faction's copy.
+    let all = ds.units.find_all("Ministorum Priest");
+    assert!(
+        all.len() >= 2,
+        "expected the shared priest under several factions, got {}",
+        all.len()
+    );
+    let factions: std::collections::HashSet<&str> =
+        all.iter().map(|u| u.faction_id.as_str()).collect();
+    assert!(
+        factions.len() >= 2,
+        "shared unit should span multiple factions"
+    );
+}
+
+#[test]
+fn by_faction_disambiguates_a_shared_unit() {
+    let ds = Dataset::embedded();
+    // Every faction the priest is listed under should surface it via by_faction.
+    let priest_factions: Vec<&str> = ds
+        .units
+        .find_all("Ministorum Priest")
+        .iter()
+        .map(|u| u.faction_id.as_str())
+        .collect();
+    for f in priest_factions {
+        assert!(
+            ds.units
+                .by_faction(f)
+                .iter()
+                .any(|u| u.id.as_str() == "ministorum-priest"),
+            "by_faction({f}) should contain the priest"
+        );
+    }
+}
+
+// --- internationalization ---------------------------------------------------
+
+#[test]
+fn diacritic_and_punctuation_insensitive_lookup() {
+    let ds = Dataset::embedded();
+    // (ascii query, exact query, expected id)
+    let cases = [
+        (
+            "Kharn the Betrayer",
+            "Khârn the Betrayer",
+            "kharn-the-betrayer",
+        ),
+        ("Belakor", "Be’lakor", "belakor"),
+        ("Korsarro Khan", "Kor’sarro Khan", "korsarro-khan"),
+    ];
+    for (ascii, exact, id) in cases {
+        assert_eq!(
+            ds.find_unit(ascii).map(|u| u.id.as_str()),
+            Some(id),
+            "ascii {ascii:?}"
+        );
+        assert_eq!(
+            ds.find_unit(exact).map(|u| u.id.as_str()),
+            Some(id),
+            "exact {exact:?}"
+        );
+    }
+}
+
+#[test]
+fn lookup_is_case_insensitive() {
+    let ds = Dataset::embedded();
+    assert_eq!(
+        ds.find_unit("KHÂRN THE BETRAYER").map(|u| u.id.as_str()),
+        Some("kharn-the-betrayer")
+    );
+}
+
+#[test]
+fn does_not_over_collapse_distinct_names() {
+    assert_ne!(normalize_name("Khârn"), normalize_name("Khorne"));
+    let ds = Dataset::embedded();
+    let ids: Vec<&str> = ds
+        .units
+        .find_all("Khârn the Betrayer")
+        .iter()
+        .map(|u| u.id.as_str())
+        .collect();
+    assert_eq!(ids, ["kharn-the-betrayer"]);
+}
+
+// --- Kharn proof (the headline one-liner) -----------------------------------
+
+#[test]
+fn kharn_links_faction_weapons_abilities() {
+    let ds = Dataset::embedded();
+    let kharn = ds
+        .find_unit("Kharn")
+        .expect("Khârn resolves through diacritic folding");
+    assert_eq!(ds.faction_of(kharn).unwrap().id.as_str(), "world-eaters");
+    assert_eq!(ds.weapons_of(kharn).len(), 2);
+
+    let mut ability_ids: Vec<&str> = ds
+        .abilities_of(kharn)
+        .iter()
+        .map(|a| a.ability_id.as_str())
+        .collect();
+    ability_ids.sort_unstable();
+    assert_eq!(
+        ability_ids,
+        [
+            "berzerker-frenzy",
+            "leader",
+            "legendary-killer",
+            "the-betrayer"
+        ]
+    );
+}
+
+#[test]
+fn kharn_filters_abilities_by_phase() {
+    let ds = Dataset::embedded();
+    let kharn = ds.find_unit("Kharn").unwrap();
+    let shooting: Vec<&str> = ds
+        .abilities_of(kharn)
+        .into_iter()
+        .filter(|a| ds.phases_of(a).contains(&Phase::Shooting))
+        .map(|a| a.ability_id.as_str())
+        .collect();
+    assert_eq!(shooting, ["berzerker-frenzy"]);
+}
+
+// --- phases (joined via phase-mappings) -------------------------------------
+
+#[test]
+fn phases_union_across_a_mapping() {
+    let ds = Dataset::embedded();
+    let ability = ds
+        .abilities
+        .get("deadly-demise-d3")
+        .expect("deadly-demise-d3 exists");
+    let mut phases: Vec<Phase> = ds.phases_of(ability).to_vec();
+    phases.sort_unstable();
+    assert_eq!(phases, [Phase::Shooting, Phase::Fight]);
+}
+
+#[test]
+fn phases_empty_for_ability_without_a_mapping() {
+    let ds = Dataset::embedded();
+    let leader = ds
+        .abilities
+        .get("leader")
+        .expect("the core `leader` ability exists");
+    assert!(ds.phases_of(leader).is_empty());
+}
+
+// --- reverse links ----------------------------------------------------------
+
+#[test]
+fn ability_reverse_links_to_units() {
+    let ds = Dataset::embedded();
+    let units = ds.units_with_ability("berzerker-frenzy");
+    assert!(units.iter().any(|u| u.id.as_str() == "kharn-the-betrayer"));
+}
+
+#[test]
+fn weapon_reverse_links_to_carriers() {
+    let ds = Dataset::embedded();
+    let units = ds.units_with_weapon("gorechild");
+    assert!(units.iter().any(|u| u.id.as_str() == "kharn-the-betrayer"));
+}
+
+#[test]
+fn faction_links_units_and_weapons() {
+    let ds = Dataset::embedded();
+    assert!(!ds.units.by_faction("world-eaters").is_empty());
+    assert!(!ds.weapons_of_faction("world-eaters").is_empty());
+    assert!(!ds.abilities_of_faction("world-eaters").is_empty());
+}
+
+// --- edge cases -------------------------------------------------------------
+
+#[test]
+fn sm_successor_faction_resolves_without_panicking() {
+    let ds = Dataset::embedded();
+    let ultra = ds.factions.get("ultramarines");
+    assert!(ultra.is_some(), "ultramarines is a known faction");
+    // Successors may inherit units from adeptus-astartes; an empty list is fine,
+    // the point is it must not panic.
+    let _ = ds.units.by_faction("ultramarines");
+}
+
+#[test]
+fn skips_dangling_link_ids_rather_than_panicking() {
+    // Build a custom dataset with a unit whose links don't resolve.
+    let raw: RawData = serde_json::from_value(serde_json::json!({
+        "units": [{
+            "id": "ghost",
+            "name": "Ghost",
+            "faction_id": "nowhere",
+            "profiles": [{ "M": 6, "T": 4, "Sv": 3, "W": 1, "Ld": 6, "OC": 1 }],
+            "weapon_ids": ["missing-weapon"],
+            "ability_ids": ["missing-ability"],
+            "game_version": { "edition": "11th", "dataslate": "2024-q1" }
+        }]
+    }))
+    .expect("ghost RawData deserializes");
+
+    let ds = Dataset::from_raw(raw);
+    let ghost = ds.units.get("ghost").expect("ghost is present");
+    assert!(ds.weapons_of(ghost).is_empty());
+    assert!(ds.abilities_of(ghost).is_empty());
+    assert!(ds.faction_of(ghost).is_none());
+}
+
+// --- collection integrity ---------------------------------------------------
+
+#[test]
+fn exposes_the_embedded_data() {
+    let ds = Dataset::embedded();
+    assert!(ds.units.len() > 1000, "units = {}", ds.units.len());
+    assert_eq!(ds.factions.len(), 35);
+    assert!(!ds.weapons.is_empty());
+    assert!(!ds.abilities.is_empty());
+}
+
+#[test]
+fn deduplicates_abilities_by_id() {
+    let ds = Dataset::embedded();
+    let ids: std::collections::HashSet<&str> = ds
+        .abilities
+        .all()
+        .iter()
+        .map(|a| a.ability_id.as_str())
+        .collect();
+    assert_eq!(
+        ids.len(),
+        ds.abilities.len(),
+        "no duplicate ability ids in .all()"
+    );
+}
+
+#[test]
+fn folds_shared_core_abilities_into_the_collection() {
+    let ds = Dataset::embedded();
+    assert!(ds.abilities.get("benefit-of-cover").is_some());
+}
+
+#[test]
+fn collection_is_iterable() {
+    let ds = Dataset::embedded();
+    assert_eq!(ds.factions.iter().count(), ds.factions.len());
+    assert_eq!((&ds.factions).into_iter().count(), ds.factions.len());
+}

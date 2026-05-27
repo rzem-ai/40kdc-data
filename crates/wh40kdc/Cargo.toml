@@ -1,13 +1,22 @@
 [package]
 name = "wh40kdc"
-version = "0.1.0"
-description = "Rust types for the 40kdc-data Warhammer 40K schema layer, generated from the canonical JSON Schemas."
+version = "0.1.1"
+description = "Warhammer 40K dataset for the 40kdc-data schema layer: generated types, an embedded dataset behind a linked typed API, and a ListForge army-list importer."
 readme = "README.md"
 keywords = ["warhammer", "40k", "wargaming", "schema", "serde"]
 categories = ["data-structures", "game-development"]
 edition.workspace = true
 license.workspace = true
 repository.workspace = true
+
+[features]
+default = ["bundled-data", "import"]
+# The embedded dataset + the linked, typed data API (Dataset/Collection/
+# normalize_name). default-features = false drops both for a types-only crate.
+bundled-data = ["dep:unicode-normalization"]
+# The army-list importer (ListForge -> resolved Roster). Resolves against the
+# data API, so it pulls in bundled-data, plus the share-payload decode deps.
+import = ["bundled-data", "dep:base64", "dep:flate2"]
 
 [dependencies]
 serde = { version = "1", features = ["derive"] }
@@ -16,3 +25,13 @@ serde_json = "1"
 # the runtime pattern checks on validated string newtypes (e.g. entity ids).
 chrono = { version = "0.4", features = ["serde"] }
 regress = "0.10"
+# Diacritic-insensitive name lookup (feature `bundled-data`).
+unicode-normalization = { version = "0.1", optional = true }
+# ListForge share-payload decode (feature `import`).
+base64 = { version = "0.22", optional = true }
+flate2 = { version = "1", optional = true }
+
+[dev-dependencies]
+# Validate serialized Roster output against schemas/core/roster.schema.json
+# (with a file-backed retriever for the external $defs refs).
+jsonschema = "0.46"

@@ -1,0 +1,66 @@
+[
+  {
+    "input": "Khârn the Betrayer",
+    "expected": "kharn the betrayer"
+  },
+  {
+    "input": "Brôkhyr",
+    "expected": "brokhyr"
+  },
+  {
+    "input": "Ûthar",
+    "expected": "uthar"
+  },
+  {
+    "input": "Magnús",
+    "expected": "magnus"
+  },
+  {
+    "input": "T'au",
+    "expected": "tau"
+  },
+  {
+    "input": "Be’lakor",
+    "expected": "belakor"
+  },
+  {
+    "input": "Kor’sarro Khan",
+    "expected": "korsarro khan"
+  },
+  {
+    "input": "Aetaos'rau'keres",
+    "expected": "aetaosraukeres"
+  },
+  {
+    "input": "‘quoted’",
+    "expected": "quoted"
+  },
+  {
+    "input": "Brôkhyr Iron-master",
+    "expected": "brokhyr iron master"
+  },
+  {
+    "input": "  the   betrayer  ",
+    "expected": "the betrayer"
+  },
+  {
+    "input": "space--marines",
+    "expected": "space marines"
+  },
+  {
+    "input": "KHÂRN THE BETRAYER",
+    "expected": "kharn the betrayer"
+  },
+  {
+    "input": "kharn the betrayer",
+    "expected": "kharn the betrayer"
+  },
+  {
+    "input": "Khorne",
+    "expected": "khorne"
+  },
+  {
+    "input": "Khârn",
+    "expected": "kharn"
+  }
+]

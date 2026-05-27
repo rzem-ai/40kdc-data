@@ -1,0 +1,330 @@
+//! Integration tests for the ListForge importer over the real embedded data.
+//!
+//! Reuses the same fixtures the TypeScript suite uses
+//! (`tools/test/fixtures/import/*`), so both implementations are pinned to one
+//! corpus. Rust mirror of `tools/test/import/{listforge,resolve}.test.ts`.
+
+#![cfg(feature = "import")]
+
+use std::path::PathBuf;
+
+use serde_json::Value;
+use wh40kdc::import::{import_roster, FormatAdapter, ListForgeAdapter, Roster};
+use wh40kdc::Dataset;
+
+fn fixture(name: &str) -> Value {
+    let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .join("../../tools/test/fixtures/import")
+        .join(name);
+    let raw = std::fs::read_to_string(&path)
+        .unwrap_or_else(|e| panic!("reading {}: {e}", path.display()));
+    serde_json::from_str(&raw).expect("fixture is valid JSON")
+}
+
+fn import(name: &str) -> Roster {
+    import_roster(&fixture(name), Dataset::embedded()).expect("import succeeds")
+}
+
+fn unit_by_id<'a>(r: &'a Roster, id: &str) -> Option<&'a wh40kdc::import::RosterUnit> {
+    r.units.iter().find(|u| u.ref_.id.as_deref() == Some(id))
+}
+
+// --- adapter (parse only) ---------------------------------------------------
+
+#[test]
+fn detects_a_listforge_payload() {
+    let adapter = ListForgeAdapter;
+    assert!(adapter.detect(&fixture("gk-banishers.payload.json")));
+    assert!(!adapter.detect(&serde_json::json!({ "not": "a roster" })));
+}
+
+#[test]
+fn parse_extracts_faction_detachment_and_battle_size() {
+    let parsed = ListForgeAdapter
+        .parse(&fixture("gk-banishers.payload.json"))
+        .unwrap();
+    assert_eq!(parsed.faction_raw_name.as_deref(), Some("Grey Knights"));
+    assert_eq!(parsed.detachment_raw_name.as_deref(), Some("Banishers"));
+    assert!(parsed
+        .battle_size_raw
+        .as_deref()
+        .unwrap()
+        .contains("Strike Force"));
+    assert_eq!(parsed.declared_limit, Some(2000));
+}
+
+#[test]
+fn parse_sums_computed_total_across_cost_lines() {
+    let parsed = ListForgeAdapter
+        .parse(&fixture("gk-banishers.payload.json"))
+        .unwrap();
+    assert_eq!(parsed.total_reported, Some(585));
+    assert_eq!(parsed.total_computed, 585); // 90 + 225 + 20 + 250
+}
+
+#[test]
+fn parse_extracts_units_with_model_counts() {
+    let parsed = ListForgeAdapter
+        .parse(&fixture("gk-banishers.payload.json"))
+        .unwrap();
+    let names: Vec<&str> = parsed.units.iter().map(|u| u.raw_name.as_str()).collect();
+    assert!(names.contains(&"Castellan Crowe"));
+    assert!(names.contains(&"Grand Master in Nemesis Dreadknight"));
+    assert!(names.contains(&"Purifier Squad"));
+
+    let squad = parsed
+        .units
+        .iter()
+        .find(|u| u.raw_name == "Purifier Squad")
+        .unwrap();
+    assert_eq!(squad.model_count, 10); // 1 Knight of the Flame + 9 Purifiers
+}
+
+#[test]
+fn parse_flags_warlord_and_enhancement() {
+    let parsed = ListForgeAdapter
+        .parse(&fixture("gk-banishers.payload.json"))
+        .unwrap();
+    let gm = parsed
+        .units
+        .iter()
+        .find(|u| u.raw_name.starts_with("Grand Master"))
+        .unwrap();
+    assert!(gm.is_warlord);
+    assert_eq!(
+        gm.enhancement_raw_name.as_deref(),
+        Some("Pyresoul (Psychic)")
+    );
+    assert!(gm.is_character);
+}
+
+#[test]
+fn parse_collects_wargear_without_enhancement_or_warlord() {
+    let parsed = ListForgeAdapter
+        .parse(&fixture("gk-banishers.payload.json"))
+        .unwrap();
+    let gm = parsed
+        .units
+        .iter()
+        .find(|u| u.raw_name.starts_with("Grand Master"))
+        .unwrap();
+    let weapons: Vec<&str> = gm.wargear.iter().map(|w| w.raw_name.as_str()).collect();
+    assert!(weapons.contains(&"Heavy psycannon"));
+    assert!(weapons.contains(&"Nemesis daemon greathammer"));
+    assert!(!weapons.contains(&"Pyresoul (Psychic)"));
+    assert!(!weapons.contains(&"Warlord"));
+}
+
+#[test]
+fn parsed_output_leaks_no_prose_field_names() {
+    let parsed = ListForgeAdapter
+        .parse(&fixture("gk-banishers.payload.json"))
+        .unwrap();
+    // ParsedRoster carries no serde derive; assert structurally that no raw
+    // name smuggled a description/$text payload through.
+    for unit in &parsed.units {
+        assert!(!unit.raw_name.contains("description"));
+        assert!(!unit.raw_name.contains("$text"));
+    }
+}
+
+// --- resolve (against embedded grey-knights data) ---------------------------
+
+#[test]
+fn resolves_faction_detachment_and_battle_size() {
+    let roster = import("gk-banishers.payload.json");
+    assert_eq!(roster.faction_id.as_deref(), Some("grey-knights"));
+    assert_eq!(roster.detachment_id.as_deref(), Some("banishers"));
+    assert_eq!(
+        roster.battle_size,
+        Some(wh40kdc::import::BattleSize::StrikeForce)
+    );
+    assert_eq!(roster.points.declared_limit, Some(2000));
+    assert_eq!(roster.points.total_reported, Some(585));
+    assert_eq!(roster.points.total_computed, 585);
+}
+
+#[test]
+fn resolves_units_to_entity_ids() {
+    let roster = import("gk-banishers.payload.json");
+    assert!(unit_by_id(&roster, "castellan-crowe").is_some());
+    assert!(unit_by_id(&roster, "grand-master-in-nemesis-dreadknight").is_some());
+    assert!(unit_by_id(&roster, "purifier-squad").is_some());
+}
+
+#[test]
+fn resolves_enhancement_scoped_to_detachment() {
+    let roster = import("gk-banishers.payload.json");
+    let gm = unit_by_id(&roster, "grand-master-in-nemesis-dreadknight").unwrap();
+    assert!(gm.is_warlord);
+    let enh = gm.enhancement.as_ref().unwrap();
+    assert_eq!(enh.id.as_deref(), Some("pyresoul-psychic"));
+    assert!(enh.resolved);
+}
+
+#[test]
+fn resolves_wargear_to_weapon_ids() {
+    let roster = import("gk-banishers.payload.json");
+    let gm = unit_by_id(&roster, "grand-master-in-nemesis-dreadknight").unwrap();
+    let ids: Vec<&str> = gm
+        .wargear
+        .iter()
+        .filter_map(|w| w.ref_.id.as_deref())
+        .collect();
+    assert!(ids.contains(&"heavy-psycannon"));
+    assert!(ids.contains(&"nemesis-daemon-greathammer"));
+    assert!(gm.wargear.iter().all(|w| w.ref_.resolved));
+}
+
+#[test]
+fn reports_clean_diagnostics_for_fully_resolved_list() {
+    let roster = import("gk-banishers.payload.json");
+    assert_eq!(roster.diagnostics.resolved_units, 3);
+    assert_eq!(roster.diagnostics.unresolved_units, 0);
+    assert_eq!(roster.diagnostics.unresolved_weapons, 0);
+}
+
+#[test]
+fn infers_a_provisional_leader_attachment() {
+    let payload = serde_json::json!({
+        "name": "Leader Test",
+        "generatedBy": "List Forge",
+        "roster": {
+            "name": "Leader Test",
+            "costs": [{ "name": "pts", "value": 0 }],
+            "forces": [{
+                "id": "f1",
+                "name": "Army Roster",
+                "selections": [
+                    {
+                        "id": "u-gm", "name": "Grand Master", "type": "model", "number": 1,
+                        "categories": [{ "name": "Faction: Grey Knights" }, { "name": "Character", "primary": true }]
+                    },
+                    {
+                        "id": "u-paladins", "name": "Paladin Squad", "type": "unit", "number": 1,
+                        "categories": [{ "name": "Faction: Grey Knights" }, { "name": "Infantry", "primary": true }]
+                    }
+                ]
+            }]
+        }
+    });
+    let roster = import_roster(&payload, Dataset::embedded()).unwrap();
+    let gm = unit_by_id(&roster, "grand-master").unwrap();
+    let attachment = gm.leader_attachment.as_ref().expect("attachment inferred");
+    assert_eq!(
+        attachment.bodyguard_ref.id.as_deref(),
+        Some("paladin-squad")
+    );
+    assert!(attachment.provisional);
+    assert!(roster
+        .diagnostics
+        .warnings
+        .iter()
+        .any(|w| w.code == wh40kdc::import::WarningCode::LeaderAttachmentInferred));
+}
+
+#[test]
+fn retains_unresolved_unit_with_candidates_and_warning() {
+    let payload = serde_json::json!({
+        "name": "Miss Test",
+        "generatedBy": "List Forge",
+        "roster": {
+            "name": "Miss Test",
+            "costs": [{ "name": "pts", "value": 0 }],
+            "forces": [{
+                "id": "f1", "name": "Army Roster",
+                "selections": [{
+                    "id": "u-bogus", "name": "Definitely Not A Real Unit", "type": "model", "number": 1,
+                    "categories": [{ "name": "Faction: Grey Knights" }, { "name": "Character" }]
+                }]
+            }]
+        }
+    });
+    let roster = import_roster(&payload, Dataset::embedded()).unwrap();
+    let miss = roster
+        .units
+        .iter()
+        .find(|u| u.ref_.raw_name == "Definitely Not A Real Unit")
+        .unwrap();
+    assert!(miss.ref_.id.is_none());
+    assert!(!miss.ref_.resolved);
+    assert_eq!(roster.diagnostics.unresolved_units, 1);
+    assert!(roster
+        .diagnostics
+        .warnings
+        .iter()
+        .any(|w| w.code == wh40kdc::import::WarningCode::UnitUnresolved));
+}
+
+#[test]
+fn flags_multi_force_lists_and_resolves_primary_faction() {
+    let roster = import("gk-allied-multiforce.payload.json");
+    assert_eq!(roster.faction_id.as_deref(), Some("grey-knights"));
+    assert!(roster
+        .diagnostics
+        .warnings
+        .iter()
+        .any(|w| w.code == wh40kdc::import::WarningCode::MultiForce));
+    assert_eq!(roster.units.len(), 2);
+}
+
+// --- schema conformance -----------------------------------------------------
+
+/// Resolves the project's schema `$id` URLs to their on-disk files.
+///
+/// The schemas are authored so `$ref`s resolve against each file's `$id` URL
+/// (`https://40kdc.dev/schemas/...`), not its filesystem path — and the shared
+/// defs live in a `$defs/` directory exposed at the URL path `defs/`. This
+/// retriever maps a `…/schemas/<path>` URI back to `schemas/<path>`, restoring
+/// the `$` on the defs directory. Mirrors the resolution `bundle-schemas.ts`
+/// performs for the AJV/codegen bundle.
+struct RepoSchemaRetriever {
+    schemas_root: PathBuf,
+}
+
+impl jsonschema::Retrieve for RepoSchemaRetriever {
+    fn retrieve(
+        &self,
+        uri: &jsonschema::Uri<String>,
+    ) -> Result<Value, Box<dyn std::error::Error + Send + Sync>> {
+        let path = uri.path().as_str();
+        let rel = path
+            .rsplit_once("/schemas/")
+            .map(|(_, r)| r)
+            .unwrap_or(path)
+            .trim_start_matches('/');
+        // URL path `defs/...` ↔ on-disk `$defs/...`.
+        let disk_rel = rel
+            .strip_prefix("defs/")
+            .map_or_else(|| rel.to_string(), |rest| format!("$defs/{rest}"));
+        let full = self.schemas_root.join(disk_rel);
+        let raw = std::fs::read_to_string(&full)
+            .map_err(|e| format!("retrieve {uri}: reading {}: {e}", full.display()))?;
+        Ok(serde_json::from_str(&raw)?)
+    }
+}
+
+#[test]
+fn resolved_roster_validates_against_roster_schema() {
+    let schemas_root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../schemas");
+    let schema: Value = serde_json::from_str(
+        &std::fs::read_to_string(schemas_root.join("core/roster.schema.json"))
+            .expect("read schema"),
+    )
+    .expect("schema is valid JSON");
+
+    // Real validation: the file-backed retriever resolves the external $defs
+    // refs (entity-id, battle-size, game-version-ref), so this is the Rust
+    // analogue of the TS AJV conformance check.
+    let validator = jsonschema::options()
+        .with_retriever(RepoSchemaRetriever { schemas_root })
+        .build(&schema)
+        .expect("roster schema compiles with external refs resolved");
+
+    let roster = import("gk-banishers.payload.json");
+    let value = serde_json::to_value(&roster).unwrap();
+
+    if let Err(error) = validator.validate(&value) {
+        panic!("resolved roster does not satisfy roster.schema.json: {error}");
+    }
+}
