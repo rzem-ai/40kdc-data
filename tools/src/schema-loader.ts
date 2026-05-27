@@ -1,11 +1,29 @@
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
-import { readFileSync, readdirSync, statSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
-export const SCHEMAS_ROOT = resolve(__dirname, "../../schemas");
+
+/**
+ * Resolve the schema tree across both layouts:
+ *  - in-repo / dev: schemas live in the sibling top-level `schemas/` dir
+ *    (`../../schemas` from `dist/` or `src/`) — always the live source.
+ *  - packaged: once published, schemas are copied into the package root, so
+ *    `<pkg>/schemas` sits one level above the compiled file in `dist/`
+ *    (`../schemas`). When installed, the repo path resolves outside the
+ *    package and doesn't exist, so this branch is taken.
+ * Repo path wins when present so dev runs never read a stale `copy:schemas`
+ * artifact; the packaged copy is the fallback for installed consumers.
+ */
+function resolveSchemasRoot(): string {
+  const repo = resolve(__dirname, "../../schemas");
+  const packaged = resolve(__dirname, "../schemas");
+  return existsSync(repo) ? repo : packaged;
+}
+
+export const SCHEMAS_ROOT = resolveSchemasRoot();
 
 /**
  * Recursively find all .schema.json files under a directory.

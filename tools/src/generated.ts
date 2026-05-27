@@ -1,0 +1,1227 @@
+/* Generated from crates/wh40kdc/schemas/bundled.schema.json by 'npm run codegen:types'. DO NOT EDIT BY HAND. */
+
+/**
+ * Kebab-case identifier
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "entity-id".
+ */
+export type EntityId = string;
+/**
+ * Game edition, e.g. '10th' or '11'
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "edition".
+ */
+export type Edition = string;
+/**
+ * Dataslate version: a quarterly tag (e.g. '2025-q3') or a named kebab-case slug for non-quarterly slates (e.g. 'pre-launch-provisional')
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "dataslate-version".
+ */
+export type DataslateVersion = string;
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "keyword".
+ */
+export type Keyword = string;
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "keyword-list".
+ */
+export type KeywordList = Keyword[];
+/**
+ * A stat that can be a fixed number or a dice expression
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "stat-value".
+ */
+export type StatValue = number | string;
+/**
+ * GitHub handle or '40kdc-community'
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "contributor-ref".
+ */
+export type ContributorRef = string;
+/**
+ * The five official game phases. Unchanged between 10th and 11th edition — 11e reorders Pile In timing within the Fight phase but adds no top-level phase.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "phase".
+ */
+export type Phase = "command" | "movement" | "shooting" | "charge" | "fight";
+/**
+ * @minItems 1
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "phase-list".
+ */
+export type PhaseList = [Phase, ...Phase[]];
+/**
+ * Type of game element that is the source of an enrichment entry
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "source-type".
+ */
+export type SourceType = "ability" | "stratagem" | "enhancement" | "detachment-rule" | "faction-rule";
+/**
+ * Which player's turn this applies during
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "player-turn".
+ */
+export type PlayerTurn = "your-turn" | "opponent-turn" | "either";
+/**
+ * 11e battle size, which sets the army's points limit and detachment-point budget: 'incursion' = 1000 pts / 2 detachment points; 'strike-force' = 2000 pts / 3 detachment points.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "battle-size".
+ */
+export type BattleSize = "incursion" | "strike-force";
+/**
+ * One of the five confirmed 11e launch Force Dispositions. Shared by force-disposition entities and the mission-matchup matrix.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "force-disposition-id".
+ */
+export type ForceDispositionId =
+  | "take-and-hold"
+  | "disruption"
+  | "purge-the-foe"
+  | "priority-assets"
+  | "reconnaissance";
+/**
+ * A zone footprint, expressed as an axis-aligned rectangle or an explicit polygon. Vertices/extent are relative to the owning element's position.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "zone-shape".
+ */
+export type ZoneShape =
+  | {
+      type: "rectangle";
+      width: number;
+      height: number;
+    }
+  | {
+      type: "polygon";
+      /**
+       * @minItems 3
+       */
+      points: [Vec2, Vec2, Vec2, ...Vec2[]];
+    };
+/**
+ * Which player a zone or territory belongs to.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "side".
+ */
+export type Side = "attacker" | "defender";
+/**
+ * Eligibility predicate for which units may perform the action.
+ */
+export type AbilityCondition = SimpleCondition | CompoundCondition;
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "condition-node".
+ */
+export type ConditionNode = SimpleCondition | CompoundCondition;
+/**
+ * Predicate for when the action is considered complete.
+ */
+export type AbilityCondition1 = SimpleCondition | CompoundCondition;
+/**
+ * Effect applied when the action completes (e.g. terrain-area-tag to mark transient state on a terrain piece).
+ */
+export type AbilityEffect =
+  | SingleEffect
+  | ChoiceEffect
+  | SequenceEffect
+  | DiceGatedEffect
+  | ConditionalEffect
+  | DicePoolAllocationEffect;
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "effect-node".
+ */
+export type EffectNode =
+  | SingleEffect
+  | ChoiceEffect
+  | SequenceEffect
+  | DiceGatedEffect
+  | ConditionalEffect
+  | DicePoolAllocationEffect;
+export type AbilityCondition2 = SimpleCondition | CompoundCondition;
+/**
+ * A terrain piece's 2D footprint, relative to the piece's `position`. Axis-aligned rectangle, right triangle (right angle at the local origin, legs along +x/+y), or an explicit polygon. GW's standard templates (e.g. 7"×11.5" rectangles, 8"×11.5" right triangles, 6"×4" rectangles, 10"×2.5" and 6"×2" lines) are all expressible here; lines are thin rectangles.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "footprint".
+ */
+export type Footprint =
+  | {
+      type: "rectangle";
+      width: number;
+      height: number;
+    }
+  | {
+      type: "right-triangle";
+      width: number;
+      height: number;
+    }
+  | {
+      type: "polygon";
+      /**
+       * @minItems 3
+       */
+      points: [Vec2, Vec2, Vec2, ...Vec2[]];
+    };
+/**
+ * An 11e terrain-area keyword. Confirmed launch set; extend as further keywords publish on dataslate.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "terrain-area-keyword".
+ */
+export type TerrainAreaKeyword = "obscuring" | "hidden" | "plunging-fire";
+export type AbilityEffect1 =
+  | SingleEffect
+  | ChoiceEffect
+  | SequenceEffect
+  | DiceGatedEffect
+  | ConditionalEffect
+  | DicePoolAllocationEffect;
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "condition".
+ */
+export type AbilityCondition3 = SimpleCondition | CompoundCondition;
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "effect".
+ */
+export type AbilityEffect2 =
+  | SingleEffect
+  | ChoiceEffect
+  | SequenceEffect
+  | DiceGatedEffect
+  | ConditionalEffect
+  | DicePoolAllocationEffect;
+
+/**
+ * Auto-generated by tools/src/bundle-schemas.ts. Single self-contained schema for Rust codegen — do not edit by hand.
+ */
+export interface KdcBundledSchemas {
+  [k: string]: unknown;
+}
+/**
+ * A 2D point in board inches. Origin at a board corner; JSON uses y-down (downstream renderers may flip to y-up).
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "vec2".
+ */
+export interface Vec2 {
+  x: number;
+  y: number;
+}
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "game-version-ref".
+ */
+export interface GameVersionReference {
+  edition: Edition;
+  dataslate: DataslateVersion;
+  [k: string]: unknown;
+}
+/**
+ * A deployment map: per-side deployment zones, objective positions, and (11e) per-side territory polygons. Pattern geometry carries forward unchanged from 10th edition; downstream tooling (e.g. bevy-deploy-helper) consumes this as the canonical encoding.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "deployment-pattern".
+ */
+export interface DeploymentPattern {
+  id: EntityId;
+  name: string;
+  /**
+   * Mission pack or source the pattern originates from (e.g. 'leviathan').
+   */
+  source?: string;
+  description?: string;
+  /**
+   * Per-side deployment zones.
+   *
+   * @minItems 1
+   */
+  zones: [
+    {
+      player: Side;
+      name?: string;
+      shape: ZoneShape;
+      position: Vec2;
+      /**
+       * Hex render color for the zone overlay.
+       */
+      color?: string;
+    },
+    ...{
+      player: Side;
+      name?: string;
+      shape: ZoneShape;
+      position: Vec2;
+      /**
+       * Hex render color for the zone overlay.
+       */
+      color?: string;
+    }[]
+  ];
+  /**
+   * 11e per-side territory polygons, mirroring the deployment-zone shape (e.g. the band between a deployment zone and the midline). Empty until authored.
+   */
+  territories?: {
+    player: Side;
+    shape: ZoneShape;
+    position: Vec2;
+  }[];
+  /**
+   * Objective-marker positions on the board.
+   */
+  objectives?: Vec2[];
+  /**
+   * Ids of recommended terrain-layout entities (resolved once terrain-layout data is authored).
+   */
+  recommended_terrain_layout_ids?: EntityId[];
+  game_version: GameVersionReference;
+}
+/**
+ * A detachment option within a faction, providing a detachment rule, enhancements, and stratagems.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "detachment".
+ */
+export interface Detachment {
+  id: EntityId;
+  name: string;
+  faction_id: EntityId;
+  detachment_rule_id?: EntityId | null;
+  /**
+   * 11e: the detachment-point cost (1–3) charged against the army's detachment-point budget. null when not yet assigned.
+   */
+  detachment_points?: number | null;
+  /**
+   * 11e: ids of the Force Disposition entities this detachment grants. Empty until assigned.
+   */
+  force_dispositions?: EntityId[];
+  enhancement_ids?: EntityId[];
+  stratagem_ids?: EntityId[];
+  restrictions?: {
+    required_keywords?: KeywordList;
+    excluded_keywords?: KeywordList;
+    notes?: string;
+  } | null;
+  game_version: GameVersionReference;
+}
+/**
+ * A purchasable upgrade for a character unit, provided by a detachment.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "enhancement".
+ */
+export interface Enhancement {
+  id: EntityId;
+  name: string;
+  detachment_id: EntityId;
+  cost: number;
+  /**
+   * True when the cost is carried over provisionally (e.g. seeded from a prior edition during migration) and not yet confirmed against the current dataslate.
+   */
+  points_provisional?: boolean;
+  /**
+   * 11e: when true, this enhancement applies to up to `max_targets` non-character units while counting as a single Enhancement choice.
+   */
+  upgrade_tag?: boolean;
+  /**
+   * Number of units this enhancement may be applied to. Only meaningful when `upgrade_tag` is true; defaults to 1.
+   */
+  max_targets?: number;
+  keyword_restrictions?: KeywordList;
+  exclusion_keywords?: KeywordList | null;
+  ability_id?: EntityId | null;
+  is_unique?: boolean;
+  game_version: GameVersionReference;
+}
+/**
+ * A playable faction or sub-faction.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "faction".
+ */
+export interface Faction {
+  id: EntityId;
+  name: string;
+  parent_faction_id?: EntityId | null;
+  game_version: GameVersionReference;
+  keywords?: KeywordList;
+  aliases?: string[];
+  /**
+   * Reference to the faction-wide ability (e.g., Oath of Moment)
+   */
+  faction_rule_id?: EntityId | null;
+}
+/**
+ * A 11e strategic-intent tag granted by detachments. Players compare dispositions at game start to determine the shared mission; asymmetric primary objectives result.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "force-disposition".
+ */
+export interface ForceDisposition {
+  /**
+   * One of the five confirmed launch Force Dispositions.
+   */
+  id: "take-and-hold" | "disruption" | "purge-the-foe" | "priority-assets" | "reconnaissance";
+  name: string;
+  /**
+   * Community-authored description of the disposition's effect (original prose only — no reproduced rules text).
+   */
+  text?: string;
+  game_version: GameVersionReference;
+}
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "game-version".
+ */
+export interface GameVersion {
+  edition: Edition;
+  dataslate: DataslateVersion;
+  effective_date: string;
+  label?: string;
+  supersedes?: DataslateVersion | null;
+}
+/**
+ * Defines which character units can attach to which bodyguard units.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "leader-attachment".
+ */
+export interface LeaderAttachment {
+  leader_id: EntityId;
+  /**
+   * @minItems 1
+   */
+  eligible_bodyguard_ids: [EntityId, ...EntityId[]];
+  game_version: GameVersionReference;
+}
+/**
+ * One cell of the 11e Force Disposition matrix: given the player's own Force Disposition and their opponent's, the mission that player plays. Mirrors a single row on a physical Force Disposition card. The (disposition, opponent_disposition) pair is the conceptual key; compound uniqueness across entries is a data convention, not enforced by this schema.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "mission-matchup".
+ */
+export interface MissionMatchup {
+  id: EntityId;
+  /**
+   * The player's own Force Disposition.
+   */
+  disposition: "take-and-hold" | "disruption" | "purge-the-foe" | "priority-assets" | "reconnaissance";
+  /**
+   * The opponent's Force Disposition.
+   */
+  opponent_disposition: "take-and-hold" | "disruption" | "purge-the-foe" | "priority-assets" | "reconnaissance";
+  /**
+   * Kebab-case identifier
+   */
+  mission_id: string;
+  game_version: GameVersionReference;
+}
+/**
+ * An 11e primary mission (the objective a player scores). Which mission a player plays is selected by the Force Disposition matchup matrix (see mission-matchup), keyed on the player's own disposition and their opponent's. Victory points are capped per game and per battle round.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "mission".
+ */
+export interface Mission {
+  id: EntityId;
+  name: string;
+  /**
+   * Mission pack or source the mission originates from.
+   */
+  source?: string;
+  /**
+   * Community-authored mission/objective summary (original prose only — no reproduced rules text).
+   */
+  description?: string;
+  /**
+   * Maximum primary VP scorable across the whole game. 11e default is 45.
+   */
+  vp_per_game_cap?: number;
+  /**
+   * Maximum primary VP scorable in a single battle round. 11e default is 15.
+   */
+  vp_per_round_cap?: number;
+  /**
+   * Ids of the deployment-pattern entities (maps) this mission can be played on. Empty until the per-mission maps are confirmed.
+   */
+  deployment_pattern_ids?: EntityId[];
+  game_version: GameVersionReference;
+}
+/**
+ * A draw-time predicate over an army list (not runtime board state, so deliberately NOT the Ability DSL condition). Used to gate when_drawn operations such as redraws. Example: a card that is void unless the opponent fields a large unit (10e 'Cull the Horde' redrew when the opponent had no unit of 14+ models) is { subject: 'opponent', quantifier: 'none', unit_filter: { model_count_min: 14 } } with operation 'redraw'.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "army-composition-predicate".
+ */
+export interface ArmyCompositionPredicate {
+  /**
+   * Whose army list the predicate inspects.
+   */
+  subject: "self" | "opponent";
+  /**
+   * Whether the army must contain ('any') or lack ('none') a unit matching unit_filter for the predicate to hold.
+   */
+  quantifier: "any" | "none";
+  /**
+   * Criteria a unit in the army must satisfy to match. All present criteria must hold (logical AND).
+   */
+  unit_filter: {
+    model_count_min?: number;
+    model_count_max?: number;
+    wounds_min?: number;
+    keywords?: KeywordList;
+  };
+}
+/**
+ * An 11e mission card. The deck-level rule (draw 2 per turn, keep unscored cards) is separate and not modelled here. This is the per-card shape: an optional on-draw deck operation, an optional player action, and zero or more VP-award blocks. Primary mission cards reuse this shape via card_type. Mechanic blocks reference the Ability DSL; prose is community-authored (no reproduced rules text).
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "secondary-card".
+ */
+export interface SecondaryCard {
+  id: EntityId;
+  name: string;
+  /**
+   * Whether this is a secondary card or a primary mission card (which reuses this shape).
+   */
+  card_type?: "secondary" | "primary";
+  /**
+   * Finer classification within the deck (e.g. a category or tactical/fixed split). Free-form — not enum-locked until 11e categories are confirmed.
+   */
+  subtype?: string;
+  /**
+   * Optional deck operation performed when this card is drawn (e.g. redraw, swap). Distinct from combat effects — deck operations have no combat target, so they are not modelled via the Ability DSL effect language. If `condition` is present, the operation fires only when the predicate holds.
+   */
+  when_drawn?: {
+    /**
+     * The deck manipulation this card triggers on draw.
+     */
+    operation: "reshuffle" | "replace" | "redraw" | "draw-extra" | "swap";
+    /**
+     * Other cards this operation references, by id.
+     */
+    card_ids?: EntityId[];
+    condition?: ArmyCompositionPredicate1;
+  };
+  /**
+   * Optional player action the card enables.
+   */
+  action?: {
+    /**
+     * The five official game phases. Unchanged between 10th and 11th edition — 11e reorders Pile In timing within the Fight phase but adds no top-level phase.
+     */
+    starts?: "command" | "movement" | "shooting" | "charge" | "fight";
+    player_turn?: PlayerTurn;
+    units?: AbilityCondition;
+    /**
+     * Maximum number of times the action may be performed.
+     */
+    use_limit?: number;
+    completes?: AbilityCondition1;
+    effect?: AbilityEffect;
+  };
+  /**
+   * VP-award blocks: each scores when `trigger` fires and the optional `when` condition holds. An award scores either a flat `vp` or a count-scaled `vp_per` (VP per instance of the thing named by `per`). Awards accrue independently and sum; a card's '+ ... CUMULATIVE' rows are modelled as separate awards flagged `cumulative` for faithful round-trip.
+   *
+   * @minItems 1
+   */
+  awards?: [
+    (
+      | {
+          [k: string]: unknown;
+        }
+      | {
+          [k: string]: unknown;
+        }
+    ),
+    ...(
+      | {
+          [k: string]: unknown;
+        }
+      | {
+          [k: string]: unknown;
+        }
+    )[]
+  ];
+  /**
+   * Community-authored card description (original prose only — no reproduced rules text).
+   */
+  text?: string;
+  game_version: GameVersionReference;
+}
+/**
+ * Draw-time army-composition predicate gating the operation (e.g. redraw when the opponent lacks a qualifying unit).
+ */
+export interface ArmyCompositionPredicate1 {
+  /**
+   * Whose army list the predicate inspects.
+   */
+  subject: "self" | "opponent";
+  /**
+   * Whether the army must contain ('any') or lack ('none') a unit matching unit_filter for the predicate to hold.
+   */
+  quantifier: "any" | "none";
+  /**
+   * Criteria a unit in the army must satisfy to match. All present criteria must hold (logical AND).
+   */
+  unit_filter: {
+    model_count_min?: number;
+    model_count_max?: number;
+    wounds_min?: number;
+    keywords?: KeywordList;
+  };
+}
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "simple-condition".
+ */
+export interface SimpleCondition {
+  type:
+    | "phase-is"
+    | "timing-is"
+    | "player-turn-is"
+    | "unit-below-starting-strength"
+    | "unit-below-half-strength"
+    | "unit-has-keyword"
+    | "unit-within-range-of"
+    | "model-is-leader"
+    | "target-has-keyword"
+    | "charged-this-turn"
+    | "advanced-this-turn"
+    | "remained-stationary"
+    | "is-battle-shocked"
+    | "has-lost-wounds"
+    | "opponent-unit-within-range"
+    | "within-range-of-objective"
+    | "attack-is-type"
+    | "has-fought-this-phase"
+    | "destroyed-by-attack-type"
+    | "controls-objective"
+    | "is-attached"
+    | "terrain-area-control"
+    | "engagement-state"
+    | "territory-control"
+    | "fights-first"
+    | "disposition-matches"
+    | "units-destroyed"
+    | "units-destroyed-comparison"
+    | "objective-majority";
+  parameters?: {
+    [k: string]: unknown;
+  };
+  negated?: boolean;
+  [k: string]: unknown;
+}
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "compound-condition".
+ */
+export interface CompoundCondition {
+  operator: "and" | "or" | "not";
+  /**
+   * @minItems 1
+   */
+  operands: [ConditionNode, ...ConditionNode[]];
+  [k: string]: unknown;
+}
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "single-effect".
+ */
+export interface SingleEffect {
+  type:
+    | "stat-modifier"
+    | "roll-modifier"
+    | "re-roll"
+    | "mortal-wounds"
+    | "feel-no-pain"
+    | "invulnerable-save"
+    | "ward"
+    | "keyword-grant"
+    | "movement-modifier"
+    | "deep-strike"
+    | "fallback-and-act"
+    | "fight-first"
+    | "fight-last"
+    | "shoot-on-death"
+    | "fight-on-death"
+    | "objective-control-modifier"
+    | "leadership-modifier"
+    | "damage-reduction"
+    | "attack-restriction"
+    | "ability-grant"
+    | "cp-gain"
+    | "cp-refund"
+    | "model-destruction"
+    | "resurrection"
+    | "resource-gain"
+    | "resource-spend"
+    | "charge-roll-modifier"
+    | "terrain-area-tag"
+    | "bs-modifier"
+    | "engagement-passthrough";
+  target:
+    | "self"
+    | "bearer"
+    | "unit"
+    | "attached-unit"
+    | "attacker"
+    | "defender"
+    | "friendly-within-aura"
+    | "enemy-within-aura"
+    | "all-friendly"
+    | "all-enemy";
+  modifier?: {
+    [k: string]: unknown;
+  };
+  [k: string]: unknown;
+}
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "choice-effect".
+ */
+export interface ChoiceEffect {
+  type: "choice";
+  /**
+   * @minItems 2
+   */
+  options: [EffectNode, EffectNode, ...EffectNode[]];
+  choice_label?: string;
+  [k: string]: unknown;
+}
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "sequence-effect".
+ */
+export interface SequenceEffect {
+  type: "sequence";
+  /**
+   * @minItems 1
+   */
+  steps: [EffectNode, ...EffectNode[]];
+  [k: string]: unknown;
+}
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "dice-gated-effect".
+ */
+export interface DiceGatedEffect {
+  type: "dice-gated";
+  /**
+   * Dice expression, e.g. 'D6', '2D6'
+   */
+  dice: string;
+  /**
+   * Fixed threshold or model characteristic to compare against
+   */
+  threshold: number | ("leadership" | "toughness" | "save");
+  comparison?: "gte" | "lte" | "gt" | "lt" | "eq";
+  on_success?: EffectNode | null;
+  on_fail?: EffectNode | null;
+  [k: string]: unknown;
+}
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "conditional-effect".
+ */
+export interface ConditionalEffect {
+  type: "conditional";
+  condition: AbilityCondition2;
+  effect: EffectNode;
+  [k: string]: unknown;
+}
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "dice-pool-allocation-effect".
+ */
+export interface DicePoolAllocationEffect {
+  type: "dice-pool-allocation";
+  pool: {
+    count: number;
+    die: string;
+    [k: string]: unknown;
+  };
+  max_activations: number;
+  /**
+   * @minItems 1
+   */
+  options: [
+    {
+      name: string;
+      requirement: {
+        type: "pair" | "triple" | "single" | "run";
+        min_value: number;
+        [k: string]: unknown;
+      };
+      effect: EffectNode;
+      [k: string]: unknown;
+    },
+    ...{
+      name: string;
+      requirement: {
+        type: "pair" | "triple" | "single" | "run";
+        min_value: number;
+        [k: string]: unknown;
+      };
+      effect: EffectNode;
+      [k: string]: unknown;
+    }[]
+  ];
+  [k: string]: unknown;
+}
+/**
+ * A CP-costed ability usable during specific game phases.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "stratagem".
+ */
+export interface Stratagem {
+  id: EntityId;
+  name: string;
+  /**
+   * Whether this is a universal core stratagem or tied to a specific detachment
+   */
+  category: "core" | "detachment";
+  /**
+   * GW-printed stratagem category from the card
+   */
+  type: "battle-tactic" | "strategic-ploy" | "epic-deed" | "wargear";
+  /**
+   * Null for core stratagems
+   */
+  detachment_id?: EntityId | null;
+  cp_cost: number;
+  phases: PhaseList;
+  player_turn: PlayerTurn;
+  timing: "once-per-phase" | "once-per-turn" | "once-per-battle" | "unlimited";
+  target_restrictions?: {
+    required_keywords?: KeywordList;
+    excluded_keywords?: KeywordList;
+    notes?: string;
+  } | null;
+  ability_id?: EntityId | null;
+  game_version: GameVersionReference;
+}
+/**
+ * One terrain feature placed on the board.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "piece".
+ */
+export interface Piece {
+  name?: string;
+  footprint: Footprint;
+  position: Vec21;
+  /**
+   * Clockwise rotation of the footprint about `position`. Absent or 0 means axis-aligned.
+   */
+  rotation_degrees?: number;
+  /**
+   * Optional descriptive label for the GW standard template this piece uses (e.g. 'large-ruin', 'long-wall'). Free-form, not enum-locked — the geometry in `footprint` is authoritative.
+   */
+  template?: string;
+  /**
+   * Height of the piece in inches. Gates Plunging Fire (a piece 3" or taller confers +1 BS on ground-level targets).
+   */
+  height_inches?: number;
+  /**
+   * Terrain-area keywords this piece's area carries.
+   */
+  terrain_area_keywords?: TerrainAreaKeyword[];
+  /**
+   * Pieces sharing a `link_group` value are linked terrain — treated as a single terrain feature (and, where an objective sits among them, a single objective).
+   */
+  link_group?: string;
+  /**
+   * Whether this piece carries an objective marker.
+   */
+  is_objective?: boolean;
+  /**
+   * Objective-marker metadata. Only meaningful when `is_objective` is true.
+   */
+  objective?: {
+    position?: Vec22;
+    /**
+     * Range from the marker within which models contribute to control.
+     */
+    control_range_inches?: number;
+  };
+}
+/**
+ * A 2D point in board inches. Origin at a board corner; JSON uses y-down (downstream renderers may flip to y-up).
+ */
+export interface Vec21 {
+  x: number;
+  y: number;
+}
+/**
+ * A 2D point in board inches. Origin at a board corner; JSON uses y-down (downstream renderers may flip to y-up).
+ */
+export interface Vec22 {
+  x: number;
+  y: number;
+}
+/**
+ * A recommended arrangement of terrain pieces on the board, independent of the deployment map (a deployment-pattern references the layouts it recommends via recommended_terrain_layout_ids). Geometry is the source of truth; the GW standard piece templates are expressed as explicit footprints, with an optional descriptive `template` label. Footprints are deliberately open (not enum-locked) — the launch catalog and its size are unconfirmed, so this models any shape rather than a fixed set. No layout data is authored yet.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "terrain-layout".
+ */
+export interface TerrainLayout {
+  id: EntityId;
+  name: string;
+  /**
+   * Mission pack or source the layout originates from.
+   */
+  source?: string;
+  description?: string;
+  /**
+   * Terrain pieces composing the layout. May be empty while a layout is registered by name ahead of its confirmed geometry.
+   */
+  pieces?: Piece[];
+  game_version: GameVersionReference;
+}
+/**
+ * Describes the internal model-type breakdown of a unit.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "unit-composition".
+ */
+export interface UnitComposition {
+  unit_id: EntityId;
+  /**
+   * @minItems 1
+   */
+  models: [
+    {
+      name: string;
+      profile_name?: string | null;
+      min: number;
+      max: number;
+      default_weapon_ids?: EntityId[];
+      is_leader_model?: boolean;
+    },
+    ...{
+      name: string;
+      profile_name?: string | null;
+      min: number;
+      max: number;
+      default_weapon_ids?: EntityId[];
+      is_leader_model?: boolean;
+    }[]
+  ];
+  game_version: GameVersionReference;
+}
+/**
+ * A unit datasheet entry with stat profiles and point costs.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "unit".
+ */
+export interface Unit {
+  id: EntityId;
+  name: string;
+  faction_id: EntityId;
+  /**
+   * Battlefield role from the datasheet header. Unit types (Infantry, Vehicle, etc.) belong in keywords.
+   */
+  role?: "character" | "battleline" | "dedicated-transport" | "fortification" | "allied" | "epic-hero";
+  /**
+   * Character attachment role (11e). 'support' implies the unit is only legal when attached to a host unit (cannot be taken solo); 'leader' is valid as a standalone list entry. null/absent for non-attaching units.
+   */
+  attachment_role?: ("leader" | "support") | null;
+  /**
+   * @minItems 1
+   */
+  profiles: [
+    {
+      /**
+       * Profile name (e.g., 'Wounded' for degrading)
+       */
+      name?: string;
+      M: StatValue;
+      T: number;
+      W: number;
+      Sv: number;
+      invuln_sv?: number | null;
+      Ld: number;
+      OC: number;
+      [k: string]: unknown;
+    },
+    ...{
+      /**
+       * Profile name (e.g., 'Wounded' for degrading)
+       */
+      name?: string;
+      M: StatValue;
+      T: number;
+      W: number;
+      Sv: number;
+      invuln_sv?: number | null;
+      Ld: number;
+      OC: number;
+      [k: string]: unknown;
+    }[]
+  ];
+  points?: {
+    models: number;
+    cost: number;
+    [k: string]: unknown;
+  }[];
+  /**
+   * True when point costs are carried over provisionally (e.g. seeded from a prior edition during migration) and not yet confirmed against the current dataslate.
+   */
+  points_provisional?: boolean;
+  keywords?: KeywordList;
+  faction_keywords?: KeywordList;
+  base_size_mm?: {
+    shape: "round" | "oval";
+    diameter?: number;
+    width?: number;
+    length?: number;
+    [k: string]: unknown;
+  } | null;
+  model_count?: {
+    min: number;
+    max: number;
+    [k: string]: unknown;
+  };
+  weapon_ids?: EntityId[];
+  ability_ids?: EntityId[];
+  transport_capacity?: {
+    capacity: number;
+    keyword_restrictions?: KeywordList | null;
+    exclusion_keywords?: KeywordList | null;
+  } | null;
+  game_version: GameVersionReference;
+  is_legend?: boolean;
+}
+/**
+ * A weapon substitution option available to models within a unit.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "wargear-option".
+ */
+export interface WargearOption {
+  id: EntityId;
+  unit_id: EntityId;
+  model_constraint?: {
+    model_name?: string;
+    per_n_models?: number;
+    max_count?: number;
+  } | null;
+  /**
+   * Weapon IDs being removed
+   *
+   * @minItems 1
+   */
+  replaces: [EntityId, ...EntityId[]];
+  /**
+   * Weapon IDs being added
+   *
+   * @minItems 1
+   */
+  replacement: [EntityId, ...EntityId[]];
+  is_free?: boolean;
+  additional_cost?: number | null;
+  game_version: GameVersionReference;
+}
+/**
+ * A weapon entry with one or more stat profiles (e.g., standard and overcharge modes).
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "weapon".
+ */
+export interface Weapon {
+  id: EntityId;
+  name: string;
+  type: "ranged" | "melee";
+  /**
+   * @minItems 1
+   */
+  profiles: [
+    {
+      name: string;
+      range?: number | "Melee";
+      stats: {
+        A: StatValue;
+        BS?: number | null;
+        WS?: number | null;
+        S: StatValue;
+        AP: number;
+        D: StatValue;
+        [k: string]: unknown;
+      };
+      keywords?: KeywordList;
+    },
+    ...{
+      name: string;
+      range?: number | "Melee";
+      stats: {
+        A: StatValue;
+        BS?: number | null;
+        WS?: number | null;
+        S: StatValue;
+        AP: number;
+        D: StatValue;
+        [k: string]: unknown;
+      };
+      keywords?: KeywordList;
+    }[]
+  ];
+  game_version: GameVersionReference;
+}
+/**
+ * Community-authored structured representation of what a game ability does. NOT GW text.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "ability".
+ */
+export interface AbilityDSLEntry {
+  ability_id: EntityId;
+  name: string;
+  authored_by: ContributorRef;
+  game_version: GameVersionReference;
+  version?: DataslateVersion;
+  supersedes?: DataslateVersion | null;
+  unit_ids?: EntityId[];
+  /**
+   * For faction-type abilities, the faction this rule belongs to
+   */
+  faction_id?: EntityId | null;
+  /**
+   * For detachment/enhancement/stratagem-type abilities, the associated detachment
+   */
+  detachment_id?: EntityId | null;
+  ability_type?: "core" | "faction" | "detachment" | "unit" | "enhancement" | "stratagem";
+  /**
+   * How this ability interacts with the game flow — not a runtime predicate
+   */
+  behavior?: "passive" | "activated" | "reactive" | "aura";
+  effect: AbilityEffect1;
+  scope: AbilityScope;
+  interactions?: {
+    ability_ref: EntityId;
+    type: "conflicts-with" | "combos-with" | "superseded-by" | "requires" | "replaces";
+    notes?: string;
+    [k: string]: unknown;
+  }[];
+  disputed?: boolean;
+  dispute_notes?: string;
+  community_notes?: string;
+}
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "scope".
+ */
+export interface AbilityScope {
+  range:
+    | "self"
+    | "unit"
+    | "attached"
+    | "aura-6"
+    | "aura-9"
+    | "aura-12"
+    | "aura-custom"
+    | "engagement-range"
+    | "any-visible"
+    | "any-on-battlefield"
+    | "terrain-within-range";
+  duration: "phase" | "turn" | "battle-round" | "battle" | "until-next-command-phase" | "one-use" | "permanent";
+  range_inches?: number;
+  [k: string]: unknown;
+}
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "interaction-flag".
+ */
+export interface InteractionFlag {
+  ability_a: EntityId;
+  ability_b: EntityId;
+  interaction_type: "conflicts" | "combos" | "sequencing-dependent" | "stacks" | "does-not-stack" | "replaces";
+  resolution?: string;
+  faq_reference?: string;
+  disputed?: boolean;
+  game_version: GameVersionReference;
+  authored_by?: ContributorRef;
+  [k: string]: unknown;
+}
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "phase-mapping".
+ */
+export interface PhaseMapping {
+  source_id: EntityId;
+  source_type: SourceType;
+  phases: PhaseList;
+  game_version: GameVersionReference;
+  authored_by?: ContributorRef;
+  [k: string]: unknown;
+}
+/**
+ * A faction's resource system (Miracle Dice, Pain tokens, Blessings dice pool, etc.).
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "resource-pool".
+ */
+export interface ResourcePool {
+  id: EntityId;
+  name: string;
+  faction_id: EntityId;
+  pool_type: "token" | "dice-pool" | "counter";
+  generation?: {
+    condition: AbilityCondition2;
+    amount: StatValue;
+    [k: string]: unknown;
+  }[];
+  max_size?: number | null;
+  game_version: GameVersionReference;
+}
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "timing-flag".
+ */
+export interface TimingFlag {
+  source_id: EntityId;
+  source_type: SourceType;
+  timing:
+    | "start-of-phase"
+    | "end-of-phase"
+    | "before-hit-roll"
+    | "after-hit-roll"
+    | "before-wound-roll"
+    | "after-wound-roll"
+    | "before-save-roll"
+    | "after-save-roll"
+    | "before-damage-roll"
+    | "after-damage-roll"
+    | "before-charge-roll"
+    | "after-charge-roll"
+    | "before-advance-roll"
+    | "after-advance-roll"
+    | "before-battle-shock"
+    | "after-battle-shock"
+    | "on-unit-selected"
+    | "on-unit-destroyed"
+    | "on-model-destroyed"
+    | "on-damage-allocated";
+  game_version: GameVersionReference;
+  authored_by?: ContributorRef;
+  [k: string]: unknown;
+}

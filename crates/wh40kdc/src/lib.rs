@@ -22,5 +22,5 @@ pub use generated::*;
 /// The bundled, self-contained JSON Schema (draft 2020-12) these types were
 /// generated from. Consumers can feed this to a JSON Schema validator to check
 /// data before deserializing; the canonical validation CLI lives in the
-/// `@40kdc/validate` npm package.
+/// `@alpaca-software/40kdc-data` npm package.
 pub const BUNDLED_SCHEMA: &str = include_str!("../schemas/bundled.schema.json");

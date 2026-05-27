@@ -21,6 +21,7 @@ describe("schema-loader", () => {
     expect(ids).toContain("https://40kdc.dev/schemas/core/wargear-option.schema.json");
     expect(ids).toContain("https://40kdc.dev/schemas/core/leader-attachment.schema.json");
     expect(ids).toContain("https://40kdc.dev/schemas/core/unit-composition.schema.json");
+    expect(ids).toContain("https://40kdc.dev/schemas/core/roster.schema.json");
     expect(ids).toContain("https://40kdc.dev/schemas/core/force-disposition.schema.json");
     expect(ids).toContain("https://40kdc.dev/schemas/core/deployment-pattern.schema.json");
     expect(ids).toContain("https://40kdc.dev/schemas/core/mission.schema.json");

@@ -2,11 +2,24 @@
 
 > **Looking for 10th edition data?** The 10e dataset is preserved on branch [`10e-archive`](https://github.com/Tabletop-Developer-Consortium/40kdc-data/tree/10e-archive) and tagged [`10th/2025-q3`](https://github.com/Tabletop-Developer-Consortium/40kdc-data/releases/tag/10th/2025-q3). The `main` branch is migrating to **11th edition** — see [`11e-migration.md`](11e-migration.md) for status and the work plan.
 
-Community-owned data schemas for Warhammer 40,000 developer tooling.
+Community-owned data schemas for Warhammer 40,000 developer tooling — **and** a linked, typed API over the dataset they describe.
 
 ## What This Is
 
-The shared schema layer for the [Tabletop Developer Consortium](https://tabletop-developer-consortium.github.io) ecosystem. Tools built by consortium members reference these schemas for interoperability.
+Two things, both community-owned:
+
+1. **The schema layer** for the [Tabletop Developer Consortium](https://tabletop-developer-consortium.github.io) ecosystem — JSON Schemas that model 40K entities so tools can exchange data. Entity IDs are the interoperability contract.
+2. **A ready-to-use dataset package.** The whole dataset ships embedded behind an intuitive, typed API: find a unit, then walk to its weapons, abilities, the phases those abilities act in, and its faction — no database, no network, no runtime filesystem access. Same ergonomics consumers expect, available today.
+
+```ts
+import { units } from "@alpaca-software/40kdc-data";
+
+units.find("Kharn")!.abilities
+  .filter(a => a.phases.includes("shooting"))
+  .map(a => a.id); // ["berzerker-frenzy"]
+```
+
+`find` is diacritic- and punctuation-insensitive — 40K is played globally, so `find("Kharn")` resolves "Khârn the Betrayer" and `find("Belakor")` resolves "Be'lakor". Full API reference: [`tools/docs/api/`](tools/docs/api/README.md).
 
 ## What This Is Not
 
@@ -27,18 +40,30 @@ Stat lines and point costs are included. These are numerical facts, not creative
 
 ## Quick Start
 
-Validate data against schemas:
+Use the dataset (TypeScript / JavaScript):
+
+```bash
+npm install @alpaca-software/40kdc-data
+```
+
+```ts
+import { units, factions } from "@alpaca-software/40kdc-data";
+
+const kharn = units.find("Kharn");
+kharn?.faction?.id;            // "world-eaters"
+kharn?.weapons.map(w => w.name);
+factions.find("World Eaters")?.units.length;
+```
+
+See [`tools/README.md`](tools/README.md) for the full collection/link reference.
+
+Validate data against schemas (the package also ships an AJV validator + CLI):
 
 ```bash
 cd tools
 npm install
-npm run validate
-```
-
-Validate only core or enrichment data:
-
-```bash
-npm run validate:core
+npm run validate           # all data
+npm run validate:core      # or just core / enrichment
 npm run validate:enrichment
 ```
 
@@ -90,13 +115,17 @@ Everything is tagged to edition + dataslate (e.g., `11th/2025-q3`). See [VERSION
 
 ## For Tool Developers
 
-Reference these schemas from your project:
+Two ways to consume this repo:
 
-1. Add `40kdc-data` as a git submodule or npm dependency
-2. Point your validator at `schemas/`
+**The data package** — `npm install @alpaca-software/40kdc-data` for the embedded
+dataset behind the linked typed API (above), plus the generated entity types and
+an AJV validator. This is the fastest path for most tools.
+
+**The schemas directly** — for non-JS toolchains or custom pipelines:
+
+1. Add `40kdc-data` as a git submodule, or reference schema `$id` URLs
+2. Point your JSON Schema validator (draft 2020-12) at `schemas/`
 3. Use entity IDs from the consortium dataset for interoperability
-
-All schemas use JSON Schema draft 2020-12.
 
 ### Rust
 

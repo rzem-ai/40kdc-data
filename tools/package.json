@@ -1,29 +1,77 @@
 {
-  "name": "@40kdc/validate",
+  "name": "@alpaca-software/40kdc-data",
   "version": "0.1.0",
   "type": "module",
+  "description": "The 40kdc Warhammer 40K dataset behind a linked, typed API — find units, follow them to their weapons, abilities, phases, and factions. Also validates data against the canonical JSON Schemas.",
+  "keywords": [
+    "warhammer",
+    "warhammer-40k",
+    "40k",
+    "wargaming",
+    "dataset",
+    "tabletop",
+    "json-schema"
+  ],
   "license": "MIT",
-  "bin": { "40kdc-validate": "./dist/cli.js" },
+  "homepage": "https://github.com/Tabletop-Developer-Consortium/40kdc-data/tree/main/tools#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tabletop-Developer-Consortium/40kdc-data.git",
+    "directory": "tools"
+  },
+  "bugs": {
+    "url": "https://github.com/Tabletop-Developer-Consortium/40kdc-data/issues"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./schemas/*": "./schemas/*"
+  },
+  "files": [
+    "dist",
+    "schemas",
+    "README.md"
+  ],
+  "bin": {
+    "40kdc-validate": "./dist/cli.js"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
   "scripts": {
-    "build": "tsc",
+    "build": "npm run codegen:data && tsc",
+    "codegen:data": "tsx src/codegen-data.ts",
+    "docs:api": "typedoc",
     "validate": "tsx src/cli.ts validate-all",
     "validate:core": "tsx src/cli.ts validate-core",
     "validate:enrichment": "tsx src/cli.ts validate-enrichment",
     "translate": "tsx src/cli.ts translate",
     "bundle:schemas": "tsx src/bundle-schemas.ts",
+    "codegen:types": "json2ts -i ../crates/wh40kdc/schemas/bundled.schema.json -o src/generated.ts --unreachableDefinitions --bannerComment \"/* Generated from crates/wh40kdc/schemas/bundled.schema.json by 'npm run codegen:types'. DO NOT EDIT BY HAND. */\"",
+    "copy:schemas": "rm -rf schemas && cp -R ../schemas schemas",
+    "prepack": "npm run build && npm run copy:schemas",
+    "pretest": "npm run codegen:data",
     "test": "vitest run"
   },
   "dependencies": {
     "ajv": "^8.17.0",
     "ajv-formats": "^3.0.0",
-    "commander": "^12.0.0",
     "chalk": "^5.3.0",
+    "commander": "^12.0.0",
     "glob": "^11.0.0"
   },
   "devDependencies": {
+    "@types/node": "^22.0.0",
+    "json-schema-to-typescript": "^15.0.4",
     "tsx": "^4.0.0",
+    "typedoc": "^0.28.0",
+    "typedoc-plugin-markdown": "^4.3.0",
     "typescript": "^5.6.0",
-    "vitest": "^2.0.0",
-    "@types/node": "^22.0.0"
+    "vitest": "^2.0.0"
   }
 }

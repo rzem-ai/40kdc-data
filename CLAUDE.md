@@ -2,11 +2,15 @@
 
 ## Project Overview
 
-40kdc-data is the shared schema layer for the
-[Tabletop Developer Consortium](https://tabletop-developer-consortium.github.io).
-It defines JSON Schema files that model Warhammer 40K game entities and hosts
-community-authored enrichment data that describes what abilities do — without
-reproducing copyrighted text.
+40kdc-data is two things for the
+[Tabletop Developer Consortium](https://tabletop-developer-consortium.github.io):
+(1) the shared **schema layer** — JSON Schema files that model Warhammer 40K game
+entities plus community-authored enrichment data describing what abilities do
+(without reproducing copyrighted text); and (2) a **data-distribution package**
+(`@alpaca-software/40kdc-data`) that ships the whole dataset embedded behind a
+linked, typed API — find a unit, follow it to its weapons, abilities, phases, and
+faction. The package also re-exports the generated entity types and an AJV
+validator (a secondary feature; the package's primary purpose is data access).
 
 This is a community-created dataset that mirrors Games Workshop's datasheet
 structure. Stat lines and point costs are numerical facts and are included.
@@ -28,7 +32,12 @@ schemas/
 data/
   core/_example/    Fabricated example data (not real GW data)
   enrichment/       Community enrichment data by edition/dataslate
-tools/              TypeScript validation CLI (@40kdc/validate)
+tools/              TypeScript package @alpaca-software/40kdc-data:
+                      src/data/       Linked typed API (Dataset, collections, views)
+                      src/codegen-data.ts  Bundles data/ into the embedded module
+                      src/generated.ts     Entity types (codegen'd from schemas)
+                      schema-loader/cli    AJV validator + 40kdc-validate CLI
+                      docs/api/       Auto-generated API reference (TypeDoc)
 ```
 
 ## Schema Conventions
@@ -80,13 +89,19 @@ CI runs on every push and PR via `.github/workflows/validate.yml`.
 5. Add the file-prefix → schema-id mapping in `tools/src/validate.ts` SCHEMA_MAP.
 6. Add the `$id` expectation to `tools/test/schema-loader.test.ts`.
 7. Add valid/invalid test fixtures to `tools/test/fixtures/`.
-8. Run `npm test && npm run validate`.
+8. To expose the new entity in the data package, add it in three places:
+   the `RawData` interface + `emptyRawData()` in `tools/src/data/types.ts`, the
+   filename→collection mapping in `tools/src/codegen-data.ts`
+   (`FILE_TO_COLLECTION`), and a `Collection`/array field in
+   `tools/src/data/dataset.ts` (+ an export in `tools/src/data/index.ts`).
+9. Run `npm test && npm run validate`.
 
 ## For Downstream Consumers
 
-Tools can reference these schemas via:
-- Git submodule pointed at a tagged release
-- npm dependency on `@40kdc/validate`
+Tools can consume this repo via:
+- npm dependency on `@alpaca-software/40kdc-data` (embedded dataset + linked
+  typed API + generated types + validator) — the primary path for JS/TS tools
+- Git submodule pointed at a tagged release (raw schemas + data)
 - Direct `$id` URL references for JSON Schema validators
 
 Entity IDs are the interoperability contract. If two tools use

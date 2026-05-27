@@ -1,0 +1,177 @@
+/**
+ * Types for the army-list importer.
+ *
+ * Two layers live here:
+ * - The **output** types ({@link Roster} and friends) mirror
+ *   `schemas/core/roster.schema.json` field-for-field. They are hand-authored
+ *   rather than generated so importer work isn't gated on the Rust→typify codegen
+ *   round-trip; the AJV validator (against the real schema) is the source of truth
+ *   for conformance.
+ * - The **intermediate** type ({@link ParsedRoster}) is format-agnostic: a parser
+ *   adapter lowers a source payload to this shape (raw names + counts only, no
+ *   resolved ids), and {@link resolve} turns it into a {@link Roster}.
+ *
+ * Nothing here ever carries reproduced rules or ability text — only permitted
+ * facts (names, counts, points, keywords, entity ids).
+ *
+ * @packageDocumentation
+ */
+
+/** A 40kdc battle size (mirrors the shared `battle-size` def). */
+export type BattleSize = "incursion" | "strike-force";
+
+/** Diagnostic warning codes emitted during an import. */
+export type WarningCode =
+  | "faction-unresolved"
+  | "unit-unresolved"
+  | "weapon-unresolved"
+  | "enhancement-unresolved"
+  | "detachment-unresolved"
+  | "battle-size-unmapped"
+  | "points-mismatch"
+  | "leader-attachment-inferred"
+  | "multi-force"
+  | "unknown-field";
+
+// ---------------------------------------------------------------------------
+// Output types (mirror roster.schema.json)
+// ---------------------------------------------------------------------------
+
+/** A near-match suggestion offered when resolution fails. */
+export interface Candidate {
+  id: string;
+  name: string;
+}
+
+/**
+ * A reference to a 40kdc entity that may or may not have resolved. Retains the
+ * source's raw name so the import is lossless even on a miss.
+ */
+export interface ResolvedRef {
+  /** Resolved entity id, or null when no match was found. */
+  id: string | null;
+  /** The display name exactly as it appeared in the source payload. */
+  raw_name: string;
+  /** True iff {@link id} is non-null. */
+  resolved: boolean;
+  /** Up to 5 best-guess alternatives when resolution failed. */
+  candidates: Candidate[];
+}
+
+/** A weapon/wargear selection on a unit. */
+export interface RosterWargear {
+  ref: ResolvedRef;
+  count: number;
+}
+
+/** An inferred, always-provisional leader→bodyguard attachment. */
+export interface RosterLeaderAttachment {
+  bodyguard_ref: ResolvedRef;
+  provisional: boolean;
+}
+
+/** One unit entry in a roster. */
+export interface RosterUnit {
+  ref: ResolvedRef;
+  model_count: number;
+  points: number | null;
+  is_warlord: boolean;
+  enhancement: ResolvedRef | null;
+  wargear: RosterWargear[];
+  leader_attachment: RosterLeaderAttachment | null;
+}
+
+/** Provenance of the imported list. */
+export interface RosterSource {
+  format: "listforge";
+  generated_by: string | null;
+}
+
+/** Point totals; reported and computed are kept distinct, never reconciled. */
+export interface RosterPoints {
+  declared_limit: number | null;
+  total_reported: number | null;
+  total_computed: number;
+}
+
+/** A single diagnostic warning. */
+export interface Warning {
+  code: WarningCode;
+  message: string;
+  raw_name: string | null;
+}
+
+/** A summary of what resolved and what did not during the import. */
+export interface Diagnostics {
+  resolved_units: number;
+  unresolved_units: number;
+  resolved_weapons: number;
+  unresolved_weapons: number;
+  warnings: Warning[];
+}
+
+/** Reference to the game edition + dataslate (mirrors game-version-ref). */
+export interface GameVersionRef {
+  edition: string;
+  dataslate: string;
+}
+
+/** A fully-resolved army list. Validates against `roster.schema.json`. */
+export interface Roster {
+  name: string;
+  source: RosterSource;
+  faction_id: string | null;
+  detachment_id: string | null;
+  battle_size: BattleSize | null;
+  points: RosterPoints;
+  units: RosterUnit[];
+  game_version: GameVersionRef;
+  diagnostics: Diagnostics;
+}
+
+// ---------------------------------------------------------------------------
+// Intermediate types (format-agnostic; produced by a parser adapter)
+// ---------------------------------------------------------------------------
+
+/** A weapon/wargear selection before id resolution. */
+export interface ParsedWargear {
+  raw_name: string;
+  count: number;
+}
+
+/** A unit selection before id resolution. */
+export interface ParsedUnit {
+  raw_name: string;
+  /** True when the source classifies this as a character/leader-capable model. */
+  is_character: boolean;
+  model_count: number;
+  points: number | null;
+  is_warlord: boolean;
+  enhancement_raw_name: string | null;
+  wargear: ParsedWargear[];
+}
+
+/**
+ * The format-agnostic intermediate. A {@link FormatAdapter} produces this from a
+ * decoded source payload; {@link resolve} consumes it. Contains only raw display
+ * names and counts — never reproduced rules text.
+ */
+export interface ParsedRoster {
+  name: string;
+  generated_by: string | null;
+  /** Raw faction name from the source (e.g. "Grey Knights"). */
+  faction_raw_name: string | null;
+  /** Raw detachment name (e.g. "Banishers"). */
+  detachment_raw_name: string | null;
+  /** Raw battle-size label (e.g. "2. Strike Force (2000 Point limit)"). */
+  battle_size_raw: string | null;
+  /** Points limit parsed from the battle-size label, if any. */
+  declared_limit: number | null;
+  /** Total points reported by the source cost block. */
+  total_reported: number | null;
+  /** Points summed from every cost line in the source tree. */
+  total_computed: number;
+  units: ParsedUnit[];
+  /** True when the source contained more than one distinct faction. */
+  multi_force: boolean;
+}

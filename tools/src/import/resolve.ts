@@ -1,0 +1,267 @@
+/**
+ * Resolve a {@link ParsedRoster} onto 40kdc entity ids, producing a {@link Roster}.
+ *
+ * Resolution is lenient: a name that doesn't match a 40kdc entity yields a
+ * {@link ResolvedRef} with `id: null`, `resolved: false`, and up to five
+ * candidate suggestions — the roster is never dropped or rejected. Everything
+ * that didn't resolve cleanly is summarised in the {@link Diagnostics} block.
+ *
+ * Matching reuses the dataset's own lookups ({@link Collection.find},
+ * {@link Collection.findAll}, {@link Collection.byFaction}) and
+ * {@link normalizeName}; there is no bespoke fuzzy matcher. Faction is resolved
+ * first so unit/detachment/enhancement lookups can be scoped to it — the same
+ * unit id can appear under several factions, so scoping disambiguates.
+ *
+ * @packageDocumentation
+ */
+import type { Dataset } from "../data/dataset.js";
+import { normalizeName } from "../data/normalize.js";
+import type {
+  BattleSize,
+  Candidate,
+  Diagnostics,
+  ParsedRoster,
+  ParsedUnit,
+  ResolvedRef,
+  Roster,
+  RosterUnit,
+  Warning,
+  WarningCode,
+} from "./types.js";
+
+/** The dataset edition/dataslate stamped onto an imported roster. */
+const ROSTER_GAME_VERSION = { edition: "11th", dataslate: "pre-launch-provisional" };
+
+const MAX_CANDIDATES = 5;
+
+interface NamedRecord {
+  id: string;
+  name: string;
+}
+
+/** Accumulates warnings and resolved/unresolved tallies during an import. */
+class DiagnosticsBuilder {
+  resolved_units = 0;
+  unresolved_units = 0;
+  resolved_weapons = 0;
+  unresolved_weapons = 0;
+  readonly warnings: Warning[] = [];
+
+  warn(code: WarningCode, message: string, raw_name: string | null = null): void {
+    this.warnings.push({ code, message, raw_name });
+  }
+
+  build(): Diagnostics {
+    return {
+      resolved_units: this.resolved_units,
+      unresolved_units: this.unresolved_units,
+      resolved_weapons: this.resolved_weapons,
+      unresolved_weapons: this.unresolved_weapons,
+      warnings: this.warnings,
+    };
+  }
+}
+
+function unresolved(raw_name: string, candidates: Candidate[] = []): ResolvedRef {
+  return { id: null, raw_name, resolved: false, candidates };
+}
+
+function resolved(id: string, raw_name: string): ResolvedRef {
+  return { id, raw_name, resolved: true, candidates: [] };
+}
+
+function toCandidates(records: readonly NamedRecord[]): Candidate[] {
+  return records.slice(0, MAX_CANDIDATES).map((r) => ({ id: r.id, name: r.name }));
+}
+
+/** Map a source battle-size label to the 40kdc enum, if recognisable. */
+function mapBattleSize(raw: string | null): BattleSize | null {
+  if (!raw) return null;
+  const key = normalizeName(raw);
+  if (key.includes("strike force")) return "strike-force";
+  if (key.includes("incursion")) return "incursion";
+  return null;
+}
+
+export function resolve(parsed: ParsedRoster, ds: Dataset): Roster {
+  const diag = new DiagnosticsBuilder();
+
+  if (parsed.multi_force) {
+    diag.warn(
+      "multi-force",
+      "Source list contains more than one faction; the primary faction was used for scoping.",
+    );
+  }
+
+  // --- Faction (resolved first so other lookups can scope to it). -----------
+  let faction_id: string | null = null;
+  if (parsed.faction_raw_name) {
+    const hit = ds.factions.find(parsed.faction_raw_name);
+    if (hit) {
+      faction_id = hit.id;
+    } else {
+      diag.warn("faction-unresolved", "Faction name did not match any 40kdc faction.", parsed.faction_raw_name);
+    }
+  }
+
+  // --- Detachment (scoped to faction, then global fallback). ----------------
+  let detachment_id: string | null = null;
+  if (parsed.detachment_raw_name) {
+    const key = normalizeName(parsed.detachment_raw_name);
+    const scoped = faction_id
+      ? ds.detachments.byFaction(faction_id).find((d) => normalizeName(d.name ?? "") === key)
+      : undefined;
+    const hit = scoped ?? ds.detachments.find(parsed.detachment_raw_name);
+    if (hit) {
+      detachment_id = hit.id;
+    } else {
+      diag.warn("detachment-unresolved", "Detachment name did not match any 40kdc detachment.", parsed.detachment_raw_name);
+    }
+  }
+
+  // --- Battle size. ---------------------------------------------------------
+  const battle_size = mapBattleSize(parsed.battle_size_raw);
+  if (parsed.battle_size_raw && battle_size === null) {
+    diag.warn("battle-size-unmapped", "Battle size label could not be mapped.", parsed.battle_size_raw);
+  }
+
+  // --- Units (and their enhancements / wargear). ----------------------------
+  const units = parsed.units.map((u) => resolveUnit(u, faction_id, detachment_id, ds, diag));
+
+  // --- Leader attachments (second pass: needs all resolved unit ids). -------
+  inferLeaderAttachments(parsed.units, units, ds, diag);
+
+  // --- Points reconciliation (reported vs computed kept distinct). ----------
+  if (parsed.total_reported !== null && parsed.total_reported !== parsed.total_computed) {
+    diag.warn(
+      "points-mismatch",
+      `Source-reported total (${parsed.total_reported}) differs from the sum of cost lines (${parsed.total_computed}).`,
+    );
+  }
+
+  return {
+    name: parsed.name,
+    source: { format: "listforge", generated_by: parsed.generated_by },
+    faction_id,
+    detachment_id,
+    battle_size,
+    points: {
+      declared_limit: parsed.declared_limit,
+      total_reported: parsed.total_reported,
+      total_computed: parsed.total_computed,
+    },
+    units,
+    game_version: { ...ROSTER_GAME_VERSION },
+    diagnostics: diag.build(),
+  };
+}
+
+function resolveUnit(
+  parsed: ParsedUnit,
+  faction_id: string | null,
+  detachment_id: string | null,
+  ds: Dataset,
+  diag: DiagnosticsBuilder,
+): RosterUnit {
+  // Prefer a faction-scoped match (the same unit id recurs across factions),
+  // then fall back to a global name lookup.
+  const key = normalizeName(parsed.raw_name);
+  const scoped = faction_id
+    ? ds.units.byFaction(faction_id).find((u) => normalizeName(u.name) === key)
+    : undefined;
+  const all = ds.units.findAll(parsed.raw_name);
+  const hit = scoped ?? all[0];
+
+  let ref: ResolvedRef;
+  if (hit) {
+    ref = resolved(hit.id, parsed.raw_name);
+    diag.resolved_units += 1;
+  } else {
+    ref = unresolved(parsed.raw_name, toCandidates(all));
+    diag.unresolved_units += 1;
+    diag.warn("unit-unresolved", "Unit name did not match any 40kdc unit.", parsed.raw_name);
+  }
+
+  const enhancement = parsed.enhancement_raw_name
+    ? resolveEnhancement(parsed.enhancement_raw_name, detachment_id, ds, diag)
+    : null;
+
+  const wargear = parsed.wargear.map((w) => {
+    const hits = ds.weapons.findAll(w.raw_name);
+    if (hits[0]) {
+      diag.resolved_weapons += 1;
+      return { ref: resolved(hits[0].id, w.raw_name), count: w.count };
+    }
+    diag.unresolved_weapons += 1;
+    diag.warn("weapon-unresolved", "Weapon name did not match any 40kdc weapon.", w.raw_name);
+    return { ref: unresolved(w.raw_name, toCandidates(hits)), count: w.count };
+  });
+
+  return {
+    ref,
+    model_count: parsed.model_count,
+    points: parsed.points,
+    is_warlord: parsed.is_warlord,
+    enhancement,
+    wargear,
+    leader_attachment: null,
+  };
+}
+
+function resolveEnhancement(
+  raw_name: string,
+  detachment_id: string | null,
+  ds: Dataset,
+  diag: DiagnosticsBuilder,
+): ResolvedRef {
+  const key = normalizeName(raw_name);
+  // Enhancements belong to a detachment, not a faction — scope by detachment_id.
+  const scoped = detachment_id
+    ? ds.enhancements.all.find((e) => e.detachment_id === detachment_id && normalizeName(e.name ?? "") === key)
+    : undefined;
+  const hit = scoped ?? ds.enhancements.find(raw_name);
+  if (hit) {
+    return resolved(hit.id, raw_name);
+  }
+  diag.warn("enhancement-unresolved", "Enhancement name did not match any 40kdc enhancement.", raw_name);
+  return unresolved(raw_name, toCandidates(ds.enhancements.findAll(raw_name) as NamedRecord[]));
+}
+
+/**
+ * Infer leader→bodyguard attachments. The source format does not encode an
+ * unambiguous attachment, so each inferred link is marked provisional: we match
+ * a resolved character unit against a resolved non-character unit in the same
+ * roster using the dataset's leader-attachment data.
+ */
+function inferLeaderAttachments(
+  parsedUnits: ParsedUnit[],
+  units: RosterUnit[],
+  ds: Dataset,
+  diag: DiagnosticsBuilder,
+): void {
+  const bodyguardIds = new Set(
+    units.filter((u, i) => u.ref.id && !parsedUnits[i].is_character).map((u) => u.ref.id as string),
+  );
+
+  units.forEach((unit, i) => {
+    if (!unit.ref.id || !parsedUnits[i].is_character) return;
+    const leaderId = unit.ref.id;
+    const attachment = ds.leaderAttachments.find((la) => la.leader_id === leaderId);
+    if (!attachment) return;
+    const bodyguardId = attachment.eligible_bodyguard_ids.find((id) => bodyguardIds.has(id));
+    if (!bodyguardId) return;
+
+    const bodyguard = units.find((u) => u.ref.id === bodyguardId);
+    if (!bodyguard) return;
+
+    unit.leader_attachment = {
+      bodyguard_ref: resolved(bodyguardId, bodyguard.ref.raw_name),
+      provisional: true,
+    };
+    diag.warn(
+      "leader-attachment-inferred",
+      "Leader attachment was inferred from leader-attachment data and is provisional.",
+      unit.ref.raw_name,
+    );
+  });
+}

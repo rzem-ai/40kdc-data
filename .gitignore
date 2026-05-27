@@ -1,6 +1,8 @@
 node_modules/
 dist/
 /target/
+tools/schemas/
+tools/src/data/bundle.generated.ts
 .DS_Store
 *.log
 scripts/model_output/

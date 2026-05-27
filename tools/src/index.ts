@@ -1,0 +1,37 @@
+// The linked, typed dataset — the primary entry point.
+export * from "./data/index.js";
+
+// Generated types for every entity in the dataset.
+export * from "./generated.js";
+
+// Schema access + AJV validation (secondary: this package also validates data
+// against the canonical JSON Schemas).
+export {
+  createValidator,
+  findSchemaFiles,
+  listSchemaIds,
+  SCHEMAS_ROOT,
+} from "./schema-loader.js";
+
+// Army-list importer (ListForge → resolved 40kdc roster). Types are curated
+// rather than re-exported wholesale to avoid name clashes with generated types
+// (e.g. BattleSize, LeaderAttachment).
+export { importListForge, importRoster, decodeListForge } from "./import/index.js";
+export type { FormatAdapter } from "./import/index.js";
+export type {
+  ImportOptions,
+  Roster,
+  RosterUnit,
+  RosterWargear,
+  RosterSource,
+  RosterPoints,
+  RosterLeaderAttachment,
+  ResolvedRef,
+  Candidate,
+  Diagnostics,
+  Warning,
+  WarningCode,
+  ParsedRoster,
+  ParsedUnit,
+  ParsedWargear,
+} from "./import/index.js";

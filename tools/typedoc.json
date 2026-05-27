@@ -1,0 +1,12 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "plugin": ["typedoc-plugin-markdown"],
+  "entryPoints": ["src/data/index.ts", "src/generated.ts"],
+  "out": "docs/api",
+  "readme": "none",
+  "excludeInternal": true,
+  "exclude": ["**/*.generated.ts", "**/node_modules/**"],
+  "githubPages": false,
+  "hideGenerator": true,
+  "sort": ["source-order"]
+}

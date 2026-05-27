@@ -25,6 +25,16 @@ import { findSchemaFiles, SCHEMAS_ROOT } from "./schema-loader.js";
  */
 
 const COMMON_ID = "https://40kdc.dev/schemas/defs/common.schema.json";
+
+/**
+ * Schemas excluded from the codegen bundle (still loaded for AJV validation).
+ * The roster schema describes importer *output* — a tool-side artifact, not a
+ * dataset entity the Rust crate serves — so it is intentionally kept out of the
+ * generated types. Its TS types are hand-authored in `src/import/types.ts`.
+ */
+const CODEGEN_EXCLUDED_IDS = new Set([
+  "https://40kdc.dev/schemas/core/roster.schema.json",
+]);
 const OUTPUT_PATH = resolve(
   SCHEMAS_ROOT,
   "../crates/wh40kdc/schemas/bundled.schema.json",
@@ -121,6 +131,7 @@ export function bundle(): JsonObject {
     const raw = JSON.parse(readFileSync(file, "utf-8")) as JsonObject;
     const id = raw.$id as string;
     if (!id) throw new Error(`schema missing $id: ${file}`);
+    if (CODEGEN_EXCLUDED_IDS.has(id)) continue;
     const { $id: _id, $schema: _schema, $defs: localDefs, ...body } = raw;
 
     // Hoist this file's local $defs flat to the top level (names are globally
