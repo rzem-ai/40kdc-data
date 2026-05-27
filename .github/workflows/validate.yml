@@ -14,3 +14,23 @@ jobs:
       - run: cd tools && npm run build
       - run: cd tools && npm test
       - run: cd tools && npm run validate
+
+  rust:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      # Regenerate the bundled schema and Rust types, then fail if the committed
+      # artifacts drifted from the schemas (forces codegen to be re-run in the PR).
+      - run: cd tools && npm ci
+      - run: cd tools && npm run bundle:schemas
+      - run: cargo run -p xtask -- codegen
+      - name: Check generated artifacts are up to date
+        run: git diff --exit-code crates/wh40kdc/schemas/bundled.schema.json crates/wh40kdc/src/generated.rs
+      - run: cargo fmt --all -- --check
+      - run: cargo build --workspace
+      - run: cargo test --workspace

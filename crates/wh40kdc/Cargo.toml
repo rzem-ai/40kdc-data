@@ -1,0 +1,18 @@
+[package]
+name = "wh40kdc"
+version = "0.1.0"
+description = "Rust types for the 40kdc-data Warhammer 40K schema layer, generated from the canonical JSON Schemas."
+readme = "README.md"
+keywords = ["warhammer", "40k", "wargaming", "schema", "serde"]
+categories = ["data-structures", "game-development"]
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+# Used by typify-generated code: chrono for `format: date` fields, regress for
+# the runtime pattern checks on validated string newtypes (e.g. entity ids).
+chrono = { version = "0.4", features = ["serde"] }
+regress = "0.10"

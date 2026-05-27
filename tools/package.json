@@ -10,6 +10,7 @@
     "validate:core": "tsx src/cli.ts validate-core",
     "validate:enrichment": "tsx src/cli.ts validate-enrichment",
     "translate": "tsx src/cli.ts translate",
+    "bundle:schemas": "tsx src/bundle-schemas.ts",
     "test": "vitest run"
   },
   "dependencies": {

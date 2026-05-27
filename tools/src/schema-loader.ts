@@ -5,12 +5,12 @@ import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
-const SCHEMAS_ROOT = resolve(__dirname, "../../schemas");
+export const SCHEMAS_ROOT = resolve(__dirname, "../../schemas");
 
 /**
  * Recursively find all .schema.json files under a directory.
  */
-function findSchemaFiles(dir: string): string[] {
+export function findSchemaFiles(dir: string): string[] {
   const results: string[] = [];
   for (const entry of readdirSync(dir)) {
     const full = join(dir, entry);
