@@ -1,0 +1,8 @@
+{
+  "name": "40kdc-data-monorepo",
+  "private": true,
+  "workspaces": [
+    "tools",
+    "examples/*"
+  ]
+}

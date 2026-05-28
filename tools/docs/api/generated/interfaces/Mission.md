@@ -6,7 +6,7 @@
 
 # Interface: Mission
 
-Defined in: [generated.ts:441](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L441)
+Defined in: [generated.ts:671](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L671)
 
 An 11e primary mission (the objective a player scores). Which mission a player plays is selected by the Force Disposition matchup matrix (see mission-matchup), keyed on the player's own disposition and their opponent's. Victory points are capped per game and per battle round.
 
@@ -19,7 +19,7 @@ via the `definition` "mission".
 
 > **id**: `string`
 
-Defined in: [generated.ts:442](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L442)
+Defined in: [generated.ts:672](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L672)
 
 ***
 
@@ -27,7 +27,7 @@ Defined in: [generated.ts:442](https://github.com/Tabletop-Developer-Consortium/
 
 > **name**: `string`
 
-Defined in: [generated.ts:443](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L443)
+Defined in: [generated.ts:673](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L673)
 
 ***
 
@@ -35,7 +35,7 @@ Defined in: [generated.ts:443](https://github.com/Tabletop-Developer-Consortium/
 
 > `optional` **source?**: `string`
 
-Defined in: [generated.ts:447](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L447)
+Defined in: [generated.ts:677](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L677)
 
 Mission pack or source the mission originates from.
 
@@ -45,7 +45,7 @@ Mission pack or source the mission originates from.
 
 > `optional` **description?**: `string`
 
-Defined in: [generated.ts:451](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L451)
+Defined in: [generated.ts:681](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L681)
 
 Community-authored mission/objective summary (original prose only — no reproduced rules text).
 
@@ -55,7 +55,7 @@ Community-authored mission/objective summary (original prose only — no reprodu
 
 > `optional` **vp\_per\_game\_cap?**: `number`
 
-Defined in: [generated.ts:455](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L455)
+Defined in: [generated.ts:685](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L685)
 
 Maximum primary VP scorable across the whole game. 11e default is 45.
 
@@ -65,7 +65,7 @@ Maximum primary VP scorable across the whole game. 11e default is 45.
 
 > `optional` **vp\_per\_round\_cap?**: `number`
 
-Defined in: [generated.ts:459](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L459)
+Defined in: [generated.ts:689](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L689)
 
 Maximum primary VP scorable in a single battle round. 11e default is 15.
 
@@ -75,7 +75,7 @@ Maximum primary VP scorable in a single battle round. 11e default is 15.
 
 > `optional` **deployment\_pattern\_ids?**: `string`[]
 
-Defined in: [generated.ts:463](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L463)
+Defined in: [generated.ts:693](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L693)
 
 Ids of the deployment-pattern entities (maps) this mission can be played on. Empty until the per-mission maps are confirmed.
 
@@ -85,4 +85,4 @@ Ids of the deployment-pattern entities (maps) this mission can be played on. Emp
 
 > **game\_version**: [`GameVersionReference`](GameVersionReference.md)
 
-Defined in: [generated.ts:464](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L464)
+Defined in: [generated.ts:694](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L694)

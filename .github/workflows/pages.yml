@@ -1,0 +1,77 @@
+name: GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Cancel an in-flight Pages deploy when a newer commit lands on main.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install workspaces
+        run: npm ci
+
+      - name: Build npm package + TypeDoc
+        run: |
+          cd tools
+          npm run build
+          npm run docs:api
+
+      - name: Build example toollets
+        run: |
+          set -euo pipefail
+          for dir in examples/*/; do
+            name=$(basename "$dir")
+            if [ -f "$dir/package.json" ] && node -e "const p=require('./$dir/package.json'); process.exit(p.scripts && p.scripts.build ? 0 : 1)"; then
+              echo "::group::Building $name"
+              TOOLLET_BASE="/40kdc-data/examples/$name/" npm --workspace "examples/$name" run build
+              echo "::endgroup::"
+            else
+              echo "Skipping $name (no build script)"
+            fi
+          done
+
+      - name: Assemble Pages artifact
+        run: |
+          set -euo pipefail
+          mkdir -p _site _site/api _site/examples
+          cp docs-site/index.html _site/index.html
+          cp -R tools/docs/api/. _site/api/
+          for dir in examples/*/; do
+            name=$(basename "$dir")
+            if [ -d "$dir/dist" ]; then
+              mkdir -p "_site/examples/$name"
+              cp -R "$dir/dist/." "_site/examples/$name/"
+            fi
+          done
+          ls -la _site
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

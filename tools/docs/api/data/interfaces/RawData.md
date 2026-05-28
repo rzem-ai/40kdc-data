@@ -6,7 +6,7 @@
 
 # Interface: RawData
 
-Defined in: data/types.ts:40
+Defined in: [data/types.ts:41](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/types.ts#L41)
 
 Every entity collection in the dataset, keyed by camelCase collection name.
 
@@ -20,7 +20,7 @@ automatically once authored.
 
 > **units**: [`Unit`](../../generated/interfaces/Unit.md)[]
 
-Defined in: data/types.ts:41
+Defined in: [data/types.ts:42](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/types.ts#L42)
 
 ***
 
@@ -28,7 +28,17 @@ Defined in: data/types.ts:41
 
 > **weapons**: [`Weapon`](../../generated/interfaces/Weapon.md)[]
 
-Defined in: data/types.ts:42
+Defined in: [data/types.ts:43](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/types.ts#L43)
+
+***
+
+### weaponKeywords
+
+> **weaponKeywords**: [`WeaponKeyword`](../../generated/interfaces/WeaponKeyword.md)[]
+
+Defined in: [data/types.ts:45](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/types.ts#L45)
+
+Catalog of weapon keywords (Lethal Hits, Sustained Hits N, Anti-X N+, ...).
 
 ***
 
@@ -36,7 +46,7 @@ Defined in: data/types.ts:42
 
 > **factions**: [`Faction`](../../generated/interfaces/Faction.md)[]
 
-Defined in: data/types.ts:43
+Defined in: [data/types.ts:46](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/types.ts#L46)
 
 ***
 
@@ -44,7 +54,7 @@ Defined in: data/types.ts:43
 
 > **abilities**: [`AbilityDSLEntry`](../../generated/interfaces/AbilityDSLEntry.md)[]
 
-Defined in: data/types.ts:45
+Defined in: [data/types.ts:48](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/types.ts#L48)
 
 Community-authored ability mechanics (key is `ability_id`, not `id`).
 
@@ -54,7 +64,7 @@ Community-authored ability mechanics (key is `ability_id`, not `id`).
 
 > **phaseMappings**: [`PhaseMapping`](../../generated/interfaces/PhaseMapping.md)[]
 
-Defined in: data/types.ts:47
+Defined in: [data/types.ts:50](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/types.ts#L50)
 
 Phase assignments, joined to abilities/stratagems/etc. via `source_id`.
 
@@ -64,7 +74,7 @@ Phase assignments, joined to abilities/stratagems/etc. via `source_id`.
 
 > **detachments**: [`Detachment`](../../generated/interfaces/Detachment.md)[]
 
-Defined in: data/types.ts:48
+Defined in: [data/types.ts:51](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/types.ts#L51)
 
 ***
 
@@ -72,7 +82,7 @@ Defined in: data/types.ts:48
 
 > **stratagems**: [`Stratagem`](../../generated/interfaces/Stratagem.md)[]
 
-Defined in: data/types.ts:49
+Defined in: [data/types.ts:52](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/types.ts#L52)
 
 ***
 
@@ -80,7 +90,7 @@ Defined in: data/types.ts:49
 
 > **enhancements**: [`Enhancement`](../../generated/interfaces/Enhancement.md)[]
 
-Defined in: data/types.ts:50
+Defined in: [data/types.ts:53](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/types.ts#L53)
 
 ***
 
@@ -88,7 +98,7 @@ Defined in: data/types.ts:50
 
 > **leaderAttachments**: [`LeaderAttachment`](../../generated/interfaces/LeaderAttachment.md)[]
 
-Defined in: data/types.ts:51
+Defined in: [data/types.ts:54](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/types.ts#L54)
 
 ***
 
@@ -96,7 +106,7 @@ Defined in: data/types.ts:51
 
 > **unitCompositions**: [`UnitComposition`](../../generated/interfaces/UnitComposition.md)[]
 
-Defined in: data/types.ts:52
+Defined in: [data/types.ts:55](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/types.ts#L55)
 
 ***
 
@@ -104,7 +114,7 @@ Defined in: data/types.ts:52
 
 > **wargearOptions**: [`WargearOption`](../../generated/interfaces/WargearOption.md)[]
 
-Defined in: data/types.ts:53
+Defined in: [data/types.ts:56](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/types.ts#L56)
 
 ***
 
@@ -112,7 +122,7 @@ Defined in: data/types.ts:53
 
 > **gameVersions**: [`GameVersion`](../../generated/interfaces/GameVersion.md)[]
 
-Defined in: data/types.ts:54
+Defined in: [data/types.ts:57](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/types.ts#L57)
 
 ***
 
@@ -120,7 +130,7 @@ Defined in: data/types.ts:54
 
 > **missions**: [`Mission`](../../generated/interfaces/Mission.md)[]
 
-Defined in: data/types.ts:55
+Defined in: [data/types.ts:58](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/types.ts#L58)
 
 ***
 
@@ -128,7 +138,7 @@ Defined in: data/types.ts:55
 
 > **missionMatchups**: [`MissionMatchup`](../../generated/interfaces/MissionMatchup.md)[]
 
-Defined in: data/types.ts:56
+Defined in: [data/types.ts:59](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/types.ts#L59)
 
 ***
 
@@ -136,7 +146,7 @@ Defined in: data/types.ts:56
 
 > **secondaryCards**: [`SecondaryCard`](../../generated/interfaces/SecondaryCard.md)[]
 
-Defined in: data/types.ts:57
+Defined in: [data/types.ts:60](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/types.ts#L60)
 
 ***
 
@@ -144,7 +154,7 @@ Defined in: data/types.ts:57
 
 > **deploymentPatterns**: [`DeploymentPattern`](../../generated/interfaces/DeploymentPattern.md)[]
 
-Defined in: data/types.ts:58
+Defined in: [data/types.ts:61](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/types.ts#L61)
 
 ***
 
@@ -152,7 +162,7 @@ Defined in: data/types.ts:58
 
 > **forceDispositions**: [`ForceDisposition`](../../generated/interfaces/ForceDisposition.md)[]
 
-Defined in: data/types.ts:59
+Defined in: [data/types.ts:62](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/types.ts#L62)
 
 ***
 
@@ -160,7 +170,7 @@ Defined in: data/types.ts:59
 
 > **resourcePools**: [`ResourcePool`](../../generated/interfaces/ResourcePool.md)[]
 
-Defined in: data/types.ts:60
+Defined in: [data/types.ts:63](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/types.ts#L63)
 
 ***
 
@@ -168,7 +178,7 @@ Defined in: data/types.ts:60
 
 > **timingFlags**: [`TimingFlag`](../../generated/interfaces/TimingFlag.md)[]
 
-Defined in: data/types.ts:61
+Defined in: [data/types.ts:64](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/types.ts#L64)
 
 ***
 
@@ -176,4 +186,4 @@ Defined in: data/types.ts:61
 
 > **interactionFlags**: [`InteractionFlag`](../../generated/interfaces/InteractionFlag.md)[]
 
-Defined in: data/types.ts:62
+Defined in: [data/types.ts:65](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/types.ts#L65)

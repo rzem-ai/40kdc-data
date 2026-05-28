@@ -6,7 +6,7 @@
 
 # Interface: TimingFlag
 
-Defined in: [generated.ts:1200](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1200)
+Defined in: [generated.ts:1433](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1433)
 
 This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
 via the `definition` "timing-flag".
@@ -21,7 +21,7 @@ via the `definition` "timing-flag".
 
 > **source\_id**: `string`
 
-Defined in: [generated.ts:1201](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1201)
+Defined in: [generated.ts:1434](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1434)
 
 ***
 
@@ -29,7 +29,7 @@ Defined in: [generated.ts:1201](https://github.com/Tabletop-Developer-Consortium
 
 > **source\_type**: [`SourceType`](../type-aliases/SourceType.md)
 
-Defined in: [generated.ts:1202](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1202)
+Defined in: [generated.ts:1435](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1435)
 
 ***
 
@@ -37,7 +37,7 @@ Defined in: [generated.ts:1202](https://github.com/Tabletop-Developer-Consortium
 
 > **timing**: `"start-of-phase"` \| `"end-of-phase"` \| `"before-hit-roll"` \| `"after-hit-roll"` \| `"before-wound-roll"` \| `"after-wound-roll"` \| `"before-save-roll"` \| `"after-save-roll"` \| `"before-damage-roll"` \| `"after-damage-roll"` \| `"before-charge-roll"` \| `"after-charge-roll"` \| `"before-advance-roll"` \| `"after-advance-roll"` \| `"before-battle-shock"` \| `"after-battle-shock"` \| `"on-unit-selected"` \| `"on-unit-destroyed"` \| `"on-model-destroyed"` \| `"on-damage-allocated"`
 
-Defined in: [generated.ts:1203](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1203)
+Defined in: [generated.ts:1436](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1436)
 
 ***
 
@@ -45,7 +45,7 @@ Defined in: [generated.ts:1203](https://github.com/Tabletop-Developer-Consortium
 
 > **game\_version**: [`GameVersionReference`](GameVersionReference.md)
 
-Defined in: [generated.ts:1224](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1224)
+Defined in: [generated.ts:1457](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1457)
 
 ***
 
@@ -53,4 +53,4 @@ Defined in: [generated.ts:1224](https://github.com/Tabletop-Developer-Consortium
 
 > `optional` **authored\_by?**: `string`
 
-Defined in: [generated.ts:1225](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1225)
+Defined in: [generated.ts:1458](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1458)

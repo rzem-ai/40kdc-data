@@ -6,7 +6,7 @@
 
 # Interface: SequenceEffect
 
-Defined in: [generated.ts:712](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L712)
+Defined in: [generated.ts:1176](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1176)
 
 This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
 via the `definition` "sequence-effect".
@@ -21,7 +21,7 @@ via the `definition` "sequence-effect".
 
 > **type**: `"sequence"`
 
-Defined in: [generated.ts:713](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L713)
+Defined in: [generated.ts:1177](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1177)
 
 ***
 
@@ -29,7 +29,7 @@ Defined in: [generated.ts:713](https://github.com/Tabletop-Developer-Consortium/
 
 > **steps**: \[[`EffectNode`](../type-aliases/EffectNode.md), `...EffectNode[]`\]
 
-Defined in: [generated.ts:717](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L717)
+Defined in: [generated.ts:1181](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1181)
 
 #### Min Items
 

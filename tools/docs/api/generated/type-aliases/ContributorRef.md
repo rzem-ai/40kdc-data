@@ -8,7 +8,7 @@
 
 > **ContributorRef** = `string`
 
-Defined in: [generated.ts:47](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L47)
+Defined in: [generated.ts:47](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L47)
 
 GitHub handle or '40kdc-community'
 

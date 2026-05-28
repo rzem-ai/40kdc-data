@@ -8,7 +8,7 @@
 
 > **Phase** = `"command"` \| `"movement"` \| `"shooting"` \| `"charge"` \| `"fight"`
 
-Defined in: [generated.ts:54](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L54)
+Defined in: [generated.ts:54](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L54)
 
 The five official game phases. Unchanged between 10th and 11th edition — 11e reorders Pile In timing within the Fight phase but adds no top-level phase.
 

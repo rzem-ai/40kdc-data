@@ -6,7 +6,7 @@
 
 # Interface: AbilityScope
 
-Defined in: [generated.ts:1133](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1133)
+Defined in: [generated.ts:1366](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1366)
 
 This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
 via the `definition` "scope".
@@ -21,7 +21,7 @@ via the `definition` "scope".
 
 > **range**: `"self"` \| `"unit"` \| `"attached"` \| `"aura-6"` \| `"aura-9"` \| `"aura-12"` \| `"aura-custom"` \| `"engagement-range"` \| `"any-visible"` \| `"any-on-battlefield"` \| `"terrain-within-range"`
 
-Defined in: [generated.ts:1134](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1134)
+Defined in: [generated.ts:1367](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1367)
 
 ***
 
@@ -29,7 +29,7 @@ Defined in: [generated.ts:1134](https://github.com/Tabletop-Developer-Consortium
 
 > **duration**: `"phase"` \| `"turn"` \| `"battle-round"` \| `"battle"` \| `"until-next-command-phase"` \| `"one-use"` \| `"permanent"`
 
-Defined in: [generated.ts:1146](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1146)
+Defined in: [generated.ts:1379](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1379)
 
 ***
 
@@ -37,4 +37,4 @@ Defined in: [generated.ts:1146](https://github.com/Tabletop-Developer-Consortium
 
 > `optional` **range\_inches?**: `number`
 
-Defined in: [generated.ts:1147](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1147)
+Defined in: [generated.ts:1380](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1380)

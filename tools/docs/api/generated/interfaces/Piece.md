@@ -6,7 +6,7 @@
 
 # Interface: Piece
 
-Defined in: [generated.ts:827](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L827)
+Defined in: [generated.ts:912](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L912)
 
 One terrain feature placed on the board.
 
@@ -19,7 +19,7 @@ via the `definition` "piece".
 
 > `optional` **name?**: `string`
 
-Defined in: [generated.ts:828](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L828)
+Defined in: [generated.ts:913](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L913)
 
 ***
 
@@ -27,7 +27,7 @@ Defined in: [generated.ts:828](https://github.com/Tabletop-Developer-Consortium/
 
 > **footprint**: [`Footprint`](../type-aliases/Footprint.md)
 
-Defined in: [generated.ts:829](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L829)
+Defined in: [generated.ts:914](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L914)
 
 ***
 
@@ -35,7 +35,7 @@ Defined in: [generated.ts:829](https://github.com/Tabletop-Developer-Consortium/
 
 > **position**: [`Vec21`](Vec21.md)
 
-Defined in: [generated.ts:830](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L830)
+Defined in: [generated.ts:915](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L915)
 
 ***
 
@@ -43,7 +43,7 @@ Defined in: [generated.ts:830](https://github.com/Tabletop-Developer-Consortium/
 
 > `optional` **rotation\_degrees?**: `number`
 
-Defined in: [generated.ts:834](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L834)
+Defined in: [generated.ts:919](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L919)
 
 Clockwise rotation of the footprint about `position`. Absent or 0 means axis-aligned.
 
@@ -53,7 +53,7 @@ Clockwise rotation of the footprint about `position`. Absent or 0 means axis-ali
 
 > `optional` **template?**: `string`
 
-Defined in: [generated.ts:838](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L838)
+Defined in: [generated.ts:923](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L923)
 
 Optional descriptive label for the GW standard template this piece uses (e.g. 'large-ruin', 'long-wall'). Free-form, not enum-locked — the geometry in `footprint` is authoritative.
 
@@ -63,7 +63,7 @@ Optional descriptive label for the GW standard template this piece uses (e.g. 'l
 
 > `optional` **height\_inches?**: `number`
 
-Defined in: [generated.ts:842](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L842)
+Defined in: [generated.ts:927](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L927)
 
 Height of the piece in inches. Gates Plunging Fire (a piece 3" or taller confers +1 BS on ground-level targets).
 
@@ -73,7 +73,7 @@ Height of the piece in inches. Gates Plunging Fire (a piece 3" or taller confers
 
 > `optional` **terrain\_area\_keywords?**: [`TerrainAreaKeyword`](../type-aliases/TerrainAreaKeyword.md)[]
 
-Defined in: [generated.ts:846](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L846)
+Defined in: [generated.ts:931](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L931)
 
 Terrain-area keywords this piece's area carries.
 
@@ -83,7 +83,7 @@ Terrain-area keywords this piece's area carries.
 
 > `optional` **link\_group?**: `string`
 
-Defined in: [generated.ts:850](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L850)
+Defined in: [generated.ts:935](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L935)
 
 Pieces sharing a `link_group` value are linked terrain — treated as a single terrain feature (and, where an objective sits among them, a single objective).
 
@@ -93,7 +93,7 @@ Pieces sharing a `link_group` value are linked terrain — treated as a single t
 
 > `optional` **is\_objective?**: `boolean`
 
-Defined in: [generated.ts:854](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L854)
+Defined in: [generated.ts:939](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L939)
 
 Whether this piece carries an objective marker.
 
@@ -103,7 +103,7 @@ Whether this piece carries an objective marker.
 
 > `optional` **objective?**: `object`
 
-Defined in: [generated.ts:858](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L858)
+Defined in: [generated.ts:943](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L943)
 
 Objective-marker metadata. Only meaningful when `is_objective` is true.
 

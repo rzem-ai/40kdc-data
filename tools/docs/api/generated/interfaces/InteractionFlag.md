@@ -6,7 +6,7 @@
 
 # Interface: InteractionFlag
 
-Defined in: [generated.ts:1154](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1154)
+Defined in: [generated.ts:1387](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1387)
 
 This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
 via the `definition` "interaction-flag".
@@ -21,7 +21,7 @@ via the `definition` "interaction-flag".
 
 > **ability\_a**: `string`
 
-Defined in: [generated.ts:1155](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1155)
+Defined in: [generated.ts:1388](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1388)
 
 ***
 
@@ -29,7 +29,7 @@ Defined in: [generated.ts:1155](https://github.com/Tabletop-Developer-Consortium
 
 > **ability\_b**: `string`
 
-Defined in: [generated.ts:1156](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1156)
+Defined in: [generated.ts:1389](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1389)
 
 ***
 
@@ -37,7 +37,7 @@ Defined in: [generated.ts:1156](https://github.com/Tabletop-Developer-Consortium
 
 > **interaction\_type**: `"replaces"` \| `"conflicts"` \| `"combos"` \| `"sequencing-dependent"` \| `"stacks"` \| `"does-not-stack"`
 
-Defined in: [generated.ts:1157](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1157)
+Defined in: [generated.ts:1390](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1390)
 
 ***
 
@@ -45,7 +45,7 @@ Defined in: [generated.ts:1157](https://github.com/Tabletop-Developer-Consortium
 
 > `optional` **resolution?**: `string`
 
-Defined in: [generated.ts:1158](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1158)
+Defined in: [generated.ts:1391](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1391)
 
 ***
 
@@ -53,7 +53,7 @@ Defined in: [generated.ts:1158](https://github.com/Tabletop-Developer-Consortium
 
 > `optional` **faq\_reference?**: `string`
 
-Defined in: [generated.ts:1159](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1159)
+Defined in: [generated.ts:1392](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1392)
 
 ***
 
@@ -61,7 +61,7 @@ Defined in: [generated.ts:1159](https://github.com/Tabletop-Developer-Consortium
 
 > `optional` **disputed?**: `boolean`
 
-Defined in: [generated.ts:1160](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1160)
+Defined in: [generated.ts:1393](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1393)
 
 ***
 
@@ -69,7 +69,7 @@ Defined in: [generated.ts:1160](https://github.com/Tabletop-Developer-Consortium
 
 > **game\_version**: [`GameVersionReference`](GameVersionReference.md)
 
-Defined in: [generated.ts:1161](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1161)
+Defined in: [generated.ts:1394](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1394)
 
 ***
 
@@ -77,4 +77,4 @@ Defined in: [generated.ts:1161](https://github.com/Tabletop-Developer-Consortium
 
 > `optional` **authored\_by?**: `string`
 
-Defined in: [generated.ts:1162](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1162)
+Defined in: [generated.ts:1395](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1395)

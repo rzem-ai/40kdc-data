@@ -8,7 +8,7 @@
 
 > **normalizeName**(`input`): `string`
 
-Defined in: data/normalize.ts:30
+Defined in: [data/normalize.ts:30](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/normalize.ts#L30)
 
 Reduce a display name to a canonical lookup key.
 

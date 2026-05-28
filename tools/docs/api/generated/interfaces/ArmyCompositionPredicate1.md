@@ -6,7 +6,7 @@
 
 # Interface: ArmyCompositionPredicate1
 
-Defined in: [generated.ts:571](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L571)
+Defined in: [generated.ts:801](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L801)
 
 Draw-time army-composition predicate gating the operation (e.g. redraw when the opponent lacks a qualifying unit).
 
@@ -16,7 +16,7 @@ Draw-time army-composition predicate gating the operation (e.g. redraw when the 
 
 > **subject**: `"self"` \| `"opponent"`
 
-Defined in: [generated.ts:575](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L575)
+Defined in: [generated.ts:805](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L805)
 
 Whose army list the predicate inspects.
 
@@ -26,7 +26,7 @@ Whose army list the predicate inspects.
 
 > **quantifier**: `"any"` \| `"none"`
 
-Defined in: [generated.ts:579](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L579)
+Defined in: [generated.ts:809](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L809)
 
 Whether the army must contain ('any') or lack ('none') a unit matching unit_filter for the predicate to hold.
 
@@ -36,7 +36,7 @@ Whether the army must contain ('any') or lack ('none') a unit matching unit_filt
 
 > **unit\_filter**: `object`
 
-Defined in: [generated.ts:583](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L583)
+Defined in: [generated.ts:813](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L813)
 
 Criteria a unit in the army must satisfy to match. All present criteria must hold (logical AND).
 

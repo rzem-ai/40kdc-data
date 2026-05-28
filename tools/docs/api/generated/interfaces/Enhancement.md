@@ -6,7 +6,7 @@
 
 # Interface: Enhancement
 
-Defined in: [generated.ts:329](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L329)
+Defined in: [generated.ts:559](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L559)
 
 A purchasable upgrade for a character unit, provided by a detachment.
 
@@ -19,7 +19,7 @@ via the `definition` "enhancement".
 
 > **id**: `string`
 
-Defined in: [generated.ts:330](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L330)
+Defined in: [generated.ts:560](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L560)
 
 ***
 
@@ -27,7 +27,7 @@ Defined in: [generated.ts:330](https://github.com/Tabletop-Developer-Consortium/
 
 > **name**: `string`
 
-Defined in: [generated.ts:331](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L331)
+Defined in: [generated.ts:561](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L561)
 
 ***
 
@@ -35,7 +35,7 @@ Defined in: [generated.ts:331](https://github.com/Tabletop-Developer-Consortium/
 
 > **detachment\_id**: `string`
 
-Defined in: [generated.ts:332](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L332)
+Defined in: [generated.ts:562](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L562)
 
 ***
 
@@ -43,7 +43,7 @@ Defined in: [generated.ts:332](https://github.com/Tabletop-Developer-Consortium/
 
 > **cost**: `number`
 
-Defined in: [generated.ts:333](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L333)
+Defined in: [generated.ts:563](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L563)
 
 ***
 
@@ -51,7 +51,7 @@ Defined in: [generated.ts:333](https://github.com/Tabletop-Developer-Consortium/
 
 > `optional` **points\_provisional?**: `boolean`
 
-Defined in: [generated.ts:337](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L337)
+Defined in: [generated.ts:567](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L567)
 
 True when the cost is carried over provisionally (e.g. seeded from a prior edition during migration) and not yet confirmed against the current dataslate.
 
@@ -61,7 +61,7 @@ True when the cost is carried over provisionally (e.g. seeded from a prior editi
 
 > `optional` **upgrade\_tag?**: `boolean`
 
-Defined in: [generated.ts:341](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L341)
+Defined in: [generated.ts:571](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L571)
 
 11e: when true, this enhancement applies to up to `max_targets` non-character units while counting as a single Enhancement choice.
 
@@ -71,7 +71,7 @@ Defined in: [generated.ts:341](https://github.com/Tabletop-Developer-Consortium/
 
 > `optional` **max\_targets?**: `number`
 
-Defined in: [generated.ts:345](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L345)
+Defined in: [generated.ts:575](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L575)
 
 Number of units this enhancement may be applied to. Only meaningful when `upgrade_tag` is true; defaults to 1.
 
@@ -81,7 +81,7 @@ Number of units this enhancement may be applied to. Only meaningful when `upgrad
 
 > `optional` **keyword\_restrictions?**: [`KeywordList`](../type-aliases/KeywordList.md)
 
-Defined in: [generated.ts:346](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L346)
+Defined in: [generated.ts:576](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L576)
 
 ***
 
@@ -89,7 +89,7 @@ Defined in: [generated.ts:346](https://github.com/Tabletop-Developer-Consortium/
 
 > `optional` **exclusion\_keywords?**: [`KeywordList`](../type-aliases/KeywordList.md) \| `null`
 
-Defined in: [generated.ts:347](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L347)
+Defined in: [generated.ts:577](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L577)
 
 ***
 
@@ -97,7 +97,7 @@ Defined in: [generated.ts:347](https://github.com/Tabletop-Developer-Consortium/
 
 > `optional` **ability\_id?**: `string` \| `null`
 
-Defined in: [generated.ts:348](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L348)
+Defined in: [generated.ts:578](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L578)
 
 ***
 
@@ -105,7 +105,7 @@ Defined in: [generated.ts:348](https://github.com/Tabletop-Developer-Consortium/
 
 > `optional` **is\_unique?**: `boolean`
 
-Defined in: [generated.ts:349](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L349)
+Defined in: [generated.ts:579](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L579)
 
 ***
 
@@ -113,4 +113,4 @@ Defined in: [generated.ts:349](https://github.com/Tabletop-Developer-Consortium/
 
 > **game\_version**: [`GameVersionReference`](GameVersionReference.md)
 
-Defined in: [generated.ts:350](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L350)
+Defined in: [generated.ts:580](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L580)

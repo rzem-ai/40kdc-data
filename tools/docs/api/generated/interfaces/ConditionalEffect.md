@@ -6,7 +6,7 @@
 
 # Interface: ConditionalEffect
 
-Defined in: [generated.ts:743](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L743)
+Defined in: [generated.ts:1207](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1207)
 
 This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
 via the `definition` "conditional-effect".
@@ -21,7 +21,7 @@ via the `definition` "conditional-effect".
 
 > **type**: `"conditional"`
 
-Defined in: [generated.ts:744](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L744)
+Defined in: [generated.ts:1208](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1208)
 
 ***
 
@@ -29,7 +29,7 @@ Defined in: [generated.ts:744](https://github.com/Tabletop-Developer-Consortium/
 
 > **condition**: [`AbilityCondition2`](../type-aliases/AbilityCondition2.md)
 
-Defined in: [generated.ts:745](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L745)
+Defined in: [generated.ts:1209](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1209)
 
 ***
 
@@ -37,4 +37,4 @@ Defined in: [generated.ts:745](https://github.com/Tabletop-Developer-Consortium/
 
 > **effect**: [`EffectNode`](../type-aliases/EffectNode.md)
 
-Defined in: [generated.ts:746](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L746)
+Defined in: [generated.ts:1210](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1210)

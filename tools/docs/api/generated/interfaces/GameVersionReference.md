@@ -6,7 +6,7 @@
 
 # Interface: GameVersionReference
 
-Defined in: [generated.ts:231](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L231)
+Defined in: [generated.ts:461](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L461)
 
 This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
 via the `definition` "game-version-ref".
@@ -21,7 +21,7 @@ via the `definition` "game-version-ref".
 
 > **edition**: `string`
 
-Defined in: [generated.ts:232](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L232)
+Defined in: [generated.ts:462](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L462)
 
 ***
 
@@ -29,4 +29,4 @@ Defined in: [generated.ts:232](https://github.com/Tabletop-Developer-Consortium/
 
 > **dataslate**: `string`
 
-Defined in: [generated.ts:233](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L233)
+Defined in: [generated.ts:463](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L463)

@@ -6,7 +6,7 @@
 
 # Interface: AbilityDSLEntry
 
-Defined in: [generated.ts:1096](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1096)
+Defined in: [generated.ts:1329](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1329)
 
 Community-authored structured representation of what a game ability does. NOT GW text.
 
@@ -19,7 +19,7 @@ via the `definition` "ability".
 
 > **ability\_id**: `string`
 
-Defined in: [generated.ts:1097](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1097)
+Defined in: [generated.ts:1330](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1330)
 
 ***
 
@@ -27,7 +27,7 @@ Defined in: [generated.ts:1097](https://github.com/Tabletop-Developer-Consortium
 
 > **name**: `string`
 
-Defined in: [generated.ts:1098](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1098)
+Defined in: [generated.ts:1331](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1331)
 
 ***
 
@@ -35,7 +35,7 @@ Defined in: [generated.ts:1098](https://github.com/Tabletop-Developer-Consortium
 
 > **authored\_by**: `string`
 
-Defined in: [generated.ts:1099](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1099)
+Defined in: [generated.ts:1332](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1332)
 
 ***
 
@@ -43,7 +43,7 @@ Defined in: [generated.ts:1099](https://github.com/Tabletop-Developer-Consortium
 
 > **game\_version**: [`GameVersionReference`](GameVersionReference.md)
 
-Defined in: [generated.ts:1100](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1100)
+Defined in: [generated.ts:1333](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1333)
 
 ***
 
@@ -51,7 +51,7 @@ Defined in: [generated.ts:1100](https://github.com/Tabletop-Developer-Consortium
 
 > `optional` **version?**: `string`
 
-Defined in: [generated.ts:1101](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1101)
+Defined in: [generated.ts:1334](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1334)
 
 ***
 
@@ -59,7 +59,7 @@ Defined in: [generated.ts:1101](https://github.com/Tabletop-Developer-Consortium
 
 > `optional` **supersedes?**: `string` \| `null`
 
-Defined in: [generated.ts:1102](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1102)
+Defined in: [generated.ts:1335](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1335)
 
 ***
 
@@ -67,7 +67,7 @@ Defined in: [generated.ts:1102](https://github.com/Tabletop-Developer-Consortium
 
 > `optional` **unit\_ids?**: `string`[]
 
-Defined in: [generated.ts:1103](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1103)
+Defined in: [generated.ts:1336](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1336)
 
 ***
 
@@ -75,7 +75,7 @@ Defined in: [generated.ts:1103](https://github.com/Tabletop-Developer-Consortium
 
 > `optional` **faction\_id?**: `string` \| `null`
 
-Defined in: [generated.ts:1107](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1107)
+Defined in: [generated.ts:1340](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1340)
 
 For faction-type abilities, the faction this rule belongs to
 
@@ -85,7 +85,7 @@ For faction-type abilities, the faction this rule belongs to
 
 > `optional` **detachment\_id?**: `string` \| `null`
 
-Defined in: [generated.ts:1111](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1111)
+Defined in: [generated.ts:1344](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1344)
 
 For detachment/enhancement/stratagem-type abilities, the associated detachment
 
@@ -95,7 +95,7 @@ For detachment/enhancement/stratagem-type abilities, the associated detachment
 
 > `optional` **ability\_type?**: `"stratagem"` \| `"enhancement"` \| `"unit"` \| `"core"` \| `"detachment"` \| `"faction"`
 
-Defined in: [generated.ts:1112](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1112)
+Defined in: [generated.ts:1345](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1345)
 
 ***
 
@@ -103,7 +103,7 @@ Defined in: [generated.ts:1112](https://github.com/Tabletop-Developer-Consortium
 
 > `optional` **behavior?**: `"passive"` \| `"activated"` \| `"reactive"` \| `"aura"`
 
-Defined in: [generated.ts:1116](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1116)
+Defined in: [generated.ts:1349](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1349)
 
 How this ability interacts with the game flow — not a runtime predicate
 
@@ -113,7 +113,7 @@ How this ability interacts with the game flow — not a runtime predicate
 
 > **effect**: [`AbilityEffect1`](../type-aliases/AbilityEffect1.md)
 
-Defined in: [generated.ts:1117](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1117)
+Defined in: [generated.ts:1350](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1350)
 
 ***
 
@@ -121,7 +121,7 @@ Defined in: [generated.ts:1117](https://github.com/Tabletop-Developer-Consortium
 
 > **scope**: [`AbilityScope`](AbilityScope.md)
 
-Defined in: [generated.ts:1118](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1118)
+Defined in: [generated.ts:1351](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1351)
 
 ***
 
@@ -129,7 +129,7 @@ Defined in: [generated.ts:1118](https://github.com/Tabletop-Developer-Consortium
 
 > `optional` **interactions?**: `object`[]
 
-Defined in: [generated.ts:1119](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1119)
+Defined in: [generated.ts:1352](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1352)
 
 #### Index Signature
 
@@ -153,7 +153,7 @@ Defined in: [generated.ts:1119](https://github.com/Tabletop-Developer-Consortium
 
 > `optional` **disputed?**: `boolean`
 
-Defined in: [generated.ts:1125](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1125)
+Defined in: [generated.ts:1358](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1358)
 
 ***
 
@@ -161,7 +161,7 @@ Defined in: [generated.ts:1125](https://github.com/Tabletop-Developer-Consortium
 
 > `optional` **dispute\_notes?**: `string`
 
-Defined in: [generated.ts:1126](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1126)
+Defined in: [generated.ts:1359](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1359)
 
 ***
 
@@ -169,4 +169,4 @@ Defined in: [generated.ts:1126](https://github.com/Tabletop-Developer-Consortium
 
 > `optional` **community\_notes?**: `string`
 
-Defined in: [generated.ts:1127](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1127)
+Defined in: [generated.ts:1360](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1360)

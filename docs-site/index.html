@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>40kdc-data — schema, dataset, and example toollets</title>
+    <meta
+      name="description"
+      content="A community-authored Warhammer 40K data layer: JSON Schemas plus an embedded dataset with a linked, typed API."
+    />
+    <style>
+      :root {
+        --bg: #0e0f12;
+        --panel: #181a1f;
+        --border: #2a2e36;
+        --text: #e6e7ea;
+        --muted: #8b8f97;
+        --accent: #ff5a3c;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        font-size: 15px;
+        line-height: 1.55;
+      }
+      a { color: var(--accent); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      code, kbd {
+        font-family: ui-monospace, SFMono-Regular, monospace;
+        background: var(--panel);
+        padding: 1px 6px;
+        border-radius: 3px;
+        font-size: 0.92em;
+      }
+      .wrap {
+        max-width: 880px;
+        margin: 0 auto;
+        padding: 48px 24px 80px;
+      }
+      header { margin-bottom: 28px; }
+      header h1 {
+        font-size: 36px;
+        letter-spacing: -0.02em;
+        margin: 0 0 4px 0;
+      }
+      header h1 .accent { color: var(--accent); }
+      header .tagline {
+        color: var(--muted);
+        font-size: 16px;
+        margin: 0;
+      }
+      section { margin-top: 36px; }
+      section h2 {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--muted);
+        margin: 0 0 14px 0;
+      }
+      .card-grid {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 18px;
+        display: block;
+        color: inherit;
+        text-decoration: none;
+        transition: border-color 0.15s ease;
+      }
+      .card:hover { border-color: var(--accent); text-decoration: none; }
+      .card h3 {
+        margin: 0 0 6px 0;
+        font-size: 17px;
+      }
+      .card .blurb {
+        color: var(--muted);
+        font-size: 13px;
+        margin: 0;
+      }
+      .card .path {
+        margin-top: 10px;
+        font-family: ui-monospace, monospace;
+        font-size: 11px;
+        color: var(--accent);
+      }
+      .desc {
+        color: var(--text);
+      }
+      .desc p { margin: 0 0 10px 0; }
+      footer {
+        margin-top: 48px;
+        padding-top: 18px;
+        border-top: 1px solid var(--border);
+        font-size: 12px;
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <header>
+        <h1>40kdc<span class="accent">-data</span></h1>
+        <p class="tagline">A community-authored Warhammer 40K data layer.</p>
+      </header>
+
+      <section class="desc">
+        <p>
+          JSON Schemas for every game entity, plus an embedded dataset shipped
+          behind a linked, typed API in the <code>@alpaca-software/40kdc-data</code>
+          npm package and the <code>wh40kdc</code> Rust crate. Includes ListForge
+          and NewRecruit roster importers and exporters that mirror byte-for-byte
+          across both implementations.
+        </p>
+        <p>
+          The package is the load-bearing artifact; everything else on this page
+          is documentation or a demo built on top of it.
+        </p>
+      </section>
+
+      <section>
+        <h2>Reference</h2>
+        <div class="card-grid">
+          <a class="card" href="api/">
+            <h3>API reference</h3>
+            <p class="blurb">
+              TypeDoc-generated reference for the npm package — every exported
+              type, view, and resolver.
+            </p>
+            <div class="path">/api/</div>
+          </a>
+        </div>
+      </section>
+
+      <section>
+        <h2>Example toollets</h2>
+        <div class="card-grid">
+          <a class="card" href="examples/salvo/">
+            <h3>Salvo</h3>
+            <p class="blurb">
+              A 40k damage calculator. Pick a unit, a phase, the abilities you
+              want to apply, and a target — see expected hits, wounds, saves,
+              and models killed. Showcases the cruncher and abilities-resolver
+              APIs.
+            </p>
+            <div class="path">/examples/salvo/</div>
+          </a>
+        </div>
+      </section>
+
+      <footer>
+        <a href="https://github.com/Tabletop-Developer-Consortium/40kdc-data"
+          >Source on GitHub</a
+        >
+        &middot; Schemas: CC0 &middot; Data: CC BY 4.0 &middot; Tools: MIT
+      </footer>
+    </main>
+  </body>
+</html>

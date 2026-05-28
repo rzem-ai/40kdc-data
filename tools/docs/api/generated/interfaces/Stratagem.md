@@ -6,7 +6,7 @@
 
 # Interface: Stratagem
 
-Defined in: [generated.ts:794](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L794)
+Defined in: [generated.ts:879](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L879)
 
 A CP-costed ability usable during specific game phases.
 
@@ -19,7 +19,7 @@ via the `definition` "stratagem".
 
 > **id**: `string`
 
-Defined in: [generated.ts:795](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L795)
+Defined in: [generated.ts:880](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L880)
 
 ***
 
@@ -27,7 +27,7 @@ Defined in: [generated.ts:795](https://github.com/Tabletop-Developer-Consortium/
 
 > **name**: `string`
 
-Defined in: [generated.ts:796](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L796)
+Defined in: [generated.ts:881](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L881)
 
 ***
 
@@ -35,7 +35,7 @@ Defined in: [generated.ts:796](https://github.com/Tabletop-Developer-Consortium/
 
 > **category**: `"core"` \| `"detachment"`
 
-Defined in: [generated.ts:800](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L800)
+Defined in: [generated.ts:885](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L885)
 
 Whether this is a universal core stratagem or tied to a specific detachment
 
@@ -45,7 +45,7 @@ Whether this is a universal core stratagem or tied to a specific detachment
 
 > **type**: `"battle-tactic"` \| `"strategic-ploy"` \| `"epic-deed"` \| `"wargear"`
 
-Defined in: [generated.ts:804](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L804)
+Defined in: [generated.ts:889](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L889)
 
 GW-printed stratagem category from the card
 
@@ -55,7 +55,7 @@ GW-printed stratagem category from the card
 
 > `optional` **detachment\_id?**: `string` \| `null`
 
-Defined in: [generated.ts:808](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L808)
+Defined in: [generated.ts:893](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L893)
 
 Null for core stratagems
 
@@ -65,7 +65,7 @@ Null for core stratagems
 
 > **cp\_cost**: `number`
 
-Defined in: [generated.ts:809](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L809)
+Defined in: [generated.ts:894](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L894)
 
 ***
 
@@ -73,7 +73,7 @@ Defined in: [generated.ts:809](https://github.com/Tabletop-Developer-Consortium/
 
 > **phases**: [`PhaseList`](../type-aliases/PhaseList.md)
 
-Defined in: [generated.ts:810](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L810)
+Defined in: [generated.ts:895](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L895)
 
 ***
 
@@ -81,7 +81,7 @@ Defined in: [generated.ts:810](https://github.com/Tabletop-Developer-Consortium/
 
 > **player\_turn**: [`PlayerTurn`](../type-aliases/PlayerTurn.md)
 
-Defined in: [generated.ts:811](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L811)
+Defined in: [generated.ts:896](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L896)
 
 ***
 
@@ -89,7 +89,7 @@ Defined in: [generated.ts:811](https://github.com/Tabletop-Developer-Consortium/
 
 > **timing**: `"once-per-phase"` \| `"once-per-turn"` \| `"once-per-battle"` \| `"unlimited"`
 
-Defined in: [generated.ts:812](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L812)
+Defined in: [generated.ts:897](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L897)
 
 ***
 
@@ -97,7 +97,7 @@ Defined in: [generated.ts:812](https://github.com/Tabletop-Developer-Consortium/
 
 > `optional` **target\_restrictions?**: \{ `required_keywords?`: [`KeywordList`](../type-aliases/KeywordList.md); `excluded_keywords?`: [`KeywordList`](../type-aliases/KeywordList.md); `notes?`: `string`; \} \| `null`
 
-Defined in: [generated.ts:813](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L813)
+Defined in: [generated.ts:898](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L898)
 
 ***
 
@@ -105,7 +105,7 @@ Defined in: [generated.ts:813](https://github.com/Tabletop-Developer-Consortium/
 
 > `optional` **ability\_id?**: `string` \| `null`
 
-Defined in: [generated.ts:818](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L818)
+Defined in: [generated.ts:903](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L903)
 
 ***
 
@@ -113,4 +113,4 @@ Defined in: [generated.ts:818](https://github.com/Tabletop-Developer-Consortium/
 
 > **game\_version**: [`GameVersionReference`](GameVersionReference.md)
 
-Defined in: [generated.ts:819](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L819)
+Defined in: [generated.ts:904](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L904)

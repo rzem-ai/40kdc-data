@@ -6,7 +6,7 @@
 
 # Interface: SimpleCondition
 
-Defined in: [generated.ts:594](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L594)
+Defined in: [generated.ts:824](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L824)
 
 This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
 via the `definition` "simple-condition".
@@ -21,7 +21,7 @@ via the `definition` "simple-condition".
 
 > **type**: `"phase-is"` \| `"timing-is"` \| `"player-turn-is"` \| `"charged-this-turn"` \| `"advanced-this-turn"` \| `"remained-stationary"` \| `"unit-below-starting-strength"` \| `"unit-below-half-strength"` \| `"unit-has-keyword"` \| `"target-has-keyword"` \| `"model-is-leader"` \| `"is-attached"` \| `"attack-is-type"` \| `"is-battle-shocked"` \| `"has-lost-wounds"` \| `"opponent-unit-within-range"` \| `"unit-within-range-of"` \| `"within-range-of-objective"` \| `"controls-objective"` \| `"has-fought-this-phase"` \| `"destroyed-by-attack-type"` \| `"terrain-area-control"` \| `"engagement-state"` \| `"territory-control"` \| `"fights-first"` \| `"disposition-matches"` \| `"units-destroyed"` \| `"units-destroyed-comparison"` \| `"objective-majority"`
 
-Defined in: [generated.ts:595](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L595)
+Defined in: [generated.ts:825](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L825)
 
 ***
 
@@ -29,7 +29,7 @@ Defined in: [generated.ts:595](https://github.com/Tabletop-Developer-Consortium/
 
 > `optional` **parameters?**: `object`
 
-Defined in: [generated.ts:625](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L625)
+Defined in: [generated.ts:855](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L855)
 
 #### Index Signature
 
@@ -41,4 +41,4 @@ Defined in: [generated.ts:625](https://github.com/Tabletop-Developer-Consortium/
 
 > `optional` **negated?**: `boolean`
 
-Defined in: [generated.ts:628](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L628)
+Defined in: [generated.ts:858](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L858)

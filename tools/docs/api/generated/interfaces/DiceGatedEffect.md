@@ -6,7 +6,7 @@
 
 # Interface: DiceGatedEffect
 
-Defined in: [generated.ts:724](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L724)
+Defined in: [generated.ts:1188](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1188)
 
 This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
 via the `definition` "dice-gated-effect".
@@ -21,7 +21,7 @@ via the `definition` "dice-gated-effect".
 
 > **type**: `"dice-gated"`
 
-Defined in: [generated.ts:725](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L725)
+Defined in: [generated.ts:1189](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1189)
 
 ***
 
@@ -29,7 +29,7 @@ Defined in: [generated.ts:725](https://github.com/Tabletop-Developer-Consortium/
 
 > **dice**: `string`
 
-Defined in: [generated.ts:729](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L729)
+Defined in: [generated.ts:1193](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1193)
 
 Dice expression, e.g. 'D6', '2D6'
 
@@ -39,7 +39,7 @@ Dice expression, e.g. 'D6', '2D6'
 
 > **threshold**: `number` \| `"leadership"` \| `"toughness"` \| `"save"`
 
-Defined in: [generated.ts:733](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L733)
+Defined in: [generated.ts:1197](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1197)
 
 Fixed threshold or model characteristic to compare against
 
@@ -49,7 +49,7 @@ Fixed threshold or model characteristic to compare against
 
 > `optional` **comparison?**: `"gte"` \| `"lte"` \| `"gt"` \| `"lt"` \| `"eq"`
 
-Defined in: [generated.ts:734](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L734)
+Defined in: [generated.ts:1198](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1198)
 
 ***
 
@@ -57,7 +57,7 @@ Defined in: [generated.ts:734](https://github.com/Tabletop-Developer-Consortium/
 
 > `optional` **on\_success?**: [`EffectNode`](../type-aliases/EffectNode.md) \| `null`
 
-Defined in: [generated.ts:735](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L735)
+Defined in: [generated.ts:1199](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1199)
 
 ***
 
@@ -65,4 +65,4 @@ Defined in: [generated.ts:735](https://github.com/Tabletop-Developer-Consortium/
 
 > `optional` **on\_fail?**: [`EffectNode`](../type-aliases/EffectNode.md) \| `null`
 
-Defined in: [generated.ts:736](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L736)
+Defined in: [generated.ts:1200](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1200)

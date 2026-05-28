@@ -6,7 +6,7 @@
 
 # Interface: Faction
 
-Defined in: [generated.ts:358](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L358)
+Defined in: [generated.ts:588](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L588)
 
 A playable faction or sub-faction.
 
@@ -19,7 +19,7 @@ via the `definition` "faction".
 
 > **id**: `string`
 
-Defined in: [generated.ts:359](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L359)
+Defined in: [generated.ts:589](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L589)
 
 ***
 
@@ -27,7 +27,7 @@ Defined in: [generated.ts:359](https://github.com/Tabletop-Developer-Consortium/
 
 > **name**: `string`
 
-Defined in: [generated.ts:360](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L360)
+Defined in: [generated.ts:590](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L590)
 
 ***
 
@@ -35,7 +35,7 @@ Defined in: [generated.ts:360](https://github.com/Tabletop-Developer-Consortium/
 
 > `optional` **parent\_faction\_id?**: `string` \| `null`
 
-Defined in: [generated.ts:361](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L361)
+Defined in: [generated.ts:591](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L591)
 
 ***
 
@@ -43,7 +43,7 @@ Defined in: [generated.ts:361](https://github.com/Tabletop-Developer-Consortium/
 
 > **game\_version**: [`GameVersionReference`](GameVersionReference.md)
 
-Defined in: [generated.ts:362](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L362)
+Defined in: [generated.ts:592](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L592)
 
 ***
 
@@ -51,7 +51,7 @@ Defined in: [generated.ts:362](https://github.com/Tabletop-Developer-Consortium/
 
 > `optional` **keywords?**: [`KeywordList`](../type-aliases/KeywordList.md)
 
-Defined in: [generated.ts:363](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L363)
+Defined in: [generated.ts:593](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L593)
 
 ***
 
@@ -59,7 +59,7 @@ Defined in: [generated.ts:363](https://github.com/Tabletop-Developer-Consortium/
 
 > `optional` **aliases?**: `string`[]
 
-Defined in: [generated.ts:364](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L364)
+Defined in: [generated.ts:594](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L594)
 
 ***
 
@@ -67,6 +67,6 @@ Defined in: [generated.ts:364](https://github.com/Tabletop-Developer-Consortium/
 
 > `optional` **faction\_rule\_id?**: `string` \| `null`
 
-Defined in: [generated.ts:368](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L368)
+Defined in: [generated.ts:598](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L598)
 
 Reference to the faction-wide ability (e.g., Oath of Moment)

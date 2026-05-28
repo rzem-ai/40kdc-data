@@ -6,7 +6,7 @@
 
 # Interface: CollectionConfig\<T, V\>
 
-Defined in: data/collection.ts:19
+Defined in: [data/collection.ts:19](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/collection.ts#L19)
 
 How a [Collection](../classes/Collection.md) reads keys and builds views from raw records.
 
@@ -26,7 +26,7 @@ How a [Collection](../classes/Collection.md) reads keys and builds views from ra
 
 > **items**: `T`[]
 
-Defined in: data/collection.ts:20
+Defined in: [data/collection.ts:20](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/collection.ts#L20)
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: data/collection.ts:20
 
 > **idOf**: (`item`) => `string`
 
-Defined in: data/collection.ts:22
+Defined in: [data/collection.ts:22](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/collection.ts#L22)
 
 Primary id of a record (e.g. `u => u.id`, `a => a.ability_id`).
 
@@ -54,7 +54,7 @@ Primary id of a record (e.g. `u => u.id`, `a => a.ability_id`).
 
 > `optional` **dedupeKeyOf?**: (`item`) => `string`
 
-Defined in: data/collection.ts:28
+Defined in: [data/collection.ts:28](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/collection.ts#L28)
 
 Uniqueness key used for deduplication. Defaults to [idOf](#idof). Set to a
 composite (e.g. `(faction_id, id)`) for records that share an id across
@@ -76,7 +76,7 @@ factions, so distinct copies are preserved rather than collapsed.
 
 > `optional` **nameOf?**: (`item`) => `string` \| `undefined`
 
-Defined in: data/collection.ts:30
+Defined in: [data/collection.ts:30](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/collection.ts#L30)
 
 Display name, if the record has one — drives [Collection.find](../classes/Collection.md#find).
 
@@ -96,7 +96,7 @@ Display name, if the record has one — drives [Collection.find](../classes/Coll
 
 > `optional` **factionOf?**: (`item`) => `string` \| `null` \| `undefined`
 
-Defined in: data/collection.ts:32
+Defined in: [data/collection.ts:32](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/collection.ts#L32)
 
 Owning faction id, if applicable — drives [Collection.byFaction](../classes/Collection.md#byfaction).
 
@@ -116,7 +116,7 @@ Owning faction id, if applicable — drives [Collection.byFaction](../classes/Co
 
 > **wrap**: (`item`) => `V`
 
-Defined in: data/collection.ts:34
+Defined in: [data/collection.ts:34](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/collection.ts#L34)
 
 Wrap a raw record in its linked view.
 

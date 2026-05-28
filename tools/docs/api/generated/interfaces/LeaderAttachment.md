@@ -6,7 +6,7 @@
 
 # Interface: LeaderAttachment
 
-Defined in: [generated.ts:405](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L405)
+Defined in: [generated.ts:635](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L635)
 
 Defines which character units can attach to which bodyguard units.
 
@@ -19,7 +19,7 @@ via the `definition` "leader-attachment".
 
 > **leader\_id**: `string`
 
-Defined in: [generated.ts:406](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L406)
+Defined in: [generated.ts:636](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L636)
 
 ***
 
@@ -27,7 +27,7 @@ Defined in: [generated.ts:406](https://github.com/Tabletop-Developer-Consortium/
 
 > **eligible\_bodyguard\_ids**: \[`string`, `...string[]`\]
 
-Defined in: [generated.ts:410](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L410)
+Defined in: [generated.ts:640](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L640)
 
 #### Min Items
 
@@ -39,4 +39,4 @@ Defined in: [generated.ts:410](https://github.com/Tabletop-Developer-Consortium/
 
 > **game\_version**: [`GameVersionReference`](GameVersionReference.md)
 
-Defined in: [generated.ts:411](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L411)
+Defined in: [generated.ts:641](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L641)

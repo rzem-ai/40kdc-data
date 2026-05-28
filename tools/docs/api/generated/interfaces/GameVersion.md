@@ -6,7 +6,7 @@
 
 # Interface: GameVersion
 
-Defined in: [generated.ts:392](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L392)
+Defined in: [generated.ts:622](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L622)
 
 This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
 via the `definition` "game-version".
@@ -17,7 +17,7 @@ via the `definition` "game-version".
 
 > **edition**: `string`
 
-Defined in: [generated.ts:393](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L393)
+Defined in: [generated.ts:623](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L623)
 
 ***
 
@@ -25,7 +25,7 @@ Defined in: [generated.ts:393](https://github.com/Tabletop-Developer-Consortium/
 
 > **dataslate**: `string`
 
-Defined in: [generated.ts:394](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L394)
+Defined in: [generated.ts:624](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L624)
 
 ***
 
@@ -33,7 +33,7 @@ Defined in: [generated.ts:394](https://github.com/Tabletop-Developer-Consortium/
 
 > **effective\_date**: `string`
 
-Defined in: [generated.ts:395](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L395)
+Defined in: [generated.ts:625](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L625)
 
 ***
 
@@ -41,7 +41,7 @@ Defined in: [generated.ts:395](https://github.com/Tabletop-Developer-Consortium/
 
 > `optional` **label?**: `string`
 
-Defined in: [generated.ts:396](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L396)
+Defined in: [generated.ts:626](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L626)
 
 ***
 
@@ -49,4 +49,4 @@ Defined in: [generated.ts:396](https://github.com/Tabletop-Developer-Consortium/
 
 > `optional` **supersedes?**: `string` \| `null`
 
-Defined in: [generated.ts:397](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L397)
+Defined in: [generated.ts:627](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L627)

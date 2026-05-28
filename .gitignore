@@ -1,5 +1,7 @@
 node_modules/
 dist/
+.vite/
+_site/
 /target/
 tools/schemas/
 tools/src/data/bundle.generated.ts

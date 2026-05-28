@@ -6,7 +6,7 @@
 
 # Interface: ResourcePool
 
-Defined in: [generated.ts:1183](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1183)
+Defined in: [generated.ts:1416](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1416)
 
 A faction's resource system (Miracle Dice, Pain tokens, Blessings dice pool, etc.).
 
@@ -19,7 +19,7 @@ via the `definition` "resource-pool".
 
 > **id**: `string`
 
-Defined in: [generated.ts:1184](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1184)
+Defined in: [generated.ts:1417](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1417)
 
 ***
 
@@ -27,7 +27,7 @@ Defined in: [generated.ts:1184](https://github.com/Tabletop-Developer-Consortium
 
 > **name**: `string`
 
-Defined in: [generated.ts:1185](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1185)
+Defined in: [generated.ts:1418](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1418)
 
 ***
 
@@ -35,7 +35,7 @@ Defined in: [generated.ts:1185](https://github.com/Tabletop-Developer-Consortium
 
 > **faction\_id**: `string`
 
-Defined in: [generated.ts:1186](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1186)
+Defined in: [generated.ts:1419](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1419)
 
 ***
 
@@ -43,7 +43,7 @@ Defined in: [generated.ts:1186](https://github.com/Tabletop-Developer-Consortium
 
 > **pool\_type**: `"token"` \| `"dice-pool"` \| `"counter"`
 
-Defined in: [generated.ts:1187](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1187)
+Defined in: [generated.ts:1420](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1420)
 
 ***
 
@@ -51,7 +51,7 @@ Defined in: [generated.ts:1187](https://github.com/Tabletop-Developer-Consortium
 
 > `optional` **generation?**: `object`[]
 
-Defined in: [generated.ts:1188](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1188)
+Defined in: [generated.ts:1421](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1421)
 
 #### Index Signature
 
@@ -71,7 +71,7 @@ Defined in: [generated.ts:1188](https://github.com/Tabletop-Developer-Consortium
 
 > `optional` **max\_size?**: `number` \| `null`
 
-Defined in: [generated.ts:1193](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1193)
+Defined in: [generated.ts:1426](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1426)
 
 ***
 
@@ -79,4 +79,4 @@ Defined in: [generated.ts:1193](https://github.com/Tabletop-Developer-Consortium
 
 > **game\_version**: [`GameVersionReference`](GameVersionReference.md)
 
-Defined in: [generated.ts:1194](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1194)
+Defined in: [generated.ts:1427](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1427)

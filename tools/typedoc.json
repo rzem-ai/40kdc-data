@@ -6,7 +6,7 @@
   "readme": "none",
   "excludeInternal": true,
   "exclude": ["**/*.generated.ts", "**/node_modules/**"],
-  "githubPages": false,
+  "githubPages": true,
   "hideGenerator": true,
   "sort": ["source-order"]
 }

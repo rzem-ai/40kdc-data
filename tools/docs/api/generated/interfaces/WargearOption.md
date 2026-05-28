@@ -6,7 +6,7 @@
 
 # Interface: WargearOption
 
-Defined in: [generated.ts:1021](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1021)
+Defined in: [generated.ts:1106](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1106)
 
 A weapon substitution option available to models within a unit.
 
@@ -19,7 +19,7 @@ via the `definition` "wargear-option".
 
 > **id**: `string`
 
-Defined in: [generated.ts:1022](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1022)
+Defined in: [generated.ts:1107](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1107)
 
 ***
 
@@ -27,7 +27,7 @@ Defined in: [generated.ts:1022](https://github.com/Tabletop-Developer-Consortium
 
 > **unit\_id**: `string`
 
-Defined in: [generated.ts:1023](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1023)
+Defined in: [generated.ts:1108](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1108)
 
 ***
 
@@ -35,7 +35,7 @@ Defined in: [generated.ts:1023](https://github.com/Tabletop-Developer-Consortium
 
 > `optional` **model\_constraint?**: \{ `model_name?`: `string`; `per_n_models?`: `number`; `max_count?`: `number`; \} \| `null`
 
-Defined in: [generated.ts:1024](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1024)
+Defined in: [generated.ts:1109](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1109)
 
 ***
 
@@ -43,7 +43,7 @@ Defined in: [generated.ts:1024](https://github.com/Tabletop-Developer-Consortium
 
 > **replaces**: \[`string`, `...string[]`\]
 
-Defined in: [generated.ts:1034](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1034)
+Defined in: [generated.ts:1119](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1119)
 
 Weapon IDs being removed
 
@@ -57,7 +57,7 @@ Weapon IDs being removed
 
 > **replacement**: \[`string`, `...string[]`\]
 
-Defined in: [generated.ts:1040](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1040)
+Defined in: [generated.ts:1125](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1125)
 
 Weapon IDs being added
 
@@ -71,7 +71,7 @@ Weapon IDs being added
 
 > `optional` **is\_free?**: `boolean`
 
-Defined in: [generated.ts:1041](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1041)
+Defined in: [generated.ts:1126](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1126)
 
 ***
 
@@ -79,7 +79,7 @@ Defined in: [generated.ts:1041](https://github.com/Tabletop-Developer-Consortium
 
 > `optional` **additional\_cost?**: `number` \| `null`
 
-Defined in: [generated.ts:1042](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1042)
+Defined in: [generated.ts:1127](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1127)
 
 ***
 
@@ -87,4 +87,4 @@ Defined in: [generated.ts:1042](https://github.com/Tabletop-Developer-Consortium
 
 > **game\_version**: [`GameVersionReference`](GameVersionReference.md)
 
-Defined in: [generated.ts:1043](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/ff930e1260b0bcc1c6960d689de0cb6a2104d104/tools/src/generated.ts#L1043)
+Defined in: [generated.ts:1128](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/generated.ts#L1128)

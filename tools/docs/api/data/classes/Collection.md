@@ -6,7 +6,7 @@
 
 # Class: Collection\<T, V\>
 
-Defined in: data/collection.ts:45
+Defined in: [data/collection.ts:45](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/collection.ts#L45)
 
 A collection of one entity type, exposing id/name/faction lookups.
 
@@ -36,7 +36,7 @@ the linked view type returned to callers
 
 > **new Collection**\<`T`, `V`\>(`cfg`): `Collection`\<`T`, `V`\>
 
-Defined in: data/collection.ts:53
+Defined in: [data/collection.ts:53](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/collection.ts#L53)
 
 #### Parameters
 
@@ -56,7 +56,7 @@ Defined in: data/collection.ts:53
 
 > **get** **all**(): `V`[]
 
-Defined in: data/collection.ts:76
+Defined in: [data/collection.ts:76](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/collection.ts#L76)
 
 Every record, deduplicated by id, in first-seen order.
 
@@ -72,7 +72,7 @@ Every record, deduplicated by id, in first-seen order.
 
 > **get** **size**(): `number`
 
-Defined in: data/collection.ts:81
+Defined in: [data/collection.ts:81](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/collection.ts#L81)
 
 Number of distinct records.
 
@@ -86,7 +86,7 @@ Number of distinct records.
 
 > **get**(`id`): `V` \| `undefined`
 
-Defined in: data/collection.ts:86
+Defined in: [data/collection.ts:86](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/collection.ts#L86)
 
 Look up by exact id.
 
@@ -106,7 +106,7 @@ Look up by exact id.
 
 > **has**(`id`): `boolean`
 
-Defined in: data/collection.ts:92
+Defined in: [data/collection.ts:92](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/collection.ts#L92)
 
 Whether a record with this exact id exists.
 
@@ -126,7 +126,7 @@ Whether a record with this exact id exists.
 
 > **find**(`query`): `V` \| `undefined`
 
-Defined in: data/collection.ts:106
+Defined in: [data/collection.ts:106](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/collection.ts#L106)
 
 Find one record by id or name. Name matching is diacritic- and
 punctuation-insensitive (see [normalizeName](../functions/normalizeName.md)), trying, in order:
@@ -156,7 +156,7 @@ units.find("Kharn"); // resolves "Khârn the Betrayer"
 
 > **findAll**(`query`): `V`[]
 
-Defined in: data/collection.ts:116
+Defined in: [data/collection.ts:116](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/collection.ts#L116)
 
 All records matching a query, by the same rules as [find](#find). An exact id
 match returns just that record; otherwise every normalized-name-exact match
@@ -179,7 +179,7 @@ to surface (rather than silently collapse) names shared across factions.
 
 > **byFaction**(`factionId`): `V`[]
 
-Defined in: data/collection.ts:131
+Defined in: [data/collection.ts:131](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/collection.ts#L131)
 
 All records belonging to a faction id (empty if the type has no faction).
 
@@ -199,7 +199,7 @@ All records belonging to a faction id (empty if the type has no faction).
 
 > **\[iterator\]**(): `Iterator`\<`V`\>
 
-Defined in: data/collection.ts:135
+Defined in: [data/collection.ts:135](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/collection.ts#L135)
 
 #### Returns
 

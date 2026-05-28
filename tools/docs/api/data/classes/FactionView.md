@@ -6,7 +6,7 @@
 
 # Class: FactionView
 
-Defined in: data/entities.ts:108
+Defined in: [data/entities.ts:262](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/entities.ts#L262)
 
 A faction, linked to its units and the records scoped to it.
 
@@ -16,7 +16,7 @@ A faction, linked to its units and the records scoped to it.
 
 > **new FactionView**(`raw`, `ds`): `FactionView`
 
-Defined in: data/entities.ts:109
+Defined in: [data/entities.ts:263](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/entities.ts#L263)
 
 #### Parameters
 
@@ -40,7 +40,7 @@ The full generated `Faction` record.
 
 > `readonly` **raw**: [`Faction`](../../generated/interfaces/Faction.md)
 
-Defined in: data/entities.ts:111
+Defined in: [data/entities.ts:265](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/entities.ts#L265)
 
 The full generated `Faction` record.
 
@@ -52,7 +52,7 @@ The full generated `Faction` record.
 
 > **get** **id**(): `string`
 
-Defined in: data/entities.ts:115
+Defined in: [data/entities.ts:269](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/entities.ts#L269)
 
 ##### Returns
 
@@ -66,7 +66,7 @@ Defined in: data/entities.ts:115
 
 > **get** **name**(): `string`
 
-Defined in: data/entities.ts:119
+Defined in: [data/entities.ts:273](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/entities.ts#L273)
 
 ##### Returns
 
@@ -80,7 +80,7 @@ Defined in: data/entities.ts:119
 
 > **get** **units**(): [`UnitView`](UnitView.md)[]
 
-Defined in: data/entities.ts:124
+Defined in: [data/entities.ts:278](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/entities.ts#L278)
 
 Units whose `faction_id` is this faction (may be empty for successors).
 
@@ -96,7 +96,7 @@ Units whose `faction_id` is this faction (may be empty for successors).
 
 > **get** **abilities**(): [`AbilityView`](AbilityView.md)[]
 
-Defined in: data/entities.ts:129
+Defined in: [data/entities.ts:283](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/entities.ts#L283)
 
 Faction-scoped abilities (abilities whose `faction_id` is this faction).
 
@@ -112,7 +112,7 @@ Faction-scoped abilities (abilities whose `faction_id` is this faction).
 
 > **get** **weapons**(): [`WeaponView`](WeaponView.md)[]
 
-Defined in: data/entities.ts:134
+Defined in: [data/entities.ts:288](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/entities.ts#L288)
 
 Distinct weapons carried by this faction's units.
 

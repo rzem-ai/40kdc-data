@@ -35,18 +35,43 @@ factions.find("World Eaters")!.units.length;
 - [UnitView](classes/UnitView.md)
 - [AbilityView](classes/AbilityView.md)
 - [WeaponView](classes/WeaponView.md)
+- [WeaponKeywordView](classes/WeaponKeywordView.md)
 - [FactionView](classes/FactionView.md)
 
 ## Interfaces
 
+- [HasBuffs](interfaces/HasBuffs.md)
 - [CollectionConfig](interfaces/CollectionConfig.md)
 - [RawData](interfaces/RawData.md)
+
+## Type Aliases
+
+- [EligibleAbilitySource](type-aliases/EligibleAbilitySource.md)
+- [EligibilityInput](type-aliases/EligibilityInput.md)
+- [EligibleAbility](type-aliases/EligibleAbility.md)
+- [BuffSource](type-aliases/BuffSource.md)
+- [WeaponKeywordRef](type-aliases/WeaponKeywordRef.md)
+- [BuffContribution](type-aliases/BuffContribution.md)
+- [BuffApplicability](type-aliases/BuffApplicability.md)
+- [Buff](type-aliases/Buff.md)
+- [EngineContext](type-aliases/EngineContext.md)
+- [ResolveContext](type-aliases/ResolveContext.md)
+- [ResolvedModifiers](type-aliases/ResolvedModifiers.md)
+- [AttackProfileRef](type-aliases/AttackProfileRef.md)
+- [TargetProfileRef](type-aliases/TargetProfileRef.md)
+- [Stage](type-aliases/Stage.md)
+- [EngineInput](type-aliases/EngineInput.md)
+- [EngineOutput](type-aliases/EngineOutput.md)
+- [UnsupportedFragment](type-aliases/UnsupportedFragment.md)
+- [EffectTranslation](type-aliases/EffectTranslation.md)
+- [TranslationPerspective](type-aliases/TranslationPerspective.md)
 
 ## Variables
 
 - [dataset](variables/dataset.md)
 - [units](variables/units.md)
 - [weapons](variables/weapons.md)
+- [weaponKeywords](variables/weaponKeywords.md)
 - [factions](variables/factions.md)
 - [abilities](variables/abilities.md)
 - [detachments](variables/detachments.md)
@@ -62,5 +87,14 @@ factions.find("World Eaters")!.units.length;
 
 ## Functions
 
+- [resolveEligibleAbilities](functions/resolveEligibleAbilities.md)
+- [resolveBuffs](functions/resolveBuffs.md)
+- [crunch](functions/crunch.md)
+- [effectToBuffs](functions/effectToBuffs.md)
+- [parseKeywordGrant](functions/parseKeywordGrant.md)
+- [buffsFromKeyword](functions/buffsFromKeyword.md)
+- [getBuffs](functions/getBuffs.md)
 - [normalizeName](functions/normalizeName.md)
+- [resolveRosterUnit](functions/resolveRosterUnit.md)
+- [resolveRosterWargear](functions/resolveRosterWargear.md)
 - [emptyRawData](functions/emptyRawData.md)

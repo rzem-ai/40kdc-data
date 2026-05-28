@@ -6,7 +6,7 @@
 
 # Class: AbilityView
 
-Defined in: data/entities.ts:58
+Defined in: [data/entities.ts:81](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/entities.ts#L81)
 
 An ability, linked to the phases it acts in and the units that have it.
 
@@ -25,7 +25,7 @@ units.find("Kharn")!.abilities
 
 > **new AbilityView**(`raw`, `ds`): `AbilityView`
 
-Defined in: data/entities.ts:59
+Defined in: [data/entities.ts:82](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/entities.ts#L82)
 
 #### Parameters
 
@@ -49,7 +49,7 @@ The full generated ability record.
 
 > `readonly` **raw**: [`AbilityDSLEntry`](../../generated/interfaces/AbilityDSLEntry.md)
 
-Defined in: data/entities.ts:61
+Defined in: [data/entities.ts:84](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/entities.ts#L84)
 
 The full generated ability record.
 
@@ -61,7 +61,7 @@ The full generated ability record.
 
 > **get** **id**(): `string`
 
-Defined in: data/entities.ts:66
+Defined in: [data/entities.ts:89](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/entities.ts#L89)
 
 The ability's id (`ability_id` in the raw record).
 
@@ -77,7 +77,7 @@ The ability's id (`ability_id` in the raw record).
 
 > **get** **name**(): `string`
 
-Defined in: data/entities.ts:70
+Defined in: [data/entities.ts:93](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/entities.ts#L93)
 
 ##### Returns
 
@@ -91,7 +91,7 @@ Defined in: data/entities.ts:70
 
 > **get** **phases**(): [`Phase`](../../generated/type-aliases/Phase.md)[]
 
-Defined in: data/entities.ts:75
+Defined in: [data/entities.ts:98](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/entities.ts#L98)
 
 Game phases this ability acts in, unioned across its phase-mappings.
 
@@ -107,10 +107,82 @@ Game phases this ability acts in, unioned across its phase-mappings.
 
 > **get** **units**(): [`UnitView`](UnitView.md)[]
 
-Defined in: data/entities.ts:80
+Defined in: [data/entities.ts:103](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/entities.ts#L103)
 
 Units that list this ability in their `ability_ids`.
 
 ##### Returns
 
 [`UnitView`](UnitView.md)[]
+
+## Methods
+
+### getBuffs()
+
+> **getBuffs**(`source`, `context?`, `perspective?`): [`Buff`](../type-aliases/Buff.md)[]
+
+Defined in: [data/entities.ts:116](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/entities.ts#L116)
+
+Buff stack this ability contributes against `context`, with provenance
+tagged via `source` (the caller knows whether this ability is being read
+as army, detachment, unit, leader, etc.). DSL branches the buff layer
+can't auto-apply are dropped here; call [describeBuffs](#describebuffs) if you
+also want the diagnostics. `perspective` defaults to `"attacker"`; pass
+`"target"` to translate the ability as a defensive buff (FNP, T/Sv
+stat-mods, save rerolls, incoming hit penalties).
+
+#### Parameters
+
+##### source
+
+[`BuffSource`](../type-aliases/BuffSource.md)
+
+##### context?
+
+[`EngineContext`](../type-aliases/EngineContext.md)
+
+##### perspective?
+
+[`TranslationPerspective`](../type-aliases/TranslationPerspective.md) = `"attacker"`
+
+#### Returns
+
+[`Buff`](../type-aliases/Buff.md)[]
+
+***
+
+### describeBuffs()
+
+> **describeBuffs**(`source`, `context?`, `perspective?`): `object`
+
+Defined in: [data/entities.ts:129](https://github.com/Tabletop-Developer-Consortium/40kdc-data/blob/c14295da9ec1432e1911fa2926d4bc9c0c5a796f/tools/src/data/entities.ts#L129)
+
+Full DSL→Buff translation, including the `unsupported` list of effect
+fragments the buff layer can't model. The SPA renders these as warnings
+so users see which abilities have effects that need a manual toggle.
+
+#### Parameters
+
+##### source
+
+[`BuffSource`](../type-aliases/BuffSource.md)
+
+##### context?
+
+[`EngineContext`](../type-aliases/EngineContext.md)
+
+##### perspective?
+
+[`TranslationPerspective`](../type-aliases/TranslationPerspective.md) = `"attacker"`
+
+#### Returns
+
+`object`
+
+##### applied
+
+> **applied**: [`Buff`](../type-aliases/Buff.md)[]
+
+##### unsupported
+
+> **unsupported**: [`UnsupportedFragment`](../type-aliases/UnsupportedFragment.md)[]
