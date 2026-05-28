@@ -81,6 +81,7 @@ fn codegen() -> Result<()> {
 const FILE_TO_COLLECTION: &[(&str, &str)] = &[
     ("units", "units"),
     ("weapons", "weapons"),
+    ("weapon-keywords", "weapon_keywords"),
     ("factions", "factions"),
     ("abilities", "abilities"),
     ("phase-mappings", "phase_mappings"),

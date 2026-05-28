@@ -5,9 +5,21 @@ description = "Warhammer 40K dataset for the 40kdc-data schema layer: generated 
 readme = "README.md"
 keywords = ["warhammer", "40k", "wargaming", "schema", "serde"]
 categories = ["data-structures", "game-development"]
+documentation = "https://docs.rs/wh40kdc"
 edition.workspace = true
 license.workspace = true
 repository.workspace = true
+homepage.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+# Keep the published tarball lean: tests/ aren't useful to downstream crates.
+# (schemas/bundled.schema.json must stay in — lib.rs embeds it via include_str!
+# as the public `BUNDLED_SCHEMA` constant.)
+exclude = ["tests/**"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
 
 [features]
 default = ["bundled-data", "import", "export"]

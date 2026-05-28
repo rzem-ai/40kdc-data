@@ -15,6 +15,7 @@ use crate::generated::{
     Ability, DeploymentPattern, Detachment, Enhancement, Faction, ForceDisposition, GameVersion,
     InteractionFlag, LeaderAttachment, Mission, MissionMatchup, Phase, PhaseMapping, ResourcePool,
     SecondaryCard, Stratagem, TimingFlag, Unit, UnitComposition, WargearOption, Weapon,
+    WeaponKeyword,
 };
 
 use super::collection::Collection;
@@ -33,6 +34,9 @@ pub struct RawData {
     pub units: Vec<Unit>,
     #[serde(default)]
     pub weapons: Vec<Weapon>,
+    /// Catalog of weapon keywords (Lethal Hits, Sustained Hits N, Anti-X N+, ...).
+    #[serde(default)]
+    pub weapon_keywords: Vec<WeaponKeyword>,
     #[serde(default)]
     pub factions: Vec<Faction>,
     /// Community-authored ability mechanics (keyed on `ability_id`, not `id`).
@@ -104,6 +108,7 @@ pub struct Dataset {
     // Richly-linked collections.
     pub units: Collection<Unit>,
     pub weapons: Collection<Weapon>,
+    pub weapon_keywords: Collection<WeaponKeyword>,
     pub factions: Collection<Faction>,
     pub abilities: Collection<Ability>,
 
@@ -171,6 +176,11 @@ impl Dataset {
             |w| Some(w.name.as_str()),
             |_| None,
             |w| w.id.to_string(),
+        );
+        let weapon_keywords = id_name_collection(
+            raw.weapon_keywords,
+            |k| k.id.to_string(),
+            |k| Some(k.name.as_str()),
         );
         let factions = Collection::build(
             raw.factions,
@@ -243,6 +253,7 @@ impl Dataset {
         Dataset {
             units,
             weapons,
+            weapon_keywords,
             factions,
             abilities,
             detachments,

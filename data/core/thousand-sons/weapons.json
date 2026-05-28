@@ -27,7 +27,9 @@
           "BS": 3
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -52,7 +54,12 @@
           "BS": 3
         },
         "keywords": [
-          "Melta 2"
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -77,8 +84,12 @@
           "BS": 3
         },
         "keywords": [
-          "Blast",
-          "Hazardous"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "hazardous"
+          }
         ]
       }
     ],
@@ -103,7 +114,9 @@
           "BS": 3
         },
         "keywords": [
-          "Twin-linked"
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -128,8 +141,15 @@
           "BS": 3
         },
         "keywords": [
-          "Sustained Hits 1",
-          "Twin-linked"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -154,7 +174,9 @@
           "BS": 3
         },
         "keywords": [
-          "Twin-linked"
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -179,7 +201,12 @@
           "BS": 3
         },
         "keywords": [
-          "Rapid Fire 2"
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -204,8 +231,12 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -322,8 +353,12 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       },
       {
@@ -337,7 +372,9 @@
           "BS": 3
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       },
       {
@@ -351,7 +388,9 @@
           "BS": 3
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -445,9 +484,22 @@
           "BS": 4
         },
         "keywords": [
-          "Anti-infantry 4+",
-          "Devastating Wounds",
-          "Rapid Fire 1"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -472,7 +524,9 @@
           "BS": 3
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -520,9 +574,15 @@
           "BS": 3
         },
         "keywords": [
-          "Blast",
-          "Devastating Wounds",
-          "Psychic"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -547,7 +607,9 @@
           "WS": 3
         },
         "keywords": [
-          "Psychic"
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -595,8 +657,15 @@
           "BS": 3
         },
         "keywords": [
-          "Psychic",
-          "Sustained Hits 3"
+          {
+            "keyword_id": "psychic"
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 3
+            }
+          }
         ]
       }
     ],
@@ -621,7 +690,9 @@
           "BS": 3
         },
         "keywords": [
-          "Pistol"
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -646,7 +717,9 @@
           "WS": 3
         },
         "keywords": [
-          "Psychic"
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -694,7 +767,9 @@
           "BS": 3
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -742,8 +817,12 @@
           "BS": 2
         },
         "keywords": [
-          "Blast",
-          "Psychic"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -768,7 +847,9 @@
           "BS": 2
         },
         "keywords": [
-          "Pistol"
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -793,7 +874,9 @@
           "WS": 2
         },
         "keywords": [
-          "Psychic"
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -818,9 +901,19 @@
           "BS": 3
         },
         "keywords": [
-          "Anti-infantry 4+",
-          "Devastating Wounds",
-          "Psychic"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -845,9 +938,15 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Pistol",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "pistol"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -895,7 +994,9 @@
           "BS": 3
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -920,8 +1021,12 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -946,7 +1051,9 @@
           "WS": 3
         },
         "keywords": [
-          "Psychic"
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -994,9 +1101,15 @@
           "BS": null
         },
         "keywords": [
-          "Hazardous",
-          "Psychic",
-          "Torrent"
+          {
+            "keyword_id": "hazardous"
+          },
+          {
+            "keyword_id": "psychic"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       },
       {
@@ -1010,8 +1123,12 @@
           "BS": null
         },
         "keywords": [
-          "Psychic",
-          "Torrent"
+          {
+            "keyword_id": "psychic"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -1036,7 +1153,9 @@
           "BS": 4
         },
         "keywords": [
-          "Pistol"
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -1061,8 +1180,12 @@
           "WS": 4
         },
         "keywords": [
-          "Lance",
-          "Precision"
+          {
+            "keyword_id": "lance"
+          },
+          {
+            "keyword_id": "precision"
+          }
         ]
       }
     ],
@@ -1087,7 +1210,9 @@
           "WS": 4
         },
         "keywords": [
-          "Precision"
+          {
+            "keyword_id": "precision"
+          }
         ]
       }
     ],
@@ -1112,9 +1237,15 @@
           "BS": 4
         },
         "keywords": [
-          "Ignores Cover",
-          "Lethal Hits",
-          "Precision"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "lethal-hits"
+          },
+          {
+            "keyword_id": "precision"
+          }
         ]
       }
     ],
@@ -1162,8 +1293,12 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -1211,8 +1346,12 @@
           "BS": 2
         },
         "keywords": [
-          "Devastating Wounds",
-          "Psychic"
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -1237,9 +1376,15 @@
           "BS": 2
         },
         "keywords": [
-          "Blast",
-          "Ignores Cover",
-          "Psychic"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -1264,7 +1409,9 @@
           "WS": 2
         },
         "keywords": [
-          "Psychic"
+          {
+            "keyword_id": "psychic"
+          }
         ]
       },
       {
@@ -1278,8 +1425,12 @@
           "WS": 2
         },
         "keywords": [
-          "Devastating Wounds",
-          "Psychic"
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -1304,7 +1455,12 @@
           "BS": 3
         },
         "keywords": [
-          "Rapid Fire 2"
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -1352,7 +1508,12 @@
           "BS": 3
         },
         "keywords": [
-          "Sustained Hits 1"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -1377,7 +1538,9 @@
           "BS": 3
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -1402,8 +1565,15 @@
           "BS": 3
         },
         "keywords": [
-          "Devastating Wounds",
-          "Sustained Hits 1"
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -1428,9 +1598,15 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent",
-          "Twin-linked"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -1478,7 +1654,9 @@
           "WS": 3
         },
         "keywords": [
-          "Extra Attacks"
+          {
+            "keyword_id": "extra-attacks"
+          }
         ]
       }
     ],
@@ -1526,9 +1704,18 @@
           "BS": 2
         },
         "keywords": [
-          "Ignores Cover",
-          "Psychic",
-          "Sustained Hits 1"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "psychic"
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -1553,8 +1740,12 @@
           "WS": 2
         },
         "keywords": [
-          "Devastating Wounds",
-          "Psychic"
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "psychic"
+          }
         ]
       },
       {
@@ -1568,8 +1759,12 @@
           "WS": 2
         },
         "keywords": [
-          "Devastating Wounds",
-          "Psychic"
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -1663,7 +1858,12 @@
           "BS": 4
         },
         "keywords": [
-          "Melta 2"
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -1688,8 +1888,12 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -1760,9 +1964,15 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Psychic",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "psychic"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -1787,7 +1997,9 @@
           "WS": 2
         },
         "keywords": [
-          "Psychic"
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -1835,7 +2047,12 @@
           "BS": 3
         },
         "keywords": [
-          "Melta 2"
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -1860,7 +2077,9 @@
           "WS": 3
         },
         "keywords": [
-          "Extra Attacks"
+          {
+            "keyword_id": "extra-attacks"
+          }
         ]
       }
     ],
@@ -1908,9 +2127,15 @@
           "BS": 2
         },
         "keywords": [
-          "Blast",
-          "Devastating Wounds",
-          "Psychic"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -1935,10 +2160,26 @@
           "BS": 3
         },
         "keywords": [
-          "Anti-monster 4+",
-          "Anti-vehicle 4+",
-          "Devastating Wounds",
-          "Psychic"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Monster",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Vehicle",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -1963,7 +2204,9 @@
           "WS": 3
         },
         "keywords": [
-          "Psychic"
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -1988,7 +2231,9 @@
           "BS": 3
         },
         "keywords": [
-          "Twin-linked"
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -2036,7 +2281,9 @@
           "BS": 3
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -2107,8 +2354,12 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -2133,8 +2384,16 @@
           "WS": 3
         },
         "keywords": [
-          "Anti-fly 2+",
-          "Devastating Wounds"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Fly",
+              "threshold": 2
+            }
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],

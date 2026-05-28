@@ -47,7 +47,7 @@
       "target": "unit",
       "modifier": {
         "roll": "wound",
-        "condition": "any-fail"
+        "subset": "all-failures"
       }
     },
     "scope": {
@@ -248,7 +248,7 @@
       "target": "unit",
       "modifier": {
         "roll": "charge",
-        "condition": "any-fail"
+        "subset": "all-failures"
       }
     },
     "scope": {
@@ -334,8 +334,8 @@
       "target": "self",
       "modifier": {
         "roll": "hit",
-        "condition": "any-fail",
-        "uses": 1
+        "uses": 1,
+        "subset": "all-failures"
       }
     },
     "scope": {
@@ -466,7 +466,7 @@
       "target": "unit",
       "modifier": {
         "roll": "wound",
-        "condition": "any-fail"
+        "subset": "all-failures"
       }
     },
     "scope": {
@@ -566,7 +566,7 @@
         "target": "unit",
         "modifier": {
           "roll": "hit",
-          "condition": "natural-1"
+          "subset": "ones"
         }
       }
     },
@@ -699,7 +699,7 @@
       "target": "unit",
       "modifier": {
         "roll": "hit",
-        "condition": "any-fail"
+        "subset": "all-failures"
       }
     },
     "scope": {
@@ -924,7 +924,7 @@
         "target": "unit",
         "modifier": {
           "roll": "hit",
-          "condition": "natural-1"
+          "subset": "ones"
         }
       }
     },

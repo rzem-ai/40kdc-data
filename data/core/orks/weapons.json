@@ -15,8 +15,12 @@
           "BS": 4
         },
         "keywords": [
-          "Precision",
-          "Psychic"
+          {
+            "keyword_id": "precision"
+          },
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -41,7 +45,9 @@
           "WS": 3
         },
         "keywords": [
-          "Psychic"
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -66,7 +72,9 @@
           "BS": 5
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -114,8 +122,15 @@
           "BS": 5
         },
         "keywords": [
-          "Rapid Fire 2",
-          "Twin-linked"
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 2
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -163,9 +178,18 @@
           "BS": 5
         },
         "keywords": [
-          "Assault",
-          "Rapid Fire 2",
-          "Twin-linked"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 2
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -190,7 +214,9 @@
           "BS": 5
         },
         "keywords": [
-          "Pistol"
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -307,8 +333,12 @@
           "BS": 5
         },
         "keywords": [
-          "Blast",
-          "Twin-linked"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -333,7 +363,9 @@
           "BS": 5
         },
         "keywords": [
-          "Hazardous"
+          {
+            "keyword_id": "hazardous"
+          }
         ]
       }
     ],
@@ -381,9 +413,15 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent",
-          "Twin-linked"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -408,7 +446,9 @@
           "BS": 4
         },
         "keywords": [
-          "Pistol"
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -433,8 +473,15 @@
           "BS": 5
         },
         "keywords": [
-          "Assault",
-          "Rapid Fire 3"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 3
+            }
+          }
         ]
       }
     ],
@@ -482,9 +529,19 @@
           "WS": 3
         },
         "keywords": [
-          "Anti-infantry 4+",
-          "Extra Attacks",
-          "Precision"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "extra-attacks"
+          },
+          {
+            "keyword_id": "precision"
+          }
         ]
       }
     ],
@@ -509,8 +566,15 @@
           "BS": 4
         },
         "keywords": [
-          "Devastating Wounds",
-          "Rapid Fire 2"
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -535,8 +599,12 @@
           "BS": 4
         },
         "keywords": [
-          "Blast",
-          "Ignores Cover"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "ignores-cover"
+          }
         ]
       }
     ],
@@ -561,7 +629,9 @@
           "BS": 4
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -586,8 +656,12 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -635,7 +709,12 @@
           "BS": 5
         },
         "keywords": [
-          "Rapid Fire 2"
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -660,7 +739,9 @@
           "BS": 5
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -685,8 +766,15 @@
           "BS": 6
         },
         "keywords": [
-          "Heavy",
-          "Rapid Fire 1"
+          {
+            "keyword_id": "heavy"
+          },
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -711,8 +799,16 @@
           "BS": 5
         },
         "keywords": [
-          "Anti-fly 3+",
-          "Devastating Wounds"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Fly",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -783,7 +879,9 @@
           "BS": 4
         },
         "keywords": [
-          "Assault"
+          {
+            "keyword_id": "assault"
+          }
         ]
       }
     ],
@@ -808,9 +906,23 @@
           "BS": 5
         },
         "keywords": [
-          "Anti-monster 4+",
-          "Anti-vehicle 4+",
-          "Assault"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Monster",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Vehicle",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "assault"
+          }
         ]
       },
       {
@@ -824,9 +936,23 @@
           "WS": 3
         },
         "keywords": [
-          "Anti-monster 4+",
-          "Anti-vehicle 4+",
-          "Lance"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Monster",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Vehicle",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "lance"
+          }
         ]
       }
     ],
@@ -851,7 +977,9 @@
           "WS": 4
         },
         "keywords": [
-          "Extra Attacks"
+          {
+            "keyword_id": "extra-attacks"
+          }
         ]
       }
     ],
@@ -876,8 +1004,20 @@
           "WS": 3
         },
         "keywords": [
-          "Anti-monster 4+",
-          "Anti-vehicle 4+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Monster",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Vehicle",
+              "threshold": 4
+            }
+          }
         ]
       }
     ],
@@ -902,7 +1042,12 @@
           "BS": 4
         },
         "keywords": [
-          "Rapid Fire 2"
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -950,7 +1095,9 @@
           "BS": 4
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -975,9 +1122,15 @@
           "BS": 4
         },
         "keywords": [
-          "Blast",
-          "Hazardous",
-          "Twin-linked"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "hazardous"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -1002,8 +1155,12 @@
           "BS": 5
         },
         "keywords": [
-          "Blast",
-          "Twin-linked"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -1028,9 +1185,21 @@
           "BS": 4
         },
         "keywords": [
-          "Rapid Fire 2",
-          "Sustained Hits 1",
-          "Twin-linked"
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 2
+            }
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -1090,7 +1259,9 @@
           "BS": 5
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -1138,7 +1309,13 @@
           "BS": 5
         },
         "keywords": [
-          "Anti-vehicle 4+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Vehicle",
+              "threshold": 4
+            }
+          }
         ]
       }
     ],
@@ -1163,8 +1340,12 @@
           "BS": 5
         },
         "keywords": [
-          "Blast",
-          "Indirect Fire"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "indirect-fire"
+          }
         ]
       }
     ],
@@ -1235,7 +1416,9 @@
           "WS": 3
         },
         "keywords": [
-          "Extra Attacks"
+          {
+            "keyword_id": "extra-attacks"
+          }
         ]
       }
     ],
@@ -1260,7 +1443,9 @@
           "WS": 4
         },
         "keywords": [
-          "Extra Attacks"
+          {
+            "keyword_id": "extra-attacks"
+          }
         ]
       }
     ],
@@ -1285,7 +1470,9 @@
           "BS": 4
         },
         "keywords": [
-          "Pistol"
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -1310,8 +1497,12 @@
           "WS": 2
         },
         "keywords": [
-          "Precision",
-          "Twin-linked"
+          {
+            "keyword_id": "precision"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -1336,8 +1527,12 @@
           "BS": 5
         },
         "keywords": [
-          "Blast",
-          "Hazardous"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "hazardous"
+          }
         ]
       }
     ],
@@ -1397,7 +1592,12 @@
           "BS": 5
         },
         "keywords": [
-          "Rapid Fire 4"
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 4
+            }
+          }
         ]
       }
     ],
@@ -1457,7 +1657,9 @@
           "WS": 4
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -1482,7 +1684,9 @@
           "BS": 5
         },
         "keywords": [
-          "Pistol"
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -1507,8 +1711,20 @@
           "WS": 3
         },
         "keywords": [
-          "Anti-monster 4+",
-          "Anti-vehicle 4+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Monster",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Vehicle",
+              "threshold": 4
+            }
+          }
         ]
       }
     ],
@@ -1556,9 +1772,23 @@
           "WS": 3
         },
         "keywords": [
-          "Anti-monster 4+",
-          "Anti-vehicle 4+",
-          "Twin-linked"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Monster",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Vehicle",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -1583,10 +1813,26 @@
           "WS": 3
         },
         "keywords": [
-          "Anti-monster 4+",
-          "Anti-vehicle 4+",
-          "Devastating Wounds",
-          "Hazardous"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Monster",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Vehicle",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "hazardous"
+          }
         ]
       }
     ],
@@ -1611,7 +1857,9 @@
           "BS": 5
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -1636,7 +1884,12 @@
           "BS": 5
         },
         "keywords": [
-          "Sustained Hits 1"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -1661,7 +1914,9 @@
           "BS": 5
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -1721,7 +1976,12 @@
           "BS": 5
         },
         "keywords": [
-          "Sustained Hits D3"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": "D3"
+            }
+          }
         ]
       },
       {
@@ -1735,8 +1995,15 @@
           "BS": 5
         },
         "keywords": [
-          "Blast",
-          "Sustained Hits D3"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": "D3"
+            }
+          }
         ]
       }
     ],
@@ -1784,7 +2051,12 @@
           "BS": 5
         },
         "keywords": [
-          "Rapid Fire 2"
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -1809,8 +2081,12 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -1881,9 +2157,22 @@
           "BS": 5
         },
         "keywords": [
-          "Anti-infantry 4+",
-          "Devastating Wounds",
-          "Rapid Fire 1"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -1908,7 +2197,12 @@
           "BS": 5
         },
         "keywords": [
-          "Rapid Fire 1"
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -1956,8 +2250,20 @@
           "WS": 4
         },
         "keywords": [
-          "Anti-monster 4+",
-          "Anti-vehicle 4+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Monster",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Vehicle",
+              "threshold": 4
+            }
+          }
         ]
       }
     ],
@@ -1982,7 +2288,12 @@
           "BS": 5
         },
         "keywords": [
-          "Rapid Fire 10"
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 10
+            }
+          }
         ]
       }
     ],
@@ -2042,7 +2353,9 @@
           "BS": 4
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -2067,8 +2380,12 @@
           "BS": 4
         },
         "keywords": [
-          "Blast",
-          "Bubblechukka"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "bubblechukka"
+          }
         ]
       },
       {
@@ -2082,8 +2399,12 @@
           "BS": 4
         },
         "keywords": [
-          "Blast",
-          "Bubblechukka"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "bubblechukka"
+          }
         ]
       },
       {
@@ -2097,8 +2418,12 @@
           "BS": 4
         },
         "keywords": [
-          "Blast",
-          "Bubblechukka"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "bubblechukka"
+          }
         ]
       }
     ],
@@ -2123,8 +2448,12 @@
           "BS": 4
         },
         "keywords": [
-          "Blast",
-          "Hazardous"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "hazardous"
+          }
         ]
       }
     ],
@@ -2149,8 +2478,16 @@
           "BS": 4
         },
         "keywords": [
-          "Anti-fly 2+",
-          "Devastating Wounds"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Fly",
+              "threshold": 2
+            }
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -2198,8 +2535,15 @@
           "BS": 5
         },
         "keywords": [
-          "Heavy",
-          "Sustained Hits 1"
+          {
+            "keyword_id": "heavy"
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -2224,9 +2568,21 @@
           "BS": 5
         },
         "keywords": [
-          "Rapid Fire 2",
-          "Sustained Hits 1",
-          "Twin-linked"
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 2
+            }
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -2274,7 +2630,9 @@
           "WS": 3
         },
         "keywords": [
-          "Dead Choppy"
+          {
+            "keyword_id": "dead-choppy"
+          }
         ]
       }
     ],
@@ -2299,7 +2657,9 @@
           "BS": 5
         },
         "keywords": [
-          "Psychic"
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -2324,7 +2684,12 @@
           "BS": 4
         },
         "keywords": [
-          "Rapid Fire 1"
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -2349,8 +2714,20 @@
           "WS": 2
         },
         "keywords": [
-          "Anti-monster 4+",
-          "Anti-vehicle 4+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Monster",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Vehicle",
+              "threshold": 4
+            }
+          }
         ]
       }
     ],
@@ -2375,8 +2752,20 @@
           "WS": 3
         },
         "keywords": [
-          "Anti-monster 4+",
-          "Anti-vehicle 4+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Monster",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Vehicle",
+              "threshold": 4
+            }
+          }
         ]
       }
     ],
@@ -2401,7 +2790,9 @@
           "BS": 5
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -2449,7 +2840,9 @@
           "BS": 5
         },
         "keywords": [
-          "Assault"
+          {
+            "keyword_id": "assault"
+          }
         ]
       }
     ],
@@ -2474,9 +2867,15 @@
           "BS": 5
         },
         "keywords": [
-          "Blast",
-          "Ignores Cover",
-          "Indirect Fire"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "indirect-fire"
+          }
         ]
       }
     ],
@@ -2524,7 +2923,9 @@
           "BS": 5
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -2618,7 +3019,9 @@
           "BS": 5
         },
         "keywords": [
-          "Assault"
+          {
+            "keyword_id": "assault"
+          }
         ]
       }
     ],
@@ -2643,8 +3046,12 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       },
       {
@@ -2658,7 +3065,12 @@
           "BS": 5
         },
         "keywords": [
-          "Melta 2"
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -2706,8 +3118,12 @@
           "BS": 5
         },
         "keywords": [
-          "Blast",
-          "Hazardous"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "hazardous"
+          }
         ]
       }
     ],
@@ -2778,9 +3194,15 @@
           "BS": 3
         },
         "keywords": [
-          "Devastating Wounds",
-          "Hazardous",
-          "Precision"
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "hazardous"
+          },
+          {
+            "keyword_id": "precision"
+          }
         ]
       }
     ],
@@ -2805,7 +3227,9 @@
           "BS": 5
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -2830,8 +3254,12 @@
           "WS": 3
         },
         "keywords": [
-          "Devastating Wounds",
-          "Extra Attacks"
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "extra-attacks"
+          }
         ]
       }
     ],
@@ -2856,8 +3284,20 @@
           "WS": 2
         },
         "keywords": [
-          "Anti-monster 4+",
-          "Anti-vehicle 4+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Monster",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Vehicle",
+              "threshold": 4
+            }
+          }
         ]
       }
     ],
@@ -2882,8 +3322,16 @@
           "BS": 5
         },
         "keywords": [
-          "Anti-monster 4+",
-          "Pistol"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Monster",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -2977,8 +3425,12 @@
           "BS": 5
         },
         "keywords": [
-          "Blast",
-          "Heavy"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "heavy"
+          }
         ]
       }
     ],
@@ -3026,8 +3478,12 @@
           "BS": 5
         },
         "keywords": [
-          "Blast",
-          "Indirect Fire"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "indirect-fire"
+          }
         ]
       }
     ],
@@ -3052,9 +3508,23 @@
           "BS": 5
         },
         "keywords": [
-          "Anti-monster 2+",
-          "Anti-vehicle 2+",
-          "Snagged"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Monster",
+              "threshold": 2
+            }
+          },
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Vehicle",
+              "threshold": 2
+            }
+          },
+          {
+            "keyword_id": "snagged"
+          }
         ]
       }
     ],
@@ -3079,9 +3549,15 @@
           "BS": null
         },
         "keywords": [
-          "Hazardous",
-          "Psychic",
-          "Torrent"
+          {
+            "keyword_id": "hazardous"
+          },
+          {
+            "keyword_id": "psychic"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -3106,9 +3582,23 @@
           "WS": 3
         },
         "keywords": [
-          "Anti-monster 4+",
-          "Anti-vehicle 4+",
-          "Extra Attacks"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Monster",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Vehicle",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "extra-attacks"
+          }
         ]
       }
     ],
@@ -3133,8 +3623,12 @@
           "WS": 4
         },
         "keywords": [
-          "Extra Attacks",
-          "Lance"
+          {
+            "keyword_id": "extra-attacks"
+          },
+          {
+            "keyword_id": "lance"
+          }
         ]
       }
     ],
@@ -3205,8 +3699,12 @@
           "WS": 4
         },
         "keywords": [
-          "Devastating Wounds",
-          "Extra Attacks"
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "extra-attacks"
+          }
         ]
       }
     ],
@@ -3254,7 +3752,9 @@
           "WS": 4
         },
         "keywords": [
-          "Twin-linked"
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -3279,9 +3779,21 @@
           "BS": 5
         },
         "keywords": [
-          "Assault",
-          "Rapid Fire 4",
-          "Sustained Hits 1"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 4
+            }
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -3341,7 +3853,9 @@
           "BS": 5
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -3366,7 +3880,9 @@
           "BS": 5
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -3403,7 +3919,9 @@
           "WS": 3
         },
         "keywords": [
-          "Lance"
+          {
+            "keyword_id": "lance"
+          }
         ]
       }
     ],
@@ -3428,8 +3946,12 @@
           "BS": 5
         },
         "keywords": [
-          "Blast",
-          "Ignores Cover"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "ignores-cover"
+          }
         ]
       }
     ],
@@ -3454,8 +3976,12 @@
           "BS": 5
         },
         "keywords": [
-          "Pistol",
-          "Twin-linked"
+          {
+            "keyword_id": "pistol"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -3526,7 +4052,9 @@
           "WS": 4
         },
         "keywords": [
-          "Extra Attacks"
+          {
+            "keyword_id": "extra-attacks"
+          }
         ]
       }
     ],
@@ -3551,7 +4079,12 @@
           "BS": 5
         },
         "keywords": [
-          "rapid fire 1"
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -3599,8 +4132,12 @@
           "BS": null
         },
         "keywords": [
-          "ignores cover",
-          "torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -3625,7 +4162,9 @@
           "BS": 5
         },
         "keywords": [
-          "hazardous"
+          {
+            "keyword_id": "hazardous"
+          }
         ]
       }
     ],
@@ -3650,7 +4189,9 @@
           "BS": 5
         },
         "keywords": [
-          "blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -3675,7 +4216,12 @@
           "BS": 5
         },
         "keywords": [
-          "rapid fire 2"
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -3700,8 +4246,15 @@
           "BS": 5
         },
         "keywords": [
-          "rapid fire 2",
-          "twin-linked"
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 2
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -3726,9 +4279,15 @@
           "BS": 4
         },
         "keywords": [
-          "blast",
-          "indirect fire",
-          "one shot"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "indirect-fire"
+          },
+          {
+            "keyword_id": "one-shot"
+          }
         ]
       }
     ],
@@ -3765,7 +4324,9 @@
           "BS": 5
         },
         "keywords": [
-          "blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -3813,7 +4374,13 @@
           "BS": 5
         },
         "keywords": [
-          "anti-vehicle 3+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Vehicle",
+              "threshold": 3
+            }
+          }
         ]
       }
     ],
@@ -3838,7 +4405,9 @@
           "WS": 3
         },
         "keywords": [
-          "extra attacks"
+          {
+            "keyword_id": "extra-attacks"
+          }
         ]
       }
     ],
@@ -3863,7 +4432,9 @@
           "WS": 4
         },
         "keywords": [
-          "extra attacks"
+          {
+            "keyword_id": "extra-attacks"
+          }
         ]
       }
     ],
@@ -3888,7 +4459,9 @@
           "BS": 5
         },
         "keywords": [
-          "blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       },
       {
@@ -3902,7 +4475,9 @@
           "BS": 5
         },
         "keywords": [
-          "heavy"
+          {
+            "keyword_id": "heavy"
+          }
         ]
       }
     ],
@@ -3962,7 +4537,9 @@
           "BS": 5
         },
         "keywords": [
-          "blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -3987,7 +4564,9 @@
           "BS": 5
         },
         "keywords": [
-          "devastating wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -4012,8 +4591,12 @@
           "BS": 5
         },
         "keywords": [
-          "blast",
-          "indirect fire"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "indirect-fire"
+          }
         ]
       }
     ],
@@ -4038,8 +4621,12 @@
           "BS": 5
         },
         "keywords": [
-          "blast",
-          "twin-linked"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -4064,7 +4651,9 @@
           "BS": 5
         },
         "keywords": [
-          "pistol"
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -4089,8 +4678,12 @@
           "BS": 4
         },
         "keywords": [
-          "devastating wounds",
-          "pistol"
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -4115,7 +4708,9 @@
           "WS": 4
         },
         "keywords": [
-          "devastating wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -4140,8 +4735,12 @@
           "BS": 5
         },
         "keywords": [
-          "blast",
-          "hazardous"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "hazardous"
+          }
         ]
       }
     ],
@@ -4166,8 +4765,12 @@
           "BS": 5
         },
         "keywords": [
-          "blast",
-          "heavy"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "heavy"
+          }
         ]
       }
     ],
@@ -4192,9 +4795,22 @@
           "BS": 5
         },
         "keywords": [
-          "anti-infantry 4+",
-          "devastating wounds",
-          "rapid fire 1"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -4219,9 +4835,18 @@
           "BS": 5
         },
         "keywords": [
-          "assault",
-          "rapid fire 2",
-          "twin-linked"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 2
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -4269,9 +4894,19 @@
           "WS": 3
         },
         "keywords": [
-          "anti-infantry 4+",
-          "extra attacks",
-          "precision"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "extra-attacks"
+          },
+          {
+            "keyword_id": "precision"
+          }
         ]
       }
     ],
@@ -4296,7 +4931,9 @@
           "BS": 6
         },
         "keywords": [
-          "heavy"
+          {
+            "keyword_id": "heavy"
+          }
         ]
       },
       {
@@ -4310,8 +4947,12 @@
           "BS": 6
         },
         "keywords": [
-          "blast",
-          "heavy"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "heavy"
+          }
         ]
       }
     ],
@@ -4336,8 +4977,12 @@
           "BS": 6
         },
         "keywords": [
-          "devastating wounds",
-          "heavy"
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "heavy"
+          }
         ]
       }
     ],
@@ -4362,9 +5007,15 @@
           "BS": 6
         },
         "keywords": [
-          "blast",
-          "heavy",
-          "indirect fire"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "heavy"
+          },
+          {
+            "keyword_id": "indirect-fire"
+          }
         ]
       }
     ],
@@ -4412,7 +5063,9 @@
           "BS": 5
         },
         "keywords": [
-          "blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -4460,9 +5113,15 @@
           "BS": 4
         },
         "keywords": [
-          "blast",
-          "indirect fire",
-          "one shot"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "indirect-fire"
+          },
+          {
+            "keyword_id": "one-shot"
+          }
         ]
       }
     ],

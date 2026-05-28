@@ -15,9 +15,19 @@
           "BS": 3
         },
         "keywords": [
-          "Anti-infantry 3+",
-          "Assault",
-          "Pistol"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -42,8 +52,16 @@
           "BS": 3
         },
         "keywords": [
-          "Anti-infantry 3+",
-          "Assault"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "assault"
+          }
         ]
       }
     ],
@@ -68,7 +86,9 @@
           "BS": 3
         },
         "keywords": [
-          "Assault"
+          {
+            "keyword_id": "assault"
+          }
         ]
       }
     ],
@@ -93,8 +113,15 @@
           "BS": 3
         },
         "keywords": [
-          "Assault",
-          "Melta 3"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 3
+            }
+          }
         ]
       }
     ],
@@ -119,7 +146,9 @@
           "WS": 3
         },
         "keywords": [
-          "Lance"
+          {
+            "keyword_id": "lance"
+          }
         ]
       }
     ],
@@ -144,8 +173,12 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -170,8 +203,12 @@
           "BS": 3
         },
         "keywords": [
-          "Blast",
-          "Ignores Cover"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "ignores-cover"
+          }
         ]
       }
     ],
@@ -196,7 +233,13 @@
           "WS": 3
         },
         "keywords": [
-          "Anti-infantry 2+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 2
+            }
+          }
         ]
       }
     ],
@@ -221,8 +264,16 @@
           "WS": 2
         },
         "keywords": [
-          "Anti-infantry 3+",
-          "Precision"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "precision"
+          }
         ]
       }
     ],
@@ -247,9 +298,19 @@
           "BS": 3
         },
         "keywords": [
-          "Anti-infantry 3+",
-          "Assault",
-          "Twin-linked"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -274,8 +335,15 @@
           "WS": 3
         },
         "keywords": [
-          "Lance",
-          "Sustained Hits 1"
+          {
+            "keyword_id": "lance"
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -300,9 +368,15 @@
           "WS": 3
         },
         "keywords": [
-          "Devastating Wounds",
-          "Lance",
-          "Precision"
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "lance"
+          },
+          {
+            "keyword_id": "precision"
+          }
         ]
       }
     ],
@@ -327,9 +401,22 @@
           "WS": 3
         },
         "keywords": [
-          "Anti-infantry 3+",
-          "Lance",
-          "Sustained Hits 1"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "lance"
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -354,8 +441,19 @@
           "BS": 3
         },
         "keywords": [
-          "Anti-infantry 3+",
-          "Sustained Hits 1"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -380,10 +478,25 @@
           "BS": 3
         },
         "keywords": [
-          "Anti-infantry 3+",
-          "Assault",
-          "Rapid Fire 2",
-          "Twin-linked"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 2
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -431,8 +544,16 @@
           "BS": 3
         },
         "keywords": [
-          "Anti-infantry 3+",
-          "Assault"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "assault"
+          }
         ]
       }
     ],
@@ -457,7 +578,9 @@
           "BS": 3
         },
         "keywords": [
-          "Pistol"
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -482,8 +605,12 @@
           "BS": null
         },
         "keywords": [
-          "Assault",
-          "Torrent"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -531,7 +658,13 @@
           "WS": 3
         },
         "keywords": [
-          "Anti-infantry 3+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          }
         ]
       }
     ],
@@ -556,7 +689,9 @@
           "BS": 4
         },
         "keywords": [
-          "Heavy"
+          {
+            "keyword_id": "heavy"
+          }
         ]
       }
     ],
@@ -581,9 +716,22 @@
           "BS": 4
         },
         "keywords": [
-          "Anti-infantry 3+",
-          "Heavy",
-          "Sustained Hits 1"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "heavy"
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -677,9 +825,22 @@
           "WS": 2
         },
         "keywords": [
-          "Anti-infantry 2+",
-          "Precision",
-          "Sustained Hits 2"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 2
+            }
+          },
+          {
+            "keyword_id": "precision"
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -704,7 +865,9 @@
           "BS": 3
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       },
       {
@@ -718,7 +881,9 @@
           "BS": 3
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       },
       {
@@ -732,8 +897,16 @@
           "BS": 3
         },
         "keywords": [
-          "Anti-infantry 2+",
-          "Blast"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 2
+            }
+          },
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -781,9 +954,19 @@
           "BS": 4
         },
         "keywords": [
-          "Anti-vehicle 4+",
-          "Devastating Wounds",
-          "Heavy"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Vehicle",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "heavy"
+          }
         ]
       }
     ],
@@ -808,9 +991,18 @@
           "BS": 4
         },
         "keywords": [
-          "Assault",
-          "Heavy",
-          "Melta 3"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "heavy"
+          },
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 3
+            }
+          }
         ]
       }
     ],
@@ -835,9 +1027,22 @@
           "BS": 3
         },
         "keywords": [
-          "Anti-infantry 3+",
-          "Sustained Hits 1",
-          "Twin-linked"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -862,9 +1067,19 @@
           "BS": 3
         },
         "keywords": [
-          "Anti-vehicle 4+",
-          "Devastating Wounds",
-          "Twin-linked"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Vehicle",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -889,9 +1104,18 @@
           "BS": 3
         },
         "keywords": [
-          "Assault",
-          "Melta 3",
-          "Twin-linked"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 3
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -939,9 +1163,19 @@
           "BS": null
         },
         "keywords": [
-          "Anti-infantry 3+",
-          "Torrent",
-          "Twin-linked"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "torrent"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -989,7 +1223,9 @@
           "WS": 2
         },
         "keywords": [
-          "Extra Attacks"
+          {
+            "keyword_id": "extra-attacks"
+          }
         ]
       }
     ],
@@ -1060,8 +1296,12 @@
           "BS": 3
         },
         "keywords": [
-          "Heavy",
-          "Precision"
+          {
+            "keyword_id": "heavy"
+          },
+          {
+            "keyword_id": "precision"
+          }
         ]
       }
     ],
@@ -1086,8 +1326,16 @@
           "BS": null
         },
         "keywords": [
-          "Anti-infantry 3+",
-          "Torrent"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -1112,8 +1360,16 @@
           "BS": 3
         },
         "keywords": [
-          "Anti-infantry 4+",
-          "Devastating Wounds"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -1138,8 +1394,16 @@
           "BS": 3
         },
         "keywords": [
-          "Anti-infantry 2+",
-          "Pistol"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 2
+            }
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -1164,8 +1428,16 @@
           "WS": 3
         },
         "keywords": [
-          "Anti-infantry 4+",
-          "Twin-linked"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -1190,7 +1462,13 @@
           "WS": 3
         },
         "keywords": [
-          "Anti-infantry 4+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 4
+            }
+          }
         ]
       }
     ],
@@ -1215,7 +1493,13 @@
           "WS": 3
         },
         "keywords": [
-          "Anti-infantry 3+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          }
         ]
       }
     ],
@@ -1240,9 +1524,19 @@
           "BS": 2
         },
         "keywords": [
-          "Anti-infantry 2+",
-          "Pistol",
-          "Precision"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 2
+            }
+          },
+          {
+            "keyword_id": "pistol"
+          },
+          {
+            "keyword_id": "precision"
+          }
         ]
       }
     ],
@@ -1267,8 +1561,16 @@
           "WS": 2
         },
         "keywords": [
-          "Anti-infantry 2+",
-          "Precision"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 2
+            }
+          },
+          {
+            "keyword_id": "precision"
+          }
         ]
       }
     ],
@@ -1293,9 +1595,19 @@
           "BS": 2
         },
         "keywords": [
-          "Anti-infantry 3+",
-          "Assault",
-          "Pistol"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -1320,7 +1632,9 @@
           "BS": 2
         },
         "keywords": [
-          "Pistol"
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -1345,7 +1659,9 @@
           "WS": 2
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -1370,7 +1686,13 @@
           "WS": 2
         },
         "keywords": [
-          "Anti-infantry 3+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          }
         ]
       }
     ],
@@ -1418,8 +1740,12 @@
           "WS": 2
         },
         "keywords": [
-          "Devastating Wounds",
-          "Hazardous"
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "hazardous"
+          }
         ]
       }
     ],
@@ -1444,7 +1770,9 @@
           "WS": 2
         },
         "keywords": [
-          "Extra Attacks"
+          {
+            "keyword_id": "extra-attacks"
+          }
         ]
       }
     ],
@@ -1492,7 +1820,9 @@
           "BS": 3
         },
         "keywords": [
-          "Pistol"
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -1540,7 +1870,13 @@
           "WS": 3
         },
         "keywords": [
-          "Anti-infantry 3+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          }
         ]
       }
     ],
@@ -1588,8 +1924,16 @@
           "WS": 3
         },
         "keywords": [
-          "Anti-infantry 4+",
-          "Twin-linked"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -1637,7 +1981,13 @@
           "WS": 3
         },
         "keywords": [
-          "Anti-infantry 3+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          }
         ]
       }
     ],
@@ -1685,7 +2035,9 @@
           "BS": 3
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       },
       {
@@ -1699,7 +2051,9 @@
           "BS": 3
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -1747,7 +2101,9 @@
           "WS": 2
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       },
       {
@@ -1761,7 +2117,9 @@
           "WS": 2
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -1844,9 +2202,15 @@
           "BS": 3
         },
         "keywords": [
-          "Assault",
-          "Devastating Wounds",
-          "Ignores Cover"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "ignores-cover"
+          }
         ]
       }
     ],
@@ -1871,7 +2235,9 @@
           "WS": 3
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -1896,7 +2262,9 @@
           "BS": 3
         },
         "keywords": [
-          "blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       },
       {
@@ -1933,9 +2301,18 @@
           "WS": 4
         },
         "keywords": [
-          "extra attacks",
-          "lance",
-          "sustained hits 3"
+          {
+            "keyword_id": "extra-attacks"
+          },
+          {
+            "keyword_id": "lance"
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 3
+            }
+          }
         ]
       }
     ],
@@ -1983,8 +2360,19 @@
           "BS": 3
         },
         "keywords": [
-          "anti-infantry 3+",
-          "sustained hits 2"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],

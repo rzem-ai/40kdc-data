@@ -8,7 +8,7 @@
         "name": "Bolt Carbine",
         "range": 24,
         "stats": { "A": 2, "BS": 3, "WS": null, "S": 4, "AP": 0, "D": 1 },
-        "keywords": ["Assault"]
+        "keywords": [{ "keyword_id": "assault" }]
       }
     ],
     "game_version": { "edition": "10th", "dataslate": "2025-q3" }
@@ -36,7 +36,7 @@
         "name": "Reaper Maw",
         "range": "Melee",
         "stats": { "A": "D6+2", "BS": null, "WS": 3, "S": 8, "AP": -3, "D": 3 },
-        "keywords": ["Devastating Wounds"]
+        "keywords": [{ "keyword_id": "devastating-wounds" }]
       }
     ],
     "game_version": { "edition": "10th", "dataslate": "2025-q3" }
@@ -50,7 +50,7 @@
         "name": "Void Tendrils",
         "range": 18,
         "stats": { "A": "2D6", "BS": 4, "WS": null, "S": 5, "AP": -1, "D": 1 },
-        "keywords": ["Torrent"]
+        "keywords": [{ "keyword_id": "torrent" }]
       }
     ],
     "game_version": { "edition": "10th", "dataslate": "2025-q3" }
@@ -64,13 +64,13 @@
         "name": "Standard",
         "range": 36,
         "stats": { "A": 1, "BS": 3, "S": 9, "AP": -3, "D": "D6" },
-        "keywords": ["Heavy"]
+        "keywords": [{ "keyword_id": "heavy" }]
       },
       {
         "name": "Overcharge",
         "range": 36,
         "stats": { "A": 1, "BS": 3, "S": 10, "AP": -4, "D": "D6+2" },
-        "keywords": ["Heavy", "Hazardous"]
+        "keywords": [{ "keyword_id": "heavy" }, { "keyword_id": "hazardous" }]
       }
     ],
     "game_version": { "edition": "10th", "dataslate": "2025-q3" }

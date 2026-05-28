@@ -44,7 +44,29 @@
         },
         "modifier": { "type": "object", "additionalProperties": true }
       },
-      "required": ["type", "target"]
+      "required": ["type", "target"],
+      "$comment": "When `type` is `re-roll`, `modifier` must carry `roll` (string) and `subset` (`ones` | `all-failures`). Rerolls always target failures; the subset decides whether only 1s are rerolled or every failed die. The constraint is enforced by AJV at validation time and stripped from the codegen bundle (typify can't model if/then/else) — the generated TS/Rust types therefore see `modifier` as an open object, matching its other-`type` callers.",
+      "allOf": [
+        {
+          "if": {
+            "properties": { "type": { "const": "re-roll" } },
+            "required": ["type"]
+          },
+          "then": {
+            "properties": {
+              "modifier": {
+                "type": "object",
+                "properties": {
+                  "roll": { "type": "string", "minLength": 1 },
+                  "subset": { "type": "string", "enum": ["ones", "all-failures"] }
+                },
+                "required": ["roll", "subset"]
+              }
+            },
+            "required": ["modifier"]
+          }
+        }
+      ]
     },
     "choice-effect": {
       "type": "object",

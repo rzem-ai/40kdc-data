@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { Command } from "commander";
 import { validateCoreCommand } from "./commands/validate-core.js";
 import { validateEnrichmentCommand } from "./commands/validate-enrichment.js";

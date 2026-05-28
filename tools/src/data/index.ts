@@ -36,6 +36,8 @@ export const dataset = Dataset.embedded();
 export const units = dataset.units;
 /** All weapons, linked to the units that carry them. */
 export const weapons = dataset.weapons;
+/** Catalog of weapon keywords (Lethal Hits, Sustained Hits N, Anti-X N+, ...). */
+export const weaponKeywords = dataset.weaponKeywords;
 /** All factions, linked to their units, abilities, and weapons. */
 export const factions = dataset.factions;
 /** All abilities, linked to their phases and the units that have them. */

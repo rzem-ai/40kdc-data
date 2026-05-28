@@ -132,28 +132,6 @@ export type ConditionNode = SimpleCondition | CompoundCondition;
  */
 export type AbilityCondition1 = SimpleCondition | CompoundCondition;
 /**
- * Effect applied when the action completes (e.g. terrain-area-tag to mark transient state on a terrain piece).
- */
-export type AbilityEffect =
-  | SingleEffect
-  | ChoiceEffect
-  | SequenceEffect
-  | DiceGatedEffect
-  | ConditionalEffect
-  | DicePoolAllocationEffect;
-/**
- * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
- * via the `definition` "effect-node".
- */
-export type EffectNode =
-  | SingleEffect
-  | ChoiceEffect
-  | SequenceEffect
-  | DiceGatedEffect
-  | ConditionalEffect
-  | DicePoolAllocationEffect;
-export type AbilityCondition2 = SimpleCondition | CompoundCondition;
-/**
  * A terrain piece's 2D footprint, relative to the piece's `position`. Axis-aligned rectangle, right triangle (right angle at the local origin, legs along +x/+y), or an explicit polygon. GW's standard templates (e.g. 7"×11.5" rectangles, 8"×11.5" right triangles, 6"×4" rectangles, 10"×2.5" and 6"×2" lines) are all expressible here; lines are thin rectangles.
  *
  * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
@@ -191,6 +169,258 @@ export type AbilityEffect1 =
   | DiceGatedEffect
   | ConditionalEffect
   | DicePoolAllocationEffect;
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "single-effect".
+ */
+export type SingleEffect = unknown & {
+  type:
+    | "stat-modifier"
+    | "roll-modifier"
+    | "re-roll"
+    | "mortal-wounds"
+    | "feel-no-pain"
+    | "invulnerable-save"
+    | "ward"
+    | "keyword-grant"
+    | "movement-modifier"
+    | "deep-strike"
+    | "fallback-and-act"
+    | "fight-first"
+    | "fight-last"
+    | "shoot-on-death"
+    | "fight-on-death"
+    | "objective-control-modifier"
+    | "leadership-modifier"
+    | "damage-reduction"
+    | "attack-restriction"
+    | "ability-grant"
+    | "cp-gain"
+    | "cp-refund"
+    | "model-destruction"
+    | "resurrection"
+    | "resource-gain"
+    | "resource-spend"
+    | "charge-roll-modifier"
+    | "terrain-area-tag"
+    | "bs-modifier"
+    | "engagement-passthrough";
+  target:
+    | "self"
+    | "bearer"
+    | "unit"
+    | "attached-unit"
+    | "attacker"
+    | "defender"
+    | "friendly-within-aura"
+    | "enemy-within-aura"
+    | "all-friendly"
+    | "all-enemy";
+  modifier?: {
+    [k: string]: unknown;
+  };
+  [k: string]: unknown;
+} & {
+  type:
+    | "stat-modifier"
+    | "roll-modifier"
+    | "re-roll"
+    | "mortal-wounds"
+    | "feel-no-pain"
+    | "invulnerable-save"
+    | "ward"
+    | "keyword-grant"
+    | "movement-modifier"
+    | "deep-strike"
+    | "fallback-and-act"
+    | "fight-first"
+    | "fight-last"
+    | "shoot-on-death"
+    | "fight-on-death"
+    | "objective-control-modifier"
+    | "leadership-modifier"
+    | "damage-reduction"
+    | "attack-restriction"
+    | "ability-grant"
+    | "cp-gain"
+    | "cp-refund"
+    | "model-destruction"
+    | "resurrection"
+    | "resource-gain"
+    | "resource-spend"
+    | "charge-roll-modifier"
+    | "terrain-area-tag"
+    | "bs-modifier"
+    | "engagement-passthrough";
+  target:
+    | "self"
+    | "bearer"
+    | "unit"
+    | "attached-unit"
+    | "attacker"
+    | "defender"
+    | "friendly-within-aura"
+    | "enemy-within-aura"
+    | "all-friendly"
+    | "all-enemy";
+  modifier?: {
+    [k: string]: unknown;
+  };
+  [k: string]: unknown;
+} & {
+  type:
+    | "stat-modifier"
+    | "roll-modifier"
+    | "re-roll"
+    | "mortal-wounds"
+    | "feel-no-pain"
+    | "invulnerable-save"
+    | "ward"
+    | "keyword-grant"
+    | "movement-modifier"
+    | "deep-strike"
+    | "fallback-and-act"
+    | "fight-first"
+    | "fight-last"
+    | "shoot-on-death"
+    | "fight-on-death"
+    | "objective-control-modifier"
+    | "leadership-modifier"
+    | "damage-reduction"
+    | "attack-restriction"
+    | "ability-grant"
+    | "cp-gain"
+    | "cp-refund"
+    | "model-destruction"
+    | "resurrection"
+    | "resource-gain"
+    | "resource-spend"
+    | "charge-roll-modifier"
+    | "terrain-area-tag"
+    | "bs-modifier"
+    | "engagement-passthrough";
+  target:
+    | "self"
+    | "bearer"
+    | "unit"
+    | "attached-unit"
+    | "attacker"
+    | "defender"
+    | "friendly-within-aura"
+    | "enemy-within-aura"
+    | "all-friendly"
+    | "all-enemy";
+  modifier?: {
+    [k: string]: unknown;
+  };
+  [k: string]: unknown;
+} & {
+  type:
+    | "stat-modifier"
+    | "roll-modifier"
+    | "re-roll"
+    | "mortal-wounds"
+    | "feel-no-pain"
+    | "invulnerable-save"
+    | "ward"
+    | "keyword-grant"
+    | "movement-modifier"
+    | "deep-strike"
+    | "fallback-and-act"
+    | "fight-first"
+    | "fight-last"
+    | "shoot-on-death"
+    | "fight-on-death"
+    | "objective-control-modifier"
+    | "leadership-modifier"
+    | "damage-reduction"
+    | "attack-restriction"
+    | "ability-grant"
+    | "cp-gain"
+    | "cp-refund"
+    | "model-destruction"
+    | "resurrection"
+    | "resource-gain"
+    | "resource-spend"
+    | "charge-roll-modifier"
+    | "terrain-area-tag"
+    | "bs-modifier"
+    | "engagement-passthrough";
+  target:
+    | "self"
+    | "bearer"
+    | "unit"
+    | "attached-unit"
+    | "attacker"
+    | "defender"
+    | "friendly-within-aura"
+    | "enemy-within-aura"
+    | "all-friendly"
+    | "all-enemy";
+  modifier?: {
+    [k: string]: unknown;
+  };
+  [k: string]: unknown;
+} & {
+  type:
+    | "stat-modifier"
+    | "roll-modifier"
+    | "re-roll"
+    | "mortal-wounds"
+    | "feel-no-pain"
+    | "invulnerable-save"
+    | "ward"
+    | "keyword-grant"
+    | "movement-modifier"
+    | "deep-strike"
+    | "fallback-and-act"
+    | "fight-first"
+    | "fight-last"
+    | "shoot-on-death"
+    | "fight-on-death"
+    | "objective-control-modifier"
+    | "leadership-modifier"
+    | "damage-reduction"
+    | "attack-restriction"
+    | "ability-grant"
+    | "cp-gain"
+    | "cp-refund"
+    | "model-destruction"
+    | "resurrection"
+    | "resource-gain"
+    | "resource-spend"
+    | "charge-roll-modifier"
+    | "terrain-area-tag"
+    | "bs-modifier"
+    | "engagement-passthrough";
+  target:
+    | "self"
+    | "bearer"
+    | "unit"
+    | "attached-unit"
+    | "attacker"
+    | "defender"
+    | "friendly-within-aura"
+    | "enemy-within-aura"
+    | "all-friendly"
+    | "all-enemy";
+  modifier?: {
+    [k: string]: unknown;
+  };
+  [k: string]: unknown;
+};
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "effect-node".
+ */
+export type EffectNode =
+  | SingleEffect
+  | ChoiceEffect
+  | SequenceEffect
+  | DiceGatedEffect
+  | ConditionalEffect
+  | DicePoolAllocationEffect;
+export type AbilityCondition2 = SimpleCondition | CompoundCondition;
 /**
  * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
  * via the `definition` "condition".
@@ -534,7 +764,7 @@ export interface SecondaryCard {
      */
     use_limit?: number;
     completes?: AbilityCondition1;
-    effect?: AbilityEffect;
+    effect?: unknown;
   };
   /**
    * VP-award blocks: each scores when `trigger` fires and the optional `when` condition holds. An award scores either a flat `vp` or a count-scaled `vp_per` (VP per instance of the thing named by `per`). Awards accrue independently and sum; a card's '+ ... CUMULATIVE' rows are modelled as separate awards flagged `cumulative` for faithful round-trip.
@@ -638,151 +868,6 @@ export interface CompoundCondition {
    * @minItems 1
    */
   operands: [ConditionNode, ...ConditionNode[]];
-  [k: string]: unknown;
-}
-/**
- * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
- * via the `definition` "single-effect".
- */
-export interface SingleEffect {
-  type:
-    | "stat-modifier"
-    | "roll-modifier"
-    | "re-roll"
-    | "mortal-wounds"
-    | "feel-no-pain"
-    | "invulnerable-save"
-    | "ward"
-    | "keyword-grant"
-    | "movement-modifier"
-    | "deep-strike"
-    | "fallback-and-act"
-    | "fight-first"
-    | "fight-last"
-    | "shoot-on-death"
-    | "fight-on-death"
-    | "objective-control-modifier"
-    | "leadership-modifier"
-    | "damage-reduction"
-    | "attack-restriction"
-    | "ability-grant"
-    | "cp-gain"
-    | "cp-refund"
-    | "model-destruction"
-    | "resurrection"
-    | "resource-gain"
-    | "resource-spend"
-    | "charge-roll-modifier"
-    | "terrain-area-tag"
-    | "bs-modifier"
-    | "engagement-passthrough";
-  target:
-    | "self"
-    | "bearer"
-    | "unit"
-    | "attached-unit"
-    | "attacker"
-    | "defender"
-    | "friendly-within-aura"
-    | "enemy-within-aura"
-    | "all-friendly"
-    | "all-enemy";
-  modifier?: {
-    [k: string]: unknown;
-  };
-  [k: string]: unknown;
-}
-/**
- * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
- * via the `definition` "choice-effect".
- */
-export interface ChoiceEffect {
-  type: "choice";
-  /**
-   * @minItems 2
-   */
-  options: [EffectNode, EffectNode, ...EffectNode[]];
-  choice_label?: string;
-  [k: string]: unknown;
-}
-/**
- * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
- * via the `definition` "sequence-effect".
- */
-export interface SequenceEffect {
-  type: "sequence";
-  /**
-   * @minItems 1
-   */
-  steps: [EffectNode, ...EffectNode[]];
-  [k: string]: unknown;
-}
-/**
- * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
- * via the `definition` "dice-gated-effect".
- */
-export interface DiceGatedEffect {
-  type: "dice-gated";
-  /**
-   * Dice expression, e.g. 'D6', '2D6'
-   */
-  dice: string;
-  /**
-   * Fixed threshold or model characteristic to compare against
-   */
-  threshold: number | ("leadership" | "toughness" | "save");
-  comparison?: "gte" | "lte" | "gt" | "lt" | "eq";
-  on_success?: EffectNode | null;
-  on_fail?: EffectNode | null;
-  [k: string]: unknown;
-}
-/**
- * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
- * via the `definition` "conditional-effect".
- */
-export interface ConditionalEffect {
-  type: "conditional";
-  condition: AbilityCondition2;
-  effect: EffectNode;
-  [k: string]: unknown;
-}
-/**
- * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
- * via the `definition` "dice-pool-allocation-effect".
- */
-export interface DicePoolAllocationEffect {
-  type: "dice-pool-allocation";
-  pool: {
-    count: number;
-    die: string;
-    [k: string]: unknown;
-  };
-  max_activations: number;
-  /**
-   * @minItems 1
-   */
-  options: [
-    {
-      name: string;
-      requirement: {
-        type: "pair" | "triple" | "single" | "run";
-        min_value: number;
-        [k: string]: unknown;
-      };
-      effect: EffectNode;
-      [k: string]: unknown;
-    },
-    ...{
-      name: string;
-      requirement: {
-        type: "pair" | "triple" | "single" | "run";
-        min_value: number;
-        [k: string]: unknown;
-      };
-      effect: EffectNode;
-      [k: string]: unknown;
-    }[]
-  ];
   [k: string]: unknown;
 }
 /**
@@ -1043,6 +1128,128 @@ export interface WargearOption {
   game_version: GameVersionReference;
 }
 /**
+ * Catalog entry for a weapon keyword (Lethal Hits, Sustained Hits N, Anti-X N+, etc.). Each weapon profile references entries here via {keyword_id, parameters?} instead of carrying free-text strings. The optional `effect` describes the keyword's game mechanic in the Ability DSL; null when the behaviour is faction-specific flavour not yet modelled.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "weapon-keyword".
+ */
+export interface WeaponKeyword {
+  id: EntityId;
+  name: string;
+  /**
+   * Parameter keys that must be supplied at each reference site, in the order they would appear in a printed datasheet (e.g. Anti-INFANTRY 4+ → ['target_keyword', 'threshold']).
+   *
+   * @maxItems 3
+   */
+  required_parameters:
+    | []
+    | ["value" | "target_keyword" | "threshold"]
+    | ["value" | "target_keyword" | "threshold", "value" | "target_keyword" | "threshold"]
+    | [
+        "value" | "target_keyword" | "threshold",
+        "value" | "target_keyword" | "threshold",
+        "value" | "target_keyword" | "threshold"
+      ];
+  /**
+   * Mechanical effect of this keyword. Null when the behaviour is faction-specific flavour not yet expressible in the DSL — engines treat such references as no-op buffs and may surface them as 'cannot auto-apply'.
+   */
+  effect: AbilityEffect1 | null;
+  game_version: GameVersionReference;
+}
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "choice-effect".
+ */
+export interface ChoiceEffect {
+  type: "choice";
+  /**
+   * @minItems 2
+   */
+  options: [EffectNode, EffectNode, ...EffectNode[]];
+  choice_label?: string;
+  [k: string]: unknown;
+}
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "sequence-effect".
+ */
+export interface SequenceEffect {
+  type: "sequence";
+  /**
+   * @minItems 1
+   */
+  steps: [EffectNode, ...EffectNode[]];
+  [k: string]: unknown;
+}
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "dice-gated-effect".
+ */
+export interface DiceGatedEffect {
+  type: "dice-gated";
+  /**
+   * Dice expression, e.g. 'D6', '2D6'
+   */
+  dice: string;
+  /**
+   * Fixed threshold or model characteristic to compare against
+   */
+  threshold: number | ("leadership" | "toughness" | "save");
+  comparison?: "gte" | "lte" | "gt" | "lt" | "eq";
+  on_success?: EffectNode | null;
+  on_fail?: EffectNode | null;
+  [k: string]: unknown;
+}
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "conditional-effect".
+ */
+export interface ConditionalEffect {
+  type: "conditional";
+  condition: AbilityCondition2;
+  effect: EffectNode;
+  [k: string]: unknown;
+}
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "dice-pool-allocation-effect".
+ */
+export interface DicePoolAllocationEffect {
+  type: "dice-pool-allocation";
+  pool: {
+    count: number;
+    die: string;
+    [k: string]: unknown;
+  };
+  max_activations: number;
+  /**
+   * @minItems 1
+   */
+  options: [
+    {
+      name: string;
+      requirement: {
+        type: "pair" | "triple" | "single" | "run";
+        min_value: number;
+        [k: string]: unknown;
+      };
+      effect: EffectNode;
+      [k: string]: unknown;
+    },
+    ...{
+      name: string;
+      requirement: {
+        type: "pair" | "triple" | "single" | "run";
+        min_value: number;
+        [k: string]: unknown;
+      };
+      effect: EffectNode;
+      [k: string]: unknown;
+    }[]
+  ];
+  [k: string]: unknown;
+}
+/**
  * A weapon entry with one or more stat profiles (e.g., standard and overcharge modes).
  *
  * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
@@ -1068,7 +1275,20 @@ export interface Weapon {
         D: StatValue;
         [k: string]: unknown;
       };
-      keywords?: KeywordList;
+      /**
+       * References into the weapon-keyword catalog. Each entry names the catalog id and supplies parameter values (e.g. `Sustained Hits 1` → `{keyword_id: 'sustained-hits', parameters: {value: 1}}`).
+       */
+      keywords?: {
+        keyword_id: EntityId;
+        /**
+         * Reference-site parameters conforming to the catalog entry's required_parameters. Only the three documented keys are accepted; any other key is invalid.
+         */
+        parameters?: {
+          value?: StatValue;
+          target_keyword?: string;
+          threshold?: number;
+        };
+      }[];
     },
     ...{
       name: string;
@@ -1082,7 +1302,20 @@ export interface Weapon {
         D: StatValue;
         [k: string]: unknown;
       };
-      keywords?: KeywordList;
+      /**
+       * References into the weapon-keyword catalog. Each entry names the catalog id and supplies parameter values (e.g. `Sustained Hits 1` → `{keyword_id: 'sustained-hits', parameters: {value: 1}}`).
+       */
+      keywords?: {
+        keyword_id: EntityId;
+        /**
+         * Reference-site parameters conforming to the catalog entry's required_parameters. Only the three documented keys are accepted; any other key is invalid.
+         */
+        parameters?: {
+          value?: StatValue;
+          target_keyword?: string;
+          threshold?: number;
+        };
+      }[];
     }[]
   ];
   game_version: GameVersionReference;

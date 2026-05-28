@@ -1,0 +1,27 @@
+[
+  {
+    "keyword_id": "twin-linked",
+    "expected_effect": {
+      "type": "re-roll",
+      "target": "self",
+      "modifier": { "roll": "wound", "subset": "all-failures" }
+    }
+  },
+  {
+    "keyword_id": "heavy",
+    "expected_effect": {
+      "type": "conditional",
+      "condition": { "type": "remained-stationary" },
+      "effect": {
+        "type": "roll-modifier",
+        "target": "self",
+        "modifier": { "roll": "hit", "operation": "add", "value": 1 }
+      }
+    }
+  },
+  { "keyword_id": "lethal-hits", "expected_effect": null },
+  { "keyword_id": "sustained-hits", "expected_effect": null },
+  { "keyword_id": "devastating-wounds", "expected_effect": null },
+  { "keyword_id": "anti", "expected_effect": null },
+  { "keyword_id": "melta", "expected_effect": null }
+]

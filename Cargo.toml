@@ -6,3 +6,6 @@ members = ["crates/wh40kdc", "xtask"]
 edition = "2021"
 license = "MIT"
 repository = "https://github.com/Tabletop-Developer-Consortium/40kdc-data"
+homepage = "https://tabletop-developer-consortium.github.io"
+rust-version = "1.75"
+authors = ["Tabletop Developer Consortium"]

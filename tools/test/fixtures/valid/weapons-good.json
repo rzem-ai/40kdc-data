@@ -11,5 +11,22 @@
       }
     ],
     "game_version": { "edition": "10th", "dataslate": "2025-q3" }
+  },
+  {
+    "id": "test-melta-rifle",
+    "name": "Test Melta Rifle",
+    "type": "ranged",
+    "profiles": [
+      {
+        "name": "Test Melta Rifle",
+        "range": 12,
+        "stats": { "A": 1, "BS": 3, "S": 9, "AP": -4, "D": "D6" },
+        "keywords": [
+          { "keyword_id": "melta", "parameters": { "value": 2 } },
+          { "keyword_id": "anti", "parameters": { "target_keyword": "Vehicle", "threshold": 4 } }
+        ]
+      }
+    ],
+    "game_version": { "edition": "10th", "dataslate": "2025-q3" }
   }
 ]

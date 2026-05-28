@@ -15,7 +15,9 @@
           "BS": 3
         },
         "keywords": [
-          "Pistol"
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -40,8 +42,15 @@
           "BS": 3
         },
         "keywords": [
-          "Melta 2",
-          "Pistol"
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 2
+            }
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -66,9 +75,15 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Pistol",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "pistol"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -93,7 +108,9 @@
           "BS": 3
         },
         "keywords": [
-          "Pistol"
+          {
+            "keyword_id": "pistol"
+          }
         ]
       },
       {
@@ -107,8 +124,12 @@
           "BS": 3
         },
         "keywords": [
-          "Hazardous",
-          "Pistol"
+          {
+            "keyword_id": "hazardous"
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -133,7 +154,9 @@
           "WS": 3
         },
         "keywords": [
-          "Lethal Hits"
+          {
+            "keyword_id": "lethal-hits"
+          }
         ]
       }
     ],
@@ -181,7 +204,12 @@
           "WS": 3
         },
         "keywords": [
-          "Sustained Hits 1"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -206,7 +234,12 @@
           "BS": 3
         },
         "keywords": [
-          "Sustained Hits 1"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -231,9 +264,15 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent",
-          "Twin-linked"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -258,8 +297,15 @@
           "WS": 3
         },
         "keywords": [
-          "Sustained Hits 1",
-          "Twin-linked"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -284,8 +330,15 @@
           "WS": 3
         },
         "keywords": [
-          "Sustained Hits 1",
-          "Twin-linked"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -310,7 +363,12 @@
           "WS": 3
         },
         "keywords": [
-          "Sustained Hits 1"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -335,7 +393,12 @@
           "WS": 3
         },
         "keywords": [
-          "Sustained Hits 1"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -383,7 +446,12 @@
           "WS": 2
         },
         "keywords": [
-          "Sustained Hits 1"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -431,7 +499,9 @@
           "BS": 2
         },
         "keywords": [
-          "Pistol"
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -456,7 +526,9 @@
           "BS": 2
         },
         "keywords": [
-          "Pistol"
+          {
+            "keyword_id": "pistol"
+          }
         ]
       },
       {
@@ -470,8 +542,12 @@
           "BS": 2
         },
         "keywords": [
-          "Hazardous",
-          "Pistol"
+          {
+            "keyword_id": "hazardous"
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -519,9 +595,15 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "One Shot",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "one-shot"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -546,7 +628,12 @@
           "BS": 4
         },
         "keywords": [
-          "Rapid Fire 1"
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       },
       {
@@ -560,8 +647,15 @@
           "BS": 4
         },
         "keywords": [
-          "Hazardous",
-          "Rapid Fire 1"
+          {
+            "keyword_id": "hazardous"
+          },
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -586,8 +680,12 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -612,7 +710,12 @@
           "BS": 4
         },
         "keywords": [
-          "Melta 2"
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -637,7 +740,9 @@
           "WS": 2
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -685,7 +790,9 @@
           "WS": 2
         },
         "keywords": [
-          "Precision"
+          {
+            "keyword_id": "precision"
+          }
         ]
       }
     ],
@@ -733,7 +840,12 @@
           "WS": 4
         },
         "keywords": [
-          "Sustained Hits 1"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -758,9 +870,19 @@
           "BS": 3
         },
         "keywords": [
-          "Anti-psyker 4+",
-          "Devastating Wounds",
-          "Pistol"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Psyker",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -785,8 +907,16 @@
           "WS": 3
         },
         "keywords": [
-          "Anti-psyker 4+",
-          "Devastating Wounds"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Psyker",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -811,7 +941,9 @@
           "WS": 3
         },
         "keywords": [
-          "Lethal Hits"
+          {
+            "keyword_id": "lethal-hits"
+          }
         ]
       }
     ],
@@ -836,8 +968,16 @@
           "WS": 4
         },
         "keywords": [
-          "Anti-psyker 4+",
-          "Devastating Wounds"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Psyker",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -862,7 +1002,12 @@
           "BS": 3
         },
         "keywords": [
-          "Rapid Fire 1"
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -910,7 +1055,9 @@
           "BS": 2
         },
         "keywords": [
-          "Pistol"
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -1004,7 +1151,13 @@
           "WS": 3
         },
         "keywords": [
-          "Anti-infantry 4+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 4
+            }
+          }
         ]
       }
     ],
@@ -1029,7 +1182,12 @@
           "WS": 4
         },
         "keywords": [
-          "Sustained Hits 1"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -1100,8 +1258,12 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -1126,8 +1288,15 @@
           "BS": 3
         },
         "keywords": [
-          "Sustained Hits 2",
-          "Twin-linked"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 2
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -1152,8 +1321,15 @@
           "BS": 3
         },
         "keywords": [
-          "Melta 2",
-          "Twin-linked"
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 2
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -1178,7 +1354,9 @@
           "BS": 2
         },
         "keywords": [
-          "One Shot"
+          {
+            "keyword_id": "one-shot"
+          }
         ]
       }
     ],
@@ -1249,7 +1427,12 @@
           "BS": 2
         },
         "keywords": [
-          "Sustained Hits 1"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -1286,7 +1469,9 @@
           "BS": 2
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -1311,7 +1496,9 @@
           "WS": 2
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       },
       {
@@ -1325,7 +1512,9 @@
           "WS": 2
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -1350,9 +1539,22 @@
           "BS": 4
         },
         "keywords": [
-          "Anti-infantry 4+",
-          "Devastating Wounds",
-          "Rapid Fire 1"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -1377,10 +1579,25 @@
           "BS": 3
         },
         "keywords": [
-          "Anti-psyker 2+",
-          "Devastating Wounds",
-          "Precision",
-          "Rapid Fire 1"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Psyker",
+              "threshold": 2
+            }
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "precision"
+          },
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -1405,8 +1622,15 @@
           "BS": 4
         },
         "keywords": [
-          "Heavy",
-          "Sustained Hits 1"
+          {
+            "keyword_id": "heavy"
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -1431,8 +1655,12 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -1457,8 +1685,15 @@
           "BS": 4
         },
         "keywords": [
-          "Heavy",
-          "Melta 2"
+          {
+            "keyword_id": "heavy"
+          },
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -1552,7 +1787,9 @@
           "BS": 3
         },
         "keywords": [
-          "Pistol"
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -1577,7 +1814,12 @@
           "BS": 3
         },
         "keywords": [
-          "Rapid Fire 1"
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -1625,8 +1867,16 @@
           "WS": 2
         },
         "keywords": [
-          "Anti-chaos 2+",
-          "Precision"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Chaos",
+              "threshold": 2
+            }
+          },
+          {
+            "keyword_id": "precision"
+          }
         ]
       }
     ],
@@ -1651,7 +1901,9 @@
           "WS": 2
         },
         "keywords": [
-          "Precision"
+          {
+            "keyword_id": "precision"
+          }
         ]
       }
     ],
@@ -1676,7 +1928,12 @@
           "BS": 3
         },
         "keywords": [
-          "Rapid Fire 2"
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -1701,8 +1958,15 @@
           "BS": 3
         },
         "keywords": [
-          "Rapid Fire 2",
-          "Twin-linked"
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 2
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -1727,7 +1991,9 @@
           "BS": 3
         },
         "keywords": [
-          "Twin-linked"
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -1752,7 +2018,12 @@
           "BS": 3
         },
         "keywords": [
-          "Melta 2"
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -1823,8 +2094,15 @@
           "BS": 3
         },
         "keywords": [
-          "Rapid Fire 4",
-          "Twin-linked"
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 4
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -1849,8 +2127,12 @@
           "BS": 3
         },
         "keywords": [
-          "Blast",
-          "Ignores Cover"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "ignores-cover"
+          }
         ]
       }
     ],
@@ -1875,7 +2157,9 @@
           "BS": 3
         },
         "keywords": [
-          "Indirect Fire"
+          {
+            "keyword_id": "indirect-fire"
+          }
         ]
       }
     ],
@@ -1900,9 +2184,15 @@
           "BS": 3
         },
         "keywords": [
-          "Blast",
-          "Ignores Cover",
-          "Indirect Fire"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "indirect-fire"
+          }
         ]
       }
     ],
@@ -1927,10 +2217,18 @@
           "BS": null
         },
         "keywords": [
-          "Assault",
-          "Ignores Cover",
-          "Torrent",
-          "Twin-linked"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -1955,8 +2253,15 @@
           "WS": 4
         },
         "keywords": [
-          "Sustained Hits 1",
-          "Twin-linked"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -1981,7 +2286,12 @@
           "WS": 4
         },
         "keywords": [
-          "Sustained Hits 1"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -2006,7 +2316,12 @@
           "WS": 4
         },
         "keywords": [
-          "Sustained Hits 1"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -2031,8 +2346,15 @@
           "WS": 4
         },
         "keywords": [
-          "Sustained Hits 1",
-          "Twin-linked"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -2057,9 +2379,15 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent",
-          "Twin-linked"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -2107,8 +2435,12 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       },
       {
@@ -2145,7 +2477,9 @@
           "BS": 4
         },
         "keywords": [
-          "Pistol"
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -2170,8 +2504,15 @@
           "BS": 3
         },
         "keywords": [
-          "Assault",
-          "Rapid Fire 1"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -2196,8 +2537,15 @@
           "BS": 3
         },
         "keywords": [
-          "Assault",
-          "Rapid Fire 2"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -2222,8 +2570,15 @@
           "BS": 3
         },
         "keywords": [
-          "Assault",
-          "Melta 2"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -2248,9 +2603,15 @@
           "BS": null
         },
         "keywords": [
-          "Assault",
-          "Ignores Cover",
-          "Torrent"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -2275,8 +2636,12 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       },
       {
@@ -2290,7 +2655,9 @@
           "WS": 2
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -2338,7 +2705,12 @@
           "BS": 3
         },
         "keywords": [
-          "Rapid Fire 2"
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -2363,7 +2735,12 @@
           "BS": 3
         },
         "keywords": [
-          "Melta 2"
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -2388,10 +2765,25 @@
           "BS": 2
         },
         "keywords": [
-          "Anti-psyker 2+",
-          "Devastating Wounds",
-          "Precision",
-          "Rapid Fire 1"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Psyker",
+              "threshold": 2
+            }
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "precision"
+          },
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -2416,8 +2808,15 @@
           "BS": 2
         },
         "keywords": [
-          "Melta 2",
-          "Pistol"
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 2
+            }
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -2442,9 +2841,15 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "One Shot",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "one-shot"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -2492,7 +2897,9 @@
           "WS": 2
         },
         "keywords": [
-          "Lethal Hits"
+          {
+            "keyword_id": "lethal-hits"
+          }
         ]
       }
     ],
@@ -2563,7 +2970,9 @@
           "BS": 2
         },
         "keywords": [
-          "one shot"
+          {
+            "keyword_id": "one-shot"
+          }
         ]
       }
     ],
@@ -2588,9 +2997,15 @@
           "BS": null
         },
         "keywords": [
-          "ignores cover",
-          "torrent",
-          "twin-linked"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -2615,8 +3030,12 @@
           "BS": null
         },
         "keywords": [
-          "ignores cover",
-          "torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -2641,7 +3060,12 @@
           "BS": 3
         },
         "keywords": [
-          "rapid fire 2"
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],

@@ -15,7 +15,9 @@
           "BS": 3
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -40,7 +42,9 @@
           "BS": 3
         },
         "keywords": [
-          "Assault"
+          {
+            "keyword_id": "assault"
+          }
         ]
       }
     ],
@@ -65,10 +69,26 @@
           "BS": null
         },
         "keywords": [
-          "Anti-monster 4+",
-          "Anti-vehicle 4+",
-          "Assault",
-          "Torrent"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Monster",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Vehicle",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -116,8 +136,12 @@
           "BS": 3
         },
         "keywords": [
-          "Blast",
-          "Indirect Fire"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "indirect-fire"
+          }
         ]
       }
     ],
@@ -142,7 +166,9 @@
           "BS": 3
         },
         "keywords": [
-          "Assault"
+          {
+            "keyword_id": "assault"
+          }
         ]
       }
     ],
@@ -190,8 +216,12 @@
           "BS": 3
         },
         "keywords": [
-          "Assault",
-          "Pistol"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -216,9 +246,15 @@
           "BS": 3
         },
         "keywords": [
-          "Assault",
-          "Pistol",
-          "Twin-linked"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "pistol"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       },
       {
@@ -232,8 +268,15 @@
           "WS": 3
         },
         "keywords": [
-          "Sustained Hits 1",
-          "Twin-linked"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -281,7 +324,12 @@
           "WS": 3
         },
         "keywords": [
-          "Sustained Hits 1"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -306,7 +354,12 @@
           "WS": 3
         },
         "keywords": [
-          "Sustained Hits 1"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -331,8 +384,12 @@
           "BS": 2
         },
         "keywords": [
-          "Assault",
-          "Pistol"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -357,9 +414,19 @@
           "BS": 2
         },
         "keywords": [
-          "Anti-character 4+",
-          "Precision",
-          "Psychic"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Character",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "precision"
+          },
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -384,8 +451,16 @@
           "WS": 2
         },
         "keywords": [
-          "Anti-infantry 2+",
-          "Psychic"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 2
+            }
+          },
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -410,7 +485,9 @@
           "BS": 4
         },
         "keywords": [
-          "Assault"
+          {
+            "keyword_id": "assault"
+          }
         ]
       }
     ],
@@ -435,9 +512,15 @@
           "BS": null
         },
         "keywords": [
-          "Assault",
-          "Ignores Cover",
-          "Torrent"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -462,7 +545,9 @@
           "BS": 4
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       },
       {
@@ -522,7 +607,12 @@
           "BS": 4
         },
         "keywords": [
-          "Sustained Hits 1"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -547,7 +637,9 @@
           "BS": 4
         },
         "keywords": [
-          "Lethal Hits"
+          {
+            "keyword_id": "lethal-hits"
+          }
         ]
       }
     ],
@@ -653,8 +745,12 @@
           "BS": 3
         },
         "keywords": [
-          "Lethal Hits",
-          "Twin-linked"
+          {
+            "keyword_id": "lethal-hits"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -679,8 +775,12 @@
           "BS": 3
         },
         "keywords": [
-          "Assault",
-          "Twin-linked"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -705,8 +805,12 @@
           "BS": 3
         },
         "keywords": [
-          "Blast",
-          "Twin-linked"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       },
       {
@@ -720,7 +824,9 @@
           "BS": 3
         },
         "keywords": [
-          "Twin-linked"
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -745,7 +851,9 @@
           "BS": 3
         },
         "keywords": [
-          "Twin-linked"
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -770,8 +878,15 @@
           "BS": 3
         },
         "keywords": [
-          "Sustained Hits 1",
-          "Twin-linked"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -796,7 +911,9 @@
           "BS": 3
         },
         "keywords": [
-          "Twin-linked"
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -821,7 +938,9 @@
           "BS": 3
         },
         "keywords": [
-          "Lethal Hits"
+          {
+            "keyword_id": "lethal-hits"
+          }
         ]
       }
     ],
@@ -869,9 +988,19 @@
           "BS": 2
         },
         "keywords": [
-          "Anti-infantry 2+",
-          "Devastating Wounds",
-          "Psychic"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 2
+            }
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -896,7 +1025,9 @@
           "WS": 2
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -921,9 +1052,19 @@
           "BS": 3
         },
         "keywords": [
-          "Anti-infantry 2+",
-          "Assault",
-          "Pistol"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 2
+            }
+          },
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -948,8 +1089,15 @@
           "BS": 3
         },
         "keywords": [
-          "Assault",
-          "Rapid Fire 1"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -974,7 +1122,9 @@
           "BS": 3
         },
         "keywords": [
-          "Assault"
+          {
+            "keyword_id": "assault"
+          }
         ]
       }
     ],
@@ -999,8 +1149,12 @@
           "BS": null
         },
         "keywords": [
-          "Assault",
-          "Torrent"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -1048,8 +1202,12 @@
           "BS": 3
         },
         "keywords": [
-          "Heavy",
-          "Precision"
+          {
+            "keyword_id": "heavy"
+          },
+          {
+            "keyword_id": "precision"
+          }
         ]
       }
     ],
@@ -1074,9 +1232,18 @@
           "BS": 3
         },
         "keywords": [
-          "Assault",
-          "Melta 2",
-          "Pistol"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 2
+            }
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -1101,8 +1268,16 @@
           "BS": 3
         },
         "keywords": [
-          "Anti-infantry 2+",
-          "Psychic"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 2
+            }
+          },
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -1173,7 +1348,9 @@
           "WS": 2
         },
         "keywords": [
-          "Twin-linked"
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -1198,8 +1375,16 @@
           "WS": 2
         },
         "keywords": [
-          "Anti-infantry 2+",
-          "Psychic"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 2
+            }
+          },
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -1224,7 +1409,9 @@
           "BS": 3
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       },
       {
@@ -1238,7 +1425,9 @@
           "BS": 3
         },
         "keywords": [
-          "Linked Fire"
+          {
+            "keyword_id": "linked-fire"
+          }
         ]
       }
     ],
@@ -1263,8 +1452,12 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -1289,8 +1482,15 @@
           "BS": 2
         },
         "keywords": [
-          "Assault",
-          "Melta 3"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 3
+            }
+          }
         ]
       }
     ],
@@ -1315,9 +1515,18 @@
           "BS": 2
         },
         "keywords": [
-          "Assault",
-          "Melta 3",
-          "Pistol"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 3
+            }
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -1342,8 +1551,12 @@
           "BS": 3
         },
         "keywords": [
-          "Heavy",
-          "Ignores Cover"
+          {
+            "keyword_id": "heavy"
+          },
+          {
+            "keyword_id": "ignores-cover"
+          }
         ]
       },
       {
@@ -1357,8 +1570,12 @@
           "BS": 3
         },
         "keywords": [
-          "Heavy",
-          "Ignores Cover"
+          {
+            "keyword_id": "heavy"
+          },
+          {
+            "keyword_id": "ignores-cover"
+          }
         ]
       }
     ],
@@ -1406,7 +1623,12 @@
           "WS": 2
         },
         "keywords": [
-          "Sustained Hits 1"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -1431,7 +1653,13 @@
           "WS": 2
         },
         "keywords": [
-          "Anti-infantry 3+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          }
         ]
       }
     ],
@@ -1479,7 +1707,9 @@
           "WS": 3
         },
         "keywords": [
-          "Twin-linked"
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       },
       {
@@ -1516,8 +1746,15 @@
           "BS": 3
         },
         "keywords": [
-          "Assault",
-          "Melta 6"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 6
+            }
+          }
         ]
       }
     ],
@@ -1542,9 +1779,15 @@
           "BS": null
         },
         "keywords": [
-          "Assault",
-          "Ignores Cover",
-          "Torrent"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -1569,9 +1812,18 @@
           "BS": 3
         },
         "keywords": [
-          "Assault",
-          "Melta 3",
-          "Pistol"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 3
+            }
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -1596,8 +1848,15 @@
           "BS": 3
         },
         "keywords": [
-          "Assault",
-          "Melta 3"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 3
+            }
+          }
         ]
       }
     ],
@@ -1622,8 +1881,15 @@
           "BS": 3
         },
         "keywords": [
-          "Assault",
-          "Melta 3"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 3
+            }
+          }
         ]
       }
     ],
@@ -1671,8 +1937,12 @@
           "BS": 2
         },
         "keywords": [
-          "Assault",
-          "Pistol"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -1697,7 +1967,9 @@
           "WS": 2
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -1722,8 +1994,15 @@
           "BS": 3
         },
         "keywords": [
-          "Assault",
-          "Melta 2"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -1771,9 +2050,15 @@
           "BS": 3
         },
         "keywords": [
-          "Blast",
-          "Devastating Wounds",
-          "Indirect Fire"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "indirect-fire"
+          }
         ]
       }
     ],
@@ -1798,8 +2083,12 @@
           "BS": null
         },
         "keywords": [
-          "Psychic",
-          "Torrent"
+          {
+            "keyword_id": "psychic"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -1824,8 +2113,12 @@
           "BS": 3
         },
         "keywords": [
-          "Assault",
-          "Psychic"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "psychic"
+          }
         ]
       },
       {
@@ -1839,7 +2132,9 @@
           "WS": 3
         },
         "keywords": [
-          "Psychic"
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -1864,8 +2159,16 @@
           "WS": 3
         },
         "keywords": [
-          "Anti-infantry 2+",
-          "Psychic"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 2
+            }
+          },
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -1890,9 +2193,15 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent",
-          "Twin-linked"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -1917,8 +2226,12 @@
           "WS": 2
         },
         "keywords": [
-          "Extra Attacks",
-          "Lethal Hits"
+          {
+            "keyword_id": "extra-attacks"
+          },
+          {
+            "keyword_id": "lethal-hits"
+          }
         ]
       }
     ],
@@ -1943,7 +2256,9 @@
           "WS": 2
         },
         "keywords": [
-          "Lethal Hits"
+          {
+            "keyword_id": "lethal-hits"
+          }
         ]
       }
     ],
@@ -2014,8 +2329,12 @@
           "BS": 2
         },
         "keywords": [
-          "Assault",
-          "Pistol"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -2040,7 +2359,9 @@
           "WS": 2
         },
         "keywords": [
-          "Lance"
+          {
+            "keyword_id": "lance"
+          }
         ]
       }
     ],
@@ -2065,9 +2386,15 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Psychic",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "psychic"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -2127,8 +2454,12 @@
           "BS": 3
         },
         "keywords": [
-          "Blast",
-          "Psychic"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -2153,8 +2484,12 @@
           "BS": 3
         },
         "keywords": [
-          "Assault",
-          "Psychic"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "psychic"
+          }
         ]
       },
       {
@@ -2168,7 +2503,9 @@
           "WS": 2
         },
         "keywords": [
-          "Psychic"
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -2193,8 +2530,16 @@
           "WS": 2
         },
         "keywords": [
-          "Anti-infantry 2+",
-          "Psychic"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 2
+            }
+          },
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -2219,7 +2564,9 @@
           "WS": 2
         },
         "keywords": [
-          "Precision"
+          {
+            "keyword_id": "precision"
+          }
         ]
       }
     ],
@@ -2244,8 +2591,12 @@
           "BS": 2
         },
         "keywords": [
-          "Devastating Wounds",
-          "Ignores Cover"
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "ignores-cover"
+          }
         ]
       },
       {
@@ -2282,8 +2633,12 @@
           "BS": 3
         },
         "keywords": [
-          "Assault",
-          "Pistol"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -2331,7 +2686,9 @@
           "BS": 3
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       },
       {
@@ -2391,7 +2748,12 @@
           "BS": 3
         },
         "keywords": [
-          "Sustained Hits 1"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -2462,8 +2824,12 @@
           "BS": 3
         },
         "keywords": [
-          "Blast",
-          "Devastating Wounds"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -2638,7 +3004,12 @@
           "BS": 2
         },
         "keywords": [
-          "Sustained Hits D3"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": "D3"
+            }
+          }
         ]
       },
       {
@@ -2710,11 +3081,25 @@
           "BS": 3
         },
         "keywords": [
-          "Anti-infantry 2+",
-          "Blast",
-          "Hazardous",
-          "Ignores Cover",
-          "Psychic"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 2
+            }
+          },
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "hazardous"
+          },
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -2739,8 +3124,16 @@
           "WS": 2
         },
         "keywords": [
-          "Anti-infantry 2+",
-          "Psychic"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 2
+            }
+          },
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -2765,7 +3158,9 @@
           "BS": 4
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -2790,7 +3185,9 @@
           "BS": 3
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -2815,7 +3212,9 @@
           "BS": 3
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -2863,9 +3262,19 @@
           "BS": 3
         },
         "keywords": [
-          "Anti-infantry 3+",
-          "Assault",
-          "Pistol"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -2890,8 +3299,16 @@
           "BS": 3
         },
         "keywords": [
-          "Anti-infantry 3+",
-          "Assault"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "assault"
+          }
         ]
       }
     ],
@@ -2916,8 +3333,15 @@
           "BS": 3
         },
         "keywords": [
-          "Assault",
-          "Melta 3"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 3
+            }
+          }
         ]
       }
     ],
@@ -2965,7 +3389,13 @@
           "WS": 3
         },
         "keywords": [
-          "Anti-infantry 3+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          }
         ]
       }
     ],
@@ -2990,7 +3420,9 @@
           "BS": 3
         },
         "keywords": [
-          "Lethal Hits"
+          {
+            "keyword_id": "lethal-hits"
+          }
         ]
       }
     ],
@@ -3015,8 +3447,12 @@
           "BS": 3
         },
         "keywords": [
-          "Assault",
-          "Lethal Hits"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "lethal-hits"
+          }
         ]
       }
     ],
@@ -3041,9 +3477,15 @@
           "BS": 3
         },
         "keywords": [
-          "Assault",
-          "Lethal Hits",
-          "Pistol"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "lethal-hits"
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -3068,8 +3510,12 @@
           "BS": 3
         },
         "keywords": [
-          "Assault",
-          "Lethal Hits"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "lethal-hits"
+          }
         ]
       }
     ],
@@ -3140,7 +3586,9 @@
           "BS": null
         },
         "keywords": [
-          "Torrent"
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -3188,9 +3636,21 @@
           "BS": 2
         },
         "keywords": [
-          "Assault",
-          "Melta 1",
-          "Sustained Hits 2"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 1
+            }
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       },
       {
@@ -3204,8 +3664,15 @@
           "BS": 2
         },
         "keywords": [
-          "Assault",
-          "Melta 6"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 6
+            }
+          }
         ]
       }
     ],
@@ -3253,7 +3720,9 @@
           "BS": 2
         },
         "keywords": [
-          "Pistol"
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -3278,9 +3747,19 @@
           "BS": 2
         },
         "keywords": [
-          "Anti-infantry 3+",
-          "Assault",
-          "Pistol"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -3305,7 +3784,13 @@
           "WS": 2
         },
         "keywords": [
-          "Anti-infantry 3+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          }
         ]
       }
     ],
@@ -3330,7 +3815,9 @@
           "BS": 3
         },
         "keywords": [
-          "Assault"
+          {
+            "keyword_id": "assault"
+          }
         ]
       },
       {
@@ -3344,9 +3831,23 @@
           "WS": 3
         },
         "keywords": [
-          "Anti-monster 3+",
-          "Anti-vehicle 3+",
-          "Lance"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Monster",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Vehicle",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "lance"
+          }
         ]
       }
     ],
@@ -3371,7 +3872,9 @@
           "BS": 3
         },
         "keywords": [
-          "Assault"
+          {
+            "keyword_id": "assault"
+          }
         ]
       },
       {
@@ -3385,9 +3888,23 @@
           "WS": 3
         },
         "keywords": [
-          "Anti-monster 3+",
-          "Anti-vehicle 3+",
-          "Lance"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Monster",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Vehicle",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "lance"
+          }
         ]
       }
     ],
@@ -3435,7 +3952,12 @@
           "WS": 2
         },
         "keywords": [
-          "Sustained Hits 2"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       },
       {
@@ -3449,8 +3971,12 @@
           "WS": 2
         },
         "keywords": [
-          "Devastating Wounds",
-          "Precision"
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "precision"
+          }
         ]
       },
       {
@@ -3464,8 +3990,16 @@
           "WS": 2
         },
         "keywords": [
-          "Anti-Epic Hero 2+",
-          "Precision"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Epic Hero",
+              "threshold": 2
+            }
+          },
+          {
+            "keyword_id": "precision"
+          }
         ]
       }
     ],
@@ -3513,9 +4047,19 @@
           "BS": 2
         },
         "keywords": [
-          "Anti-infantry 2+",
-          "Assault",
-          "Pistol"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 2
+            }
+          },
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -3540,7 +4084,9 @@
           "WS": 2
         },
         "keywords": [
-          "Psychic"
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -3565,7 +4111,9 @@
           "BS": 2
         },
         "keywords": [
-          "Assault"
+          {
+            "keyword_id": "assault"
+          }
         ]
       }
     ],
@@ -3590,7 +4138,13 @@
           "WS": 2
         },
         "keywords": [
-          "Anti-infantry 3+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          }
         ]
       }
     ],
@@ -3615,8 +4169,12 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -3641,8 +4199,12 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -3667,9 +4229,15 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent",
-          "Twin-linked"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -3694,8 +4262,12 @@
           "WS": 3
         },
         "keywords": [
-          "Lethal Hits",
-          "Twin-linked"
+          {
+            "keyword_id": "lethal-hits"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -3720,8 +4292,12 @@
           "WS": 3
         },
         "keywords": [
-          "Lethal Hits",
-          "Twin-linked"
+          {
+            "keyword_id": "lethal-hits"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -3746,7 +4322,9 @@
           "BS": 3
         },
         "keywords": [
-          "Ignores Cover"
+          {
+            "keyword_id": "ignores-cover"
+          }
         ]
       },
       {
@@ -3760,7 +4338,9 @@
           "BS": 3
         },
         "keywords": [
-          "Ignores Cover"
+          {
+            "keyword_id": "ignores-cover"
+          }
         ]
       }
     ],
@@ -3785,8 +4365,12 @@
           "BS": 2
         },
         "keywords": [
-          "Blast",
-          "Ignores Cover"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "ignores-cover"
+          }
         ]
       },
       {
@@ -3800,7 +4384,9 @@
           "BS": 2
         },
         "keywords": [
-          "Ignores Cover"
+          {
+            "keyword_id": "ignores-cover"
+          }
         ]
       }
     ],
@@ -3825,8 +4411,12 @@
           "BS": 3
         },
         "keywords": [
-          "Ignores Cover",
-          "Lethal Hits"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "lethal-hits"
+          }
         ]
       }
     ],
@@ -3851,8 +4441,12 @@
           "BS": 3
         },
         "keywords": [
-          "Blast",
-          "Indirect Fire"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "indirect-fire"
+          }
         ]
       }
     ],
@@ -3877,7 +4471,9 @@
           "BS": 3
         },
         "keywords": [
-          "Pistol"
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -3902,7 +4498,9 @@
           "BS": 4
         },
         "keywords": [
-          "Heavy"
+          {
+            "keyword_id": "heavy"
+          }
         ]
       }
     ],
@@ -3927,9 +4525,22 @@
           "BS": 4
         },
         "keywords": [
-          "Anti-infantry 3+",
-          "Heavy",
-          "Sustained Hits 1"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "heavy"
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -3954,7 +4565,13 @@
           "WS": 3
         },
         "keywords": [
-          "Anti-infantry 3+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          }
         ]
       }
     ],
@@ -3979,8 +4596,16 @@
           "BS": 3
         },
         "keywords": [
-          "Anti-vehicle 4+",
-          "Devastating Wounds"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Vehicle",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -4017,7 +4642,9 @@
           "BS": 3
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -4065,7 +4692,9 @@
           "BS": 2
         },
         "keywords": [
-          "Precision"
+          {
+            "keyword_id": "precision"
+          }
         ]
       }
     ],
@@ -4125,7 +4754,9 @@
           "BS": 3
         },
         "keywords": [
-          "Pistol"
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -4173,8 +4804,12 @@
           "BS": 2
         },
         "keywords": [
-          "Assault",
-          "Psychic"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "psychic"
+          }
         ]
       },
       {
@@ -4188,7 +4823,9 @@
           "WS": 2
         },
         "keywords": [
-          "Psychic"
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -4213,9 +4850,15 @@
           "BS": 3
         },
         "keywords": [
-          "Blast",
-          "Indirect Fire",
-          "Twin-linked"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "indirect-fire"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -4240,7 +4883,9 @@
           "BS": 3
         },
         "keywords": [
-          "Assault"
+          {
+            "keyword_id": "assault"
+          }
         ]
       }
     ],
@@ -4311,8 +4956,16 @@
           "BS": 3
         },
         "keywords": [
-          "Anti-infantry 3+",
-          "Assault"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "assault"
+          }
         ]
       },
       {
@@ -4326,7 +4979,13 @@
           "WS": 2
         },
         "keywords": [
-          "Anti-infantry 3+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          }
         ]
       }
     ],
@@ -4351,7 +5010,13 @@
           "WS": 2
         },
         "keywords": [
-          "Anti-infantry 3+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          }
         ]
       }
     ],
@@ -4376,7 +5041,13 @@
           "WS": 2
         },
         "keywords": [
-          "Anti-infantry 3+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          }
         ]
       }
     ],
@@ -4401,7 +5072,13 @@
           "WS": 2
         },
         "keywords": [
-          "Anti-infantry 3+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          }
         ]
       }
     ],
@@ -4426,9 +5103,18 @@
           "BS": 2
         },
         "keywords": [
-          "Assault",
-          "Melta 2",
-          "Pistol"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 2
+            }
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -4453,7 +5139,9 @@
           "WS": 2
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -4478,7 +5166,9 @@
           "WS": 2
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -4572,7 +5262,9 @@
           "BS": 3
         },
         "keywords": [
-          "Assault"
+          {
+            "keyword_id": "assault"
+          }
         ]
       }
     ],
@@ -4597,8 +5289,12 @@
           "BS": 3
         },
         "keywords": [
-          "Assault",
-          "Blast"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -4646,8 +5342,16 @@
           "BS": 3
         },
         "keywords": [
-          "Anti-vehicle 4+",
-          "Devastating Wounds"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Vehicle",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -4695,7 +5399,13 @@
           "WS": 2
         },
         "keywords": [
-          "Anti-infantry 3+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          }
         ]
       }
     ],
@@ -4720,8 +5430,12 @@
           "BS": 2
         },
         "keywords": [
-          "Assault",
-          "Lethal Hits"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "lethal-hits"
+          }
         ]
       }
     ],
@@ -4746,7 +5460,12 @@
           "WS": 2
         },
         "keywords": [
-          "Sustained Hits 1"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -4817,7 +5536,9 @@
           "WS": 3
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -4842,7 +5563,9 @@
           "WS": 3
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -4867,7 +5590,9 @@
           "WS": 3
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -4892,8 +5617,19 @@
           "BS": 3
         },
         "keywords": [
-          "Anti-infantry 3+",
-          "Sustained Hits 1"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -4918,10 +5654,25 @@
           "BS": 3
         },
         "keywords": [
-          "Anti-infantry 3+",
-          "Assault",
-          "Rapid Fire 1",
-          "Twin-linked"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 1
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -4969,7 +5720,12 @@
           "BS": 3
         },
         "keywords": [
-          "Sustained Hits 2"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -5017,7 +5773,12 @@
           "BS": 3
         },
         "keywords": [
-          "sustained hits 1"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -5042,7 +5803,13 @@
           "BS": 3
         },
         "keywords": [
-          "anti-fly 2+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Fly",
+              "threshold": 2
+            }
+          }
         ]
       }
     ],
@@ -5067,8 +5834,12 @@
           "BS": 3
         },
         "keywords": [
-          "assault",
-          "twin-linked"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -5093,8 +5864,15 @@
           "BS": 3
         },
         "keywords": [
-          "sustained hits 1",
-          "twin-linked"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -5119,7 +5897,9 @@
           "BS": 3
         },
         "keywords": [
-          "blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       }
     ],
@@ -5167,7 +5947,9 @@
           "BS": 3
         },
         "keywords": [
-          "twin-linked"
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -5192,7 +5974,9 @@
           "BS": 3
         },
         "keywords": [
-          "twin-linked"
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -5263,7 +6047,9 @@
           "BS": 3
         },
         "keywords": [
-          "blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       },
       {
@@ -5323,8 +6109,12 @@
           "BS": 3
         },
         "keywords": [
-          "devastating wounds",
-          "pistol"
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -5349,7 +6139,9 @@
           "BS": 3
         },
         "keywords": [
-          "assault"
+          {
+            "keyword_id": "assault"
+          }
         ]
       }
     ],
@@ -5374,9 +6166,22 @@
           "BS": 4
         },
         "keywords": [
-          "anti-infantry 3+",
-          "heavy",
-          "sustained hits 1"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "heavy"
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -5401,7 +6206,9 @@
           "BS": 4
         },
         "keywords": [
-          "heavy"
+          {
+            "keyword_id": "heavy"
+          }
         ]
       }
     ],
@@ -5426,8 +6233,15 @@
           "BS": 3
         },
         "keywords": [
-          "assault",
-          "melta 2"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -5452,8 +6266,12 @@
           "BS": 3
         },
         "keywords": [
-          "assault",
-          "pistol"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -5478,8 +6296,16 @@
           "BS": 3
         },
         "keywords": [
-          "anti-infantry 3+",
-          "assault"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "assault"
+          }
         ]
       }
     ],
@@ -5504,8 +6330,12 @@
           "BS": 3
         },
         "keywords": [
-          "assault",
-          "lethal hits"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "lethal-hits"
+          }
         ]
       }
     ],
@@ -5530,9 +6360,15 @@
           "BS": null
         },
         "keywords": [
-          "assault",
-          "ignores cover",
-          "torrent"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -5603,8 +6439,12 @@
           "BS": 3
         },
         "keywords": [
-          "heavy",
-          "precision"
+          {
+            "keyword_id": "heavy"
+          },
+          {
+            "keyword_id": "precision"
+          }
         ]
       }
     ],
@@ -5652,7 +6492,9 @@
           "WS": 2
         },
         "keywords": [
-          "psychic"
+          {
+            "keyword_id": "psychic"
+          }
         ]
       }
     ],
@@ -5677,8 +6519,19 @@
           "BS": 3
         },
         "keywords": [
-          "anti-infantry 3+",
-          "sustained hits 1"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Infantry",
+              "threshold": 3
+            }
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -5703,7 +6556,9 @@
           "BS": 3
         },
         "keywords": [
-          "devastating wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -5728,7 +6583,9 @@
           "BS": 3
         },
         "keywords": [
-          "assault"
+          {
+            "keyword_id": "assault"
+          }
         ]
       }
     ],
@@ -5753,8 +6610,12 @@
           "BS": null
         },
         "keywords": [
-          "assault",
-          "torrent"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],

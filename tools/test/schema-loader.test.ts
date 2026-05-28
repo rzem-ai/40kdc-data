@@ -14,6 +14,7 @@ describe("schema-loader", () => {
     expect(ids).toContain("https://40kdc.dev/schemas/core/faction.schema.json");
     expect(ids).toContain("https://40kdc.dev/schemas/core/unit.schema.json");
     expect(ids).toContain("https://40kdc.dev/schemas/core/weapon.schema.json");
+    expect(ids).toContain("https://40kdc.dev/schemas/core/weapon-keyword.schema.json");
     expect(ids).toContain("https://40kdc.dev/schemas/core/game-version.schema.json");
     expect(ids).toContain("https://40kdc.dev/schemas/core/detachment.schema.json");
     expect(ids).toContain("https://40kdc.dev/schemas/core/enhancement.schema.json");

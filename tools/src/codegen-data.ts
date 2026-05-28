@@ -29,6 +29,7 @@ const EXCLUDED_DIRS = new Set(["_example", "_port-audit"]);
 const FILE_TO_COLLECTION: Record<string, keyof RawData> = {
   units: "units",
   weapons: "weapons",
+  "weapon-keywords": "weaponKeywords",
   factions: "factions",
   abilities: "abilities",
   "phase-mappings": "phaseMappings",

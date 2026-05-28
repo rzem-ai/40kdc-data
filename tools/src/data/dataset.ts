@@ -23,6 +23,7 @@ import type {
   Unit,
   UnitComposition,
   WargearOption,
+  WeaponKeyword,
 } from "../generated.js";
 import { Collection } from "./collection.js";
 import { AbilityView, FactionView, UnitView, WeaponView } from "./entities.js";
@@ -34,6 +35,7 @@ export class Dataset {
   // Richly-linked collections.
   readonly units: Collection<Unit, UnitView>;
   readonly weapons: Collection<RawData["weapons"][number], WeaponView>;
+  readonly weaponKeywords: Collection<WeaponKeyword, WeaponKeyword>;
   readonly factions: Collection<RawData["factions"][number], FactionView>;
   readonly abilities: Collection<RawData["abilities"][number], AbilityView>;
 
@@ -81,6 +83,7 @@ export class Dataset {
       nameOf: (w) => w.name,
       wrap: (w) => new WeaponView(w, this),
     });
+    this.weaponKeywords = idCollection(raw.weaponKeywords);
     this.factions = new Collection({
       items: raw.factions,
       idOf: (f) => f.id,

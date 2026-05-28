@@ -1,0 +1,27 @@
+[
+  {
+    "id": "test-sustained-hits",
+    "name": "Sustained Hits",
+    "required_parameters": ["value"],
+    "effect": null,
+    "game_version": { "edition": "10th", "dataslate": "2025-q3" }
+  },
+  {
+    "id": "test-twin-linked",
+    "name": "Twin-linked",
+    "required_parameters": [],
+    "effect": {
+      "type": "re-roll",
+      "target": "self",
+      "modifier": { "roll": "wound", "subset": "all-failures" }
+    },
+    "game_version": { "edition": "10th", "dataslate": "2025-q3" }
+  },
+  {
+    "id": "test-anti",
+    "name": "Anti",
+    "required_parameters": ["target_keyword", "threshold"],
+    "effect": null,
+    "game_version": { "edition": "10th", "dataslate": "2025-q3" }
+  }
+]

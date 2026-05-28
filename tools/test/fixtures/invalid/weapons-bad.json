@@ -16,5 +16,35 @@
       }
     ],
     "game_version": { "edition": "10th", "dataslate": "2025-q3" }
+  },
+  {
+    "id": "keyword-string-not-object",
+    "name": "Free-text keyword (legacy shape)",
+    "type": "ranged",
+    "profiles": [
+      {
+        "name": "Bad Keyword",
+        "range": 24,
+        "stats": { "A": 1, "BS": 3, "S": 4, "AP": 0, "D": 1 },
+        "keywords": ["Lethal Hits"]
+      }
+    ],
+    "game_version": { "edition": "10th", "dataslate": "2025-q3" }
+  },
+  {
+    "id": "keyword-unknown-parameter",
+    "name": "Keyword with bogus parameter",
+    "type": "ranged",
+    "profiles": [
+      {
+        "name": "Bad Param",
+        "range": 24,
+        "stats": { "A": 1, "BS": 3, "S": 4, "AP": 0, "D": 1 },
+        "keywords": [
+          { "keyword_id": "melta", "parameters": { "weight": 5 } }
+        ]
+      }
+    ],
+    "game_version": { "edition": "10th", "dataslate": "2025-q3" }
   }
 ]

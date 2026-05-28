@@ -1667,6 +1667,57 @@
       ],
       "additionalProperties": false
     },
+    "weapon-keyword": {
+      "title": "Weapon Keyword",
+      "description": "Catalog entry for a weapon keyword (Lethal Hits, Sustained Hits N, Anti-X N+, etc.). Each weapon profile references entries here via {keyword_id, parameters?} instead of carrying free-text strings. The optional `effect` describes the keyword's game mechanic in the Ability DSL; null when the behaviour is faction-specific flavour not yet modelled.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/entity-id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "required_parameters": {
+          "type": "array",
+          "description": "Parameter keys that must be supplied at each reference site, in the order they would appear in a printed datasheet (e.g. Anti-INFANTRY 4+ → ['target_keyword', 'threshold']).",
+          "items": {
+            "type": "string",
+            "enum": [
+              "value",
+              "target_keyword",
+              "threshold"
+            ]
+          },
+          "uniqueItems": true,
+          "maxItems": 3
+        },
+        "effect": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/effect"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Mechanical effect of this keyword. Null when the behaviour is faction-specific flavour not yet expressible in the DSL — engines treat such references as no-op buffs and may surface them as 'cannot auto-apply'."
+        },
+        "game_version": {
+          "$ref": "#/$defs/game-version-ref"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "required_parameters",
+        "effect",
+        "game_version"
+      ],
+      "additionalProperties": false
+    },
     "weapon": {
       "title": "Weapon",
       "description": "A weapon entry with one or more stat profiles (e.g., standard and overcharge modes).",
@@ -1756,7 +1807,40 @@
                 ]
               },
               "keywords": {
-                "$ref": "#/$defs/keyword-list"
+                "type": "array",
+                "description": "References into the weapon-keyword catalog. Each entry names the catalog id and supplies parameter values (e.g. `Sustained Hits 1` → `{keyword_id: 'sustained-hits', parameters: {value: 1}}`).",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "keyword_id": {
+                      "$ref": "#/$defs/entity-id"
+                    },
+                    "parameters": {
+                      "type": "object",
+                      "description": "Reference-site parameters conforming to the catalog entry's required_parameters. Only the three documented keys are accepted; any other key is invalid.",
+                      "properties": {
+                        "value": {
+                          "$ref": "#/$defs/stat-value"
+                        },
+                        "target_keyword": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 64
+                        },
+                        "threshold": {
+                          "type": "integer",
+                          "minimum": 2,
+                          "maximum": 6
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "keyword_id"
+                  ],
+                  "additionalProperties": false
+                }
               }
             },
             "required": [
@@ -2086,6 +2170,10 @@
       "required": [
         "type",
         "target"
+      ],
+      "$comment": "When `type` is `re-roll`, `modifier` must carry `roll` (string) and `subset` (`ones` | `all-failures`). Rerolls always target failures; the subset decides whether only 1s are rerolled or every failed die. The constraint is enforced by AJV at validation time and stripped from the codegen bundle (typify can't model if/then/else) — the generated TS/Rust types therefore see `modifier` as an open object, matching its other-`type` callers.",
+      "allOf": [
+        {}
       ]
     },
     "choice-effect": {

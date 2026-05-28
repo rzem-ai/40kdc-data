@@ -19,6 +19,23 @@ jobs:
       - run: cd tools && npm run build
       - run: cd tools && npm test
       - run: cd tools && npm run validate
+      # Catch malformed packages on PRs instead of at publish time on main.
+      # `npm pack --dry-run` exercises the prepack pipeline and prints the
+      # tarball file list, so a reviewer can eyeball what would ship.
+      - name: npm pack dry-run
+        run: cd tools && npm pack --dry-run
+      # The npm package version and the wh40kdc crate version are versioned in
+      # lockstep by convention; enforce that as a hard CI check so a bump in
+      # one without the other can't land.
+      - name: Check npm/crate version lockstep
+        run: |
+          npm_ver=$(node -p "require('./tools/package.json').version")
+          crate_ver=$(awk -F'"' '/^version[[:space:]]*=/ { print $2; exit }' crates/wh40kdc/Cargo.toml)
+          if [ "$npm_ver" != "$crate_ver" ]; then
+            echo "Version mismatch: tools/package.json=$npm_ver crates/wh40kdc/Cargo.toml=$crate_ver" >&2
+            exit 1
+          fi
+          echo "Versions in sync: $npm_ver"
 
   rust:
     runs-on: ubuntu-latest
@@ -40,6 +57,13 @@ jobs:
       - run: cargo fmt --all -- --check
       - run: cargo build --workspace
       - run: cargo test --workspace
+      # Catch malformed crates on PRs instead of at publish time on main.
+      # `cargo publish --dry-run` validates the manifest and packaging rules;
+      # `cargo package --list` prints the file list that would actually ship.
+      - name: cargo publish dry-run
+        run: cargo publish -p wh40kdc --dry-run --locked
+      - name: List crate tarball contents
+        run: cargo package --list -p wh40kdc
 
   conformance:
     # The tie-out gate: the Rust crate and the TS package must produce identical
@@ -72,6 +96,8 @@ jobs:
     needs: [validate, rust, conformance]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
@@ -93,6 +119,17 @@ jobs:
         run: cargo publish -p wh40kdc --locked
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+      - name: Tag and create GitHub release
+        if: steps.check.outputs.publish == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: wh40kdc-v${{ steps.ver.outputs.version }}
+        run: |
+          git tag "$TAG"
+          git push origin "$TAG"
+          gh release create "$TAG" \
+            --title "wh40kdc v${{ steps.ver.outputs.version }}" \
+            --notes "Published to https://crates.io/crates/wh40kdc/${{ steps.ver.outputs.version }}"
 
   publish-npm:
     # Auto-publish @alpaca-software/40kdc-data to npm once main is green.
@@ -109,7 +146,7 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       id-token: write
     steps:
       - uses: actions/checkout@v4
@@ -135,3 +172,14 @@ jobs:
         run: cd tools && npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_REGISTRY_TOKEN }}
+      - name: Tag and create GitHub release
+        if: steps.check.outputs.publish == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: npm-v${{ steps.ver.outputs.version }}
+        run: |
+          git tag "$TAG"
+          git push origin "$TAG"
+          gh release create "$TAG" \
+            --title "@alpaca-software/40kdc-data v${{ steps.ver.outputs.version }}" \
+            --notes "Published to https://www.npmjs.com/package/@alpaca-software/40kdc-data/v/${{ steps.ver.outputs.version }}"

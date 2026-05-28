@@ -43,6 +43,9 @@
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "build": "npm run codegen:data && tsc",
     "codegen:data": "tsx src/codegen-data.ts",

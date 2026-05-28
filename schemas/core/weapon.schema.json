@@ -42,7 +42,28 @@
             },
             "required": ["A", "S", "AP", "D"]
           },
-          "keywords": { "$ref": "../defs/common.schema.json#/$defs/keyword-list" }
+          "keywords": {
+            "type": "array",
+            "description": "References into the weapon-keyword catalog. Each entry names the catalog id and supplies parameter values (e.g. `Sustained Hits 1` → `{keyword_id: 'sustained-hits', parameters: {value: 1}}`).",
+            "items": {
+              "type": "object",
+              "properties": {
+                "keyword_id": { "$ref": "../defs/common.schema.json#/$defs/entity-id" },
+                "parameters": {
+                  "type": "object",
+                  "description": "Reference-site parameters conforming to the catalog entry's required_parameters. Only the three documented keys are accepted; any other key is invalid.",
+                  "properties": {
+                    "value": { "$ref": "../defs/common.schema.json#/$defs/stat-value" },
+                    "target_keyword": { "type": "string", "minLength": 1, "maxLength": 64 },
+                    "threshold": { "type": "integer", "minimum": 2, "maximum": 6 }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "required": ["keyword_id"],
+              "additionalProperties": false
+            }
+          }
         },
         "required": ["name", "stats"],
         "additionalProperties": false

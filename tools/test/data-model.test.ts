@@ -204,6 +204,7 @@ function emptyRaw() {
   return {
     units: [],
     weapons: [],
+    weaponKeywords: [],
     factions: [],
     abilities: [],
     phaseMappings: [],

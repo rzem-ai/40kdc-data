@@ -1,0 +1,16 @@
+[
+  {
+    "id": "example-bolter-tag",
+    "name": "Example Bolter Tag",
+    "required_parameters": [],
+    "effect": null,
+    "game_version": { "edition": "10th", "dataslate": "2025-q3" }
+  },
+  {
+    "id": "example-sustained-blows",
+    "name": "Example Sustained Blows",
+    "required_parameters": ["value"],
+    "effect": null,
+    "game_version": { "edition": "10th", "dataslate": "2025-q3" }
+  }
+]

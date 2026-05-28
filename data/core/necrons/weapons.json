@@ -15,8 +15,15 @@
           "BS": 3
         },
         "keywords": [
-          "Lethal Hits",
-          "Rapid Fire 5"
+          {
+            "keyword_id": "lethal-hits"
+          },
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 5
+            }
+          }
         ]
       }
     ],
@@ -64,8 +71,12 @@
           "BS": 3
         },
         "keywords": [
-          "Blast",
-          "Devastating Wounds"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -90,7 +101,12 @@
           "BS": 3
         },
         "keywords": [
-          "Sustained Hits 2"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -208,8 +224,12 @@
           "BS": 3
         },
         "keywords": [
-          "Devastating Wounds",
-          "Pistol"
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -257,8 +277,15 @@
           "BS": 4
         },
         "keywords": [
-          "Lethal Hits",
-          "Rapid Fire 1"
+          {
+            "keyword_id": "lethal-hits"
+          },
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -283,7 +310,9 @@
           "BS": 4
         },
         "keywords": [
-          "Lethal Hits"
+          {
+            "keyword_id": "lethal-hits"
+          }
         ]
       }
     ],
@@ -331,7 +360,9 @@
           "BS": 4
         },
         "keywords": [
-          "Lethal Hits"
+          {
+            "keyword_id": "lethal-hits"
+          }
         ]
       }
     ],
@@ -356,8 +387,15 @@
           "BS": 4
         },
         "keywords": [
-          "Assault",
-          "Sustained Hits 1"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -463,8 +501,15 @@
           "BS": 3
         },
         "keywords": [
-          "Sustained Hits 2",
-          "Twin-linked"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 2
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -489,7 +534,9 @@
           "BS": 2
         },
         "keywords": [
-          "One Shot"
+          {
+            "keyword_id": "one-shot"
+          }
         ]
       }
     ],
@@ -549,7 +596,9 @@
           "WS": 2
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -574,7 +623,9 @@
           "WS": 3
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -599,8 +650,15 @@
           "BS": 3
         },
         "keywords": [
-          "Lethal Hits",
-          "Rapid Fire 2"
+          {
+            "keyword_id": "lethal-hits"
+          },
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -648,8 +706,12 @@
           "BS": 4
         },
         "keywords": [
-          "Blast",
-          "Heavy"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "heavy"
+          }
         ]
       }
     ],
@@ -674,9 +736,18 @@
           "BS": 4
         },
         "keywords": [
-          "Lethal Hits",
-          "Rapid Fire 1",
-          "Twin-linked"
+          {
+            "keyword_id": "lethal-hits"
+          },
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 1
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -724,7 +795,9 @@
           "BS": 3
         },
         "keywords": [
-          "Lethal Hits"
+          {
+            "keyword_id": "lethal-hits"
+          }
         ]
       }
     ],
@@ -749,8 +822,15 @@
           "BS": 3
         },
         "keywords": [
-          "Assault",
-          "Sustained Hits 2"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -844,7 +924,9 @@
           "WS": 3
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -869,7 +951,12 @@
           "BS": 3
         },
         "keywords": [
-          "Sustained Hits 2"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -917,8 +1004,12 @@
           "BS": 3
         },
         "keywords": [
-          "Lethal Hits",
-          "Twin-linked"
+          {
+            "keyword_id": "lethal-hits"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -943,8 +1034,12 @@
           "BS": 3
         },
         "keywords": [
-          "Blast",
-          "Devastating Wounds"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -969,9 +1064,18 @@
           "BS": 3
         },
         "keywords": [
-          "Assault",
-          "Sustained Hits 2",
-          "Twin-linked"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 2
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -1031,8 +1135,12 @@
           "BS": 3
         },
         "keywords": [
-          "Heavy",
-          "Lethal Hits"
+          {
+            "keyword_id": "heavy"
+          },
+          {
+            "keyword_id": "lethal-hits"
+          }
         ]
       }
     ],
@@ -1057,9 +1165,21 @@
           "BS": 3
         },
         "keywords": [
-          "Heavy",
-          "Rapid Fire 6",
-          "Sustained Hits 1"
+          {
+            "keyword_id": "heavy"
+          },
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 6
+            }
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -1130,7 +1250,12 @@
           "BS": 2
         },
         "keywords": [
-          "Rapid Fire 2"
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -1201,8 +1326,12 @@
           "BS": 3
         },
         "keywords": [
-          "Heavy",
-          "Precision"
+          {
+            "keyword_id": "heavy"
+          },
+          {
+            "keyword_id": "precision"
+          }
         ]
       }
     ],
@@ -1227,8 +1356,12 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       },
       {
@@ -1242,7 +1375,12 @@
           "BS": 3
         },
         "keywords": [
-          "Melta 4"
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 4
+            }
+          }
         ]
       }
     ],
@@ -1267,8 +1405,12 @@
           "BS": 2
         },
         "keywords": [
-          "Blast",
-          "Devastating Wounds"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -1293,7 +1435,9 @@
           "BS": 3
         },
         "keywords": [
-          "Lethal Hits"
+          {
+            "keyword_id": "lethal-hits"
+          }
         ]
       }
     ],
@@ -1341,8 +1485,12 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       }
     ],
@@ -1379,7 +1527,9 @@
           "WS": 2
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -1404,8 +1554,19 @@
           "BS": 3
         },
         "keywords": [
-          "Anti-fly 4+",
-          "Sustained Hits 2"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Fly",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -1476,7 +1637,9 @@
           "BS": 3
         },
         "keywords": [
-          "Lethal Hits"
+          {
+            "keyword_id": "lethal-hits"
+          }
         ]
       }
     ],
@@ -1536,7 +1699,12 @@
           "BS": 3
         },
         "keywords": [
-          "Sustained Hits 2"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -1561,7 +1729,9 @@
           "WS": 3
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -1609,8 +1779,12 @@
           "BS": 3
         },
         "keywords": [
-          "Blast",
-          "Devastating Wounds"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -1635,8 +1809,15 @@
           "BS": 3
         },
         "keywords": [
-          "Lethal Hits",
-          "Rapid Fire 3"
+          {
+            "keyword_id": "lethal-hits"
+          },
+          {
+            "keyword_id": "rapid-fire",
+            "parameters": {
+              "value": 3
+            }
+          }
         ]
       }
     ],
@@ -1661,7 +1842,12 @@
           "BS": 3
         },
         "keywords": [
-          "Sustained Hits D3"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": "D3"
+            }
+          }
         ]
       }
     ],
@@ -1709,7 +1895,9 @@
           "WS": 5
         },
         "keywords": [
-          "Lethal Hits"
+          {
+            "keyword_id": "lethal-hits"
+          }
         ]
       }
     ],
@@ -1734,8 +1922,12 @@
           "BS": 4
         },
         "keywords": [
-          "Devastating Wounds",
-          "Pistol"
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -1829,7 +2021,12 @@
           "WS": 2
         },
         "keywords": [
-          "Sustained Hits D3"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": "D3"
+            }
+          }
         ]
       }
     ],
@@ -1854,7 +2051,9 @@
           "WS": 2
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -1914,7 +2113,9 @@
           "WS": 2
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -1939,8 +2140,15 @@
           "WS": 3
         },
         "keywords": [
-          "Sustained Hits 1",
-          "Twin-linked"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -2000,7 +2208,9 @@
           "WS": 3
         },
         "keywords": [
-          "Extra Attacks"
+          {
+            "keyword_id": "extra-attacks"
+          }
         ]
       }
     ],
@@ -2025,9 +2235,18 @@
           "BS": 2
         },
         "keywords": [
-          "Ignores Cover",
-          "Pistol",
-          "Sustained Hits 2"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "pistol"
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -2075,7 +2294,9 @@
           "WS": 2
         },
         "keywords": [
-          "Extra Attacks"
+          {
+            "keyword_id": "extra-attacks"
+          }
         ]
       }
     ],
@@ -2100,8 +2321,12 @@
           "BS": 4
         },
         "keywords": [
-          "Lethal Hits",
-          "Twin-linked"
+          {
+            "keyword_id": "lethal-hits"
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -2230,8 +2455,12 @@
           "BS": 3
         },
         "keywords": [
-          "Blast",
-          "Heavy"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "heavy"
+          }
         ]
       }
     ],
@@ -2256,8 +2485,12 @@
           "BS": 2
         },
         "keywords": [
-          "Ignores Cover",
-          "Pistol"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "pistol"
+          }
         ]
       }
     ],
@@ -2282,7 +2515,13 @@
           "BS": 2
         },
         "keywords": [
-          "Anti-vehicle 2+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Vehicle",
+              "threshold": 2
+            }
+          }
         ]
       },
       {
@@ -2308,7 +2547,13 @@
           "WS": 2
         },
         "keywords": [
-          "Anti-vehicle 2+"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Vehicle",
+              "threshold": 2
+            }
+          }
         ]
       }
     ],
@@ -2333,8 +2578,15 @@
           "BS": 2
         },
         "keywords": [
-          "Blast",
-          "Sustained Hits 2"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -2359,7 +2611,9 @@
           "WS": 2
         },
         "keywords": [
-          "Extra Attacks"
+          {
+            "keyword_id": "extra-attacks"
+          }
         ]
       }
     ],
@@ -2384,9 +2638,19 @@
           "BS": 2
         },
         "keywords": [
-          "Anti-character 4+",
-          "Devastating Wounds",
-          "Precision"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Character",
+              "threshold": 4
+            }
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "precision"
+          }
         ]
       }
     ],
@@ -2434,7 +2698,12 @@
           "BS": 3
         },
         "keywords": [
-          "Sustained Hits D3"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": "D3"
+            }
+          }
         ]
       }
     ],
@@ -2459,7 +2728,12 @@
           "BS": 4
         },
         "keywords": [
-          "Melta 2"
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       },
       {
@@ -2473,8 +2747,12 @@
           "BS": null
         },
         "keywords": [
-          "Ignores Cover",
-          "Torrent"
+          {
+            "keyword_id": "ignores-cover"
+          },
+          {
+            "keyword_id": "torrent"
+          }
         ]
       },
       {
@@ -2511,7 +2789,9 @@
           "BS": 2
         },
         "keywords": [
-          "Devastating Wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -2536,7 +2816,9 @@
           "BS": 2
         },
         "keywords": [
-          "Indirect Fire"
+          {
+            "keyword_id": "indirect-fire"
+          }
         ]
       }
     ],
@@ -2584,7 +2866,9 @@
           "WS": 2
         },
         "keywords": [
-          "Lethal Hits"
+          {
+            "keyword_id": "lethal-hits"
+          }
         ]
       }
     ],
@@ -2632,7 +2916,9 @@
           "BS": 4
         },
         "keywords": [
-          "Blast"
+          {
+            "keyword_id": "blast"
+          }
         ]
       },
       {
@@ -2669,8 +2955,15 @@
           "BS": 2
         },
         "keywords": [
-          "Assault",
-          "Sustained Hits 1"
+          {
+            "keyword_id": "assault"
+          },
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -2695,7 +2988,12 @@
           "WS": 2
         },
         "keywords": [
-          "Sustained Hits 1"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 1
+            }
+          }
         ]
       }
     ],
@@ -2720,8 +3018,12 @@
           "BS": 3
         },
         "keywords": [
-          "Blast",
-          "Devastating Wounds"
+          {
+            "keyword_id": "blast"
+          },
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -2769,7 +3071,9 @@
           "BS": 4
         },
         "keywords": [
-          "LETHAL HITS"
+          {
+            "keyword_id": "lethal-hits"
+          }
         ]
       }
     ],
@@ -2794,8 +3098,15 @@
           "BS": 3
         },
         "keywords": [
-          "sustained hits 2",
-          "twin-linked"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 2
+            }
+          },
+          {
+            "keyword_id": "twin-linked"
+          }
         ]
       }
     ],
@@ -2820,7 +3131,12 @@
           "BS": 4
         },
         "keywords": [
-          "sustained hits 2"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -2845,7 +3161,9 @@
           "BS": 4
         },
         "keywords": [
-          "lethal hits"
+          {
+            "keyword_id": "lethal-hits"
+          }
         ]
       }
     ],
@@ -2870,7 +3188,12 @@
           "BS": 4
         },
         "keywords": [
-          "melta 4"
+          {
+            "keyword_id": "melta",
+            "parameters": {
+              "value": 4
+            }
+          }
         ]
       }
     ],
@@ -2895,8 +3218,16 @@
           "BS": 4
         },
         "keywords": [
-          "ANTI-FLY 2+",
-          "LETHAL HITS"
+          {
+            "keyword_id": "anti",
+            "parameters": {
+              "target_keyword": "Fly",
+              "threshold": 2
+            }
+          },
+          {
+            "keyword_id": "lethal-hits"
+          }
         ]
       }
     ],
@@ -2921,7 +3252,12 @@
           "BS": 4
         },
         "keywords": [
-          "sustained hits 2"
+          {
+            "keyword_id": "sustained-hits",
+            "parameters": {
+              "value": 2
+            }
+          }
         ]
       }
     ],
@@ -2946,7 +3282,9 @@
           "BS": 2
         },
         "keywords": [
-          "one shot"
+          {
+            "keyword_id": "one-shot"
+          }
         ]
       }
     ],
@@ -2971,7 +3309,9 @@
           "WS": 2
         },
         "keywords": [
-          "devastating wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],
@@ -2996,8 +3336,12 @@
           "WS": 2
         },
         "keywords": [
-          "devastating wounds",
-          "precision"
+          {
+            "keyword_id": "devastating-wounds"
+          },
+          {
+            "keyword_id": "precision"
+          }
         ]
       }
     ],
@@ -3057,7 +3401,9 @@
           "WS": 3
         },
         "keywords": [
-          "devastating wounds"
+          {
+            "keyword_id": "devastating-wounds"
+          }
         ]
       }
     ],

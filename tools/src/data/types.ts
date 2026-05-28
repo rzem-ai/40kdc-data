@@ -28,6 +28,7 @@ import type {
   UnitComposition,
   WargearOption,
   Weapon,
+  WeaponKeyword,
 } from "../generated.js";
 
 /**
@@ -40,6 +41,8 @@ import type {
 export interface RawData {
   units: Unit[];
   weapons: Weapon[];
+  /** Catalog of weapon keywords (Lethal Hits, Sustained Hits N, Anti-X N+, ...). */
+  weaponKeywords: WeaponKeyword[];
   factions: Faction[];
   /** Community-authored ability mechanics (key is `ability_id`, not `id`). */
   abilities: AbilityDSLEntry[];
@@ -67,6 +70,7 @@ export function emptyRawData(): RawData {
   return {
     units: [],
     weapons: [],
+    weaponKeywords: [],
     factions: [],
     abilities: [],
     phaseMappings: [],

@@ -6928,6 +6928,9 @@ impl ::std::convert::TryFrom<::std::string::String> for SimpleConditionType {
 /// ```json
 ///{
 ///  "type": "object",
+///  "allOf": [
+///    {}
+///  ],
 ///  "required": [
 ///    "target",
 ///    "type"
@@ -6987,7 +6990,8 @@ impl ::std::convert::TryFrom<::std::string::String> for SimpleConditionType {
 ///        "engagement-passthrough"
 ///      ]
 ///    }
-///  }
+///  },
+///  "$comment": "When `type` is `re-roll`, `modifier` must carry `roll` (string) and `subset` (`ones` | `all-failures`). Rerolls always target failures; the subset decides whether only 1s are rerolled or every failed die. The constraint is enforced by AJV at validation time and stripped from the codegen bundle (typify can't model if/then/else) — the generated TS/Rust types therefore see `modifier` as an open object, matching its other-`type` callers."
 ///}
 /// ```
 /// </details>
@@ -10039,7 +10043,40 @@ impl<'de> ::serde::Deserialize<'de> for WargearOptionModelConstraintModelName {
 ///        ],
 ///        "properties": {
 ///          "keywords": {
-///            "$ref": "#/$defs/keyword-list"
+///            "description": "References into the weapon-keyword catalog. Each entry names the catalog id and supplies parameter values (e.g. `Sustained Hits 1` → `{keyword_id: 'sustained-hits', parameters: {value: 1}}`).",
+///            "type": "array",
+///            "items": {
+///              "type": "object",
+///              "required": [
+///                "keyword_id"
+///              ],
+///              "properties": {
+///                "keyword_id": {
+///                  "$ref": "#/$defs/entity-id"
+///                },
+///                "parameters": {
+///                  "description": "Reference-site parameters conforming to the catalog entry's required_parameters. Only the three documented keys are accepted; any other key is invalid.",
+///                  "type": "object",
+///                  "properties": {
+///                    "target_keyword": {
+///                      "type": "string",
+///                      "maxLength": 64,
+///                      "minLength": 1
+///                    },
+///                    "threshold": {
+///                      "type": "integer",
+///                      "maximum": 6.0,
+///                      "minimum": 2.0
+///                    },
+///                    "value": {
+///                      "$ref": "#/$defs/stat-value"
+///                    }
+///                  },
+///                  "additionalProperties": false
+///                }
+///              },
+///              "additionalProperties": false
+///            }
 ///          },
 ///          "name": {
 ///            "type": "string",
@@ -10131,6 +10168,234 @@ pub struct Weapon {
     #[serde(rename = "type")]
     pub type_: WeaponType,
 }
+///Catalog entry for a weapon keyword (Lethal Hits, Sustained Hits N, Anti-X N+, etc.). Each weapon profile references entries here via {keyword_id, parameters?} instead of carrying free-text strings. The optional `effect` describes the keyword's game mechanic in the Ability DSL; null when the behaviour is faction-specific flavour not yet modelled.
+///
+/// <details><summary>JSON schema</summary>
+///
+/// ```json
+///{
+///  "title": "Weapon Keyword",
+///  "description": "Catalog entry for a weapon keyword (Lethal Hits, Sustained Hits N, Anti-X N+, etc.). Each weapon profile references entries here via {keyword_id, parameters?} instead of carrying free-text strings. The optional `effect` describes the keyword's game mechanic in the Ability DSL; null when the behaviour is faction-specific flavour not yet modelled.",
+///  "type": "object",
+///  "required": [
+///    "effect",
+///    "game_version",
+///    "id",
+///    "name",
+///    "required_parameters"
+///  ],
+///  "properties": {
+///    "effect": {
+///      "description": "Mechanical effect of this keyword. Null when the behaviour is faction-specific flavour not yet expressible in the DSL — engines treat such references as no-op buffs and may surface them as 'cannot auto-apply'.",
+///      "oneOf": [
+///        {
+///          "$ref": "#/$defs/effect"
+///        },
+///        {
+///          "type": "null"
+///        }
+///      ]
+///    },
+///    "game_version": {
+///      "$ref": "#/$defs/game-version-ref"
+///    },
+///    "id": {
+///      "$ref": "#/$defs/entity-id"
+///    },
+///    "name": {
+///      "type": "string",
+///      "maxLength": 128,
+///      "minLength": 1
+///    },
+///    "required_parameters": {
+///      "description": "Parameter keys that must be supplied at each reference site, in the order they would appear in a printed datasheet (e.g. Anti-INFANTRY 4+ → ['target_keyword', 'threshold']).",
+///      "type": "array",
+///      "items": {
+///        "type": "string",
+///        "enum": [
+///          "value",
+///          "target_keyword",
+///          "threshold"
+///        ]
+///      },
+///      "maxItems": 3,
+///      "uniqueItems": true
+///    }
+///  },
+///  "additionalProperties": false
+///}
+/// ```
+/// </details>
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct WeaponKeyword {
+    ///Mechanical effect of this keyword. Null when the behaviour is faction-specific flavour not yet expressible in the DSL — engines treat such references as no-op buffs and may surface them as 'cannot auto-apply'.
+    pub effect: ::std::option::Option<Effect>,
+    pub game_version: GameVersionRef,
+    pub id: EntityId,
+    pub name: WeaponKeywordName,
+    ///Parameter keys that must be supplied at each reference site, in the order they would appear in a printed datasheet (e.g. Anti-INFANTRY 4+ → ['target_keyword', 'threshold']).
+    pub required_parameters: Vec<WeaponKeywordRequiredParametersItem>,
+}
+///`WeaponKeywordName`
+///
+/// <details><summary>JSON schema</summary>
+///
+/// ```json
+///{
+///  "type": "string",
+///  "maxLength": 128,
+///  "minLength": 1
+///}
+/// ```
+/// </details>
+#[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[serde(transparent)]
+pub struct WeaponKeywordName(::std::string::String);
+impl ::std::ops::Deref for WeaponKeywordName {
+    type Target = ::std::string::String;
+    fn deref(&self) -> &::std::string::String {
+        &self.0
+    }
+}
+impl ::std::convert::From<WeaponKeywordName> for ::std::string::String {
+    fn from(value: WeaponKeywordName) -> Self {
+        value.0
+    }
+}
+impl ::std::str::FromStr for WeaponKeywordName {
+    type Err = self::error::ConversionError;
+    fn from_str(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        if value.chars().count() > 128usize {
+            return Err("longer than 128 characters".into());
+        }
+        if value.chars().count() < 1usize {
+            return Err("shorter than 1 characters".into());
+        }
+        Ok(Self(value.to_string()))
+    }
+}
+impl ::std::convert::TryFrom<&str> for WeaponKeywordName {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<&::std::string::String> for WeaponKeywordName {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<::std::string::String> for WeaponKeywordName {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: ::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl<'de> ::serde::Deserialize<'de> for WeaponKeywordName {
+    fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+    where
+        D: ::serde::Deserializer<'de>,
+    {
+        ::std::string::String::deserialize(deserializer)?
+            .parse()
+            .map_err(|e: self::error::ConversionError| {
+                <D::Error as ::serde::de::Error>::custom(e.to_string())
+            })
+    }
+}
+///`WeaponKeywordRequiredParametersItem`
+///
+/// <details><summary>JSON schema</summary>
+///
+/// ```json
+///{
+///  "type": "string",
+///  "enum": [
+///    "value",
+///    "target_keyword",
+///    "threshold"
+///  ]
+///}
+/// ```
+/// </details>
+#[derive(
+    ::serde::Deserialize,
+    ::serde::Serialize,
+    Clone,
+    Copy,
+    Debug,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd
+)]
+pub enum WeaponKeywordRequiredParametersItem {
+    #[serde(rename = "value")]
+    Value,
+    #[serde(rename = "target_keyword")]
+    TargetKeyword,
+    #[serde(rename = "threshold")]
+    Threshold,
+}
+impl ::std::fmt::Display for WeaponKeywordRequiredParametersItem {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        match *self {
+            Self::Value => f.write_str("value"),
+            Self::TargetKeyword => f.write_str("target_keyword"),
+            Self::Threshold => f.write_str("threshold"),
+        }
+    }
+}
+impl ::std::str::FromStr for WeaponKeywordRequiredParametersItem {
+    type Err = self::error::ConversionError;
+    fn from_str(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        match value {
+            "value" => Ok(Self::Value),
+            "target_keyword" => Ok(Self::TargetKeyword),
+            "threshold" => Ok(Self::Threshold),
+            _ => Err("invalid value".into()),
+        }
+    }
+}
+impl ::std::convert::TryFrom<&str> for WeaponKeywordRequiredParametersItem {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<&::std::string::String>
+for WeaponKeywordRequiredParametersItem {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<::std::string::String>
+for WeaponKeywordRequiredParametersItem {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: ::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
 ///`WeaponName`
 ///
 /// <details><summary>JSON schema</summary>
@@ -10220,7 +10485,40 @@ impl<'de> ::serde::Deserialize<'de> for WeaponName {
 ///  ],
 ///  "properties": {
 ///    "keywords": {
-///      "$ref": "#/$defs/keyword-list"
+///      "description": "References into the weapon-keyword catalog. Each entry names the catalog id and supplies parameter values (e.g. `Sustained Hits 1` → `{keyword_id: 'sustained-hits', parameters: {value: 1}}`).",
+///      "type": "array",
+///      "items": {
+///        "type": "object",
+///        "required": [
+///          "keyword_id"
+///        ],
+///        "properties": {
+///          "keyword_id": {
+///            "$ref": "#/$defs/entity-id"
+///          },
+///          "parameters": {
+///            "description": "Reference-site parameters conforming to the catalog entry's required_parameters. Only the three documented keys are accepted; any other key is invalid.",
+///            "type": "object",
+///            "properties": {
+///              "target_keyword": {
+///                "type": "string",
+///                "maxLength": 64,
+///                "minLength": 1
+///              },
+///              "threshold": {
+///                "type": "integer",
+///                "maximum": 6.0,
+///                "minimum": 2.0
+///              },
+///              "value": {
+///                "$ref": "#/$defs/stat-value"
+///              }
+///            },
+///            "additionalProperties": false
+///          }
+///        },
+///        "additionalProperties": false
+///      }
 ///    },
 ///    "name": {
 ///      "type": "string",
@@ -10294,12 +10592,188 @@ impl<'de> ::serde::Deserialize<'de> for WeaponName {
 #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct WeaponProfilesItem {
-    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
-    pub keywords: ::std::option::Option<KeywordList>,
+    ///References into the weapon-keyword catalog. Each entry names the catalog id and supplies parameter values (e.g. `Sustained Hits 1` → `{keyword_id: 'sustained-hits', parameters: {value: 1}}`).
+    #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+    pub keywords: ::std::vec::Vec<WeaponProfilesItemKeywordsItem>,
     pub name: WeaponProfilesItemName,
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub range: ::std::option::Option<WeaponProfilesItemRange>,
     pub stats: WeaponProfilesItemStats,
+}
+///`WeaponProfilesItemKeywordsItem`
+///
+/// <details><summary>JSON schema</summary>
+///
+/// ```json
+///{
+///  "type": "object",
+///  "required": [
+///    "keyword_id"
+///  ],
+///  "properties": {
+///    "keyword_id": {
+///      "$ref": "#/$defs/entity-id"
+///    },
+///    "parameters": {
+///      "description": "Reference-site parameters conforming to the catalog entry's required_parameters. Only the three documented keys are accepted; any other key is invalid.",
+///      "type": "object",
+///      "properties": {
+///        "target_keyword": {
+///          "type": "string",
+///          "maxLength": 64,
+///          "minLength": 1
+///        },
+///        "threshold": {
+///          "type": "integer",
+///          "maximum": 6.0,
+///          "minimum": 2.0
+///        },
+///        "value": {
+///          "$ref": "#/$defs/stat-value"
+///        }
+///      },
+///      "additionalProperties": false
+///    }
+///  },
+///  "additionalProperties": false
+///}
+/// ```
+/// </details>
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct WeaponProfilesItemKeywordsItem {
+    pub keyword_id: EntityId,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub parameters: ::std::option::Option<WeaponProfilesItemKeywordsItemParameters>,
+}
+///Reference-site parameters conforming to the catalog entry's required_parameters. Only the three documented keys are accepted; any other key is invalid.
+///
+/// <details><summary>JSON schema</summary>
+///
+/// ```json
+///{
+///  "description": "Reference-site parameters conforming to the catalog entry's required_parameters. Only the three documented keys are accepted; any other key is invalid.",
+///  "type": "object",
+///  "properties": {
+///    "target_keyword": {
+///      "type": "string",
+///      "maxLength": 64,
+///      "minLength": 1
+///    },
+///    "threshold": {
+///      "type": "integer",
+///      "maximum": 6.0,
+///      "minimum": 2.0
+///    },
+///    "value": {
+///      "$ref": "#/$defs/stat-value"
+///    }
+///  },
+///  "additionalProperties": false
+///}
+/// ```
+/// </details>
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct WeaponProfilesItemKeywordsItemParameters {
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub target_keyword: ::std::option::Option<
+        WeaponProfilesItemKeywordsItemParametersTargetKeyword,
+    >,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub threshold: ::std::option::Option<i64>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub value: ::std::option::Option<StatValue>,
+}
+impl ::std::default::Default for WeaponProfilesItemKeywordsItemParameters {
+    fn default() -> Self {
+        Self {
+            target_keyword: Default::default(),
+            threshold: Default::default(),
+            value: Default::default(),
+        }
+    }
+}
+///`WeaponProfilesItemKeywordsItemParametersTargetKeyword`
+///
+/// <details><summary>JSON schema</summary>
+///
+/// ```json
+///{
+///  "type": "string",
+///  "maxLength": 64,
+///  "minLength": 1
+///}
+/// ```
+/// </details>
+#[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[serde(transparent)]
+pub struct WeaponProfilesItemKeywordsItemParametersTargetKeyword(::std::string::String);
+impl ::std::ops::Deref for WeaponProfilesItemKeywordsItemParametersTargetKeyword {
+    type Target = ::std::string::String;
+    fn deref(&self) -> &::std::string::String {
+        &self.0
+    }
+}
+impl ::std::convert::From<WeaponProfilesItemKeywordsItemParametersTargetKeyword>
+for ::std::string::String {
+    fn from(value: WeaponProfilesItemKeywordsItemParametersTargetKeyword) -> Self {
+        value.0
+    }
+}
+impl ::std::str::FromStr for WeaponProfilesItemKeywordsItemParametersTargetKeyword {
+    type Err = self::error::ConversionError;
+    fn from_str(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        if value.chars().count() > 64usize {
+            return Err("longer than 64 characters".into());
+        }
+        if value.chars().count() < 1usize {
+            return Err("shorter than 1 characters".into());
+        }
+        Ok(Self(value.to_string()))
+    }
+}
+impl ::std::convert::TryFrom<&str>
+for WeaponProfilesItemKeywordsItemParametersTargetKeyword {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<&::std::string::String>
+for WeaponProfilesItemKeywordsItemParametersTargetKeyword {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<::std::string::String>
+for WeaponProfilesItemKeywordsItemParametersTargetKeyword {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: ::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl<'de> ::serde::Deserialize<'de>
+for WeaponProfilesItemKeywordsItemParametersTargetKeyword {
+    fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+    where
+        D: ::serde::Deserializer<'de>,
+    {
+        ::std::string::String::deserialize(deserializer)?
+            .parse()
+            .map_err(|e: self::error::ConversionError| {
+                <D::Error as ::serde::de::Error>::custom(e.to_string())
+            })
+    }
 }
 ///`WeaponProfilesItemName`
 ///
