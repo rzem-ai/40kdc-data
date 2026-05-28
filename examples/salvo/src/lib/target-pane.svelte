@@ -123,17 +123,17 @@
   {/if}
 {/if}
 
-<div class="grid-2" style="margin-top:8px">
-  <label class="row" style="margin:0">
-    <span style="min-width:50px">T</span>
+<div class="stats-grid">
+  <label class="stat-row">
+    <span class="stat-label">T</span>
     <input type="number" min="1" bind:value={salvo.manualTarget.T} />
   </label>
-  <label class="row" style="margin:0">
-    <span style="min-width:50px">Sv</span>
+  <label class="stat-row">
+    <span class="stat-label">Sv</span>
     <input type="number" min="2" max="7" bind:value={salvo.manualTarget.Sv} />
   </label>
-  <label class="row" style="margin:0">
-    <span style="min-width:50px">Inv</span>
+  <label class="stat-row">
+    <span class="stat-label">Inv</span>
     <input
       type="number"
       min="2"
@@ -146,16 +146,16 @@
       }}
     />
   </label>
-  <label class="row" style="margin:0">
-    <span style="min-width:50px">W</span>
+  <label class="stat-row">
+    <span class="stat-label">W</span>
     <input type="number" min="1" bind:value={salvo.manualTarget.W} />
   </label>
-  <label class="row" style="margin:0">
-    <span style="min-width:50px">Models</span>
+  <label class="stat-row">
+    <span class="stat-label">Models</span>
     <input type="number" min="1" bind:value={salvo.manualTarget.modelCount} />
   </label>
-  <label class="row" style="margin:0">
-    <span style="min-width:50px">FNP</span>
+  <label class="stat-row">
+    <span class="stat-label">FNP</span>
     <input
       type="number"
       min="2"
@@ -170,7 +170,7 @@
   </label>
 </div>
 
-<div class="row" style="margin-top:8px">
+<div class="row keywords-row">
   <label>Keywords</label>
   <input
     class="grow"
@@ -189,3 +189,24 @@
     }}
   />
 </div>
+
+<style>
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+  }
+  .stat-row {
+    display: flex;
+    gap: var(--space-2);
+    align-items: center;
+  }
+  .stat-label {
+    min-width: 46px;
+    color: var(--muted);
+    font-size: var(--text-xs);
+  }
+  .stat-row input { flex: 1; min-width: 0; }
+  .keywords-row { margin-top: var(--space-2); }
+</style>

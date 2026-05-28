@@ -167,7 +167,7 @@
     </tbody>
   </table>
 
-  <div class="row" style="margin-top:14px">
+  <div class="row debug-row">
     <button onclick={() => (showDebug = !showDebug)}>
       {showDebug ? "Hide" : "Show"} resolved modifiers
     </button>
@@ -175,10 +175,21 @@
   </div>
 
   {#if showDebug && resolved}
-    <pre style="background:var(--panel-2);padding:8px;border-radius:4px;font-size:11px;overflow-x:auto;max-height:240px">{JSON.stringify(
-        resolved,
-        null,
-        2,
-      )}</pre>
+    <pre class="debug-dump">{JSON.stringify(resolved, null, 2)}</pre>
   {/if}
 {/if}
+
+<style>
+  .debug-row { margin-top: var(--space-3); }
+  .debug-dump {
+    background: var(--panel-2);
+    padding: var(--space-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    color: var(--dim);
+    overflow-x: auto;
+    max-height: 240px;
+  }
+</style>

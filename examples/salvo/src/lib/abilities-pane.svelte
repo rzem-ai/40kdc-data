@@ -131,9 +131,7 @@
     {/each}
 
     {#each pools as p (p.group.id)}
-      <div
-        style="margin-top:8px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em"
-      >
+      <div class="section-label">
         {p.group.label} · pick up to {p.group.maxActivations}
         ({activeInGroup(p.group.id)}/{p.group.maxActivations})
       </div>
@@ -158,11 +156,9 @@
   </div>
 {/if}
 
-<hr style="border:0;border-top:1px solid var(--border);margin:14px 0" />
+<hr />
 
-<div style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">
-  Manual toggles
-</div>
+<div class="section-label">Manual toggles</div>
 <div class="ability-list">
   {#each MANUAL_BUFF_TOGGLES as t (t.id)}
     <label class="ability-row" class:active={salvo.manualBuffsActive.has(t.id)}>

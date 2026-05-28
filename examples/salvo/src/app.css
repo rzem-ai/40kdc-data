@@ -82,7 +82,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Thin custom scrollbars matching panel chrome. */
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
@@ -93,6 +92,12 @@ body {
 
 a { color: var(--accent); }
 a:hover { color: var(--accent-hover); }
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: var(--space-3) 0;
+}
 
 button {
   background: var(--panel-2);
@@ -137,73 +142,129 @@ input:focus, select:focus, textarea:focus {
   border-color: var(--accent);
 }
 
+/* App shell — header on top, three columns below: setup | canvas | tools.
+   Below 1100px the columns stack as a single scrolling column. */
 .app {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-3);
-  padding: var(--space-3);
-  max-width: 1600px;
-  margin: 0 auto;
+  grid-template-areas:
+    "header"
+    "setup"
+    "canvas"
+    "tools";
+  min-height: 100vh;
+  background: var(--bg);
 }
 
 @media (min-width: 1100px) {
   .app {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 300px 1fr 300px;
+    grid-template-rows: auto 1fr;
     grid-template-areas:
       "header header header"
-      "import attacker abilities"
-      "target output output";
+      "setup  canvas tools";
+    height: 100vh;
   }
-  .pane.import    { grid-area: import; }
-  .pane.attacker  { grid-area: attacker; }
-  .pane.abilities { grid-area: abilities; }
-  .pane.target    { grid-area: target; }
-  .pane.output    { grid-area: output; }
-  header.app-header { grid-area: header; }
+  .column.setup, .column.tools, .canvas {
+    overflow-y: auto;
+  }
+}
+
+@media (min-width: 1600px) {
+  .app {
+    grid-template-columns: 320px 1fr 320px;
+  }
+}
+
+header.app-header { grid-area: header; }
+.column.setup    { grid-area: setup; }
+.canvas          { grid-area: canvas; }
+.column.tools    { grid-area: tools; }
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background: var(--bg-dark);
+}
+.column.setup { border-right: 1px solid var(--border); }
+.column.tools { border-left: 1px solid var(--border); }
+
+.canvas {
+  padding: var(--space-4);
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  height: 44px;
+  padding: 0 var(--space-4);
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+}
+.app-header h1 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  line-height: 1;
+}
+.app-header h1 .accent { color: var(--accent); }
+.app-header .subtitle {
+  color: var(--muted);
+  font-size: var(--text-xs);
+  text-align: right;
+}
+.app-header .subtitle code {
+  font-family: var(--font-mono);
+  color: var(--dim);
+  font-size: var(--text-2xs);
 }
 
 .pane {
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  padding: var(--space-4);
-  min-height: 120px;
+  padding: var(--space-3);
   box-shadow: var(--shadow-sm);
+}
+.pane.hero {
+  padding: var(--space-4);
+  box-shadow: var(--shadow-md);
 }
 
 .pane h2 {
   margin: 0 0 var(--space-3) 0;
   font-family: var(--font-heading);
-  font-size: var(--text-xs);
+  font-size: var(--text-2xs);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: var(--tracking-wider);
   color: var(--muted);
 }
 
-.app-header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  padding: var(--space-1) var(--space-4);
-}
-.app-header h1 {
-  margin: 0;
+.section-label {
   font-family: var(--font-heading);
-  font-size: var(--text-xl);
+  font-size: var(--text-2xs);
   font-weight: 700;
-  letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
-}
-.app-header h1 .accent { color: var(--accent); }
-.app-header .subtitle {
+  letter-spacing: var(--tracking-wider);
   color: var(--muted);
-  font-size: var(--text-xs);
+  margin: var(--space-3) 0 var(--space-2) 0;
 }
 
 .row { display: flex; gap: var(--space-2); align-items: center; margin-bottom: var(--space-2); flex-wrap: wrap; }
-.row label { color: var(--muted); font-size: var(--text-xs); min-width: 80px; }
-.row .grow { flex: 1; }
+.row label { color: var(--muted); font-size: var(--text-xs); min-width: 70px; }
+.row .grow { flex: 1; min-width: 0; }
 
 textarea {
   width: 100%;
@@ -213,6 +274,9 @@ textarea {
   font-size: var(--text-xs);
 }
 
+select { max-width: 100%; }
+
+/* Chip — neutral by default; .warn and .accent variants for semantic colors. */
 .chip {
   display: inline-block;
   padding: 1px var(--space-2);
@@ -227,22 +291,16 @@ textarea {
   color: var(--muted);
   margin-right: var(--space-1);
 }
-.chip.army { color: #ffb47a; border-color: #5a3320; }
-.chip.unit { color: #7ad1ff; border-color: #1f4a66; }
-.chip.leader { color: #c79bff; border-color: #43205c; }
-.chip.detachment { color: #9bff9b; border-color: #1f5a1f; }
-.chip.detachment-stratagem { color: #ffe28b; border-color: #5c4a1c; }
-.chip.support { color: #ffa3c5; border-color: #5a2440; }
-.chip.weapon-keyword { color: #d8d8d8; border-color: #3a3a3a; }
-.chip.manual { color: var(--muted); }
-.chip.warn { color: var(--warn); border-color: #5a4a20; }
+.chip.warn { color: var(--warn); border-color: var(--warn); }
+.chip.accent, .chip.activation {
+  color: var(--accent);
+  border-color: var(--accent-dim);
+}
 
 .ability-list {
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
-  max-height: 360px;
-  overflow-y: auto;
 }
 .ability-row {
   display: flex;
@@ -252,29 +310,44 @@ textarea {
   background: var(--panel-2);
   border-radius: var(--radius-md);
   border: 1px solid transparent;
+  transition: border-color 100ms ease;
 }
 .ability-row.active { border-color: var(--accent-dim); }
-.ability-row .name { flex: 1; }
-.ability-row .name small { color: var(--muted); }
+.ability-row:hover { border-color: var(--border); }
+.ability-row.active:hover { border-color: var(--accent); }
+.ability-row .name { flex: 1; font-size: var(--text-xs); }
+.ability-row .name small { color: var(--dim); }
 
+/* Projection table — hero treatment: sticky head, hovered rows, mono numerics. */
 .stages {
   width: 100%;
   border-collapse: collapse;
   font-size: var(--text-sm);
 }
-.stages th, .stages td {
-  padding: var(--space-1) var(--space-2);
-  border-bottom: 1px solid var(--border);
-  text-align: left;
+.stages thead th {
+  position: sticky;
+  top: 0;
+  background: var(--panel-surface);
+  z-index: 1;
 }
 .stages th {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--border);
   font-family: var(--font-heading);
   font-size: var(--text-2xs);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: var(--tracking-wider);
   color: var(--muted);
+  text-align: left;
 }
+.stages td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--border-subtle);
+  text-align: left;
+}
+.stages tbody tr { transition: background 80ms ease; }
+.stages tbody tr:hover { background: var(--panel-hover); }
 .stages td.value {
   text-align: right;
   font-family: var(--font-mono);
@@ -287,6 +360,8 @@ textarea {
   font-size: var(--text-md);
   color: var(--accent);
 }
+.stages tr.total td.value { font-weight: 600; }
+.stages tr.total:hover { background: transparent; }
 
 .diagnostics {
   margin: var(--space-2) 0;
@@ -308,13 +383,44 @@ textarea {
   text-align: center;
 }
 
-.tabs { display: flex; gap: var(--space-1); margin-bottom: var(--space-2); }
-.tabs button { font-size: var(--text-xs); padding: var(--space-1) var(--space-3); }
-.tabs button.active {
+/* Segmented-control tab strip — single recessed pill with active button highlighted. */
+.tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: var(--space-2);
+  background: var(--panel-2);
+  padding: 2px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+.tabs button {
+  flex: 1;
+  font-size: var(--text-xs);
+  padding: var(--space-1) var(--space-2);
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  border-radius: var(--radius-sm);
+}
+.tabs button:hover { color: var(--text); background: var(--panel-hover); }
+.tabs button.active,
+.tabs button.active:hover {
   background: var(--accent);
   color: var(--accent-foreground);
-  border-color: var(--accent);
   font-weight: 600;
+}
+.tabs button:disabled,
+.tabs button:disabled:hover {
+  color: var(--dim);
+  background: transparent;
+  cursor: not-allowed;
 }
 
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
+
+details > summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: var(--text-xs);
+}
+details > summary:hover { color: var(--text); }

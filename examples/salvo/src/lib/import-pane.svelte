@@ -85,7 +85,7 @@
   </div>
 {/if}
 
-<hr style="border:0;border-top:1px solid var(--border);margin:14px 0" />
+<hr />
 
 <div class="row">
   <label for="target-paste">Target</label>
@@ -121,9 +121,7 @@
   </div>
 {/if}
 
-<div style="margin-top: var(--space-3)">
-  <EmptyState>No list to hand? Pick a unit straight from the embedded dataset in the Attacker pane.</EmptyState>
-</div>
+<EmptyState>No list to hand? Pick a unit straight from the embedded dataset in the Attacker pane.</EmptyState>
 
 <style>
   .trials {

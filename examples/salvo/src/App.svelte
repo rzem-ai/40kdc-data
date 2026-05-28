@@ -10,13 +10,21 @@
   <header class="app-header">
     <h1>Sal<span class="accent">vo</span></h1>
     <span class="subtitle"
-      >A 40k damage calculator powered by <code>@alpaca-software/40kdc-data</code></span
+      >40k damage calculator · <code>@alpaca-software/40kdc-data</code></span
     >
   </header>
 
-  <section class="pane import"><h2>Import</h2><ImportPane /></section>
-  <section class="pane attacker"><h2>Attacker</h2><AttackerPane /></section>
-  <section class="pane abilities"><h2>Abilities & buffs</h2><AbilitiesPane /></section>
-  <section class="pane target"><h2>Target</h2><TargetPane /></section>
-  <section class="pane output"><h2>Projection</h2><OutputPane /></section>
+  <aside class="column setup">
+    <section class="pane"><h2>Import</h2><ImportPane /></section>
+    <section class="pane"><h2>Attacker</h2><AttackerPane /></section>
+    <section class="pane"><h2>Target</h2><TargetPane /></section>
+  </aside>
+
+  <main class="canvas">
+    <section class="pane hero"><h2>Projection</h2><OutputPane /></section>
+  </main>
+
+  <aside class="column tools">
+    <section class="pane"><h2>Abilities &amp; buffs</h2><AbilitiesPane /></section>
+  </aside>
 </div>
