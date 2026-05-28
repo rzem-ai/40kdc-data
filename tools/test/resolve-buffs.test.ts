@@ -162,4 +162,19 @@ describe("resolveBuffs", () => {
     expect(r.damageMod.value).toBe(0);
     expect(r.damageMod.sources).toHaveLength(2);
   });
+
+  it("ap-mod sums and retains every source", () => {
+    const buffs: Buff[] = [
+      { source: army, contribution: { type: "ap-mod", value: -1 } },
+      { source: unit, contribution: { type: "ap-mod", value: -1 } },
+    ];
+    const r = resolveBuffs(buffs, ctx);
+    expect(r.apMod.value).toBe(-2);
+    expect(r.apMod.sources).toHaveLength(2);
+  });
+
+  it("ap-mod defaults to 0 with no sources when no ap-mod buffs", () => {
+    const r = resolveBuffs([], ctx);
+    expect(r.apMod).toEqual({ value: 0, sources: [] });
+  });
 });

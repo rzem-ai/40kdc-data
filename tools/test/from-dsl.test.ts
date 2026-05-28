@@ -392,6 +392,227 @@ describe("effectToBuffs: target perspective", () => {
   });
 });
 
+describe("effectToBuffs: compound conditions", () => {
+  const woundEffect = {
+    type: "roll-modifier",
+    target: "unit",
+    modifier: { roll: "wound", operation: "add", value: 1 },
+  };
+  function conditional(condition: unknown) {
+    return { type: "conditional", condition, effect: woundEffect };
+  }
+
+  it("AND: all operands true → effect fires", () => {
+    const result = effectToBuffs(
+      conditional({
+        operator: "and",
+        operands: [
+          { type: "phase-is", parameters: { phase: "fight" } },
+          { type: "remained-stationary" },
+        ],
+      }),
+      unitRule,
+      { phase: "fight", attackerStationary: true },
+    );
+    expect(result.applied).toHaveLength(1);
+    expect(result.applied[0].contribution).toEqual({ type: "wound-mod", value: 1 });
+  });
+
+  it("AND: a false operand short-circuits and drops the effect without diagnostic", () => {
+    const result = effectToBuffs(
+      conditional({
+        operator: "and",
+        operands: [
+          { type: "phase-is", parameters: { phase: "fight" } },
+          { type: "remained-stationary" },
+        ],
+      }),
+      unitRule,
+      { phase: "shooting", attackerStationary: true },
+    );
+    expect(result.applied).toEqual([]);
+    expect(result.unsupported).toEqual([]);
+  });
+
+  it("AND: a false operand short-circuits over an unknown operand (no diagnostic)", () => {
+    const result = effectToBuffs(
+      conditional({
+        operator: "and",
+        operands: [
+          { type: "phase-is", parameters: { phase: "fight" } }, // false
+          { type: "is-attached" }, // unknown
+        ],
+      }),
+      unitRule,
+      { phase: "shooting" },
+    );
+    expect(result.applied).toEqual([]);
+    expect(result.unsupported).toEqual([]);
+  });
+
+  it("AND: unknown operand without short-circuit propagates to unsupported", () => {
+    const result = effectToBuffs(
+      conditional({
+        operator: "and",
+        operands: [
+          { type: "phase-is", parameters: { phase: "fight" } }, // true
+          { type: "is-attached" }, // unknown
+        ],
+      }),
+      unitRule,
+      { phase: "fight" },
+    );
+    expect(result.applied).toEqual([]);
+    expect(result.unsupported[0].reason).toMatch(/cannot evaluate condition/);
+  });
+
+  it("OR: any true operand fires the effect", () => {
+    const result = effectToBuffs(
+      conditional({
+        operator: "or",
+        operands: [
+          { type: "phase-is", parameters: { phase: "shooting" } }, // false
+          { type: "phase-is", parameters: { phase: "fight" } }, // true
+        ],
+      }),
+      unitRule,
+      { phase: "fight" },
+    );
+    expect(result.applied).toHaveLength(1);
+  });
+
+  it("OR: all-false drops cleanly (no diagnostic)", () => {
+    const result = effectToBuffs(
+      conditional({
+        operator: "or",
+        operands: [
+          { type: "phase-is", parameters: { phase: "shooting" } },
+          { type: "phase-is", parameters: { phase: "movement" } },
+        ],
+      }),
+      unitRule,
+      { phase: "fight" },
+    );
+    expect(result.applied).toEqual([]);
+    expect(result.unsupported).toEqual([]);
+  });
+
+  it("NOT: inverts a true operand to false", () => {
+    const result = effectToBuffs(
+      conditional({
+        operator: "not",
+        operands: [{ type: "phase-is", parameters: { phase: "fight" } }],
+      }),
+      unitRule,
+      { phase: "fight" },
+    );
+    expect(result.applied).toEqual([]);
+  });
+
+  it("NOT: inverts a false operand to true", () => {
+    const result = effectToBuffs(
+      conditional({
+        operator: "not",
+        operands: [{ type: "phase-is", parameters: { phase: "shooting" } }],
+      }),
+      unitRule,
+      { phase: "fight" },
+    );
+    expect(result.applied).toHaveLength(1);
+  });
+
+  it("nested compound: AND of (OR + simple) evaluates recursively", () => {
+    const result = effectToBuffs(
+      conditional({
+        operator: "and",
+        operands: [
+          {
+            operator: "or",
+            operands: [
+              { type: "phase-is", parameters: { phase: "shooting" } },
+              { type: "phase-is", parameters: { phase: "fight" } },
+            ],
+          },
+          { type: "remained-stationary" },
+        ],
+      }),
+      unitRule,
+      { phase: "fight", attackerStationary: true },
+    );
+    expect(result.applied).toHaveLength(1);
+  });
+});
+
+describe("effectToBuffs: timing-is condition", () => {
+  const effect = {
+    type: "conditional",
+    condition: { type: "timing-is", parameters: { timing: "end-of-phase" } },
+    effect: {
+      type: "roll-modifier",
+      target: "unit",
+      modifier: { roll: "wound", operation: "add", value: 1 },
+    },
+  };
+
+  it("fires when context timing matches", () => {
+    const result = effectToBuffs(effect, unitRule, {
+      phase: "fight",
+      timing: "end-of-phase",
+    });
+    expect(result.applied).toHaveLength(1);
+  });
+
+  it("drops cleanly when context timing differs", () => {
+    const result = effectToBuffs(effect, unitRule, {
+      phase: "fight",
+      timing: "start-of-phase",
+    });
+    expect(result.applied).toEqual([]);
+    expect(result.unsupported).toEqual([]);
+  });
+
+  it("surfaces unsupported when context timing is missing", () => {
+    const result = effectToBuffs(effect, unitRule, { phase: "fight" });
+    expect(result.applied).toEqual([]);
+    expect(result.unsupported[0].reason).toMatch(/cannot evaluate condition "timing-is"/);
+  });
+});
+
+describe("effectToBuffs: AP stat-modifier", () => {
+  const apEffect = {
+    type: "stat-modifier",
+    target: "unit",
+    modifier: { stat: "AP", operation: "add", value: -1 },
+  };
+
+  it("attacker perspective: +1 piercing → ap-mod -1", () => {
+    const result = effectToBuffs(apEffect, unitRule, ctx, "attacker");
+    expect(result.applied).toHaveLength(1);
+    expect(result.applied[0].contribution).toEqual({ type: "ap-mod", value: -1 });
+  });
+
+  it("target perspective: drops silently (AP is attacker-side)", () => {
+    const result = effectToBuffs(apEffect, unitRule, ctx, "target");
+    expect(result.applied).toEqual([]);
+    expect(result.unsupported).toEqual([]);
+  });
+
+  it("attacker perspective, defender-side target: drops without diagnostic", () => {
+    const result = effectToBuffs(
+      {
+        type: "stat-modifier",
+        target: "defender",
+        modifier: { stat: "AP", operation: "add", value: -1 },
+      },
+      unitRule,
+      ctx,
+      "attacker",
+    );
+    expect(result.applied).toEqual([]);
+    expect(result.unsupported).toEqual([]);
+  });
+});
+
 describe("parseKeywordGrant", () => {
   it.each([
     ["Lethal Hits", { keyword_id: "lethal-hits" }],

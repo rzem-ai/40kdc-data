@@ -340,6 +340,14 @@ function translateStatModifier(
       if (!isOnBuffedUnit) return;
       out.applied.push({ source, contribution: { type: "save-mod", value: -value } });
       return;
+    case "AP":
+      // AP rides on the attacker's weapon profile and is stored as a negative
+      // number in the data (e.g. AP -1). The data's `{operation:"add", value:-1}`
+      // form means "AP becomes one more negative" → more piercing. `signedValue`
+      // already returns that negative number directly, so pass it through.
+      if (opts.perspective !== "attacker" || !isOnBuffedUnit) return;
+      out.applied.push({ source, contribution: { type: "ap-mod", value } });
+      return;
     default:
       out.unsupported.push({
         reason: `stat-modifier on "${String(stat)}" is outside the damage path`,
@@ -460,11 +468,27 @@ function evaluateCondition(
   condition: Record<string, unknown>,
   ctx: EngineContext,
 ): boolean | "unknown" {
+  // Compound conditions use {operator, operands} rather than {type, parameters}.
+  // The schema's `condition-node` oneOf doesn't guarantee discrimination by a
+  // single field, so dispatch on shape: presence of `operator` + `operands`
+  // wins over the simple-condition switch below.
+  if (
+    typeof condition.operator === "string" &&
+    Array.isArray(condition.operands)
+  ) {
+    return evaluateCompound(condition.operator, condition.operands, ctx);
+  }
   switch (condition.type) {
     case "phase-is": {
       const wanted = (condition.parameters as Record<string, unknown> | undefined)?.phase;
       if (typeof wanted !== "string") return "unknown";
       return ctx.phase === wanted;
+    }
+    case "timing-is": {
+      const wanted = (condition.parameters as Record<string, unknown> | undefined)?.timing;
+      if (typeof wanted !== "string") return "unknown";
+      if (ctx.timing === undefined) return "unknown";
+      return ctx.timing === wanted;
     }
     case "remained-stationary":
       return ctx.attackerStationary === true;
@@ -485,6 +509,45 @@ function evaluateCondition(
     default:
       return "unknown";
   }
+}
+
+/**
+ * Kleene three-valued evaluator for compound conditions. `and` short-circuits
+ * to `false` as soon as any operand is false (an unknown operand is then
+ * irrelevant); `or` short-circuits to `true` symmetrically. `not` flips its
+ * single operand and leaves `"unknown"` as `"unknown"`. Unknown operands that
+ * don't get short-circuited propagate as `"unknown"` so the SPA can surface
+ * the gap rather than collapsing it into a misleading false.
+ */
+function evaluateCompound(
+  operator: string,
+  operands: unknown[],
+  ctx: EngineContext,
+): boolean | "unknown" {
+  if (operator === "not") {
+    const first = operands[0];
+    if (!isObject(first)) return "unknown";
+    const v = evaluateCondition(first, ctx);
+    if (v === "unknown") return "unknown";
+    return !v;
+  }
+  if (operator !== "and" && operator !== "or") return "unknown";
+  let sawUnknown = false;
+  for (const operand of operands) {
+    if (!isObject(operand)) {
+      sawUnknown = true;
+      continue;
+    }
+    const v = evaluateCondition(operand, ctx);
+    if (v === "unknown") {
+      sawUnknown = true;
+      continue;
+    }
+    if (operator === "and" && v === false) return false;
+    if (operator === "or" && v === true) return true;
+  }
+  if (sawUnknown) return "unknown";
+  return operator === "and"; // all true for AND, all false for OR
 }
 
 // ---------------------------------------------------------------------------

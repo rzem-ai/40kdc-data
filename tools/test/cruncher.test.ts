@@ -148,6 +148,27 @@ describe("crunch: cover", () => {
   });
 });
 
+describe("crunch: ap-mod buff", () => {
+  it("ap-mod -1 worsens the defender's effective save by 1", () => {
+    // Baseline: bolt-rifle AP-1 vs Sv3+ → effective 4+, P(save)=3/6=0.5.
+    // With ap-mod -1: AP-2 → effective 5+, P(save)=2/6.
+    const baseline = crunch(
+      inputFor("bolt-rifle", 0, 5, "intercessor-squad", { phase: "shooting" }),
+    );
+    const piercing = crunch(
+      inputFor("bolt-rifle", 0, 5, "intercessor-squad", { phase: "shooting" }, [
+        {
+          source: { kind: "ability", abilityId: "test-ap", abilityKind: "unit" },
+          contribution: { type: "ap-mod", value: -1 },
+        },
+      ]),
+    );
+    const wounds = stage(baseline, "wounds");
+    const expectedPiercing = wounds * (1 - 2 / 6);
+    near(stage(piercing, "unsaved"), expectedPiercing, "ap-mod unsaved");
+  });
+});
+
 describe("crunch: FNP", () => {
   it("FNP 5+ reduces damage by P(success)", () => {
     const baseline = crunch(

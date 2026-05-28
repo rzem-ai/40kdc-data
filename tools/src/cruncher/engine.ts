@@ -171,7 +171,8 @@ export function crunch(input: EngineInput, dataset?: Dataset): EngineOutput {
   });
 
   // 4. Saves
-  const AP = weaponProfile.stats.AP;
+  const apMod = resolved.apMod.value;
+  const AP = weaponProfile.stats.AP + apMod;
   const saveMod = resolved.saveMod.value;
   const armorTargetRaw = unitProfile.Sv - AP - saveMod;
   const ignoresCover = !!findKeyword(resolved, "ignores-cover");
@@ -195,7 +196,7 @@ export function crunch(input: EngineInput, dataset?: Dataset): EngineOutput {
   stages.push({
     name: "unsaved",
     expected: unsaved,
-    detail: `Sv${unitProfile.Sv}+, AP${signed(AP)}${saveMod !== 0 ? `, savemod ${signed(saveMod)}` : ""}${covered ? ", cover (+1, cap 3+)" : ""} → effective ${effectiveSaveTarget}+ (P(save)=${pSaved.toFixed(4)})`,
+    detail: `Sv${unitProfile.Sv}+, AP${signed(AP)}${apMod !== 0 ? ` (apmod ${signed(apMod)})` : ""}${saveMod !== 0 ? `, savemod ${signed(saveMod)}` : ""}${covered ? ", cover (+1, cap 3+)" : ""} → effective ${effectiveSaveTarget}+ (P(save)=${pSaved.toFixed(4)})`,
   });
 
   // 5. Damage

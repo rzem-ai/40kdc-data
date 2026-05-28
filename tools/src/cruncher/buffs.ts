@@ -53,7 +53,13 @@ export type BuffContribution =
   /** Additive modifier to the attacker's Strength stat. */
   | { type: "strength-mod"; value: number }
   /** Additive modifier to the defender's Toughness stat. */
-  | { type: "toughness-mod"; value: number };
+  | { type: "toughness-mod"; value: number }
+  /**
+   * Additive modifier to the attacker's weapon AP. AP is signed against the
+   * defender's save (negative = more piercing), so a value of `-1` here makes
+   * the weapon one AP more piercing.
+   */
+  | { type: "ap-mod"; value: number };
 
 /** Optional gating; the resolver drops buffs whose gate fails. */
 export type BuffApplicability = {
@@ -92,6 +98,13 @@ export type EngineContext = {
   attackerKeywords?: ReadonlyArray<string>;
   /** Target keywords (union of unit.keywords + faction_keywords), lower-cased. */
   targetKeywords?: ReadonlyArray<string>;
+  /**
+   * Sub-phase timing flag (e.g. `"start-of-phase"`, `"end-of-phase"`,
+   * `"on-destroyed"`). Consumed by the `timing-is` condition. Left undefined
+   * when the caller can't pin a sub-phase down — the condition then evaluates
+   * as `"unknown"` and the SPA surfaces a diagnostic.
+   */
+  timing?: string;
 };
 
 /** Back-compat alias — `resolveBuffs` accepts the shared engine context. */
@@ -115,6 +128,7 @@ export type ResolvedModifiers = {
   attacksMod: { value: number; sources: BuffSource[] };
   strengthMod: { value: number; sources: BuffSource[] };
   toughnessMod: { value: number; sources: BuffSource[] };
+  apMod: { value: number; sources: BuffSource[] };
 };
 
 /** Stable ordering used to break ties when multiple buffs claim the same field. */
@@ -172,6 +186,7 @@ export function resolveBuffs(buffs: Buff[], ctx: ResolveContext): ResolvedModifi
     attacksMod: { value: 0, sources: [] },
     strengthMod: { value: 0, sources: [] },
     toughnessMod: { value: 0, sources: [] },
+    apMod: { value: 0, sources: [] },
   };
 
   // Hit / wound mods: sum, then cap at ±1, with dominant source picked from
@@ -239,6 +254,10 @@ export function resolveBuffs(buffs: Buff[], ctx: ResolveContext): ResolvedModifi
       case "toughness-mod":
         out.toughnessMod.value += c.value;
         out.toughnessMod.sources.push(b.source);
+        break;
+      case "ap-mod":
+        out.apMod.value += c.value;
+        out.apMod.sources.push(b.source);
         break;
     }
   }
