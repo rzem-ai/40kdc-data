@@ -5,7 +5,10 @@
     MANUAL_BUFF_TOGGLES,
     CONTEXT_FLAG_TOGGLES,
   } from "./store.svelte.js";
-  import type { EligibleAbility } from "@alpaca-software/40kdc-data";
+  import type {
+    EligibleAbility,
+    EngineContext,
+  } from "@alpaca-software/40kdc-data";
 
   const eligible = $derived.by<EligibleAbility[]>(() => {
     if (!salvo.selectedUnitId) return [];
@@ -22,6 +25,28 @@
     } catch {
       return [];
     }
+  });
+
+  // EngineContext for the DSL→Buff translator. Without this the translator
+  // defaults to `{ phase: "shooting" }`, so any phase-gated `conditional`
+  // branch fails to fire when the user has the fight tab open and the row
+  // renders an unhelpful "no buff translated".
+  const attackerKeywords = $derived.by<string[]>(() => {
+    if (!salvo.selectedUnitId) return [];
+    const u = ds.units.get(salvo.selectedUnitId);
+    if (!u) return [];
+    return [
+      ...((u.raw.keywords ?? []) as string[]),
+      ...((u.raw.faction_keywords ?? []) as string[]),
+    ].map((k) => k.toLowerCase());
+  });
+
+  const engineContext = $derived<EngineContext>({
+    phase: salvo.phase,
+    attackerStationary: salvo.contextFlags.attackerStationary,
+    withinHalfRange: salvo.contextFlags.withinHalfRange,
+    attackerKeywords,
+    targetKeywords: salvo.manualTarget.keywords.map((k) => k.toLowerCase()),
   });
 
   const grouped = $derived.by(() => {
@@ -88,13 +113,23 @@
 
   function buffDescription(e: EligibleAbility): string {
     try {
-      const buffs = e.ability.getBuffs({
-        kind: "ability",
-        abilityId: e.ability.id,
-        abilityKind: e.source.kind,
-      });
-      if (buffs.length === 0) return "no buff translated";
-      return buffs.map((b) => b.contribution.type).join(", ");
+      const { applied, unsupported } = e.ability.describeBuffs(
+        {
+          kind: "ability",
+          abilityId: e.ability.id,
+          abilityKind: e.source.kind,
+        },
+        engineContext,
+      );
+      if (applied.length > 0) {
+        return applied.map((b) => b.contribution.type).join(", ");
+      }
+      if (unsupported.length > 0) {
+        // The translator authors these strings for human consumption; first
+        // one is enough for the inline blurb.
+        return unsupported[0].reason;
+      }
+      return "no effect";
     } catch {
       return "—";
     }
