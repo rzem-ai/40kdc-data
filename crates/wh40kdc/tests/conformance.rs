@@ -22,7 +22,9 @@ use std::fs;
 use std::path::{Path, PathBuf};
 
 use serde_json::Value;
-use wh40kdc::import::{import_roster, import_roster_text};
+use wh40kdc::import::{
+    import_roster, import_roster_text, try_import_roster, ImportResult, RosterFormat,
+};
 use wh40kdc::{normalize_name, Dataset};
 
 #[cfg(feature = "export")]
@@ -91,6 +93,60 @@ fn normalize_name_matches_reference_corpus() {
             expected,
             "normalize_name({input:?}) diverged from the TS reference"
         );
+    }
+}
+
+/// Expected detected format for an `input.*` fixture, by filename convention.
+/// Mirrors `expectedFormatFor` in `tools/test/conformance.test.ts`.
+fn expected_format_for(filename: &str) -> RosterFormat {
+    if filename == "input.json" {
+        return RosterFormat::Listforge;
+    }
+    let stem = filename
+        .strip_prefix("input.")
+        .and_then(|s| s.rsplit_once('.').map(|(left, _ext)| left))
+        .unwrap_or_else(|| panic!("unrecognised input fixture filename: {filename}"));
+    match stem {
+        "newrecruit-json" => RosterFormat::NewrecruitJson,
+        "newrecruit-wtc-compact" => RosterFormat::NewrecruitWtcCompact,
+        "newrecruit-wtc-full" => RosterFormat::NewrecruitWtcFull,
+        "newrecruit-simple" => RosterFormat::NewrecruitSimple,
+        other => panic!("unmapped input fixture stem: {other}"),
+    }
+}
+
+#[test]
+fn try_import_roster_detects_format_of_every_fixture() {
+    let ds = Dataset::embedded();
+    let roster_dir = conformance_dir().join("roster");
+    let cases = case_dirs(&roster_dir);
+    assert!(!cases.is_empty(), "no roster conformance cases found");
+
+    for case_dir in &cases {
+        let case_name = case_dir.file_name().and_then(|s| s.to_str()).unwrap_or("?");
+        let mut inputs: Vec<String> = list_files(case_dir)
+            .into_iter()
+            .filter(|n| n.starts_with("input."))
+            .collect();
+        inputs.sort();
+        assert!(!inputs.is_empty(), "roster/{case_name}: no input.* files");
+
+        for filename in &inputs {
+            let path = case_dir.join(filename);
+            let raw = read_text(&path);
+            let expected = expected_format_for(filename);
+            match try_import_roster(&raw, ds) {
+                ImportResult::Ok { format, .. } => assert_eq!(
+                    format, expected,
+                    "roster/{case_name} {filename}: auto-detected {format:?}, expected {expected:?}"
+                ),
+                ImportResult::Err {
+                    reason, message, ..
+                } => panic!(
+                    "roster/{case_name} {filename}: try_import_roster errored {reason:?}: {message}"
+                ),
+            }
+        }
     }
 }
 

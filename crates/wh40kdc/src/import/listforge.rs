@@ -28,6 +28,8 @@ const PTS_COST_NAME: &str = "pts";
 const ENHANCEMENT_GROUP_PREFIX: &str = "Enhancements";
 const WEAPON_CATEGORY_SUFFIX: &str = " Weapon"; // "Ranged Weapon", "Melee Weapon", …
 const CHARACTER_CATEGORIES: [&str; 2] = ["Character", "Epic Hero"];
+const NEWRECRUIT_XMLNS: &str = "http://www.battlescribe.net/schema/rosterSchema";
+const NEWRECRUIT_HOST_PREFIX: &str = "https://newrecruit";
 
 // --- Allowlisted field accessors (the IP-safety boundary). ------------------
 // Only these fields of a selection are ever read. Adding an accessor here is the
@@ -237,6 +239,17 @@ fn roster_of(decoded: &Value) -> Option<&Value> {
     Some(roster)
 }
 
+/// Detect a NewRecruit-flavoured BattleScribe payload. ListForge's matcher
+/// excludes these so the greedy first-match dispatcher routes them to the
+/// NewRecruit adapter without falling through to here.
+fn has_newrecruit_signature(decoded: &Value, roster: &Value) -> bool {
+    if as_string(&roster["xmlns"]) == Some(NEWRECRUIT_XMLNS) {
+        return true;
+    }
+    let gen_by = as_string(&decoded["generatedBy"]).or_else(|| as_string(&roster["generatedBy"]));
+    gen_by.is_some_and(|g| g.to_ascii_lowercase().starts_with(NEWRECRUIT_HOST_PREFIX))
+}
+
 /// The ListForge "share JSON" adapter — the first concrete
 /// [`FormatAdapter`](super::FormatAdapter).
 pub struct ListForgeAdapter;
@@ -247,7 +260,10 @@ impl FormatAdapter for ListForgeAdapter {
     }
 
     fn detect(&self, decoded: &Value) -> bool {
-        roster_of(decoded).is_some()
+        let Some(roster) = roster_of(decoded) else {
+            return false;
+        };
+        !has_newrecruit_signature(decoded, roster)
     }
 
     fn parse(&self, decoded: &Value) -> Result<ParsedRoster, ParseError> {

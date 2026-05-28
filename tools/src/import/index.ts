@@ -9,8 +9,19 @@
  *
  * @packageDocumentation
  */
-export { importListForge, importNewRecruit, importRoster } from "./import-roster.js";
-export type { ImportOptions } from "./import-roster.js";
+export {
+  importListForge,
+  importNewRecruit,
+  importRoster,
+  tryImportRoster,
+  REGISTERED_ADAPTERS,
+} from "./import-roster.js";
+export type {
+  ImportOptions,
+  ImportResult,
+  ImportFailureReason,
+  AdapterTrial,
+} from "./import-roster.js";
 export { decodeListForge } from "./decode.js";
 export { resolve } from "./resolve.js";
 export { listForgeAdapter } from "./listforge.js";

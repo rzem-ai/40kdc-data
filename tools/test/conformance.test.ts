@@ -19,7 +19,8 @@ import { fileURLToPath } from "node:url";
 import { Dataset } from "../src/data/dataset.js";
 import { normalizeName } from "../src/data/normalize.js";
 import { exportRoster, type ExportFormat } from "../src/export/index.js";
-import { importRoster } from "../src/import/import-roster.js";
+import { importRoster, tryImportRoster } from "../src/import/import-roster.js";
+import type { RosterFormat } from "../src/import/types.js";
 import { crunch, type Buff, type EngineContext, type Stage } from "../src/cruncher/index.js";
 import type { Phase } from "../src/generated.js";
 import { effectToBuffs } from "../src/cruncher/from-dsl.js";
@@ -56,6 +57,23 @@ function inputsFor(caseDir: string): InputDescriptor[] {
   return inputs;
 }
 
+/**
+ * Expected detected format for an `input.*` fixture, by filename convention:
+ * - `input.json` is always the bare ListForge BattleScribe payload (no
+ *   NewRecruit xmlns/generatedBy markers).
+ * - `input.newrecruit-<sub>.<ext>` carries the format id between `input.` and
+ *   the extension.
+ *
+ * Pins the auto-detect contract: every fixture filename is a claim about which
+ * adapter must win under {@link tryImportRoster}'s greedy first-match dispatch.
+ */
+function expectedFormatFor(filename: string): RosterFormat {
+  if (filename === "input.json") return "listforge";
+  const match = /^input\.(newrecruit-[a-z-]+)\.[a-z]+$/.exec(filename);
+  if (!match) throw new Error(`unrecognised input fixture filename: ${filename}`);
+  return match[1] as RosterFormat;
+}
+
 describe("conformance corpus (ties out with the Rust crate)", () => {
   it("normalizeName matches every case in normalize.json", () => {
     const table = readJson(join(CONFORMANCE, "normalize.json")) as {
@@ -80,6 +98,22 @@ describe("conformance corpus (ties out with the Rust crate)", () => {
     const caseDir = join(rosterDir, entry.name);
     const expected = readJson(join(caseDir, "expected.roster.json"));
     const inputs = inputsFor(caseDir);
+
+    it(`roster/${entry.name}: tryImportRoster auto-detects the format of every input`, () => {
+      expect(inputs.length).toBeGreaterThan(0);
+      for (const { filename } of inputs) {
+        const raw = readText(join(caseDir, filename));
+        const result = tryImportRoster(raw, { dataset: ds });
+        if (!result.ok) {
+          throw new Error(
+            `roster/${entry.name} ${filename}: expected ok, got ${result.reason}: ${result.message}`,
+          );
+        }
+        expect(result.format, `roster/${entry.name} ${filename}`).toBe(
+          expectedFormatFor(filename),
+        );
+      }
+    });
 
     it(`roster/${entry.name}: every input parses to the same Roster`, () => {
       expect(inputs.length).toBeGreaterThan(0);

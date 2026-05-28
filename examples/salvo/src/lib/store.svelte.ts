@@ -1,8 +1,9 @@
 import {
   Dataset,
-  importListForge,
-  importNewRecruit,
+  tryImportRoster,
+  type AdapterTrial,
   type Roster,
+  type RosterFormat,
   type Buff,
   type Phase,
 } from "@alpaca-software/40kdc-data";
@@ -121,23 +122,22 @@ export const salvo = new SalvoState();
 
 export interface RosterImportResult {
   roster: Roster | null;
+  format: RosterFormat | null;
+  /** Headline error for the `.error` row; null on success. */
   error: string | null;
+  /** Per-adapter dispatch trace, present on failure for the expandable details. */
+  trials: AdapterTrial[];
 }
 
-/** JSON-first, then ListForge text/URL. */
+/** Auto-detect the pasted format and import. Returns a structured result so the
+ * UI can surface the headline failure alongside per-format trial details. */
 export function importRosterText(text: string): RosterImportResult {
-  const trimmed = text.trim();
-  if (!trimmed) return { roster: null, error: "Paste a list first." };
-  if (trimmed.startsWith("{") || trimmed.startsWith("[")) {
-    try {
-      return { roster: importNewRecruit(trimmed, { dataset: ds }), error: null };
-    } catch (err) {
-      return { roster: null, error: `NewRecruit JSON: ${(err as Error).message}` };
-    }
+  if (!text.trim()) {
+    return { roster: null, format: null, error: "Paste a list first.", trials: [] };
   }
-  try {
-    return { roster: importListForge(trimmed, { dataset: ds }), error: null };
-  } catch (err) {
-    return { roster: null, error: `ListForge: ${(err as Error).message}` };
+  const result = tryImportRoster(text, { dataset: ds });
+  if (result.ok) {
+    return { roster: result.roster, format: result.format, error: null, trials: [] };
   }
+  return { roster: null, format: null, error: result.message, trials: result.trials };
 }

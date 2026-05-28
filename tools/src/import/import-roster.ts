@@ -3,8 +3,10 @@
  *
  * The adapter seam ({@link FormatAdapter}) lets every supported source format
  * plug in here without touching {@link decode} or {@link resolve}. Adapters are
- * registered in priority order — NewRecruit's tighter matchers run first so
- * the ListForge fallback only catches generic BattleScribe JSON.
+ * registered in priority order, and every adapter's `matches()` predicate is
+ * tight enough that **at most one** matches any given decoded payload —
+ * {@link tryImportRoster} relies on that disjointness to short-circuit on the
+ * first match.
  *
  * @packageDocumentation
  */
@@ -20,7 +22,7 @@ import {
   newRecruitWtcFullAdapter,
 } from "./newrecruit-wtc.js";
 import { resolve } from "./resolve.js";
-import type { Roster } from "./types.js";
+import type { Roster, RosterFormat } from "./types.js";
 
 /**
  * Adapters available to {@link importRoster}, in match-priority order.
@@ -108,3 +110,135 @@ export function importRoster(decoded: unknown, opts: ImportOptions = {}): Roster
   const parsed = adapter.parse(decoded);
   return resolve(parsed, ds, adapter.id);
 }
+
+// ---------------------------------------------------------------------------
+// tryImportRoster — single string-in, structured-result-out entry point.
+// ---------------------------------------------------------------------------
+
+/** Why a {@link tryImportRoster} call did not produce a roster. */
+export type ImportFailureReason =
+  | "empty-input"
+  | "decode-failed"
+  | "no-adapter-matched"
+  | "parse-failed";
+
+/** Per-adapter outcome from a {@link tryImportRoster} dispatch. */
+export interface AdapterTrial {
+  id: RosterFormat;
+  /** True iff this adapter's `matches()` predicate accepted the decoded input. */
+  matched: boolean;
+  /** Present when {@link matched} is true and `parse()` then threw — the matcher
+   * violated its contract. Absent for clean rejections. */
+  reason?: string;
+}
+
+/** Discriminated result returned by {@link tryImportRoster}. */
+export type ImportResult =
+  | { ok: true; roster: Roster; format: RosterFormat }
+  | {
+      ok: false;
+      reason: ImportFailureReason;
+      message: string;
+      trials: AdapterTrial[];
+    };
+
+/** Cheap predicate: does the input look like ListForge's URL-or-base64 wrapper? */
+function looksLikeListForgeEncoded(input: string): boolean {
+  if (input.includes("/listforge/")) return true;
+  if (/^https?:\/\//i.test(input)) return true;
+  // Every gzip-then-base64 payload starts with this prefix.
+  if (input.startsWith("H4sIA")) return true;
+  return false;
+}
+
+/**
+ * Auto-detect and import any supported roster format from a single string.
+ *
+ * Pipeline:
+ * 1. Empty input → `empty-input`.
+ * 2. Looks like a ListForge URL / base64 payload → decode (base64 + gunzip + JSON.parse).
+ * 3. Looks like raw JSON (starts with `{`/`[`) → JSON.parse.
+ * 4. Otherwise treat as text.
+ * 5. Greedy first-match adapter dispatch. The first adapter whose `matches()`
+ *    accepts the decoded value wins; subsequent adapters are not tried.
+ * 6. If the matched adapter's `parse()` throws, that's a matcher contract
+ *    violation — surfaced as `parse-failed`, not silently retried.
+ *
+ * Caller never sees an exception; the discriminated {@link ImportResult} carries
+ * either the resolved {@link Roster} (with the detected {@link RosterFormat})
+ * or a typed failure plus per-adapter trial info for diagnostics.
+ *
+ * Prefer this over {@link importListForge} / {@link importNewRecruit} when the
+ * caller doesn't know which format the user pasted.
+ */
+export function tryImportRoster(
+  input: string,
+  opts: ImportOptions = {},
+): ImportResult {
+  const trimmed = input.trim();
+  if (trimmed === "") {
+    return { ok: false, reason: "empty-input", message: "input is empty", trials: [] };
+  }
+
+  let decoded: unknown;
+  if (looksLikeListForgeEncoded(trimmed)) {
+    try {
+      decoded = decodeListForge(trimmed);
+    } catch (err) {
+      const message = (err as Error).message;
+      return {
+        ok: false,
+        reason: "decode-failed",
+        message: `failed to decode ListForge payload: ${message}`,
+        trials: [{ id: "listforge", matched: false, reason: message }],
+      };
+    }
+  } else if (trimmed.startsWith("{") || trimmed.startsWith("[")) {
+    try {
+      decoded = JSON.parse(trimmed);
+    } catch (err) {
+      return {
+        ok: false,
+        reason: "decode-failed",
+        message: `input looks like JSON but failed to parse: ${(err as Error).message}`,
+        trials: [],
+      };
+    }
+  } else {
+    decoded = input;
+  }
+
+  const ds = opts.dataset ?? Dataset.embedded();
+  const trials: AdapterTrial[] = [];
+  for (const adapter of ADAPTERS) {
+    if (!adapter.matches(decoded)) {
+      trials.push({ id: adapter.id, matched: false });
+      continue;
+    }
+    try {
+      const parsed = adapter.parse(decoded);
+      const roster = resolve(parsed, ds, adapter.id);
+      return { ok: true, roster, format: adapter.id };
+    } catch (err) {
+      const message = (err as Error).message;
+      trials.push({ id: adapter.id, matched: true, reason: message });
+      return {
+        ok: false,
+        reason: "parse-failed",
+        message: `${adapter.id}: ${message}`,
+        trials,
+      };
+    }
+  }
+
+  return {
+    ok: false,
+    reason: "no-adapter-matched",
+    message: `tried ${ADAPTERS.length} formats, none recognised the input`,
+    trials,
+  };
+}
+
+/** The adapter list, exposed for tests that need to walk every matcher (e.g.
+ * the disjointness invariant test). */
+export const REGISTERED_ADAPTERS: readonly FormatAdapter[] = ADAPTERS;

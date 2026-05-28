@@ -158,3 +158,163 @@ pub fn import_roster_text(input: &str, ds: &Dataset) -> Result<Roster, ImportErr
     let wrapped = serde_json::Value::String(input.to_string());
     import_roster(&wrapped, ds)
 }
+
+// ---------------------------------------------------------------------------
+// try_import_roster — single string-in, structured-result-out entry point.
+// Rust mirror of the TS `tryImportRoster` function.
+// ---------------------------------------------------------------------------
+
+/// Why a [`try_import_roster`] call did not produce a roster.
+#[cfg(feature = "import")]
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ImportFailureReason {
+    EmptyInput,
+    DecodeFailed,
+    NoAdapterMatched,
+    /// A matched adapter's `parse()` threw — matcher contract violation.
+    ParseFailed,
+}
+
+/// Per-adapter outcome from a [`try_import_roster`] dispatch.
+#[cfg(feature = "import")]
+#[derive(Debug, Clone)]
+pub struct AdapterTrial {
+    pub id: RosterFormat,
+    /// True iff this adapter's `detect()` predicate accepted the decoded input.
+    pub matched: bool,
+    /// Present when `matched` is true and `parse()` then errored — the matcher
+    /// violated its contract. None for clean rejections.
+    pub reason: Option<String>,
+}
+
+/// Discriminated result returned by [`try_import_roster`].
+#[cfg(feature = "import")]
+#[derive(Debug)]
+pub enum ImportResult {
+    Ok {
+        roster: Roster,
+        format: RosterFormat,
+    },
+    Err {
+        reason: ImportFailureReason,
+        message: String,
+        trials: Vec<AdapterTrial>,
+    },
+}
+
+/// Cheap predicate: does the input look like ListForge's URL-or-base64 wrapper?
+#[cfg(feature = "import")]
+fn looks_like_listforge_encoded(input: &str) -> bool {
+    if input.contains("/listforge/") {
+        return true;
+    }
+    let lower = input.get(..8).map(str::to_ascii_lowercase).unwrap_or_default();
+    if lower.starts_with("http://") || lower.starts_with("https://") {
+        return true;
+    }
+    // Every gzip-then-base64 payload starts with this prefix.
+    input.starts_with("H4sIA")
+}
+
+/// Auto-detect and import any supported roster format from a single string.
+///
+/// Pipeline:
+/// 1. Empty input → `EmptyInput`.
+/// 2. Looks like a ListForge URL/base64 → decode (base64 + gunzip + JSON parse).
+/// 3. Looks like raw JSON → parse with `serde_json`.
+/// 4. Otherwise treat as text (wrapped as [`serde_json::Value::String`]).
+/// 5. Greedy first-match adapter dispatch. The first adapter whose `detect()`
+///    accepts the decoded value wins; subsequent adapters are not tried.
+/// 6. If the matched adapter's `parse()` errors, that's a matcher contract
+///    violation — surfaced as `ParseFailed`, not silently retried.
+///
+/// Caller never sees an exception; the [`ImportResult`] enum carries either
+/// the resolved [`Roster`] (with the detected [`RosterFormat`]) or a typed
+/// failure plus per-adapter trial info for diagnostics. Mirror of TS
+/// `tryImportRoster`.
+#[cfg(feature = "import")]
+pub fn try_import_roster(input: &str, ds: &Dataset) -> ImportResult {
+    let trimmed = input.trim();
+    if trimmed.is_empty() {
+        return ImportResult::Err {
+            reason: ImportFailureReason::EmptyInput,
+            message: "input is empty".to_string(),
+            trials: Vec::new(),
+        };
+    }
+
+    let decoded: serde_json::Value = if looks_like_listforge_encoded(trimmed) {
+        match decode_listforge(trimmed) {
+            Ok(v) => v,
+            Err(e) => {
+                let message = e.to_string();
+                return ImportResult::Err {
+                    reason: ImportFailureReason::DecodeFailed,
+                    message: format!("failed to decode ListForge payload: {message}"),
+                    trials: vec![AdapterTrial {
+                        id: RosterFormat::Listforge,
+                        matched: false,
+                        reason: Some(message),
+                    }],
+                };
+            }
+        }
+    } else if trimmed.starts_with('{') || trimmed.starts_with('[') {
+        match serde_json::from_str(trimmed) {
+            Ok(v) => v,
+            Err(e) => {
+                return ImportResult::Err {
+                    reason: ImportFailureReason::DecodeFailed,
+                    message: format!("input looks like JSON but failed to parse: {e}"),
+                    trials: Vec::new(),
+                };
+            }
+        }
+    } else {
+        serde_json::Value::String(input.to_string())
+    };
+
+    let registry = adapters();
+    let mut trials: Vec<AdapterTrial> = Vec::new();
+    for adapter in registry.iter() {
+        if !adapter.detect(&decoded) {
+            trials.push(AdapterTrial {
+                id: adapter.format(),
+                matched: false,
+                reason: None,
+            });
+            continue;
+        }
+        // Greedy first-match: matched adapter must parse cleanly.
+        match adapter.parse(&decoded) {
+            Ok(parsed) => {
+                let roster = resolve(&parsed, ds, adapter.format());
+                return ImportResult::Ok {
+                    roster,
+                    format: adapter.format(),
+                };
+            }
+            Err(e) => {
+                let message = e.to_string();
+                let id = adapter.format();
+                trials.push(AdapterTrial {
+                    id,
+                    matched: true,
+                    reason: Some(message.clone()),
+                });
+                return ImportResult::Err {
+                    reason: ImportFailureReason::ParseFailed,
+                    message: format!("{}: {message}", crate::import::format_id(id)),
+                    trials,
+                };
+            }
+        }
+    }
+
+    let count = trials.len();
+    ImportResult::Err {
+        reason: ImportFailureReason::NoAdapterMatched,
+        message: format!("tried {count} formats, none recognised the input"),
+        trials,
+    }
+}

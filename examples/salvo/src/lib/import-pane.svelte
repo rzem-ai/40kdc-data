@@ -1,15 +1,22 @@
 <script lang="ts">
   import { salvo, importRosterText } from "./store.svelte.js";
+  import type { AdapterTrial, RosterFormat } from "@alpaca-software/40kdc-data";
 
   let attackerText = $state("");
   let attackerError = $state<string | null>(null);
+  let attackerTrials = $state<AdapterTrial[]>([]);
+  let attackerFormat = $state<RosterFormat | null>(null);
   let targetText = $state("");
   let targetError = $state<string | null>(null);
+  let targetTrials = $state<AdapterTrial[]>([]);
+  let targetFormat = $state<RosterFormat | null>(null);
 
   function importAttacker() {
-    const { roster, error } = importRosterText(attackerText);
+    const { roster, format, error, trials } = importRosterText(attackerText);
     salvo.attackerRoster = roster;
     attackerError = error;
+    attackerTrials = trials;
+    attackerFormat = format;
     if (roster && roster.units.length > 0) {
       // Auto-pick the first resolved unit if nothing's selected yet.
       const firstResolved = roster.units.find((u) => u.ref.resolved && u.ref.id);
@@ -22,25 +29,49 @@
   }
 
   function importTarget() {
-    const { roster, error } = importRosterText(targetText);
+    const { roster, format, error, trials } = importRosterText(targetText);
     salvo.targetRoster = roster;
     targetError = error;
+    targetTrials = trials;
+    targetFormat = format;
     if (roster && salvo.targetMode !== "roster") salvo.targetMode = "roster";
   }
 </script>
 
 <div class="row">
   <label for="attacker-paste">Attacker</label>
-  <span class="dim grow">ListForge URL or NewRecruit JSON</span>
+  <span class="dim grow">Paste any supported list — format auto-detected</span>
 </div>
-<textarea id="attacker-paste" bind:value={attackerText} placeholder="Paste a ListForge URL or NewRecruit JSON…" rows="4"></textarea>
+<textarea id="attacker-paste" bind:value={attackerText} placeholder="Paste a list (ListForge URL, NewRecruit JSON, wtc-compact, wtc-full, or simple)…" rows="4"></textarea>
 <div class="row">
   <button class="primary" onclick={importAttacker} disabled={!attackerText.trim()}>Import attacker</button>
   {#if salvo.attackerRoster}
-    <span class="dim">{salvo.attackerRoster.name} — {salvo.attackerRoster.units.length} units, {salvo.attackerRoster.diagnostics.resolved_units} resolved</span>
+    <span class="dim">
+      {salvo.attackerRoster.name} — {salvo.attackerRoster.units.length} units,
+      {salvo.attackerRoster.diagnostics.resolved_units} resolved
+      {#if attackerFormat}<span class="chip">{attackerFormat}</span>{/if}
+    </span>
   {/if}
 </div>
-{#if attackerError}<div class="error">{attackerError}</div>{/if}
+{#if attackerError}
+  <div class="error">
+    {attackerError}
+    {#if attackerTrials.length > 0}
+      <details>
+        <summary>Per-format diagnostics</summary>
+        <ul class="trials">
+          {#each attackerTrials as trial}
+            <li>
+              <code>{trial.id}</code>: {trial.matched
+                ? `matched, but parse failed — ${trial.reason ?? "no detail"}`
+                : "did not match"}
+            </li>
+          {/each}
+        </ul>
+      </details>
+    {/if}
+  </div>
+{/if}
 
 {#if salvo.attackerRoster}
   <div class="diagnostics">
@@ -63,11 +94,44 @@
 <div class="row">
   <button onclick={importTarget} disabled={!targetText.trim()}>Import target</button>
   {#if salvo.targetRoster}
-    <span class="dim">{salvo.targetRoster.name} — {salvo.targetRoster.units.length} units</span>
+    <span class="dim">
+      {salvo.targetRoster.name} — {salvo.targetRoster.units.length} units
+      {#if targetFormat}<span class="chip">{targetFormat}</span>{/if}
+    </span>
   {/if}
 </div>
-{#if targetError}<div class="error">{targetError}</div>{/if}
+{#if targetError}
+  <div class="error">
+    {targetError}
+    {#if targetTrials.length > 0}
+      <details>
+        <summary>Per-format diagnostics</summary>
+        <ul class="trials">
+          {#each targetTrials as trial}
+            <li>
+              <code>{trial.id}</code>: {trial.matched
+                ? `matched, but parse failed — ${trial.reason ?? "no detail"}`
+                : "did not match"}
+            </li>
+          {/each}
+        </ul>
+      </details>
+    {/if}
+  </div>
+{/if}
 
 <p class="dim" style="margin-top:14px;font-size:12px">
   No list to hand? Pick a unit straight from the embedded dataset in the Attacker pane.
 </p>
+
+<style>
+  .trials {
+    margin: 6px 0 0;
+    padding-left: 18px;
+    font-size: 12px;
+  }
+  .trials code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px;
+  }
+</style>

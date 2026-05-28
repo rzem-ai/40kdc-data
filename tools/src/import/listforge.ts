@@ -28,6 +28,8 @@ const POINTS_LIMIT = /(\d[\d,]*)\s*Point/i;
 const ENHANCEMENT_GROUP_PREFIX = "Enhancements";
 const CHARACTER_CATEGORIES = new Set(["Character", "Epic Hero"]);
 const WEAPON_CATEGORY_SUFFIX = " Weapon"; // "Ranged Weapon", "Melee Weapon", "Psychic Weapon"
+const NEWRECRUIT_XMLNS = "http://www.battlescribe.net/schema/rosterSchema";
+const NEWRECRUIT_HOST_PREFIX = "https://newrecruit";
 
 // --- Minimal structural views of the parts of the payload we read. ----------
 
@@ -199,6 +201,8 @@ interface RawRoster {
   name?: unknown;
   costs?: unknown;
   forces?: unknown;
+  xmlns?: unknown;
+  generatedBy?: unknown;
 }
 interface RawPayload {
   name?: unknown;
@@ -214,11 +218,23 @@ function rosterOf(decoded: unknown): RawRoster | null {
   return roster as RawRoster;
 }
 
+/** Detect a NewRecruit-flavoured BattleScribe payload. ListForge's matcher
+ * excludes these so the greedy first-match dispatcher routes them to the
+ * NewRecruit adapter without falling through to here. */
+function hasNewRecruitSignature(decoded: unknown, roster: RawRoster): boolean {
+  if (asString(roster.xmlns) === NEWRECRUIT_XMLNS) return true;
+  const genBy =
+    asString((decoded as RawPayload).generatedBy) ?? asString(roster.generatedBy);
+  return genBy !== null && genBy.toLowerCase().startsWith(NEWRECRUIT_HOST_PREFIX);
+}
+
 export const listForgeAdapter: FormatAdapter = {
   id: "listforge",
 
   matches(decoded: unknown): boolean {
-    return rosterOf(decoded) !== null;
+    const roster = rosterOf(decoded);
+    if (!roster) return false;
+    return !hasNewRecruitSignature(decoded, roster);
   },
 
   parse(decoded: unknown): ParsedRoster {

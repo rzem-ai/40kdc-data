@@ -20,6 +20,7 @@ export {
   importListForge,
   importNewRecruit,
   importRoster,
+  tryImportRoster,
   decodeListForge,
 } from "./import/index.js";
 
@@ -36,6 +37,9 @@ export type { ExportFormat, RosterSerializer } from "./export/index.js";
 export type { FormatAdapter } from "./import/index.js";
 export type {
   ImportOptions,
+  ImportResult,
+  ImportFailureReason,
+  AdapterTrial,
   Roster,
   RosterUnit,
   RosterWargear,
