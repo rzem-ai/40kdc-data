@@ -2,6 +2,10 @@ node_modules/
 dist/
 .vite/
 _site/
+# HTML TypeDoc output for the Pages site — a CI build artifact assembled into
+# _site/api/. The markdown counterpart (tools/docs/api/) stays committed for
+# in-repo browsing; this HTML build is regenerated on every Pages deploy.
+tools/docs/api-html/
 /target/
 /rust_analyzer/
 tools/schemas/

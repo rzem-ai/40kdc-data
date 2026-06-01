@@ -32,6 +32,7 @@ jobs:
           cd tools
           npm run build
           npm run docs:api
+          npm run docs:api:html
 
       - name: Build example toollets
         run: |
@@ -52,7 +53,7 @@ jobs:
           set -euo pipefail
           mkdir -p _site _site/api _site/examples
           cp docs-site/index.html _site/index.html
-          cp -R tools/docs/api/. _site/api/
+          cp -R tools/docs/api-html/. _site/api/
           for dir in examples/*/; do
             name=$(basename "$dir")
             if [ -d "$dir/dist" ]; then

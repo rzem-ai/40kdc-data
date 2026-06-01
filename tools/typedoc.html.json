@@ -1,0 +1,11 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src/data/index.ts", "src/generated.ts"],
+  "out": "docs/api-html",
+  "readme": "none",
+  "excludeInternal": true,
+  "exclude": ["**/*.generated.ts", "**/node_modules/**"],
+  "githubPages": true,
+  "hideGenerator": true,
+  "sort": ["source-order"]
+}
