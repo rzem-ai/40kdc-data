@@ -2719,7 +2719,15 @@
       "arma-luminis",
       "fealty"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "dark-angels-bodyguard",
+      "deep-strike",
+      "fights-first",
+      "oath-of-moment",
+      "primarch-of-the-first-legion",
+      "supreme-commander",
+      "the-emperors-shield"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -3219,7 +3227,13 @@
       "stalker-bolt-rifle",
       "xenophase-blade"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "astartes-shield",
+      "attached-unit",
+      "death-to-the-alien",
+      "mission-tactics",
+      "oath-of-moment"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -4511,7 +4525,13 @@
       "thunder-hammer",
       "twin-lightning-claws"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deep-strike",
+      "oath-of-moment",
+      "storm-shield",
+      "teleport-homer",
+      "terminatus-assault"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -6142,7 +6162,13 @@
       "stalker-bolt-rifle",
       "xenophase-blade"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "astartes-shield",
+      "attached-unit",
+      "death-to-the-alien",
+      "mission-tactics",
+      "oath-of-moment"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -6532,7 +6558,11 @@
       "storm-bolter",
       "twin-heavy-bolter"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "assault-ramp",
+      "deadly-demise-d6",
+      "oath-of-moment"
+    ],
     "transport_capacity": {
       "capacity": 12
     },
@@ -10212,7 +10242,12 @@
       "max": 1
     },
     "weapon_ids": [],
-    "ability_ids": [],
+    "ability_ids": [
+      "deadly-demise-1",
+      "deep-strike",
+      "drop-pod-assault",
+      "oath-of-moment"
+    ],
     "transport_capacity": {
       "capacity": 1
     },
@@ -10381,7 +10416,11 @@
       "storm-bolter",
       "twin-lascannon"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deadly-demise-1",
+      "oath-of-moment",
+      "spiritual-leader"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -10683,7 +10722,12 @@
       "hunter-killer-missile",
       "twin-plasma-gun"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deadly-demise-d3",
+      "oath-of-moment",
+      "orbital-comms-array-aura",
+      "self-repair"
+    ],
     "transport_capacity": {
       "capacity": 6,
       "exclusion_keywords": [
@@ -10739,7 +10783,11 @@
       "twin-heavy-bolter",
       "twin-lascannon"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deadly-demise-d3",
+      "fire-support",
+      "oath-of-moment"
+    ],
     "transport_capacity": {
       "capacity": 6,
       "exclusion_keywords": [
@@ -10789,7 +10837,11 @@
       "laser-volley-cannon",
       "storm-bolter"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "annihilator",
+      "deadly-demise-d3",
+      "oath-of-moment"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -10833,7 +10885,11 @@
       "twin-lascannon",
       "xiphon-missile-battery"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deadly-demise-d3",
+      "interceptor",
+      "oath-of-moment"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -10927,7 +10983,11 @@
       "scorpius-multi-launcher",
       "storm-bolter"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deadly-demise-d3",
+      "oath-of-moment",
+      "pinning-bombardment"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -10979,7 +11039,11 @@
       "storm-cannon",
       "twin-volkite-caliver"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deadly-demise-d3",
+      "duty-eternal",
+      "oath-of-moment"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -11178,7 +11242,11 @@
       "lascannon",
       "storm-bolter"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "armoured-spearhead",
+      "deadly-demise-d3",
+      "oath-of-moment"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -11371,7 +11439,12 @@
       "typhoon-missile-launcher",
       "vengeance-launcher"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "armoured-resilience",
+      "deadly-demise-d6",
+      "hover",
+      "oath-of-moment"
+    ],
     "transport_capacity": {
       "capacity": 22
     },
@@ -11421,7 +11494,12 @@
       "twin-hellstrike-launcher",
       "twin-lascannon"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deadly-demise-d6",
+      "hover",
+      "oath-of-moment",
+      "strafing-run"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -11517,7 +11595,11 @@
       "hunter-killer-missile",
       "storm-bolter"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "assault-ramp",
+      "deadly-demise-d6",
+      "oath-of-moment"
+    ],
     "transport_capacity": {
       "capacity": 12
     },
@@ -11566,7 +11648,11 @@
       "quad-heavy-bolter",
       "storm-bolter"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "assault-ramp",
+      "deadly-demise-d6",
+      "oath-of-moment"
+    ],
     "transport_capacity": {
       "capacity": 12
     },
@@ -11616,7 +11702,11 @@
       "storm-bolter",
       "terminus-lascannon"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "assault-ramp",
+      "deadly-demise-d6",
+      "oath-of-moment"
+    ],
     "transport_capacity": {
       "capacity": 8
     },
@@ -11720,7 +11810,11 @@
       "twin-multi-melta",
       "twin-volkite-culverin"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "assault-ramp",
+      "deadly-demise-d6",
+      "oath-of-moment"
+    ],
     "transport_capacity": {
       "capacity": 12
     },
@@ -11771,7 +11865,12 @@
       "multi-melta",
       "storm-bolter"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "assault-ramp",
+      "deadly-demise-d6",
+      "oath-of-moment",
+      "rites-of-battle"
+    ],
     "transport_capacity": {
       "capacity": 12
     },
@@ -11822,7 +11921,11 @@
       "quad-lascannon",
       "storm-bolter"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "assault-ramp",
+      "deadly-demise-d6",
+      "oath-of-moment"
+    ],
     "transport_capacity": {
       "capacity": 28
     },
@@ -12594,7 +12697,10 @@
       "twin-heavy-bolter",
       "twin-lascannon"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "oath-of-moment",
+      "sentinel-protocols"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"

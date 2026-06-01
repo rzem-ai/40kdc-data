@@ -841,20 +841,32 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "type": "timing-is",
+        "parameters": {
+          "timing": "dark-pacts-leadership-test"
+        }
+      },
+      "effect": {
+        "type": "leadership-modifier",
+        "target": "unit",
+        "modifier": {
+          "test": "dark-pacts",
+          "operation": "re-roll"
+        }
+      }
     },
     "scope": {
       "range": "unit",
-      "duration": "permanent"
+      "duration": "phase"
     },
     "unit_ids": [
       "dark-commune"
     ],
     "ability_type": "unit",
-    "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "behavior": "reactive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "daemonkin-psychic",
@@ -1417,7 +1429,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "chaos-spawn"
+      "chaos-spawn",
+      "gellerpox-infected"
     ],
     "ability_type": "core",
     "behavior": "passive"
@@ -2037,7 +2050,8 @@
       "duration": "turn"
     },
     "unit_ids": [
-      "raptors"
+      "raptors",
+      "gellerpox-infected"
     ],
     "ability_type": "unit",
     "behavior": "aura",
@@ -4088,20 +4102,53 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "operator": "and",
+        "operands": [
+          {
+            "type": "timing-is",
+            "parameters": {
+              "timing": "post-deployment"
+            }
+          },
+          {
+            "operator": "or",
+            "operands": [
+              {
+                "type": "engagement-state",
+                "parameters": {
+                  "state": "on-battlefield"
+                }
+              },
+              {
+                "type": "engagement-state",
+                "parameters": {
+                  "state": "embarked"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "effect": {
+        "type": "ability-grant",
+        "target": "unit",
+        "modifier": {
+          "grant_type": "redeploy-heretic-astartes-to-reserves"
+        }
+      }
     },
     "scope": {
-      "range": "unit",
+      "range": "self",
       "duration": "permanent"
     },
     "unit_ids": [
       "masters-of-the-maelstrom"
     ],
     "ability_type": "unit",
-    "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "behavior": "activated",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "plunder",
@@ -4366,20 +4413,42 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "operator": "and",
+        "operands": [
+          {
+            "type": "phase-is",
+            "parameters": {
+              "phase": "command"
+            }
+          },
+          {
+            "type": "player-turn-is",
+            "parameters": {
+              "turn": "your"
+            }
+          }
+        ]
+      },
+      "effect": {
+        "type": "ability-grant",
+        "target": "self",
+        "modifier": {
+          "grant_type": "warmaster-selection"
+        }
+      }
     },
     "scope": {
-      "range": "unit",
-      "duration": "permanent"
+      "range": "self",
+      "duration": "battle-round"
     },
     "unit_ids": [
       "abaddon-the-despoiler"
     ],
     "ability_type": "unit",
-    "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "behavior": "activated",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "dark-destiny",
@@ -5479,20 +5548,23 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "leadership-modifier",
+      "target": "enemy-within-aura",
+      "modifier": {
+        "operation": "subtract",
+        "value": 1
+      }
     },
     "scope": {
-      "range": "unit",
-      "duration": "permanent"
+      "range": "aura-6",
+      "duration": "battle"
     },
     "unit_ids": [
       "sorcerer-on-palanquin-of-nurgle"
     ],
     "ability_type": "unit",
     "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "gift-of-poxes-psychic",
@@ -5749,20 +5821,22 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "ability-grant",
+      "target": "self",
+      "modifier": {
+        "grant_type": "charge-after-fallback"
+      }
     },
     "scope": {
-      "range": "unit",
-      "duration": "permanent"
+      "range": "self",
+      "duration": "turn"
     },
     "unit_ids": [
       "renegade-enforcer"
     ],
     "ability_type": "unit",
     "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "ogryn-combat-stimms",
@@ -5932,7 +6006,10 @@
     },
     "faction_id": "chaos-space-marines",
     "ability_type": "faction",
-    "behavior": "activated"
+    "behavior": "activated",
+    "unit_ids": [
+      "gellerpox-infected"
+    ]
   },
   {
     "ability_id": "cults-of-the-dark-gods",
@@ -5956,6 +6033,7 @@
     },
     "faction_id": "chaos-space-marines",
     "ability_type": "faction",
-    "behavior": "passive"
+    "behavior": "passive",
+    "unit_ids": []
   }
 ]

@@ -1481,7 +1481,15 @@
       "betraying-shades",
       "the-blade-of-shadows"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deadly-demise-d6",
+      "deep-strike",
+      "shadow-form-abilities",
+      "stealth",
+      "supreme-commander",
+      "the-dark-master-aura",
+      "the-shadow-of-chaos"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -3065,7 +3073,13 @@
       "staff-of-cataclysm",
       "warpfire-talons"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deadly-demise-d6",
+      "deep-strike",
+      "emissary-of-the-great-mutator-aura",
+      "master-of-magicks-psychic",
+      "the-shadow-of-chaos"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -3113,7 +3127,13 @@
       "axe-of-khorne",
       "bloodlash"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deadly-demise-d6-2",
+      "deep-strike",
+      "emissary-of-the-blood-god-aura",
+      "relentless-carnage",
+      "the-shadow-of-chaos"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"

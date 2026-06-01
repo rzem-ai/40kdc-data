@@ -69,6 +69,16 @@ pub mod export;
 #[cfg(feature = "cruncher")]
 pub mod cruncher;
 
+/// Plain-English translation of `secondary-card` scoring `awards` (mission
+/// "how to play" readouts) plus the shared Ability-DSL condition humanizer.
+/// Mirrors `tools/src/translate/` in the TS package; the
+/// `conformance/scoring-translation/` corpus pins both implementations to
+/// byte-identical output. Depends only on the generated types, so it stays
+/// available even in a types-only (`default-features = false`) build.
+pub mod translate;
+
+pub use translate::{describe_award, describe_condition, describe_scoring_card, describe_trigger};
+
 /// The bundled, self-contained JSON Schema (draft 2020-12) these types were
 /// generated from. Consumers can feed this to a JSON Schema validator to check
 /// data before deserializing; the canonical validation CLI lives in the

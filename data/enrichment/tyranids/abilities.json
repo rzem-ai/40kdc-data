@@ -18,7 +18,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "trygon"
+      "trygon",
+      "mucolid-spores"
     ],
     "ability_type": "core",
     "behavior": "activated"
@@ -33,20 +34,54 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "operator": "and",
+        "operands": [
+          {
+            "type": "phase-is",
+            "parameters": {
+              "phase": "movement"
+            }
+          },
+          {
+            "type": "timing-is",
+            "parameters": {
+              "timing": "deep-strike-setup"
+            }
+          }
+        ]
+      },
+      "effect": {
+        "type": "sequence",
+        "steps": [
+          {
+            "type": "ability-grant",
+            "target": "self",
+            "modifier": {
+              "grant_type": "deep-strike-6inch-exclusion"
+            }
+          },
+          {
+            "type": "attack-restriction",
+            "target": "self",
+            "modifier": {
+              "attack_type": "charge"
+            }
+          }
+        ]
+      }
     },
     "scope": {
-      "range": "unit",
-      "duration": "permanent"
+      "range": "self",
+      "duration": "turn"
     },
     "unit_ids": [
       "trygon"
     ],
     "ability_type": "unit",
-    "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "behavior": "activated",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "terror-from-the-deep",
@@ -710,7 +745,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "venomthropes"
+      "venomthropes",
+      "von-ryans-leapers"
     ],
     "ability_type": "core",
     "behavior": "passive"
@@ -810,7 +846,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "spore-mines"
+      "spore-mines",
+      "mucolid-spores"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -836,7 +873,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "spore-mines"
+      "spore-mines",
+      "mucolid-spores"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -982,7 +1020,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "deathleaper"
+      "deathleaper",
+      "von-ryans-leapers"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -1008,7 +1047,8 @@
       "duration": "one-use"
     },
     "unit_ids": [
-      "deathleaper"
+      "deathleaper",
+      "von-ryans-leapers"
     ],
     "ability_type": "core",
     "behavior": "activated"
@@ -2882,7 +2922,11 @@
     },
     "faction_id": "tyranids",
     "ability_type": "faction",
-    "behavior": "passive"
+    "behavior": "passive",
+    "unit_ids": [
+      "von-ryans-leapers",
+      "mucolid-spores"
+    ]
   },
   {
     "ability_id": "shadow-in-the-warp",
@@ -2906,6 +2950,46 @@
     },
     "faction_id": "tyranids",
     "ability_type": "faction",
-    "behavior": "activated"
+    "behavior": "activated",
+    "unit_ids": []
+  },
+  {
+    "ability_id": "pouncing-leap",
+    "name": "Pouncing Leap",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "sequence",
+      "steps": [
+        {
+          "type": "ability-grant",
+          "target": "self",
+          "modifier": {
+            "grant_type": "heroic-intervention-at-0cp"
+          }
+        },
+        {
+          "type": "ability-grant",
+          "target": "self",
+          "modifier": {
+            "grant_type": "heroic-intervention-frequency-bypass"
+          }
+        }
+      ]
+    },
+    "scope": {
+      "range": "self",
+      "duration": "permanent"
+    },
+    "unit_ids": [
+      "von-ryans-leapers"
+    ],
+    "ability_type": "unit",
+    "behavior": "passive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   }
 ]

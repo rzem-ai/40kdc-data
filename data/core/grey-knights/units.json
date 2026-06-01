@@ -1279,7 +1279,11 @@
       "storm-bolter",
       "twin-heavy-bolter"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "assault-ramp",
+      "deadly-demise-d6",
+      "oath-of-moment"
+    ],
     "transport_capacity": {
       "capacity": 12
     },
@@ -1578,7 +1582,10 @@
       "storm-bolter",
       "twin-lascannon"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deadly-demise-1",
+      "wisdom-of-the-ancients-aura"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -1629,7 +1636,10 @@
       "twin-lascannon",
       "twin-psycannon"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deadly-demise-d3",
+      "fire-support"
+    ],
     "transport_capacity": {
       "capacity": 6
     },

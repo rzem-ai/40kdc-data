@@ -48,7 +48,13 @@
   {
     "id": "bad-effect-missing-target",
     "name": "Effect Missing Target",
-    "action": { "effect": { "type": "terrain-area-tag" } },
+    "actions": [{ "effect": { "type": "terrain-area-tag" } }],
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "bad-actions-empty",
+    "name": "Actions Empty",
+    "actions": [],
     "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
   },
   {

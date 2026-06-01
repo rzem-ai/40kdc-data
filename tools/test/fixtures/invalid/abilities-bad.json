@@ -38,5 +38,25 @@
       "effect": { "type": "objective-control-modifier", "target": "unit", "modifier": { "operation": "add", "value": 1 } }
     },
     "scope": { "range": "unit", "duration": "phase" }
+  },
+  {
+    "ability_id": "bad-objective-tag-missing-target",
+    "name": "objective-tag missing required target",
+    "authored_by": "40kdc-community",
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" },
+    "effect": { "type": "objective-tag", "modifier": { "tag": "consecrated" } },
+    "scope": { "range": "any-on-battlefield", "duration": "battle" }
+  },
+  {
+    "ability_id": "bad-objective-has-tag-typo",
+    "name": "objective-has-tag misspelled as objective-tag-has",
+    "authored_by": "40kdc-community",
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" },
+    "effect": {
+      "type": "conditional",
+      "condition": { "type": "objective-tag-has", "parameters": { "tag": "consecrated", "count_min": 1 } },
+      "effect": { "type": "cp-gain", "target": "self", "modifier": { "count": 1 } }
+    },
+    "scope": { "range": "any-on-battlefield", "duration": "turn" }
   }
 ]

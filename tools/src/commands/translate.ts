@@ -8,15 +8,9 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-// ─── Types (minimal, matching schema shapes) ─────────────────────────
+import { describeCondition, type Condition } from "../translate/condition.js";
 
-interface Condition {
-  type?: string;
-  operator?: string;
-  operands?: Condition[];
-  parameters?: Record<string, unknown>;
-  negated?: boolean;
-}
+// ─── Types (minimal, matching schema shapes) ─────────────────────────
 
 interface Effect {
   type: string;
@@ -48,79 +42,10 @@ interface Ability {
   scope?: { range: string; duration: string; range_inches?: number };
 }
 
-// ─── Condition translator ────────────────────────────────────────────
-
-function translateCondition(c: Condition): string {
-  const negate = c.negated ? "not " : "";
-
-  // Compound conditions
-  if (c.operator === "and" && c.operands) {
-    const parts = c.operands.map(translateCondition);
-    return parts.join(" AND ");
-  }
-  if (c.operator === "or" && c.operands) {
-    const parts = c.operands.map(translateCondition);
-    return parts.join(" OR ");
-  }
-  if (c.operator === "not" && c.operands) {
-    return `NOT (${c.operands.map(translateCondition).join(", ")})`;
-  }
-
-  const p = c.parameters ?? {};
-
-  switch (c.type) {
-    case "phase-is":
-      return `${negate}during the ${p.phase} phase`;
-    case "timing-is":
-      return `${negate}at ${formatTiming(p.timing as string)}`;
-    case "player-turn-is":
-      return `${negate}in ${p.turn === "your-turn" ? "your" : p.turn === "opponent-turn" ? "opponent's" : "either player's"} turn`;
-    case "charged-this-turn":
-      return `${negate}unit charged this turn`;
-    case "advanced-this-turn":
-      return `${negate}unit advanced this turn`;
-    case "remained-stationary":
-      return `${negate}unit remained stationary`;
-    case "unit-below-starting-strength":
-      return `${negate}target is below starting strength`;
-    case "unit-below-half-strength":
-      return `${negate}target is below half strength`;
-    case "unit-has-keyword":
-      return `${negate}unit has "${p.keyword}"`;
-    case "target-has-keyword":
-      return `${negate}target has "${p.keyword}"`;
-    case "model-is-leader":
-      return `${negate}model is leading a unit`;
-    case "is-attached":
-      return `${negate}attached to a ${p.keyword ?? ""} unit`;
-    case "attack-is-type":
-      return `${negate}for ${p.attack_type} attacks`;
-    case "is-battle-shocked":
-      return `${negate}unit is battle-shocked`;
-    case "has-lost-wounds":
-      return `${negate}model has lost wounds`;
-    case "opponent-unit-within-range":
-      return `${negate}enemy unit within ${p.range === "engagement" ? "engagement range" : p.range + '"'}`;
-    case "unit-within-range-of":
-      return `${negate}within ${p.range}" of ${p.target_type ?? "target"}${p.keyword ? ` (${p.keyword})` : ""}`;
-    case "within-range-of-objective":
-      return `${negate}within range of an objective`;
-    case "controls-objective":
-      return `${negate}controlling an objective`;
-    case "has-fought-this-phase":
-      return `${negate}has fought this phase`;
-    case "destroyed-by-attack-type":
-      return `${negate}destroyed by ${p.attack_type} attack`;
-    default:
-      return `${negate}[${c.type ?? "unknown"}]`;
-  }
-}
-
-function formatTiming(t: string): string {
-  return t.replace(/-/g, " ");
-}
-
 // ─── Effect translator ───────────────────────────────────────────────
+//
+// Condition humanization lives in ../translate/condition.ts (shared with the
+// scoring-card translator and pinned by the conformance corpus).
 
 function translateEffect(e: Effect, depth: number = 0): string {
   const indent = "  ".repeat(depth);
@@ -129,7 +54,7 @@ function translateEffect(e: Effect, depth: number = 0): string {
   switch (e.type) {
     case "conditional":
       return (
-        `${indent}If ${translateCondition(e.condition!)}:\n` +
+        `${indent}If ${describeCondition(e.condition!)}:\n` +
         translateEffect(e.effect!, depth + 1)
       );
 
@@ -241,7 +166,7 @@ function translateEffectInline(e: Effect): string {
 
     // Container types — recurse
     case "conditional":
-      return `if ${translateCondition(e.condition!)}: ${translateEffectInline(e.effect!)}`;
+      return `if ${describeCondition(e.condition!)}: ${translateEffectInline(e.effect!)}`;
     case "sequence":
       return e.steps!.map(translateEffectInline).join("; ");
     case "dice-gated": {

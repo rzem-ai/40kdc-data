@@ -864,41 +864,60 @@
           ],
           "additionalProperties": false
         },
-        "action": {
-          "type": "object",
-          "description": "Optional player action the card enables.",
-          "properties": {
-            "starts": {
-              "$ref": "#/$defs/phase",
-              "description": "Phase in which the action can be started."
+        "actions": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Optional player actions the card enables. Most cards have a single action; a few (e.g. Observe Enemy, with separate Baited-removal and Spotted actions) have two distinct actions on the same card.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "action_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "description": "Optional kebab-case identifier used to reference this action from `action-completed` conditions in `awards[].when`."
+              },
+              "starts": {
+                "$ref": "#/$defs/phase",
+                "description": "Phase in which the action can be started."
+              },
+              "player_turn": {
+                "$ref": "#/$defs/player-turn"
+              },
+              "units": {
+                "$ref": "#/$defs/condition",
+                "description": "Eligibility predicate for which units may perform the action."
+              },
+              "use_limit": {
+                "type": "integer",
+                "minimum": 1,
+                "description": "Maximum number of times the action may be performed (per turn unless `use_limit_scope` says otherwise)."
+              },
+              "use_limit_scope": {
+                "type": "string",
+                "enum": [
+                  "per-turn",
+                  "per-game"
+                ],
+                "default": "per-turn",
+                "description": "Whether `use_limit` is enforced per turn or once per game (e.g. Recover the Relics / Find and Deny 'Overwhelming Force' is once per game)."
+              },
+              "completes": {
+                "$ref": "#/$defs/condition",
+                "description": "Predicate for when the action is considered complete."
+              },
+              "effect": {
+                "$ref": "#/$defs/effect",
+                "description": "Effect applied when the action completes (e.g. terrain-area-tag, objective-tag, or unit-tag to mark transient state)."
+              }
             },
-            "player_turn": {
-              "$ref": "#/$defs/player-turn"
-            },
-            "units": {
-              "$ref": "#/$defs/condition",
-              "description": "Eligibility predicate for which units may perform the action."
-            },
-            "use_limit": {
-              "type": "integer",
-              "minimum": 1,
-              "description": "Maximum number of times the action may be performed."
-            },
-            "completes": {
-              "$ref": "#/$defs/condition",
-              "description": "Predicate for when the action is considered complete."
-            },
-            "effect": {
-              "$ref": "#/$defs/effect",
-              "description": "Effect applied when the action completes (e.g. terrain-area-tag to mark transient state on a terrain piece)."
-            }
-          },
-          "additionalProperties": false
+            "additionalProperties": false
+          }
         },
         "awards": {
           "type": "array",
           "minItems": 1,
-          "description": "VP-award blocks: each scores when `trigger` fires and the optional `when` condition holds. An award scores either a flat `vp` or a count-scaled `vp_per` (VP per instance of the thing named by `per`). Awards accrue independently and sum; a card's '+ ... CUMULATIVE' rows are modelled as separate awards flagged `cumulative` for faithful round-trip.",
+          "description": "VP-award blocks: each scores when `trigger` fires and the optional `when` condition holds. An award scores either a flat `vp` or a count-scaled `vp_per` (VP per instance of the thing named by `per`). Awards accrue independently and sum; a card's '+ ... CUMULATIVE' rows are modelled as separate awards flagged `cumulative` for faithful round-trip. Awards sharing the same `exclusive_group` value within a card resolve as the highest-scoring single award fires (the card's literal 'OR' rows between tier breakpoints, e.g. Record-Breaking Mission's 3-Fronts vs 4-Fronts).",
           "items": {
             "type": "object",
             "properties": {
@@ -933,6 +952,12 @@
                 "type": "boolean",
                 "default": false,
                 "description": "Marks an award the card shows as an additive '+' bonus to the preceding award in the same trigger block (the card's CUMULATIVE rows). Purely descriptive — all awards accrue independently and are summed."
+              },
+              "exclusive_group": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "description": "Awards sharing this kebab-case group key resolve as 'score only the highest, not the sum' (the card's literal OR between tier rows). Awards with different `exclusive_group` values, or no value, accrue independently."
               }
             },
             "oneOf": [
@@ -2010,7 +2035,7 @@
     },
     "simple-condition": {
       "type": "object",
-      "$comment": "Board/meta-state and scoring predicates. `parameters` is intentionally open (additionalProperties: true); each type documents its own param convention. Scoring predicates added for mission cards: `units-destroyed` { side: 'enemy'|'friendly', window: 'this-turn'|'previous-turn', count_min: int } — at least count_min units of `side` were destroyed in `window`. `units-destroyed-comparison` { subject: {side, window}, comparator: 'greater-than'|'greater-or-equal', reference: {side, window} } — compares two destruction tallies (e.g. more enemy units destroyed this turn than friendly last turn). `objective-majority` { relative_to: 'opponent' } — you control more objectives than the named party. `controls-objective` params: { count_min: int, objective_role?: 'central', exclude?: 'home', objective?: 'opponent-home' }.",
+      "$comment": "Board/meta-state and scoring predicates. `parameters` is intentionally open (additionalProperties: true); each type documents its own param convention. Scoring predicates added for mission cards: `units-destroyed` { side: 'enemy'|'friendly', window: 'this-turn'|'previous-turn', count_min: int } — at least count_min units of `side` were destroyed in `window`. `units-destroyed-comparison` { subject: {side, window}, comparator: 'greater-than'|'greater-or-equal', reference: {side, window} } — compares two destruction tallies (e.g. more enemy units destroyed this turn than friendly last turn). `objective-majority` { relative_to: 'opponent' } — you control more objectives than the named party. `controls-objective` params: { count_min: int, objective_role?: 'central'|'expansion'|'non-home'|'home', exclude?: 'home', objective?: 'opponent-home'|'your-home', scope?: 'enemy-territory'|'your-territory' }. Mission-card extensions (11e primary deck): `action-completed` { action_id?: string, target_kind?: 'objective'|'terrain'|'enemy-unit'|'self', target_filter?: { in_enemy_territory?: bool, objective_role?: 'central'|'non-home', exclude?: 'home' }, count_min: int, window?: 'this-turn'|'previous-turn'|'cumulative' } — at least count_min instances of a named action were completed in the window. `objective-has-tag` { tag: 'baited'|'triangulated'|'consecrated'|'sabotaged'|'marked'|'vanguard'|'spotted', count_min: int, count_max?: int, objective?: 'opponent-home'|'your-home', scope?: 'enemy-territory'|'your-territory' } — at least count_min objectives carry the named transient tag. `unit-has-tag` { tag: 'doomed'|'spotted', side: 'enemy'|'friendly', count_min: int, window?: 'destroyed-this-turn'|'still-on-board' } — at least count_min units of `side` carry the tag (optionally with a destruction filter — Punishment scores when a Doomed unit was destroyed or left the battlefield). `terrain-has-tag` { tag: 'mined'|'marked'|'vanguard', friendly_units_min?: int, enemy_units_max?: int, last_marked?: bool, in_enemy_dz?: bool } — terrain piece state predicate; `last_marked` selects the most-recently-marked piece (Find and Deny / Recover the Relics' Overwhelming Force trigger). `new-objective-controlled` { count_min: int } — at least count_min objectives are controlled this turn that were not controlled in the previous command phase. `engagement-fronts` { count_min: int } — friendly units engage enemies in at least count_min distinct fronts; a 'front' is one of the territory zones from the deployment-pattern's `territories[]`, so this composes with the existing `territory-control` predicate. `destroyed-while-on-objective` { destroyer_on_objective?: bool, victim_on_objective?: bool, count_min: int } — count_min enemy units were destroyed this turn under the named spatial condition (the destroying friendly unit, the destroyed enemy unit, or both were standing on an objective at the moment of the kill).",
       "properties": {
         "type": {
           "type": "string",
@@ -2043,7 +2068,14 @@
             "disposition-matches",
             "units-destroyed",
             "units-destroyed-comparison",
-            "objective-majority"
+            "objective-majority",
+            "action-completed",
+            "objective-has-tag",
+            "unit-has-tag",
+            "terrain-has-tag",
+            "new-objective-controlled",
+            "engagement-fronts",
+            "destroyed-while-on-objective"
           ]
         },
         "parameters": {
@@ -2143,6 +2175,8 @@
             "resource-spend",
             "charge-roll-modifier",
             "terrain-area-tag",
+            "objective-tag",
+            "unit-tag",
             "bs-modifier",
             "engagement-passthrough"
           ]
@@ -2171,7 +2205,7 @@
         "type",
         "target"
       ],
-      "$comment": "When `type` is `re-roll`, `modifier` must carry `roll` (string) and `subset` (`ones` | `all-failures`). Rerolls always target failures; the subset decides whether only 1s are rerolled or every failed die. The constraint is enforced by AJV at validation time and stripped from the codegen bundle (typify can't model if/then/else) — the generated TS/Rust types therefore see `modifier` as an open object, matching its other-`type` callers. When `type` is `feel-no-pain`, `modifier` carries `threshold` (the FNP save target) and optionally `scope` ∈ {`all`, `mortal`}; an absent scope defaults to `all` (fires on every unsaved wound). The two scopes compose independently against the mortal-wound stream.",
+      "$comment": "When `type` is `re-roll`, `modifier` must carry `roll` (string) and `subset` (`ones` | `all-failures`). Rerolls always target failures; the subset decides whether only 1s are rerolled or every failed die. The constraint is enforced by AJV at validation time and stripped from the codegen bundle (typify can't model if/then/else) — the generated TS/Rust types therefore see `modifier` as an open object, matching its other-`type` callers. When `type` is `feel-no-pain`, `modifier` carries `threshold` (the FNP save target) and optionally `scope` ∈ {`all`, `mortal`}; an absent scope defaults to `all` (fires on every unsaved wound). The two scopes compose independently against the mortal-wound stream. Tag effects (`terrain-area-tag`, `objective-tag`, `unit-tag`) set a transient marker on the named subject; `modifier` carries `tag` (string) and optionally `source` ('this-action'|'destroying-unit') and `clears_on` ('turn-rollover'|'never'). `target` for tag effects names the kind of entity the tag is applied to ('unit', 'self') — a placeholder, since the marker target is the objective/terrain/unit specified by the action context, not a combat target.",
       "allOf": [
         {}
       ]

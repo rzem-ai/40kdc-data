@@ -338,12 +338,29 @@ def iter_attribution_cases(corpus: Path) -> Iterator[Case]:
         )
 
 
+def iter_scoring_translation_cases(corpus: Path) -> Iterator[Case]:
+    path = corpus / "scoring-translation" / "cases.json"
+    cases = json.loads(path.read_text())
+    for entry in cases:
+        # The op echoes the awards verbatim; the goldens encode the expected
+        # strings, but parity only needs the two impls to agree, so we compare
+        # their responses structurally (exact string equality, no tolerance).
+        yield Case(
+            area="scoring-translation",
+            case_id=f"scoring-translation/{entry['cardId']}",
+            op="translate_scoring",
+            args={"cardId": entry["cardId"]},
+            compare_mode="struct",
+        )
+
+
 AREA_ITERATORS: dict[str, Any] = {
     "normalize": iter_normalize_cases,
     "roster": iter_roster_cases,
     "cruncher": iter_cruncher_cases,
     "linked-api": iter_linked_api_cases,
     "attribution": iter_attribution_cases,
+    "scoring-translation": iter_scoring_translation_cases,
 }
 
 
@@ -463,6 +480,7 @@ def run_corpus(
         "cruncher": ["crunch"],
         "linked-api": ["linked_query"],
         "attribution": ["attribution"],
+        "scoring-translation": ["translate_scoring"],
     }
     probes: set[str] = set()
     for a in areas:

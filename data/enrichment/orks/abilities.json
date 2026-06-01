@@ -28,7 +28,8 @@
       "duration": "one-use"
     },
     "unit_ids": [
-      "weirdboy"
+      "weirdboy",
+      "biged-bossbunka"
     ],
     "ability_type": "core",
     "behavior": "reactive"
@@ -261,7 +262,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "deffkoptas"
+      "deffkoptas",
+      "deffkoptas-with-big-shootas"
     ],
     "ability_type": "core",
     "behavior": "activated"
@@ -287,7 +289,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "deffkoptas"
+      "deffkoptas",
+      "deffkoptas-with-big-shootas"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -917,7 +920,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "battlewagon"
+      "battlewagon",
+      "biged-bossbunka"
     ],
     "ability_type": "core",
     "behavior": "passive"
@@ -2975,7 +2979,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "burna-boyz"
+      "burna-boyz",
+      "skorchas"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -3853,7 +3858,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "wartrakks"
+      "wartrakks",
+      "skorchas"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -3968,6 +3974,97 @@
     },
     "faction_id": "orks",
     "ability_type": "faction",
-    "behavior": "activated"
+    "behavior": "activated",
+    "unit_ids": [
+      "biged-bossbunka",
+      "deffkoptas-with-big-shootas",
+      "skorchas"
+    ]
+  },
+  {
+    "ability_id": "ramshackle-cover",
+    "name": "Ramshackle Cover",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "stat-modifier",
+      "target": "unit",
+      "modifier": {}
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "permanent"
+    },
+    "unit_ids": [
+      "biged-bossbunka"
+    ],
+    "ability_type": "unit",
+    "behavior": "passive"
+  },
+  {
+    "ability_id": "shoutin-pole-aura",
+    "name": "Shoutin’ Pole (Aura)",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "conditional",
+      "condition": {
+        "type": "target-has-keyword",
+        "parameters": {
+          "keyword": "orks"
+        }
+      },
+      "effect": {
+        "type": "stat-modifier",
+        "target": "friendly-within-aura",
+        "modifier": {
+          "operation": "add",
+          "stat": "Ld",
+          "value": 1
+        }
+      }
+    },
+    "scope": {
+      "range": "aura-6",
+      "duration": "battle"
+    },
+    "unit_ids": [
+      "biged-bossbunka"
+    ],
+    "ability_type": "unit",
+    "behavior": "passive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
+  },
+  {
+    "ability_id": "fortification",
+    "name": "Fortification",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "stat-modifier",
+      "target": "unit",
+      "modifier": {}
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "permanent"
+    },
+    "unit_ids": [
+      "biged-bossbunka"
+    ],
+    "ability_type": "unit",
+    "behavior": "passive"
   }
 ]

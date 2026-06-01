@@ -1866,7 +1866,15 @@
       "gaze-of-death",
       "scythe-of-the-nightbringer"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deadly-demise-d6",
+      "deep-strike",
+      "drain-life",
+      "enslaved-star-god",
+      "feel-no-pain-5",
+      "necrodermis",
+      "reanimation-protocols"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -2385,7 +2393,15 @@
       "spear-of-the-void-dragon",
       "voltaic-storm"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deadly-demise-d6",
+      "deep-strike",
+      "enslaved-star-god",
+      "feel-no-pain-5",
+      "matter-absorption",
+      "necrodermis",
+      "reanimation-protocols"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -2438,7 +2454,16 @@
       "cosmic-insanity",
       "golden-fists"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deadly-demise-d6",
+      "deep-strike",
+      "enslaved-star-god",
+      "feel-no-pain-5",
+      "grand-illusion",
+      "necrodermis",
+      "reanimation-protocols",
+      "stealth"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -2713,7 +2738,16 @@
       "crackling-tendrils",
       "seismic-assault"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "ctan-shard",
+      "deadly-demise-d6",
+      "deep-strike",
+      "enslaved-star-god",
+      "feel-no-pain-5",
+      "necrodermis",
+      "reanimation-protocols",
+      "transdimensional-displacement"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"

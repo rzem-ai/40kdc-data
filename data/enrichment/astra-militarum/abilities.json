@@ -28,7 +28,10 @@
       "duration": "one-use"
     },
     "unit_ids": [
-      "scout-sentinels"
+      "scout-sentinels",
+      "hydra-platform",
+      "manticore-platform",
+      "earthshaker-platform"
     ],
     "ability_type": "core",
     "behavior": "reactive"
@@ -119,7 +122,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "cadian-castellan"
+      "cadian-castellan",
+      "death-rider-commissar"
     ],
     "ability_type": "core",
     "behavior": "passive"
@@ -209,7 +213,9 @@
       "duration": "battle"
     },
     "unit_ids": [
-      "cadian-castellan"
+      "cadian-castellan",
+      "gaunts-ghosts",
+      "death-rider-commissar"
     ],
     "ability_type": "unit",
     "behavior": "passive",
@@ -262,7 +268,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "nork-deddog"
+      "nork-deddog",
+      "ogryn-bodyguard"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -314,7 +321,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "nork-deddog"
+      "nork-deddog",
+      "ogryn-bodyguard"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -778,7 +786,8 @@
       "duration": "one-use"
     },
     "unit_ids": [
-      "ratlings"
+      "ratlings",
+      "gaunts-ghosts"
     ],
     "ability_type": "core",
     "behavior": "activated"
@@ -806,7 +815,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "ratlings"
+      "ratlings",
+      "gaunts-ghosts"
     ],
     "ability_type": "core",
     "behavior": "passive"
@@ -932,7 +942,10 @@
       "duration": "one-use"
     },
     "unit_ids": [
-      "leman-russ-battle-tank"
+      "leman-russ-battle-tank",
+      "storm-chimera",
+      "aquila-lander",
+      "griffon-mortar-carrier"
     ],
     "ability_type": "core",
     "behavior": "reactive"
@@ -993,7 +1006,10 @@
       "duration": "one-use"
     },
     "unit_ids": [
-      "stormsword"
+      "stormsword",
+      "dominus-armoured-siege-bombard",
+      "gorgon-heavy-transport",
+      "arkurian-stormhammer"
     ],
     "ability_type": "core",
     "behavior": "reactive"
@@ -1098,7 +1114,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "field-ordnance-battery"
+      "field-ordnance-battery",
+      "heavy-mortar-team"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -1329,7 +1346,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "bullgryn-squad"
+      "bullgryn-squad",
+      "ogryn-bodyguard"
     ],
     "ability_type": "core",
     "behavior": "passive"
@@ -1383,7 +1401,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "bullgryn-squad"
+      "bullgryn-squad",
+      "ogryn-bodyguard"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -1409,7 +1428,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "bullgryn-squad"
+      "bullgryn-squad",
+      "ogryn-bodyguard"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -1701,7 +1721,10 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "aegis-defence-line"
+      "aegis-defence-line",
+      "hydra-platform",
+      "manticore-platform",
+      "earthshaker-platform"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -1765,7 +1788,10 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "aegis-defence-line"
+      "aegis-defence-line",
+      "hydra-platform",
+      "manticore-platform",
+      "earthshaker-platform"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -1845,7 +1871,8 @@
       "duration": "one-use"
     },
     "unit_ids": [
-      "commissar"
+      "commissar",
+      "death-rider-commissar"
     ],
     "ability_type": "unit",
     "behavior": "activated"
@@ -1860,20 +1887,33 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "type": "unit-has-keyword",
+        "parameters": {
+          "keyword": "OFFICER"
+        }
+      },
+      "effect": {
+        "type": "leadership-modifier",
+        "target": "unit",
+        "modifier": {
+          "test": "battle-shock",
+          "operation": "re-roll"
+        }
+      }
     },
     "scope": {
       "range": "unit",
       "duration": "permanent"
     },
     "unit_ids": [
-      "commissar"
+      "commissar",
+      "death-rider-commissar"
     ],
     "ability_type": "unit",
     "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "deathstrike-missile",
@@ -2117,7 +2157,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "stormlord"
+      "stormlord",
+      "gorgon-heavy-transport"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -2693,7 +2734,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "wyvern"
+      "wyvern",
+      "griffon-mortar-carrier"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -2906,7 +2948,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "sly-marbo"
+      "sly-marbo",
+      "gaunts-ghosts"
     ],
     "ability_type": "core",
     "behavior": "passive"
@@ -3255,20 +3298,53 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "operator": "and",
+        "operands": [
+          {
+            "type": "units-destroyed",
+            "parameters": {
+              "side": "friendly",
+              "count_min": 1,
+              "window": "battle"
+            }
+          },
+          {
+            "type": "target-has-keyword",
+            "parameters": {
+              "keyword": "VEHICLE"
+            }
+          },
+          {
+            "type": "target-has-keyword",
+            "parameters": {
+              "keyword": "ASTRA MILITARUM"
+            }
+          }
+        ]
+      },
+      "effect": {
+        "type": "stat-modifier",
+        "target": "self",
+        "modifier": {
+          "stat": "A",
+          "operation": "set",
+          "value": 6,
+          "weapon_name": "Enginseer axe"
+        }
+      }
     },
     "scope": {
-      "range": "unit",
-      "duration": "permanent"
+      "range": "aura-12",
+      "duration": "battle"
     },
     "unit_ids": [
       "tech-priest-enginseer"
     ],
     "ability_type": "unit",
-    "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "behavior": "reactive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "firing-deck-6",
@@ -3387,40 +3463,14 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "conditional",
-      "condition": {
-        "type": "timing-is",
-        "parameters": {
-          "timing": "on-destruction"
-        }
-      },
-      "effect": {
-        "type": "dice-gated",
-        "dice": "D6",
-        "threshold": 2,
-        "comparison": "gte",
-        "on_success": {
-          "type": "sequence",
-          "steps": [
-            {
-              "type": "ability-grant",
-              "target": "self",
-              "modifier": {
-                "grant_type": "prevent-removal-from-play"
-              }
-            },
-            {
-              "type": "shoot-on-death",
-              "target": "self",
-              "modifier": {}
-            },
-            {
-              "type": "model-destruction",
-              "target": "self",
-              "modifier": {}
-            }
-          ]
-        }
+      "type": "dice-gated",
+      "dice": "D6",
+      "threshold": 2,
+      "comparison": "gte",
+      "on_success": {
+        "type": "shoot-on-death",
+        "target": "self",
+        "modifier": {}
       }
     },
     "scope": {
@@ -3457,7 +3507,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "valkyrie"
+      "valkyrie",
+      "aquila-lander"
     ],
     "ability_type": "core",
     "behavior": "activated"
@@ -3614,7 +3665,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "manticore"
+      "manticore",
+      "manticore-platform"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -3641,7 +3693,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "chimera"
+      "chimera",
+      "storm-chimera"
     ],
     "ability_type": "core",
     "behavior": "passive"
@@ -3667,7 +3720,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "chimera"
+      "chimera",
+      "storm-chimera"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -3811,7 +3865,8 @@
       "duration": "turn"
     },
     "unit_ids": [
-      "basilisk"
+      "basilisk",
+      "earthshaker-platform"
     ],
     "ability_type": "unit",
     "behavior": "reactive",
@@ -3847,7 +3902,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "baneblade"
+      "baneblade",
+      "arkurian-stormhammer"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -3944,7 +4000,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "hydra"
+      "hydra",
+      "hydra-platform"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -4062,7 +4119,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "arvus-lighter"
+      "arvus-lighter",
+      "aquila-lander"
     ],
     "ability_type": "unit",
     "behavior": "passive",
@@ -4370,7 +4428,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "armageddon-pattern-medusa"
+      "armageddon-pattern-medusa",
+      "dominus-armoured-siege-bombard"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -4716,7 +4775,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "heavy-quad-launcher-team"
+      "heavy-quad-launcher-team",
+      "heavy-mortar-team"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -4794,6 +4854,117 @@
     "faction_id": "astra-militarum",
     "ability_type": "faction",
     "behavior": "activated",
-    "community_notes": "Models 3 offensive Orders as a choice: Take Aim (+1 BS), First Rank Fire (+1A on Rapid Fire), Move Move Move (+3M). Hill-climbing selects Take Aim (+1 hit) as universally best. Fix Bayonets (+1 WS) omitted as it's equivalent to Take Aim for melee phase."
+    "community_notes": "Models 3 offensive Orders as a choice: Take Aim (+1 BS), First Rank Fire (+1A on Rapid Fire), Move Move Move (+3M). Hill-climbing selects Take Aim (+1 hit) as universally best. Fix Bayonets (+1 WS) omitted as it's equivalent to Take Aim for melee phase.",
+    "unit_ids": [
+      "gaunts-ghosts",
+      "death-rider-commissar"
+    ]
+  },
+  {
+    "ability_id": "fights-first",
+    "name": "Fights First",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "stat-modifier",
+      "target": "unit",
+      "modifier": {}
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "permanent"
+    },
+    "unit_ids": [
+      "gaunts-ghosts"
+    ],
+    "ability_type": "unit",
+    "behavior": "passive"
+  },
+  {
+    "ability_id": "tanith-camo-cloaks",
+    "name": "Tanith Camo-cloaks",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "keyword-grant",
+      "target": "unit",
+      "modifier": {
+        "keywords": [
+          "benefit-of-cover"
+        ]
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "battle"
+    },
+    "unit_ids": [
+      "gaunts-ghosts"
+    ],
+    "ability_type": "unit",
+    "behavior": "passive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
+  },
+  {
+    "ability_id": "covert-stealth-team",
+    "name": "Covert Stealth Team",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "conditional",
+      "condition": {
+        "operator": "and",
+        "operands": [
+          {
+            "type": "timing-is",
+            "parameters": {
+              "timing": "end-of-turn"
+            }
+          },
+          {
+            "type": "player-turn-is",
+            "parameters": {
+              "turn": "opponent"
+            }
+          },
+          {
+            "operator": "not",
+            "operands": [
+              {
+                "type": "engagement-state",
+                "parameters": {}
+              }
+            ]
+          }
+        ]
+      },
+      "effect": {
+        "type": "deep-strike",
+        "target": "unit",
+        "modifier": {}
+      }
+    },
+    "scope": {
+      "range": "self",
+      "duration": "turn"
+    },
+    "unit_ids": [
+      "gaunts-ghosts"
+    ],
+    "ability_type": "unit",
+    "behavior": "reactive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   }
 ]

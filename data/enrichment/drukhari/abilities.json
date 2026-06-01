@@ -411,7 +411,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "hellions"
+      "hellions",
+      "reaper"
     ],
     "ability_type": "core",
     "behavior": "activated"
@@ -636,20 +637,61 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "type": "phase-is",
+        "parameters": {
+          "phase": "movement"
+        }
+      },
+      "effect": {
+        "type": "sequence",
+        "steps": [
+          {
+            "type": "resource-spend",
+            "target": "unit",
+            "modifier": {
+              "pool_id": "pain-token-pool",
+              "amount": 1
+            }
+          },
+          {
+            "type": "movement-modifier",
+            "target": "unit",
+            "modifier": {
+              "move_type": "deep-strike-min-distance",
+              "value": 6
+            }
+          },
+          {
+            "type": "conditional",
+            "condition": {
+              "type": "opponent-unit-within-range",
+              "parameters": {
+                "range": 9
+              }
+            },
+            "effect": {
+              "type": "attack-restriction",
+              "target": "unit",
+              "modifier": {
+                "restriction": "no-charge"
+              }
+            }
+          }
+        ]
+      }
     },
     "scope": {
       "range": "unit",
-      "duration": "permanent"
+      "duration": "turn"
     },
     "unit_ids": [
       "scourges-with-shardcarbines"
     ],
     "ability_type": "unit",
-    "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "behavior": "activated",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "murderous-crossfire",
@@ -809,7 +851,8 @@
       "duration": "one-use"
     },
     "unit_ids": [
-      "raider"
+      "raider",
+      "reaper"
     ],
     "ability_type": "core",
     "behavior": "reactive"
@@ -887,20 +930,31 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "type": "phase-is",
+        "parameters": {
+          "phase": "command"
+        }
+      },
+      "effect": {
+        "type": "ability-grant",
+        "target": "self",
+        "modifier": {
+          "grant_type": "vanguard-selection"
+        }
+      }
     },
     "scope": {
-      "range": "unit",
-      "duration": "permanent"
+      "range": "self",
+      "duration": "battle-round"
     },
     "unit_ids": [
       "raider"
     ],
     "ability_type": "unit",
     "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "fights-first",
@@ -1214,12 +1268,17 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "keyword-grant",
+      "target": "self",
+      "modifier": {
+        "keywords": [
+          "twin-linked"
+        ],
+        "condition": "equipped_with_two_macro_scalpels"
+      }
     },
     "scope": {
-      "range": "unit",
+      "range": "self",
       "duration": "permanent"
     },
     "unit_ids": [
@@ -1227,7 +1286,7 @@
     ],
     "ability_type": "unit",
     "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "torture-device",
@@ -1239,20 +1298,34 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "type": "units-destroyed",
+        "parameters": {
+          "side": "enemy",
+          "window": "this-attack",
+          "count_min": 1
+        }
+      },
+      "effect": {
+        "type": "resource-gain",
+        "target": "self",
+        "modifier": {
+          "pool_id": "pain-token-pool",
+          "amount": 1
+        }
+      }
     },
     "scope": {
       "range": "unit",
-      "duration": "permanent"
+      "duration": "battle"
     },
     "unit_ids": [
       "talos"
     ],
     "ability_type": "unit",
-    "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "behavior": "reactive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "experimental-enhancements",
@@ -1383,20 +1456,49 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "operator": "and",
+        "operands": [
+          {
+            "type": "phase-is",
+            "parameters": {
+              "phase": "command"
+            }
+          },
+          {
+            "type": "player-turn-is",
+            "parameters": {
+              "turn": "your"
+            }
+          }
+        ]
+      },
+      "effect": {
+        "type": "dice-gated",
+        "dice": "D6",
+        "threshold": 4,
+        "comparison": "gte",
+        "on_success": {
+          "type": "resource-gain",
+          "target": "self",
+          "modifier": {
+            "pool_id": "pain-token-pool",
+            "amount": 1
+          }
+        }
+      }
     },
     "scope": {
-      "range": "unit",
-      "duration": "permanent"
+      "range": "self",
+      "duration": "turn"
     },
     "unit_ids": [
       "haemonculus"
     ],
     "ability_type": "unit",
-    "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "behavior": "reactive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "hatred-eternal",
@@ -1713,7 +1815,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "ravager"
+      "ravager",
+      "reaper"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -2270,20 +2373,72 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "operator": "and",
+        "operands": [
+          {
+            "type": "timing-is",
+            "parameters": {
+              "timing": "end-of-phase"
+            }
+          },
+          {
+            "type": "phase-is",
+            "parameters": {
+              "phase": "fight"
+            }
+          },
+          {
+            "type": "player-turn-is",
+            "parameters": {
+              "turn": "opponent"
+            }
+          },
+          {
+            "operator": "not",
+            "operands": [
+              {
+                "type": "engagement-state",
+                "parameters": {
+                  "state": "engaged"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "effect": {
+        "type": "sequence",
+        "steps": [
+          {
+            "type": "resource-spend",
+            "target": "self",
+            "modifier": {
+              "pool_id": "pain-token-pool",
+              "amount": 1
+            }
+          },
+          {
+            "type": "movement-modifier",
+            "target": "self",
+            "modifier": {
+              "move_type": "into-strategic-reserves"
+            }
+          }
+        ]
+      }
     },
     "scope": {
-      "range": "unit",
-      "duration": "permanent"
+      "range": "self",
+      "duration": "turn"
     },
     "unit_ids": [
       "mandrakes"
     ],
     "ability_type": "unit",
-    "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "behavior": "reactive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "shade-weavers",
@@ -2398,7 +2553,10 @@
     },
     "faction_id": "drukhari",
     "ability_type": "faction",
-    "behavior": "passive"
+    "behavior": "passive",
+    "unit_ids": [
+      "reaper"
+    ]
   },
   {
     "ability_id": "corsairs-and-travelling-players",
@@ -2422,6 +2580,7 @@
     },
     "faction_id": "drukhari",
     "ability_type": "faction",
-    "behavior": "passive"
+    "behavior": "passive",
+    "unit_ids": []
   }
 ]

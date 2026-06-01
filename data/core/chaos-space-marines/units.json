@@ -3746,7 +3746,11 @@
       "brutal-weapons",
       "hideous-mutations"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "dark-pacts",
+      "fearsome-aura",
+      "feel-no-pain-5"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"

@@ -1071,7 +1071,14 @@
       "big-shoota",
       "gaze-of-gork"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deadly-demise-d3",
+      "firing-deck-11",
+      "fortification",
+      "ramshackle-cover",
+      "shoutin-pole-aura",
+      "waaagh"
+    ],
     "transport_capacity": {
       "capacity": 11
     },
@@ -3401,7 +3408,11 @@
       "spinnin-blades",
       "twin-big-shoota"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deep-strike",
+      "deff-from-above",
+      "waaagh"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -3685,7 +3696,11 @@
       "skorcha",
       "spiked-wheel"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "pyromaniaks",
+      "speed-freeks",
+      "waaagh"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"

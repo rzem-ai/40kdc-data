@@ -132,37 +132,9 @@ export type ConditionNode = SimpleCondition | CompoundCondition;
  */
 export type AbilityCondition1 = SimpleCondition | CompoundCondition;
 /**
- * A terrain piece's 2D footprint, relative to the piece's `position`. Axis-aligned rectangle, right triangle (right angle at the local origin, legs along +x/+y), or an explicit polygon. GW's standard templates (e.g. 7"×11.5" rectangles, 8"×11.5" right triangles, 6"×4" rectangles, 10"×2.5" and 6"×2" lines) are all expressible here; lines are thin rectangles.
- *
- * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
- * via the `definition` "footprint".
+ * Effect applied when the action completes (e.g. terrain-area-tag, objective-tag, or unit-tag to mark transient state).
  */
-export type Footprint =
-  | {
-      type: "rectangle";
-      width: number;
-      height: number;
-    }
-  | {
-      type: "right-triangle";
-      width: number;
-      height: number;
-    }
-  | {
-      type: "polygon";
-      /**
-       * @minItems 3
-       */
-      points: [Vec2, Vec2, Vec2, ...Vec2[]];
-    };
-/**
- * An 11e terrain-area keyword. Confirmed launch set; extend as further keywords publish on dataslate.
- *
- * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
- * via the `definition` "terrain-area-keyword".
- */
-export type TerrainAreaKeyword = "obscuring" | "hidden" | "plunging-fire";
-export type AbilityEffect1 =
+export type AbilityEffect =
   | SingleEffect
   | ChoiceEffect
   | SequenceEffect
@@ -203,6 +175,8 @@ export type SingleEffect = unknown & {
     | "resource-spend"
     | "charge-roll-modifier"
     | "terrain-area-tag"
+    | "objective-tag"
+    | "unit-tag"
     | "bs-modifier"
     | "engagement-passthrough";
   target:
@@ -250,6 +224,8 @@ export type SingleEffect = unknown & {
     | "resource-spend"
     | "charge-roll-modifier"
     | "terrain-area-tag"
+    | "objective-tag"
+    | "unit-tag"
     | "bs-modifier"
     | "engagement-passthrough";
   target:
@@ -297,6 +273,8 @@ export type SingleEffect = unknown & {
     | "resource-spend"
     | "charge-roll-modifier"
     | "terrain-area-tag"
+    | "objective-tag"
+    | "unit-tag"
     | "bs-modifier"
     | "engagement-passthrough";
   target:
@@ -344,6 +322,8 @@ export type SingleEffect = unknown & {
     | "resource-spend"
     | "charge-roll-modifier"
     | "terrain-area-tag"
+    | "objective-tag"
+    | "unit-tag"
     | "bs-modifier"
     | "engagement-passthrough";
   target:
@@ -391,6 +371,8 @@ export type SingleEffect = unknown & {
     | "resource-spend"
     | "charge-roll-modifier"
     | "terrain-area-tag"
+    | "objective-tag"
+    | "unit-tag"
     | "bs-modifier"
     | "engagement-passthrough";
   target:
@@ -421,6 +403,44 @@ export type EffectNode =
   | ConditionalEffect
   | DicePoolAllocationEffect;
 export type AbilityCondition2 = SimpleCondition | CompoundCondition;
+/**
+ * A terrain piece's 2D footprint, relative to the piece's `position`. Axis-aligned rectangle, right triangle (right angle at the local origin, legs along +x/+y), or an explicit polygon. GW's standard templates (e.g. 7"×11.5" rectangles, 8"×11.5" right triangles, 6"×4" rectangles, 10"×2.5" and 6"×2" lines) are all expressible here; lines are thin rectangles.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "footprint".
+ */
+export type Footprint =
+  | {
+      type: "rectangle";
+      width: number;
+      height: number;
+    }
+  | {
+      type: "right-triangle";
+      width: number;
+      height: number;
+    }
+  | {
+      type: "polygon";
+      /**
+       * @minItems 3
+       */
+      points: [Vec2, Vec2, Vec2, ...Vec2[]];
+    };
+/**
+ * An 11e terrain-area keyword. Confirmed launch set; extend as further keywords publish on dataslate.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "terrain-area-keyword".
+ */
+export type TerrainAreaKeyword = "obscuring" | "hidden" | "plunging-fire";
+export type AbilityEffect1 =
+  | unknown
+  | ChoiceEffect
+  | SequenceEffect
+  | DiceGatedEffect
+  | ConditionalEffect
+  | DicePoolAllocationEffect;
 /**
  * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
  * via the `definition` "condition".
@@ -750,24 +770,58 @@ export interface SecondaryCard {
     condition?: ArmyCompositionPredicate1;
   };
   /**
-   * Optional player action the card enables.
+   * Optional player actions the card enables. Most cards have a single action; a few (e.g. Observe Enemy, with separate Baited-removal and Spotted actions) have two distinct actions on the same card.
+   *
+   * @minItems 1
    */
-  action?: {
-    /**
-     * The five official game phases. Unchanged between 10th and 11th edition — 11e reorders Pile In timing within the Fight phase but adds no top-level phase.
-     */
-    starts?: "command" | "movement" | "shooting" | "charge" | "fight";
-    player_turn?: PlayerTurn;
-    units?: AbilityCondition;
-    /**
-     * Maximum number of times the action may be performed.
-     */
-    use_limit?: number;
-    completes?: AbilityCondition1;
-    effect?: unknown;
-  };
+  actions?: [
+    {
+      /**
+       * Optional kebab-case identifier used to reference this action from `action-completed` conditions in `awards[].when`.
+       */
+      action_id?: string;
+      /**
+       * The five official game phases. Unchanged between 10th and 11th edition — 11e reorders Pile In timing within the Fight phase but adds no top-level phase.
+       */
+      starts?: "command" | "movement" | "shooting" | "charge" | "fight";
+      player_turn?: PlayerTurn;
+      units?: AbilityCondition;
+      /**
+       * Maximum number of times the action may be performed (per turn unless `use_limit_scope` says otherwise).
+       */
+      use_limit?: number;
+      /**
+       * Whether `use_limit` is enforced per turn or once per game (e.g. Recover the Relics / Find and Deny 'Overwhelming Force' is once per game).
+       */
+      use_limit_scope?: "per-turn" | "per-game";
+      completes?: AbilityCondition1;
+      effect?: AbilityEffect;
+    },
+    ...{
+      /**
+       * Optional kebab-case identifier used to reference this action from `action-completed` conditions in `awards[].when`.
+       */
+      action_id?: string;
+      /**
+       * The five official game phases. Unchanged between 10th and 11th edition — 11e reorders Pile In timing within the Fight phase but adds no top-level phase.
+       */
+      starts?: "command" | "movement" | "shooting" | "charge" | "fight";
+      player_turn?: PlayerTurn;
+      units?: AbilityCondition;
+      /**
+       * Maximum number of times the action may be performed (per turn unless `use_limit_scope` says otherwise).
+       */
+      use_limit?: number;
+      /**
+       * Whether `use_limit` is enforced per turn or once per game (e.g. Recover the Relics / Find and Deny 'Overwhelming Force' is once per game).
+       */
+      use_limit_scope?: "per-turn" | "per-game";
+      completes?: AbilityCondition1;
+      effect?: AbilityEffect;
+    }[]
+  ];
   /**
-   * VP-award blocks: each scores when `trigger` fires and the optional `when` condition holds. An award scores either a flat `vp` or a count-scaled `vp_per` (VP per instance of the thing named by `per`). Awards accrue independently and sum; a card's '+ ... CUMULATIVE' rows are modelled as separate awards flagged `cumulative` for faithful round-trip.
+   * VP-award blocks: each scores when `trigger` fires and the optional `when` condition holds. An award scores either a flat `vp` or a count-scaled `vp_per` (VP per instance of the thing named by `per`). Awards accrue independently and sum; a card's '+ ... CUMULATIVE' rows are modelled as separate awards flagged `cumulative` for faithful round-trip. Awards sharing the same `exclusive_group` value within a card resolve as the highest-scoring single award fires (the card's literal 'OR' rows between tier breakpoints, e.g. Record-Breaking Mission's 3-Fronts vs 4-Fronts).
    *
    * @minItems 1
    */
@@ -851,7 +905,14 @@ export interface SimpleCondition {
     | "disposition-matches"
     | "units-destroyed"
     | "units-destroyed-comparison"
-    | "objective-majority";
+    | "objective-majority"
+    | "action-completed"
+    | "objective-has-tag"
+    | "unit-has-tag"
+    | "terrain-has-tag"
+    | "new-objective-controlled"
+    | "engagement-fronts"
+    | "destroyed-while-on-objective";
   parameters?: {
     [k: string]: unknown;
   };
@@ -868,6 +929,99 @@ export interface CompoundCondition {
    * @minItems 1
    */
   operands: [ConditionNode, ...ConditionNode[]];
+  [k: string]: unknown;
+}
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "choice-effect".
+ */
+export interface ChoiceEffect {
+  type: "choice";
+  /**
+   * @minItems 2
+   */
+  options: [EffectNode, EffectNode, ...EffectNode[]];
+  choice_label?: string;
+  [k: string]: unknown;
+}
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "sequence-effect".
+ */
+export interface SequenceEffect {
+  type: "sequence";
+  /**
+   * @minItems 1
+   */
+  steps: [EffectNode, ...EffectNode[]];
+  [k: string]: unknown;
+}
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "dice-gated-effect".
+ */
+export interface DiceGatedEffect {
+  type: "dice-gated";
+  /**
+   * Dice expression, e.g. 'D6', '2D6'
+   */
+  dice: string;
+  /**
+   * Fixed threshold or model characteristic to compare against
+   */
+  threshold: number | ("leadership" | "toughness" | "save");
+  comparison?: "gte" | "lte" | "gt" | "lt" | "eq";
+  on_success?: EffectNode | null;
+  on_fail?: EffectNode | null;
+  [k: string]: unknown;
+}
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "conditional-effect".
+ */
+export interface ConditionalEffect {
+  type: "conditional";
+  condition: AbilityCondition2;
+  effect: EffectNode;
+  [k: string]: unknown;
+}
+/**
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "dice-pool-allocation-effect".
+ */
+export interface DicePoolAllocationEffect {
+  type: "dice-pool-allocation";
+  pool: {
+    count: number;
+    die: string;
+    [k: string]: unknown;
+  };
+  max_activations: number;
+  /**
+   * @minItems 1
+   */
+  options: [
+    {
+      name: string;
+      requirement: {
+        type: "pair" | "triple" | "single" | "run";
+        min_value: number;
+        [k: string]: unknown;
+      };
+      effect: EffectNode;
+      [k: string]: unknown;
+    },
+    ...{
+      name: string;
+      requirement: {
+        type: "pair" | "triple" | "single" | "run";
+        min_value: number;
+        [k: string]: unknown;
+      };
+      effect: EffectNode;
+      [k: string]: unknown;
+    }[]
+  ];
   [k: string]: unknown;
 }
 /**
@@ -1150,104 +1304,8 @@ export interface WeaponKeyword {
         "value" | "target_keyword" | "threshold",
         "value" | "target_keyword" | "threshold"
       ];
-  /**
-   * Mechanical effect of this keyword. Null when the behaviour is faction-specific flavour not yet expressible in the DSL — engines treat such references as no-op buffs and may surface them as 'cannot auto-apply'.
-   */
-  effect: AbilityEffect1 | null;
+  effect: unknown;
   game_version: GameVersionReference;
-}
-/**
- * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
- * via the `definition` "choice-effect".
- */
-export interface ChoiceEffect {
-  type: "choice";
-  /**
-   * @minItems 2
-   */
-  options: [EffectNode, EffectNode, ...EffectNode[]];
-  choice_label?: string;
-  [k: string]: unknown;
-}
-/**
- * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
- * via the `definition` "sequence-effect".
- */
-export interface SequenceEffect {
-  type: "sequence";
-  /**
-   * @minItems 1
-   */
-  steps: [EffectNode, ...EffectNode[]];
-  [k: string]: unknown;
-}
-/**
- * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
- * via the `definition` "dice-gated-effect".
- */
-export interface DiceGatedEffect {
-  type: "dice-gated";
-  /**
-   * Dice expression, e.g. 'D6', '2D6'
-   */
-  dice: string;
-  /**
-   * Fixed threshold or model characteristic to compare against
-   */
-  threshold: number | ("leadership" | "toughness" | "save");
-  comparison?: "gte" | "lte" | "gt" | "lt" | "eq";
-  on_success?: EffectNode | null;
-  on_fail?: EffectNode | null;
-  [k: string]: unknown;
-}
-/**
- * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
- * via the `definition` "conditional-effect".
- */
-export interface ConditionalEffect {
-  type: "conditional";
-  condition: AbilityCondition2;
-  effect: EffectNode;
-  [k: string]: unknown;
-}
-/**
- * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
- * via the `definition` "dice-pool-allocation-effect".
- */
-export interface DicePoolAllocationEffect {
-  type: "dice-pool-allocation";
-  pool: {
-    count: number;
-    die: string;
-    [k: string]: unknown;
-  };
-  max_activations: number;
-  /**
-   * @minItems 1
-   */
-  options: [
-    {
-      name: string;
-      requirement: {
-        type: "pair" | "triple" | "single" | "run";
-        min_value: number;
-        [k: string]: unknown;
-      };
-      effect: EffectNode;
-      [k: string]: unknown;
-    },
-    ...{
-      name: string;
-      requirement: {
-        type: "pair" | "triple" | "single" | "run";
-        min_value: number;
-        [k: string]: unknown;
-      };
-      effect: EffectNode;
-      [k: string]: unknown;
-    }[]
-  ];
-  [k: string]: unknown;
 }
 /**
  * A weapon entry with one or more stat profiles (e.g., standard and overcharge modes).

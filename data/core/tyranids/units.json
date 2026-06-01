@@ -422,7 +422,13 @@
     "weapon_ids": [
       "leapers-talons"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "fights-first",
+      "infiltrators",
+      "pouncing-leap",
+      "stealth",
+      "synapse"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -1652,7 +1658,12 @@
       "max": 2
     },
     "weapon_ids": [],
-    "ability_ids": [],
+    "ability_ids": [
+      "bio-minefield",
+      "deep-strike",
+      "floating-death",
+      "synapse"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"

@@ -4,14 +4,16 @@
     "name": "Good Full Secondary",
     "card_type": "secondary",
     "subtype": "tactical",
-    "action": {
-      "starts": "shooting",
-      "player_turn": "your-turn",
-      "units": { "type": "unit-has-keyword", "parameters": { "keyword": "infantry" } },
-      "use_limit": 1,
-      "completes": { "type": "within-range-of-objective" },
-      "effect": { "type": "terrain-area-tag", "target": "unit", "modifier": { "tag": "cleansed" } }
-    },
+    "actions": [
+      {
+        "starts": "shooting",
+        "player_turn": "your-turn",
+        "units": { "type": "unit-has-keyword", "parameters": { "keyword": "infantry" } },
+        "use_limit": 1,
+        "completes": { "type": "within-range-of-objective" },
+        "effect": { "type": "terrain-area-tag", "target": "unit", "modifier": { "tag": "cleansed" } }
+      }
+    ],
     "awards": [
       {
         "trigger": { "phase": "command", "player_turn": "your-turn" },

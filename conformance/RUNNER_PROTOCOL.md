@@ -7,7 +7,7 @@ This document is the protocol contract. Changes to it bump [`SPEC_VERSION`](./SP
 ## Status
 
 The protocol is implemented in TypeScript (`tools/src/runner.ts`) and Rust
-(`crates/wh40kdc/src/bin/wh40kdc-runner.rs`); both report `spec_version` 7. The
+(`crates/wh40kdc/src/bin/wh40kdc-runner.rs`); both report `spec_version` 9. The
 cross-impl differ in `tooling/parity/` drives any pair of runners against the
 corpus.
 
@@ -157,6 +157,22 @@ below which lifts and residuals collapse to zero. Response value is the array of
 `buffs` array). `BuffSource` values inside `lifts[].source` use the serde
 kind-tagged discriminated union (`"manual"` / `"ability"` / `"weapon-keyword"`
 with camelCase fields).
+
+### `translate_scoring`
+
+```json
+{"op":"translate_scoring","args":{"cardId":"death-trap"}}
+```
+
+Looks up the `secondary-card` with id `cardId` in the embedded dataset and
+humanizes its scoring `awards` into plain English. Response value is
+`{"awards": ["<line>", …]}` — one ASCII string per award, **in the card's
+`awards` array order** (the order is load-bearing). Equivalent to TS
+`describeScoringCard(card)` / Rust `describe_scoring_card(&card)`. The differ
+compares the value structurally (exact string equality, no tolerance). An
+unknown `cardId` returns `error_kind: "UNKNOWN_ENTITY"`. Only `card_type:
+"primary"` cards are exercised by the corpus today (the secondary deck isn't
+revealed yet, but the op works for any card present in the dataset).
 
 ### `shutdown`
 

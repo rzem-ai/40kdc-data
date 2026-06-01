@@ -173,7 +173,11 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "triarch-praetorians"
+      "triarch-praetorians",
+      "ctan-shard-of-the-nightbringer",
+      "ctan-shard-of-the-void-dragon",
+      "ctan-shard-of-the-deceiver",
+      "transcendent-ctan"
     ],
     "ability_type": "core",
     "behavior": "activated"
@@ -1665,7 +1669,11 @@
       "duration": "one-use"
     },
     "unit_ids": [
-      "obelisk"
+      "obelisk",
+      "ctan-shard-of-the-nightbringer",
+      "ctan-shard-of-the-void-dragon",
+      "ctan-shard-of-the-deceiver",
+      "transcendent-ctan"
     ],
     "ability_type": "core",
     "behavior": "reactive"
@@ -1722,6 +1730,65 @@
     ],
     "ability_type": "core",
     "behavior": "passive"
+  },
+  {
+    "ability_id": "feel-no-pain-5",
+    "name": "Feel No Pain 5+",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "feel-no-pain",
+      "target": "unit",
+      "modifier": {
+        "threshold": 5
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "permanent"
+    },
+    "unit_ids": [
+      "ctan-shard-of-the-nightbringer",
+      "ctan-shard-of-the-void-dragon",
+      "ctan-shard-of-the-deceiver",
+      "transcendent-ctan"
+    ],
+    "ability_type": "core",
+    "behavior": "passive"
+  },
+  {
+    "ability_id": "necrodermis",
+    "name": "Necrodermis",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "damage-reduction",
+      "target": "unit",
+      "modifier": {
+        "reduction": 1
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "permanent"
+    },
+    "unit_ids": [
+      "ctan-shard-of-the-nightbringer",
+      "ctan-shard-of-the-void-dragon",
+      "ctan-shard-of-the-deceiver",
+      "transcendent-ctan"
+    ],
+    "ability_type": "unit",
+    "behavior": "passive",
+    "community_notes": "defensive: -1 to incoming damage (floored at 1 by the engine)"
   },
   {
     "ability_id": "nanoscarab-reanimation-beam-aura",
@@ -2349,7 +2416,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "flayed-ones"
+      "flayed-ones",
+      "ctan-shard-of-the-deceiver"
     ],
     "ability_type": "core",
     "behavior": "passive"
@@ -3817,9 +3885,17 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "type": "model-is-leader"
+      },
+      "effect": {
+        "type": "ability-grant",
+        "target": "unit",
+        "modifier": {
+          "ability_id": "stratagem-target-while-battle-shocked"
+        }
+      }
     },
     "scope": {
       "range": "unit",
@@ -3830,7 +3906,7 @@
     ],
     "ability_type": "unit",
     "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "counter-tactics",
@@ -3940,6 +4016,184 @@
     },
     "faction_id": "necrons",
     "ability_type": "faction",
+    "behavior": "passive",
+    "unit_ids": [
+      "ctan-shard-of-the-nightbringer",
+      "ctan-shard-of-the-void-dragon",
+      "ctan-shard-of-the-deceiver",
+      "transcendent-ctan"
+    ]
+  },
+  {
+    "ability_id": "drain-life",
+    "name": "Drain Life",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "stat-modifier",
+      "target": "unit",
+      "modifier": {}
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "permanent"
+    },
+    "unit_ids": [
+      "ctan-shard-of-the-nightbringer"
+    ],
+    "ability_type": "unit",
     "behavior": "passive"
+  },
+  {
+    "ability_id": "enslaved-star-god",
+    "name": "Enslaved Star God",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "attack-restriction",
+      "target": "self",
+      "modifier": {
+        "restriction": "cannot-be-warlord"
+      }
+    },
+    "scope": {
+      "range": "self",
+      "duration": "battle"
+    },
+    "unit_ids": [
+      "ctan-shard-of-the-nightbringer",
+      "ctan-shard-of-the-void-dragon",
+      "ctan-shard-of-the-deceiver",
+      "transcendent-ctan"
+    ],
+    "ability_type": "unit",
+    "behavior": "passive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
+  },
+  {
+    "ability_id": "matter-absorption",
+    "name": "Matter Absorption",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "stat-modifier",
+      "target": "unit",
+      "modifier": {}
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "permanent"
+    },
+    "unit_ids": [
+      "ctan-shard-of-the-void-dragon"
+    ],
+    "ability_type": "unit",
+    "behavior": "passive"
+  },
+  {
+    "ability_id": "grand-illusion",
+    "name": "Grand Illusion",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "stat-modifier",
+      "target": "unit",
+      "modifier": {}
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "permanent"
+    },
+    "unit_ids": [
+      "ctan-shard-of-the-deceiver"
+    ],
+    "ability_type": "unit",
+    "behavior": "passive"
+  },
+  {
+    "ability_id": "transdimensional-displacement",
+    "name": "Transdimensional Displacement",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "conditional",
+      "condition": {
+        "operator": "and",
+        "operands": [
+          {
+            "type": "phase-is",
+            "parameters": {
+              "phase": "movement"
+            }
+          },
+          {
+            "type": "advanced-this-turn",
+            "parameters": {}
+          }
+        ]
+      },
+      "effect": {
+        "type": "deep-strike",
+        "target": "self",
+        "modifier": {}
+      }
+    },
+    "scope": {
+      "range": "self",
+      "duration": "turn"
+    },
+    "unit_ids": [
+      "transcendent-ctan"
+    ],
+    "ability_type": "unit",
+    "behavior": "reactive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
+  },
+  {
+    "ability_id": "ctan-shard",
+    "name": "C’tan Shard",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "attack-restriction",
+      "target": "self",
+      "modifier": {
+        "restriction": "cannot-receive-enhancements"
+      }
+    },
+    "scope": {
+      "range": "self",
+      "duration": "battle"
+    },
+    "unit_ids": [
+      "transcendent-ctan"
+    ],
+    "ability_type": "unit",
+    "behavior": "passive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   }
 ]

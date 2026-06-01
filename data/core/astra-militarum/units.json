@@ -186,7 +186,16 @@
       "rawnes-lascarbine",
       "straight-silver-knife"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "covert-stealth-team",
+      "fights-first",
+      "infiltrators",
+      "lone-operative",
+      "orders",
+      "stealth",
+      "tanith-camo-cloaks",
+      "voice-of-command"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -1885,7 +1894,13 @@
       "huge-knife",
       "ripper-gun"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "brute-shield",
+      "feel-no-pain-6",
+      "loyal-protector",
+      "ogryn-bodyguard",
+      "slabshield"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -4099,7 +4114,12 @@
       "close-combat-weapons",
       "hydra-quad-autocannon"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deadly-demise-1",
+      "flak-battery",
+      "fortification",
+      "reinforced-cover"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -4141,7 +4161,12 @@
       "close-combat-weapons",
       "storm-eagle-rockets"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deadly-demise-1",
+      "fortification",
+      "furious-barrage",
+      "reinforced-cover"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -4183,7 +4208,12 @@
       "close-combat-weapons",
       "earthshaker-cannon"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deadly-demise-1",
+      "earthshaker-rounds",
+      "fortification",
+      "reinforced-cover"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -4377,7 +4407,11 @@
       "hunter-killer-missile",
       "storm-bolter"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deadly-demise-d3",
+      "firing-deck-2",
+      "mobile-command-vehicle"
+    ],
     "transport_capacity": {
       "capacity": 12
     },
@@ -4426,7 +4460,11 @@
       "heavy-bolter",
       "multi-laser"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "aerial-deployment",
+      "deadly-demise-d3",
+      "hover"
+    ],
     "transport_capacity": {
       "capacity": 12
     },
@@ -4671,7 +4709,10 @@
       "heavy-stubber",
       "storm-bolter"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deadly-demise-d3",
+      "suppression-bombardment"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -4969,7 +5010,10 @@
       "lascannon",
       "storm-bolter"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deadly-demise-d6-2",
+      "pinning-bombardment"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -5018,7 +5062,10 @@
       "landing-ramp",
       "twin-heavy-stubber"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deadly-demise-d6-2",
+      "mount-up"
+    ],
     "transport_capacity": {
       "capacity": 30
     },
@@ -5072,7 +5119,10 @@
       "stormhammer-cannon",
       "twin-battle-cannon"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deadly-demise-d6-2",
+      "rolling-fortress"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -5212,7 +5262,13 @@
       "commissars-pistol",
       "savage-claws"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "leader",
+      "orders",
+      "political-overwatch",
+      "summary-execution",
+      "voice-of-command"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
@@ -5529,7 +5585,10 @@
       "close-combat-weapons",
       "heavy-mortar"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "artillery-team",
+      "rearm-reload-fire"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"

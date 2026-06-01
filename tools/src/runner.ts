@@ -27,6 +27,7 @@ import { importRoster, tryImportRoster, REGISTERED_ADAPTERS } from "./import/imp
 import { selectAdapter } from "./import/adapter.js";
 import { createValidator } from "./schema-loader.js";
 import { attributeStages, crunch, type Buff, type EngineContext, type EngineInput } from "./cruncher/index.js";
+import { describeScoringCard } from "./translate/index.js";
 import type Ajv from "ajv";
 
 // -----------------------------------------------------------------------------
@@ -468,6 +469,19 @@ function handleAttribution(state: RunnerState, args: unknown): RunnerResponse {
   }
 }
 
+function handleTranslateScoring(state: RunnerState, args: unknown): RunnerResponse {
+  if (typeof args !== "object" || args === null) {
+    return err("INVALID_INPUT", { detail: "translate_scoring args must be an object" });
+  }
+  const a = args as { cardId?: unknown };
+  if (typeof a.cardId !== "string") {
+    return err("INVALID_INPUT", { detail: "translate_scoring.cardId must be a string" });
+  }
+  const card = getDataset(state).secondaryCards.get(a.cardId);
+  if (!card) return err("UNKNOWN_ENTITY", { kind: "secondary-card", id: a.cardId });
+  return ok({ awards: describeScoringCard(card) });
+}
+
 // -----------------------------------------------------------------------------
 // Dispatcher and per-line entry point.
 // -----------------------------------------------------------------------------
@@ -501,6 +515,8 @@ export function dispatch(state: RunnerState, req: { op: string; args?: unknown }
       return handleCrunch(state, req.args);
     case "attribution":
       return handleAttribution(state, req.args);
+    case "translate_scoring":
+      return handleTranslateScoring(state, req.args);
     case "shutdown":
       return ok(null);
     default:

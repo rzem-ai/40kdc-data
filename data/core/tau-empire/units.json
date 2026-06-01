@@ -456,7 +456,12 @@
       "smart-missile-system",
       "tri-axis-ion-cannon"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "coordinated-strike",
+      "deadly-demise-d6-3",
+      "for-the-greater-good",
+      "super-heavy-walker"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"

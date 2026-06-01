@@ -69,20 +69,33 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "type": "timing-is",
+        "parameters": {
+          "timing": "stratagem-targets-self"
+        }
+      },
+      "effect": {
+        "type": "resource-spend",
+        "target": "self",
+        "modifier": {
+          "resource": "cp",
+          "operation": "multiply",
+          "value": 2
+        }
+      }
     },
     "scope": {
-      "range": "unit",
-      "duration": "permanent"
+      "range": "self",
+      "duration": "battle"
     },
     "unit_ids": [
       "revenant-titan"
     ],
     "ability_type": "unit",
-    "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "behavior": "reactive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "revenant-jet-pack",
@@ -1185,9 +1198,23 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "type": "timing-is",
+        "parameters": {
+          "timing": "model-destroyed",
+          "model_keyword": "STORM GUARDIAN",
+          "qualifier": "last-in-unit"
+        }
+      },
+      "effect": {
+        "type": "model-destruction",
+        "target": "unit",
+        "modifier": {
+          "count": "all",
+          "model_keyword": "SERPENTS SCALE PLATFORM"
+        }
+      }
     },
     "scope": {
       "range": "unit",
@@ -1197,8 +1224,8 @@
       "storm-guardians"
     ],
     "ability_type": "unit",
-    "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "behavior": "reactive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "serpent-shield",
@@ -3332,20 +3359,30 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "type": "charged-this-turn"
+      },
+      "effect": {
+        "type": "roll-modifier",
+        "target": "attacker",
+        "modifier": {
+          "operation": "subtract",
+          "roll": "charge",
+          "value": 2
+        }
+      }
     },
     "scope": {
-      "range": "unit",
-      "duration": "permanent"
+      "range": "self",
+      "duration": "battle-round"
     },
     "unit_ids": [
       "warlock"
     ],
     "ability_type": "unit",
     "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "titanic-agility",
@@ -4121,20 +4158,40 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "type": "timing-is",
+        "parameters": {
+          "timing": "setup"
+        }
+      },
+      "effect": {
+        "type": "conditional",
+        "condition": {
+          "type": "attack-is-type",
+          "parameters": {
+            "attack_type": "ranged"
+          }
+        },
+        "effect": {
+          "type": "ability-grant",
+          "target": "self",
+          "modifier": {
+            "grant_type": "unmodified-hit-critical"
+          }
+        }
+      }
     },
     "scope": {
-      "range": "unit",
-      "duration": "permanent"
+      "range": "self",
+      "duration": "turn"
     },
     "unit_ids": [
       "baharroth"
     ],
     "ability_type": "unit",
-    "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "behavior": "reactive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "malevolent-souls",
@@ -4725,9 +4782,40 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "type": "timing-is",
+        "parameters": {
+          "timing": "post-deployment"
+        }
+      },
+      "effect": {
+        "type": "conditional",
+        "condition": {
+          "operator": "or",
+          "operands": [
+            {
+              "type": "unit-has-keyword",
+              "parameters": {
+                "keyword": "Rangers"
+              }
+            },
+            {
+              "type": "unit-has-keyword",
+              "parameters": {
+                "keyword": "Shroud Runners"
+              }
+            }
+          ]
+        },
+        "effect": {
+          "type": "ability-grant",
+          "target": "unit",
+          "modifier": {
+            "grant_type": "redeploy-to-strategic-reserves"
+          }
+        }
+      }
     },
     "scope": {
       "range": "unit",
@@ -4737,8 +4825,8 @@
       "amallyn-shadowguide"
     ],
     "ability_type": "unit",
-    "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "behavior": "activated",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "psytronome-shaper",

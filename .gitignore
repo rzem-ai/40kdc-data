@@ -28,3 +28,8 @@ rube-goldberg-output.txt
 # Python bytecode caches from running the differ locally.
 __pycache__/
 *.pyc
+
+# IP-sensitive working material (source PDFs of upstream rulebooks, extracted
+# prose, scratch notes) that must never be committed. Anything inside this
+# directory stays local.
+/_private/

@@ -73,6 +73,31 @@ export const MANUAL_BUFF_TOGGLES: ManualBuffToggle[] = [
     label: "+1 to wound (manual)",
     build: () => manualBuff("+1 to wound", { type: "wound-mod", value: 1 }),
   },
+  {
+    id: "sustained-hits",
+    label: "Sustained Hits 1",
+    build: () =>
+      manualBuff("Sustained Hits 1", {
+        type: "extra-keyword",
+        keywordRef: { keyword_id: "sustained-hits", parameters: { value: 1 } },
+      }),
+  },
+  {
+    id: "lethal-hits",
+    label: "Lethal Hits",
+    build: () =>
+      manualBuff("Lethal Hits", {
+        type: "extra-keyword",
+        keywordRef: { keyword_id: "lethal-hits" },
+      }),
+  },
+  {
+    // AP is signed against the save (negative = more piercing), so "+1 AP" in
+    // player terms is an ap-mod of -1.
+    id: "plus-one-ap",
+    label: "+1 AP",
+    build: () => manualBuff("+1 AP", { type: "ap-mod", value: -1 }),
+  },
 ];
 
 export const CONTEXT_FLAG_TOGGLES: { id: keyof ContextFlags; label: string }[] = [
@@ -86,18 +111,20 @@ class SalvoState {
   attackerRoster = $state<Roster | null>(null);
   targetRoster = $state<Roster | null>(null);
 
-  // Attacker
-  selectedUnitId = $state<string | null>(null);
-  selectedFactionId = $state<string | null>(null);
-  selectedDetachmentId = $state<string | null>(null);
+  // Attacker. Defaults boot into a representative "gold standard" melee comp:
+  // a Khorne Berzerkers squad led by Khârn (Berzerker Warband) charging the
+  // Nightbringer, with Sustained Hits 1 / Lethal Hits / +1 AP toggled on.
+  selectedUnitId = $state<string | null>("khorne-berzerkers");
+  selectedFactionId = $state<string | null>("world-eaters");
+  selectedDetachmentId = $state<string | null>("berzerker-warband");
   /**
    * Other members of the combined unit attached to {@link selectedUnitId} — a
    * leader joined to a bodyguard, or the bodyguard a selected leader joins.
    * A list so 11th's multi-member attachments need no shape change; the UI
    * writes 0 or 1 today.
    */
-  attachedUnitIds = $state<string[]>([]);
-  phase = $state<PhaseChoice>("shooting");
+  attachedUnitIds = $state<string[]>(["kharn-the-betrayer"]);
+  phase = $state<PhaseChoice>("fight");
   selectedWeaponId = $state<string | null>(null);
   selectedProfileIndex = $state<number>(0);
   modelsFiring = $state<number>(5);
@@ -111,11 +138,13 @@ class SalvoState {
    * opt-in-stratagem / opt-out-ability sets.
    */
   buffOverrides = $state<Record<string, boolean>>({});
-  manualBuffsActive = $state<Set<string>>(new Set());
+  manualBuffsActive = $state<Set<string>>(
+    new Set(["sustained-hits", "lethal-hits", "plus-one-ap"]),
+  );
   contextFlags = $state<ContextFlags>({
     attackerStationary: false,
     withinHalfRange: false,
-    attackerCharged: false,
+    attackerCharged: true,
   });
 
   /** Effective on/off for a lever, honouring any user override of its default. */
@@ -135,8 +164,8 @@ class SalvoState {
   targetMode = $state<TargetMode>("dataset");
   targetModeUserOverridden = $state<boolean>(false);
   manualTarget = $state<ManualTarget>({ ...DEFAULT_TARGET });
-  datasetTargetFactionId = $state<string | null>(null);
-  datasetTargetUnitId = $state<string | null>(null);
+  datasetTargetFactionId = $state<string | null>("necrons");
+  datasetTargetUnitId = $state<string | null>("ctan-shard-of-the-nightbringer");
   rosterTargetUnitIndex = $state<number | null>(null);
 
   /** User-initiated mode change. Records the override so a later import

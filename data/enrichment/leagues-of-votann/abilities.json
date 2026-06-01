@@ -823,20 +823,84 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "operator": "and",
+        "operands": [
+          {
+            "type": "phase-is",
+            "parameters": {
+              "phase": "shooting"
+            }
+          },
+          {
+            "type": "player-turn-is",
+            "parameters": {
+              "turn": "opponent"
+            }
+          }
+        ]
+      },
+      "effect": {
+        "type": "conditional",
+        "condition": {
+          "type": "timing-is",
+          "parameters": {
+            "timing": "after-enemy-unit-fires"
+          }
+        },
+        "effect": {
+          "type": "conditional",
+          "condition": {
+            "operator": "and",
+            "operands": [
+              {
+                "type": "has-lost-wounds"
+              },
+              {
+                "operator": "not",
+                "operands": [
+                  {
+                    "type": "is-battle-shocked"
+                  }
+                ]
+              },
+              {
+                "operator": "not",
+                "operands": [
+                  {
+                    "type": "engagement-state"
+                  }
+                ]
+              },
+              {
+                "type": "timing-is",
+                "parameters": {
+                  "timing": "first-time-this-phase"
+                }
+              }
+            ]
+          },
+          "effect": {
+            "type": "ability-grant",
+            "target": "self",
+            "modifier": {
+              "grant_type": "vengeance-move"
+            }
+          }
+        }
+      }
     },
     "scope": {
-      "range": "unit",
-      "duration": "permanent"
+      "range": "self",
+      "duration": "phase"
     },
     "unit_ids": [
       "buri-aegnirssen"
     ],
     "ability_type": "unit",
-    "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "behavior": "reactive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "brokhyr-guild-support",

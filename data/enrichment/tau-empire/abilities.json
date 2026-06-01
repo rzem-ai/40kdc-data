@@ -3550,7 +3550,8 @@
     },
     "faction_id": "tau-empire",
     "ability_type": "faction",
-    "behavior": "passive"
+    "behavior": "passive",
+    "unit_ids": []
   },
   {
     "ability_id": "for-the-greater-good",
@@ -3611,6 +3612,134 @@
     "faction_id": "tau-empire",
     "ability_type": "faction",
     "behavior": "activated",
-    "community_notes": "Assumes targets are SPOTTED (observer unit sacrifices shooting). +1 BS is the primary offensive benefit; Ignores Cover is kept for completeness but has no effect in the current damage engine (cover not simulated)."
+    "community_notes": "Assumes targets are SPOTTED (observer unit sacrifices shooting). +1 BS is the primary offensive benefit; Ignores Cover is kept for completeness but has no effect in the current damage engine (cover not simulated).",
+    "unit_ids": [
+      "taunar-supremacy-armour"
+    ]
+  },
+  {
+    "ability_id": "deadly-demise-d6-3",
+    "name": "Deadly Demise D6+3",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "dice-gated",
+      "dice": "D6",
+      "threshold": 6,
+      "comparison": "eq",
+      "on_success": {
+        "type": "sequence",
+        "steps": [
+          {
+            "type": "mortal-wounds",
+            "target": "enemy-within-aura",
+            "modifier": {
+              "count": "D6",
+              "bonus": 3
+            }
+          },
+          {
+            "type": "mortal-wounds",
+            "target": "friendly-within-aura",
+            "modifier": {
+              "count": "D6",
+              "bonus": 3
+            }
+          }
+        ]
+      }
+    },
+    "scope": {
+      "range": "aura-6",
+      "duration": "phase"
+    },
+    "unit_ids": [
+      "taunar-supremacy-armour"
+    ],
+    "ability_type": "unit",
+    "behavior": "reactive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
+  },
+  {
+    "ability_id": "coordinated-strike",
+    "name": "Coordinated Strike",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "conditional",
+      "condition": {
+        "operator": "and",
+        "operands": [
+          {
+            "type": "unit-has-keyword",
+            "parameters": {
+              "keyword": "Guided"
+            }
+          },
+          {
+            "type": "target-has-keyword",
+            "parameters": {
+              "keyword": "Spotted"
+            }
+          }
+        ]
+      },
+      "effect": {
+        "type": "re-roll",
+        "target": "self",
+        "modifier": {
+          "roll": "hit",
+          "subset": "ones"
+        }
+      }
+    },
+    "scope": {
+      "range": "self",
+      "duration": "phase"
+    },
+    "unit_ids": [
+      "taunar-supremacy-armour"
+    ],
+    "ability_type": "unit",
+    "behavior": "passive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
+  },
+  {
+    "ability_id": "super-heavy-walker",
+    "name": "Super-heavy Walker",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "movement-modifier",
+      "target": "self",
+      "modifier": {
+        "move_type": "normal-advance-fallback",
+        "allows_terrain_ignoring": true,
+        "terrain_height_limit": 4,
+        "excludes_keyword": "titanic"
+      }
+    },
+    "scope": {
+      "range": "self",
+      "duration": "turn"
+    },
+    "unit_ids": [
+      "taunar-supremacy-armour"
+    ],
+    "ability_type": "unit",
+    "behavior": "passive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   }
 ]

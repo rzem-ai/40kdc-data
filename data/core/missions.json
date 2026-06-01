@@ -1,31 +1,143 @@
 [
   {
+    "id": "ground-control",
+    "name": "Ground Control",
+    "vp_per_game_cap": 45,
+    "vp_per_round_cap": 15,
+    "deployment_pattern_ids": [],
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "determined-acquisition",
+    "name": "Determined Acquisition",
+    "vp_per_game_cap": 45,
+    "vp_per_round_cap": 15,
+    "deployment_pattern_ids": [],
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "immovable-object",
+    "name": "Immovable Object",
+    "vp_per_game_cap": 45,
+    "vp_per_round_cap": 15,
+    "deployment_pattern_ids": [],
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "unyielding-domination",
+    "name": "Unyielding Domination",
+    "vp_per_game_cap": 45,
+    "vp_per_round_cap": 15,
+    "deployment_pattern_ids": [],
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "eliminate-and-secure",
+    "name": "Eliminate and Secure",
+    "vp_per_game_cap": 45,
+    "vp_per_round_cap": 15,
+    "deployment_pattern_ids": [],
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "death-trap",
+    "name": "Death Trap",
+    "vp_per_game_cap": 45,
+    "vp_per_round_cap": 15,
+    "deployment_pattern_ids": [],
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "outmaneuver",
+    "name": "Outmaneuver",
+    "vp_per_game_cap": 45,
+    "vp_per_round_cap": 15,
+    "deployment_pattern_ids": [],
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "delaying-action",
+    "name": "Delaying Action",
+    "vp_per_game_cap": 45,
+    "vp_per_round_cap": 15,
+    "deployment_pattern_ids": [],
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "find-and-deny",
+    "name": "Find and Deny",
+    "vp_per_game_cap": 45,
+    "vp_per_round_cap": 15,
+    "deployment_pattern_ids": [],
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "smoke-and-mirrors",
+    "name": "Smoke and Mirrors",
+    "vp_per_game_cap": 45,
+    "vp_per_round_cap": 15,
+    "deployment_pattern_ids": [],
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "unstoppable-force",
+    "name": "Unstoppable Force",
+    "vp_per_game_cap": 45,
+    "vp_per_round_cap": 15,
+    "deployment_pattern_ids": [],
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "punishment",
+    "name": "Punishment",
+    "vp_per_game_cap": 45,
+    "vp_per_round_cap": 15,
+    "deployment_pattern_ids": [],
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "meat-grinder",
+    "name": "Meat Grinder",
+    "vp_per_game_cap": 45,
+    "vp_per_round_cap": 15,
+    "deployment_pattern_ids": [],
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "destroyers-wrath",
+    "name": "Wrath of the Destroyer",
+    "vp_per_game_cap": 45,
+    "vp_per_round_cap": 15,
+    "deployment_pattern_ids": [],
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "consecration",
+    "name": "Consecration",
+    "vp_per_game_cap": 45,
+    "vp_per_round_cap": 15,
+    "deployment_pattern_ids": [],
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
     "id": "secure-asset",
-    "name": "Secure Asset",
+    "name": "Secure Object",
     "vp_per_game_cap": 45,
     "vp_per_round_cap": 15,
     "deployment_pattern_ids": [],
     "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
   },
   {
-    "id": "vital-link",
-    "name": "Vital Link",
+    "id": "recover-the-relics",
+    "name": "Recover the Relics",
     "vp_per_game_cap": 45,
     "vp_per_round_cap": 15,
     "deployment_pattern_ids": [],
     "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
   },
   {
-    "id": "extract-relic",
-    "name": "Extract Relic",
-    "vp_per_game_cap": 45,
-    "vp_per_round_cap": 15,
-    "deployment_pattern_ids": [],
-    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
-  },
-  {
-    "id": "vanguard-operation",
-    "name": "Vanguard Operation",
+    "id": "important-connection",
+    "name": "Important Connection",
     "vp_per_game_cap": 45,
     "vp_per_round_cap": 15,
     "deployment_pattern_ids": [],
@@ -40,8 +152,24 @@
     "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
   },
   {
-    "id": "reconnaissance-sweep",
-    "name": "Reconnaissance Sweep",
+    "id": "vanguard-operation",
+    "name": "Vanguard Operation",
+    "vp_per_game_cap": 45,
+    "vp_per_round_cap": 15,
+    "deployment_pattern_ids": [],
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "record-breaking-mission",
+    "name": "Record-Breaking Mission",
+    "vp_per_game_cap": 45,
+    "vp_per_round_cap": 15,
+    "deployment_pattern_ids": [],
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "observe-enemy",
+    "name": "Observe Enemy",
     "vp_per_game_cap": 45,
     "vp_per_round_cap": 15,
     "deployment_pattern_ids": [],
@@ -56,32 +184,16 @@
     "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
   },
   {
-    "id": "surveil-the-foe",
-    "name": "Surveil the Foe",
+    "id": "find-and-eliminate",
+    "name": "Find and Eliminate",
     "vp_per_game_cap": 45,
     "vp_per_round_cap": 15,
     "deployment_pattern_ids": [],
     "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
   },
   {
-    "id": "gather-intel",
-    "name": "Gather Intel",
-    "vp_per_game_cap": 45,
-    "vp_per_round_cap": 15,
-    "deployment_pattern_ids": [],
-    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
-  },
-  {
-    "id": "search-and-scour",
-    "name": "Search and Scour",
-    "vp_per_game_cap": 45,
-    "vp_per_round_cap": 15,
-    "deployment_pattern_ids": [],
-    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
-  },
-  {
-    "id": "destroyers-wrath",
-    "name": "Destroyer's Wrath",
+    "id": "information-gathering",
+    "name": "Information Gathering",
     "vp_per_game_cap": 45,
     "vp_per_round_cap": 15,
     "deployment_pattern_ids": [],

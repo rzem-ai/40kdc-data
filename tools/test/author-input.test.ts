@@ -14,6 +14,15 @@ const archive = {
     if (dsId === "ds-AoI") return { src_type: "Wargear", parameter: null, phases: ["Command"], description: "Improve Leadership by 1" };
     return undefined;
   },
+  abilitiesFor: () => [],
+  // Faction-scoped rules: "Mission Tactics" resolves only for AoI (the archive
+  // stores it faction-prefixed); "Battle Focus" is globally unique.
+  factionRuleFor: (code, name) => {
+    const n = name.toLowerCase();
+    if (n === "mission tactics" && code === "AoI") return { src_type: "Detachment", parameter: null, phases: null, description: "Deathwatch Mission Tactics rule" };
+    if (n === "battle focus") return { src_type: "Faction", parameter: null, phases: null, description: "Battle Focus rule" };
+    return undefined;
+  },
 };
 
 describe("resolveSource (datasheet+faction join)", () => {
@@ -36,5 +45,17 @@ describe("resolveSource (datasheet+faction join)", () => {
 
   it("reports a reason when the unit has no matching datasheet", () => {
     expect(resolveSource(archive, "AS", ["Nonexistent Unit"], "X").reason).toMatch(/no matching ability/);
+  });
+
+  it("falls back to a faction/detachment rule when the ability has no unit_ids", () => {
+    const r = resolveSource(archive, "AE", [], "Battle Focus");
+    expect(r.src?.description).toBe("Battle Focus rule");
+    expect(r.src?.src_type).toBe("Faction");
+  });
+
+  it("falls back to a faction rule when the datasheet join misses (e.g. Mission Tactics on a kill team)", () => {
+    // Sanctifiers has a datasheet but no "Mission Tactics" ability on it.
+    const r = resolveSource(archive, "AoI", ["Sanctifiers"], "Mission Tactics");
+    expect(r.src?.description).toBe("Deathwatch Mission Tactics rule");
   });
 });

@@ -1911,7 +1911,15 @@
       "psychic-shock-wave",
       "storm-bolter"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "assigned-agents",
+      "authority-of-the-inquisition",
+      "blessed-wardings",
+      "deep-strike",
+      "leader",
+      "power-of-the-rosette",
+      "psychic-gifts"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"

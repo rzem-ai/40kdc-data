@@ -19,12 +19,13 @@
  * `input.json` (ListForge) or `input.newrecruit-json.json` (NewRecruit). Other
  * inputs are derived.
  */
-import { readdirSync, readFileSync, writeFileSync, existsSync } from "node:fs";
+import { readdirSync, readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { Dataset } from "./data/dataset.js";
 import { normalizeName } from "./data/normalize.js";
+import { describeScoringCard } from "./translate/index.js";
 import { exportRoster, type ExportFormat } from "./export/index.js";
 import { importRoster, REGISTERED_ADAPTERS } from "./import/import-roster.js";
 import { selectAdapter } from "./import/adapter.js";
@@ -386,7 +387,28 @@ function genAttribution(): void {
   console.log(`attribution/cases.json: ${cases.length} cases`);
 }
 
+/**
+ * Scoring-card translation corpus: humanize each primary mission card's
+ * `awards` into plain English. The TS translator is the oracle; the Rust port
+ * must reproduce every string byte-for-byte (the differ compares structurally,
+ * no tolerance). Only `card_type: "primary"` cards are pinned — the 14-card
+ * secondary deck isn't revealed yet. Cases are sorted by id for stability, and
+ * the `awards` array order within each card is load-bearing.
+ */
+function genScoringTranslation(): void {
+  const ds = Dataset.embedded();
+  mkdirSync(join(CONFORMANCE, "scoring-translation"), { recursive: true });
+  const cases = ds.secondaryCards.all
+    .filter((c) => c.card_type === "primary")
+    .slice()
+    .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))
+    .map((card) => ({ cardId: card.id, expected: { awards: describeScoringCard(card) } }));
+  writeJson(join(CONFORMANCE, "scoring-translation", "cases.json"), cases);
+  console.log(`scoring-translation/cases.json: ${cases.length} cases`);
+}
+
 genNormalize();
 genRosters();
 genLinkedApi();
 genAttribution();
+genScoringTranslation();

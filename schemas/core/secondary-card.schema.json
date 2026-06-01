@@ -111,39 +111,55 @@
       "required": ["operation"],
       "additionalProperties": false
     },
-    "action": {
-      "type": "object",
-      "description": "Optional player action the card enables.",
-      "properties": {
-        "starts": {
-          "$ref": "../defs/common.schema.json#/$defs/phase",
-          "description": "Phase in which the action can be started."
+    "actions": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Optional player actions the card enables. Most cards have a single action; a few (e.g. Observe Enemy, with separate Baited-removal and Spotted actions) have two distinct actions on the same card.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "description": "Optional kebab-case identifier used to reference this action from `action-completed` conditions in `awards[].when`."
+          },
+          "starts": {
+            "$ref": "../defs/common.schema.json#/$defs/phase",
+            "description": "Phase in which the action can be started."
+          },
+          "player_turn": { "$ref": "../defs/common.schema.json#/$defs/player-turn" },
+          "units": {
+            "$ref": "../enrichment/ability-dsl/condition.schema.json",
+            "description": "Eligibility predicate for which units may perform the action."
+          },
+          "use_limit": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Maximum number of times the action may be performed (per turn unless `use_limit_scope` says otherwise)."
+          },
+          "use_limit_scope": {
+            "type": "string",
+            "enum": ["per-turn", "per-game"],
+            "default": "per-turn",
+            "description": "Whether `use_limit` is enforced per turn or once per game (e.g. Recover the Relics / Find and Deny 'Overwhelming Force' is once per game)."
+          },
+          "completes": {
+            "$ref": "../enrichment/ability-dsl/condition.schema.json",
+            "description": "Predicate for when the action is considered complete."
+          },
+          "effect": {
+            "$ref": "../enrichment/ability-dsl/effect.schema.json",
+            "description": "Effect applied when the action completes (e.g. terrain-area-tag, objective-tag, or unit-tag to mark transient state)."
+          }
         },
-        "player_turn": { "$ref": "../defs/common.schema.json#/$defs/player-turn" },
-        "units": {
-          "$ref": "../enrichment/ability-dsl/condition.schema.json",
-          "description": "Eligibility predicate for which units may perform the action."
-        },
-        "use_limit": {
-          "type": "integer",
-          "minimum": 1,
-          "description": "Maximum number of times the action may be performed."
-        },
-        "completes": {
-          "$ref": "../enrichment/ability-dsl/condition.schema.json",
-          "description": "Predicate for when the action is considered complete."
-        },
-        "effect": {
-          "$ref": "../enrichment/ability-dsl/effect.schema.json",
-          "description": "Effect applied when the action completes (e.g. terrain-area-tag to mark transient state on a terrain piece)."
-        }
-      },
-      "additionalProperties": false
+        "additionalProperties": false
+      }
     },
     "awards": {
       "type": "array",
       "minItems": 1,
-      "description": "VP-award blocks: each scores when `trigger` fires and the optional `when` condition holds. An award scores either a flat `vp` or a count-scaled `vp_per` (VP per instance of the thing named by `per`). Awards accrue independently and sum; a card's '+ ... CUMULATIVE' rows are modelled as separate awards flagged `cumulative` for faithful round-trip.",
+      "description": "VP-award blocks: each scores when `trigger` fires and the optional `when` condition holds. An award scores either a flat `vp` or a count-scaled `vp_per` (VP per instance of the thing named by `per`). Awards accrue independently and sum; a card's '+ ... CUMULATIVE' rows are modelled as separate awards flagged `cumulative` for faithful round-trip. Awards sharing the same `exclusive_group` value within a card resolve as the highest-scoring single award fires (the card's literal 'OR' rows between tier breakpoints, e.g. Record-Breaking Mission's 3-Fronts vs 4-Fronts).",
       "items": {
         "type": "object",
         "properties": {
@@ -174,6 +190,12 @@
             "type": "boolean",
             "default": false,
             "description": "Marks an award the card shows as an additive '+' bonus to the preceding award in the same trigger block (the card's CUMULATIVE rows). Purely descriptive — all awards accrue independently and are summed."
+          },
+          "exclusive_group": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "description": "Awards sharing this kebab-case group key resolve as 'score only the highest, not the sum' (the card's literal OR between tier rows). Awards with different `exclusive_group` values, or no value, accrue independently."
           }
         },
         "oneOf": [

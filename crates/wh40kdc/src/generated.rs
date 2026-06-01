@@ -5727,39 +5727,58 @@ impl ::std::convert::TryFrom<::std::string::String> for ScoringTriggerTiming {
 ///    "name"
 ///  ],
 ///  "properties": {
-///    "action": {
-///      "description": "Optional player action the card enables.",
-///      "type": "object",
-///      "properties": {
-///        "completes": {
-///          "description": "Predicate for when the action is considered complete.",
-///          "$ref": "#/$defs/condition"
+///    "actions": {
+///      "description": "Optional player actions the card enables. Most cards have a single action; a few (e.g. Observe Enemy, with separate Baited-removal and Spotted actions) have two distinct actions on the same card.",
+///      "type": "array",
+///      "items": {
+///        "type": "object",
+///        "properties": {
+///          "action_id": {
+///            "description": "Optional kebab-case identifier used to reference this action from `action-completed` conditions in `awards[].when`.",
+///            "type": "string",
+///            "maxLength": 64,
+///            "minLength": 1
+///          },
+///          "completes": {
+///            "description": "Predicate for when the action is considered complete.",
+///            "$ref": "#/$defs/condition"
+///          },
+///          "effect": {
+///            "description": "Effect applied when the action completes (e.g. terrain-area-tag, objective-tag, or unit-tag to mark transient state).",
+///            "$ref": "#/$defs/effect"
+///          },
+///          "player_turn": {
+///            "$ref": "#/$defs/player-turn"
+///          },
+///          "starts": {
+///            "description": "Phase in which the action can be started.",
+///            "$ref": "#/$defs/phase"
+///          },
+///          "units": {
+///            "description": "Eligibility predicate for which units may perform the action.",
+///            "$ref": "#/$defs/condition"
+///          },
+///          "use_limit": {
+///            "description": "Maximum number of times the action may be performed (per turn unless `use_limit_scope` says otherwise).",
+///            "type": "integer",
+///            "minimum": 1.0
+///          },
+///          "use_limit_scope": {
+///            "description": "Whether `use_limit` is enforced per turn or once per game (e.g. Recover the Relics / Find and Deny 'Overwhelming Force' is once per game).",
+///            "default": "per-turn",
+///            "type": "string",
+///            "enum": [
+///              "per-turn",
+///              "per-game"
+///            ]
+///          }
 ///        },
-///        "effect": {
-///          "description": "Effect applied when the action completes (e.g. terrain-area-tag to mark transient state on a terrain piece).",
-///          "$ref": "#/$defs/effect"
-///        },
-///        "player_turn": {
-///          "$ref": "#/$defs/player-turn"
-///        },
-///        "starts": {
-///          "description": "Phase in which the action can be started.",
-///          "$ref": "#/$defs/phase"
-///        },
-///        "units": {
-///          "description": "Eligibility predicate for which units may perform the action.",
-///          "$ref": "#/$defs/condition"
-///        },
-///        "use_limit": {
-///          "description": "Maximum number of times the action may be performed.",
-///          "type": "integer",
-///          "minimum": 1.0
-///        }
+///        "additionalProperties": false
 ///      },
-///      "additionalProperties": false
+///      "minItems": 1
 ///    },
 ///    "awards": {
-///      "description": "VP-award blocks: each scores when `trigger` fires and the optional `when` condition holds. An award scores either a flat `vp` or a count-scaled `vp_per` (VP per instance of the thing named by `per`). Awards accrue independently and sum; a card's '+ ... CUMULATIVE' rows are modelled as separate awards flagged `cumulative` for faithful round-trip.",
+///      "description": "VP-award blocks: each scores when `trigger` fires and the optional `when` condition holds. An award scores either a flat `vp` or a count-scaled `vp_per` (VP per instance of the thing named by `per`). Awards accrue independently and sum; a card's '+ ... CUMULATIVE' rows are modelled as separate awards flagged `cumulative` for faithful round-trip. Awards sharing the same `exclusive_group` value within a card resolve as the highest-scoring single award fires (the card's literal 'OR' rows between tier breakpoints, e.g. Record-Breaking Mission's 3-Fronts vs 4-Fronts).",
 ///      "type": "array",
 ///      "items": {
 ///        "type": "object",
@@ -5784,6 +5803,12 @@ impl ::std::convert::TryFrom<::std::string::String> for ScoringTriggerTiming {
 ///            "description": "Marks an award the card shows as an additive '+' bonus to the preceding award in the same trigger block (the card's CUMULATIVE rows). Purely descriptive — all awards accrue independently and are summed.",
 ///            "default": false,
 ///            "type": "boolean"
+///          },
+///          "exclusive_group": {
+///            "description": "Awards sharing this kebab-case group key resolve as 'score only the highest, not the sum' (the card's literal OR between tier rows). Awards with different `exclusive_group` values, or no value, accrue independently.",
+///            "type": "string",
+///            "maxLength": 64,
+///            "minLength": 1
 ///          },
 ///          "per": {
 ///            "description": "What `vp_per` counts, as a kebab-case descriptor (e.g. 'operation-marker-within-range-of-controlled-central-objective'). Required when `vp_per` is present.",
@@ -5888,9 +5913,10 @@ impl ::std::convert::TryFrom<::std::string::String> for ScoringTriggerTiming {
 #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct SecondaryCard {
-    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
-    pub action: ::std::option::Option<SecondaryCardAction>,
-    ///VP-award blocks: each scores when `trigger` fires and the optional `when` condition holds. An award scores either a flat `vp` or a count-scaled `vp_per` (VP per instance of the thing named by `per`). Awards accrue independently and sum; a card's '+ ... CUMULATIVE' rows are modelled as separate awards flagged `cumulative` for faithful round-trip.
+    ///Optional player actions the card enables. Most cards have a single action; a few (e.g. Observe Enemy, with separate Baited-removal and Spotted actions) have two distinct actions on the same card.
+    #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+    pub actions: ::std::vec::Vec<SecondaryCardActionsItem>,
+    ///VP-award blocks: each scores when `trigger` fires and the optional `when` condition holds. An award scores either a flat `vp` or a count-scaled `vp_per` (VP per instance of the thing named by `per`). Awards accrue independently and sum; a card's '+ ... CUMULATIVE' rows are modelled as separate awards flagged `cumulative` for faithful round-trip. Awards sharing the same `exclusive_group` value within a card resolve as the highest-scoring single award fires (the card's literal 'OR' rows between tier breakpoints, e.g. Record-Breaking Mission's 3-Fronts vs 4-Fronts).
     #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
     pub awards: ::std::vec::Vec<SecondaryCardAwardsItem>,
     ///Whether this is a secondary card or a primary mission card (which reuses this shape).
@@ -5908,21 +5934,26 @@ pub struct SecondaryCard {
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub when_drawn: ::std::option::Option<SecondaryCardWhenDrawn>,
 }
-///Optional player action the card enables.
+///`SecondaryCardActionsItem`
 ///
 /// <details><summary>JSON schema</summary>
 ///
 /// ```json
 ///{
-///  "description": "Optional player action the card enables.",
 ///  "type": "object",
 ///  "properties": {
+///    "action_id": {
+///      "description": "Optional kebab-case identifier used to reference this action from `action-completed` conditions in `awards[].when`.",
+///      "type": "string",
+///      "maxLength": 64,
+///      "minLength": 1
+///    },
 ///    "completes": {
 ///      "description": "Predicate for when the action is considered complete.",
 ///      "$ref": "#/$defs/condition"
 ///    },
 ///    "effect": {
-///      "description": "Effect applied when the action completes (e.g. terrain-area-tag to mark transient state on a terrain piece).",
+///      "description": "Effect applied when the action completes (e.g. terrain-area-tag, objective-tag, or unit-tag to mark transient state).",
 ///      "$ref": "#/$defs/effect"
 ///    },
 ///    "player_turn": {
@@ -5937,9 +5968,18 @@ pub struct SecondaryCard {
 ///      "$ref": "#/$defs/condition"
 ///    },
 ///    "use_limit": {
-///      "description": "Maximum number of times the action may be performed.",
+///      "description": "Maximum number of times the action may be performed (per turn unless `use_limit_scope` says otherwise).",
 ///      "type": "integer",
 ///      "minimum": 1.0
+///    },
+///    "use_limit_scope": {
+///      "description": "Whether `use_limit` is enforced per turn or once per game (e.g. Recover the Relics / Find and Deny 'Overwhelming Force' is once per game).",
+///      "default": "per-turn",
+///      "type": "string",
+///      "enum": [
+///        "per-turn",
+///        "per-game"
+///      ]
 ///    }
 ///  },
 ///  "additionalProperties": false
@@ -5948,11 +5988,14 @@ pub struct SecondaryCard {
 /// </details>
 #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
-pub struct SecondaryCardAction {
+pub struct SecondaryCardActionsItem {
+    ///Optional kebab-case identifier used to reference this action from `action-completed` conditions in `awards[].when`.
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub action_id: ::std::option::Option<SecondaryCardActionsItemActionId>,
     ///Predicate for when the action is considered complete.
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub completes: ::std::option::Option<Condition>,
-    ///Effect applied when the action completes (e.g. terrain-area-tag to mark transient state on a terrain piece).
+    ///Effect applied when the action completes (e.g. terrain-area-tag, objective-tag, or unit-tag to mark transient state).
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub effect: ::std::option::Option<Effect>,
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
@@ -5963,20 +6006,189 @@ pub struct SecondaryCardAction {
     ///Eligibility predicate for which units may perform the action.
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub units: ::std::option::Option<Condition>,
-    ///Maximum number of times the action may be performed.
+    ///Maximum number of times the action may be performed (per turn unless `use_limit_scope` says otherwise).
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub use_limit: ::std::option::Option<::std::num::NonZeroU64>,
+    ///Whether `use_limit` is enforced per turn or once per game (e.g. Recover the Relics / Find and Deny 'Overwhelming Force' is once per game).
+    #[serde(default = "defaults::secondary_card_actions_item_use_limit_scope")]
+    pub use_limit_scope: SecondaryCardActionsItemUseLimitScope,
 }
-impl ::std::default::Default for SecondaryCardAction {
+impl ::std::default::Default for SecondaryCardActionsItem {
     fn default() -> Self {
         Self {
+            action_id: Default::default(),
             completes: Default::default(),
             effect: Default::default(),
             player_turn: Default::default(),
             starts: Default::default(),
             units: Default::default(),
             use_limit: Default::default(),
+            use_limit_scope: defaults::secondary_card_actions_item_use_limit_scope(),
         }
+    }
+}
+///Optional kebab-case identifier used to reference this action from `action-completed` conditions in `awards[].when`.
+///
+/// <details><summary>JSON schema</summary>
+///
+/// ```json
+///{
+///  "description": "Optional kebab-case identifier used to reference this action from `action-completed` conditions in `awards[].when`.",
+///  "type": "string",
+///  "maxLength": 64,
+///  "minLength": 1
+///}
+/// ```
+/// </details>
+#[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[serde(transparent)]
+pub struct SecondaryCardActionsItemActionId(::std::string::String);
+impl ::std::ops::Deref for SecondaryCardActionsItemActionId {
+    type Target = ::std::string::String;
+    fn deref(&self) -> &::std::string::String {
+        &self.0
+    }
+}
+impl ::std::convert::From<SecondaryCardActionsItemActionId> for ::std::string::String {
+    fn from(value: SecondaryCardActionsItemActionId) -> Self {
+        value.0
+    }
+}
+impl ::std::str::FromStr for SecondaryCardActionsItemActionId {
+    type Err = self::error::ConversionError;
+    fn from_str(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        if value.chars().count() > 64usize {
+            return Err("longer than 64 characters".into());
+        }
+        if value.chars().count() < 1usize {
+            return Err("shorter than 1 characters".into());
+        }
+        Ok(Self(value.to_string()))
+    }
+}
+impl ::std::convert::TryFrom<&str> for SecondaryCardActionsItemActionId {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<&::std::string::String>
+for SecondaryCardActionsItemActionId {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<::std::string::String>
+for SecondaryCardActionsItemActionId {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: ::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl<'de> ::serde::Deserialize<'de> for SecondaryCardActionsItemActionId {
+    fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+    where
+        D: ::serde::Deserializer<'de>,
+    {
+        ::std::string::String::deserialize(deserializer)?
+            .parse()
+            .map_err(|e: self::error::ConversionError| {
+                <D::Error as ::serde::de::Error>::custom(e.to_string())
+            })
+    }
+}
+///Whether `use_limit` is enforced per turn or once per game (e.g. Recover the Relics / Find and Deny 'Overwhelming Force' is once per game).
+///
+/// <details><summary>JSON schema</summary>
+///
+/// ```json
+///{
+///  "description": "Whether `use_limit` is enforced per turn or once per game (e.g. Recover the Relics / Find and Deny 'Overwhelming Force' is once per game).",
+///  "default": "per-turn",
+///  "type": "string",
+///  "enum": [
+///    "per-turn",
+///    "per-game"
+///  ]
+///}
+/// ```
+/// </details>
+#[derive(
+    ::serde::Deserialize,
+    ::serde::Serialize,
+    Clone,
+    Copy,
+    Debug,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd
+)]
+pub enum SecondaryCardActionsItemUseLimitScope {
+    #[serde(rename = "per-turn")]
+    PerTurn,
+    #[serde(rename = "per-game")]
+    PerGame,
+}
+impl ::std::fmt::Display for SecondaryCardActionsItemUseLimitScope {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        match *self {
+            Self::PerTurn => f.write_str("per-turn"),
+            Self::PerGame => f.write_str("per-game"),
+        }
+    }
+}
+impl ::std::str::FromStr for SecondaryCardActionsItemUseLimitScope {
+    type Err = self::error::ConversionError;
+    fn from_str(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        match value {
+            "per-turn" => Ok(Self::PerTurn),
+            "per-game" => Ok(Self::PerGame),
+            _ => Err("invalid value".into()),
+        }
+    }
+}
+impl ::std::convert::TryFrom<&str> for SecondaryCardActionsItemUseLimitScope {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<&::std::string::String>
+for SecondaryCardActionsItemUseLimitScope {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<::std::string::String>
+for SecondaryCardActionsItemUseLimitScope {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: ::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::default::Default for SecondaryCardActionsItemUseLimitScope {
+    fn default() -> Self {
+        SecondaryCardActionsItemUseLimitScope::PerTurn
     }
 }
 ///`SecondaryCardAwardsItem`
@@ -6007,6 +6219,12 @@ impl ::std::default::Default for SecondaryCardAction {
 ///      "description": "Marks an award the card shows as an additive '+' bonus to the preceding award in the same trigger block (the card's CUMULATIVE rows). Purely descriptive — all awards accrue independently and are summed.",
 ///      "default": false,
 ///      "type": "boolean"
+///    },
+///    "exclusive_group": {
+///      "description": "Awards sharing this kebab-case group key resolve as 'score only the highest, not the sum' (the card's literal OR between tier rows). Awards with different `exclusive_group` values, or no value, accrue independently.",
+///      "type": "string",
+///      "maxLength": 64,
+///      "minLength": 1
 ///    },
 ///    "per": {
 ///      "description": "What `vp_per` counts, as a kebab-case descriptor (e.g. 'operation-marker-within-range-of-controlled-central-objective'). Required when `vp_per` is present.",
@@ -6047,6 +6265,11 @@ pub enum SecondaryCardAwardsItem {
         ///Marks an award the card shows as an additive '+' bonus to the preceding award in the same trigger block (the card's CUMULATIVE rows). Purely descriptive — all awards accrue independently and are summed.
         #[serde(default)]
         cumulative: bool,
+        ///Awards sharing this kebab-case group key resolve as 'score only the highest, not the sum' (the card's literal OR between tier rows). Awards with different `exclusive_group` values, or no value, accrue independently.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        exclusive_group: ::std::option::Option<
+            SecondaryCardAwardsItemVariant0ExclusiveGroup,
+        >,
         ///Optional cap on how many instances `vp_per` counts.
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         per_max: ::std::option::Option<::std::num::NonZeroU64>,
@@ -6060,6 +6283,11 @@ pub enum SecondaryCardAwardsItem {
         ///Marks an award the card shows as an additive '+' bonus to the preceding award in the same trigger block (the card's CUMULATIVE rows). Purely descriptive — all awards accrue independently and are summed.
         #[serde(default)]
         cumulative: bool,
+        ///Awards sharing this kebab-case group key resolve as 'score only the highest, not the sum' (the card's literal OR between tier rows). Awards with different `exclusive_group` values, or no value, accrue independently.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        exclusive_group: ::std::option::Option<
+            SecondaryCardAwardsItemVariant1ExclusiveGroup,
+        >,
         ///What `vp_per` counts, as a kebab-case descriptor (e.g. 'operation-marker-within-range-of-controlled-central-objective'). Required when `vp_per` is present.
         per: SecondaryCardAwardsItemVariant1Per,
         ///Optional cap on how many instances `vp_per` counts.
@@ -6071,6 +6299,166 @@ pub enum SecondaryCardAwardsItem {
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         when: ::std::option::Option<Condition>,
     },
+}
+///Awards sharing this kebab-case group key resolve as 'score only the highest, not the sum' (the card's literal OR between tier rows). Awards with different `exclusive_group` values, or no value, accrue independently.
+///
+/// <details><summary>JSON schema</summary>
+///
+/// ```json
+///{
+///  "description": "Awards sharing this kebab-case group key resolve as 'score only the highest, not the sum' (the card's literal OR between tier rows). Awards with different `exclusive_group` values, or no value, accrue independently.",
+///  "type": "string",
+///  "maxLength": 64,
+///  "minLength": 1
+///}
+/// ```
+/// </details>
+#[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[serde(transparent)]
+pub struct SecondaryCardAwardsItemVariant0ExclusiveGroup(::std::string::String);
+impl ::std::ops::Deref for SecondaryCardAwardsItemVariant0ExclusiveGroup {
+    type Target = ::std::string::String;
+    fn deref(&self) -> &::std::string::String {
+        &self.0
+    }
+}
+impl ::std::convert::From<SecondaryCardAwardsItemVariant0ExclusiveGroup>
+for ::std::string::String {
+    fn from(value: SecondaryCardAwardsItemVariant0ExclusiveGroup) -> Self {
+        value.0
+    }
+}
+impl ::std::str::FromStr for SecondaryCardAwardsItemVariant0ExclusiveGroup {
+    type Err = self::error::ConversionError;
+    fn from_str(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        if value.chars().count() > 64usize {
+            return Err("longer than 64 characters".into());
+        }
+        if value.chars().count() < 1usize {
+            return Err("shorter than 1 characters".into());
+        }
+        Ok(Self(value.to_string()))
+    }
+}
+impl ::std::convert::TryFrom<&str> for SecondaryCardAwardsItemVariant0ExclusiveGroup {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<&::std::string::String>
+for SecondaryCardAwardsItemVariant0ExclusiveGroup {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<::std::string::String>
+for SecondaryCardAwardsItemVariant0ExclusiveGroup {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: ::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl<'de> ::serde::Deserialize<'de> for SecondaryCardAwardsItemVariant0ExclusiveGroup {
+    fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+    where
+        D: ::serde::Deserializer<'de>,
+    {
+        ::std::string::String::deserialize(deserializer)?
+            .parse()
+            .map_err(|e: self::error::ConversionError| {
+                <D::Error as ::serde::de::Error>::custom(e.to_string())
+            })
+    }
+}
+///Awards sharing this kebab-case group key resolve as 'score only the highest, not the sum' (the card's literal OR between tier rows). Awards with different `exclusive_group` values, or no value, accrue independently.
+///
+/// <details><summary>JSON schema</summary>
+///
+/// ```json
+///{
+///  "description": "Awards sharing this kebab-case group key resolve as 'score only the highest, not the sum' (the card's literal OR between tier rows). Awards with different `exclusive_group` values, or no value, accrue independently.",
+///  "type": "string",
+///  "maxLength": 64,
+///  "minLength": 1
+///}
+/// ```
+/// </details>
+#[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[serde(transparent)]
+pub struct SecondaryCardAwardsItemVariant1ExclusiveGroup(::std::string::String);
+impl ::std::ops::Deref for SecondaryCardAwardsItemVariant1ExclusiveGroup {
+    type Target = ::std::string::String;
+    fn deref(&self) -> &::std::string::String {
+        &self.0
+    }
+}
+impl ::std::convert::From<SecondaryCardAwardsItemVariant1ExclusiveGroup>
+for ::std::string::String {
+    fn from(value: SecondaryCardAwardsItemVariant1ExclusiveGroup) -> Self {
+        value.0
+    }
+}
+impl ::std::str::FromStr for SecondaryCardAwardsItemVariant1ExclusiveGroup {
+    type Err = self::error::ConversionError;
+    fn from_str(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        if value.chars().count() > 64usize {
+            return Err("longer than 64 characters".into());
+        }
+        if value.chars().count() < 1usize {
+            return Err("shorter than 1 characters".into());
+        }
+        Ok(Self(value.to_string()))
+    }
+}
+impl ::std::convert::TryFrom<&str> for SecondaryCardAwardsItemVariant1ExclusiveGroup {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<&::std::string::String>
+for SecondaryCardAwardsItemVariant1ExclusiveGroup {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<::std::string::String>
+for SecondaryCardAwardsItemVariant1ExclusiveGroup {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: ::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl<'de> ::serde::Deserialize<'de> for SecondaryCardAwardsItemVariant1ExclusiveGroup {
+    fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+    where
+        D: ::serde::Deserializer<'de>,
+    {
+        ::std::string::String::deserialize(deserializer)?
+            .parse()
+            .map_err(|e: self::error::ConversionError| {
+                <D::Error as ::serde::de::Error>::custom(e.to_string())
+            })
+    }
 }
 ///What `vp_per` counts, as a kebab-case descriptor (e.g. 'operation-marker-within-range-of-controlled-central-objective'). Required when `vp_per` is present.
 ///
@@ -6691,11 +7079,18 @@ impl ::std::convert::TryFrom<::std::string::String> for Side {
 ///        "disposition-matches",
 ///        "units-destroyed",
 ///        "units-destroyed-comparison",
-///        "objective-majority"
+///        "objective-majority",
+///        "action-completed",
+///        "objective-has-tag",
+///        "unit-has-tag",
+///        "terrain-has-tag",
+///        "new-objective-controlled",
+///        "engagement-fronts",
+///        "destroyed-while-on-objective"
 ///      ]
 ///    }
 ///  },
-///  "$comment": "Board/meta-state and scoring predicates. `parameters` is intentionally open (additionalProperties: true); each type documents its own param convention. Scoring predicates added for mission cards: `units-destroyed` { side: 'enemy'|'friendly', window: 'this-turn'|'previous-turn', count_min: int } — at least count_min units of `side` were destroyed in `window`. `units-destroyed-comparison` { subject: {side, window}, comparator: 'greater-than'|'greater-or-equal', reference: {side, window} } — compares two destruction tallies (e.g. more enemy units destroyed this turn than friendly last turn). `objective-majority` { relative_to: 'opponent' } — you control more objectives than the named party. `controls-objective` params: { count_min: int, objective_role?: 'central', exclude?: 'home', objective?: 'opponent-home' }."
+///  "$comment": "Board/meta-state and scoring predicates. `parameters` is intentionally open (additionalProperties: true); each type documents its own param convention. Scoring predicates added for mission cards: `units-destroyed` { side: 'enemy'|'friendly', window: 'this-turn'|'previous-turn', count_min: int } — at least count_min units of `side` were destroyed in `window`. `units-destroyed-comparison` { subject: {side, window}, comparator: 'greater-than'|'greater-or-equal', reference: {side, window} } — compares two destruction tallies (e.g. more enemy units destroyed this turn than friendly last turn). `objective-majority` { relative_to: 'opponent' } — you control more objectives than the named party. `controls-objective` params: { count_min: int, objective_role?: 'central'|'expansion'|'non-home'|'home', exclude?: 'home', objective?: 'opponent-home'|'your-home', scope?: 'enemy-territory'|'your-territory' }. Mission-card extensions (11e primary deck): `action-completed` { action_id?: string, target_kind?: 'objective'|'terrain'|'enemy-unit'|'self', target_filter?: { in_enemy_territory?: bool, objective_role?: 'central'|'non-home', exclude?: 'home' }, count_min: int, window?: 'this-turn'|'previous-turn'|'cumulative' } — at least count_min instances of a named action were completed in the window. `objective-has-tag` { tag: 'baited'|'triangulated'|'consecrated'|'sabotaged'|'marked'|'vanguard'|'spotted', count_min: int, count_max?: int, objective?: 'opponent-home'|'your-home', scope?: 'enemy-territory'|'your-territory' } — at least count_min objectives carry the named transient tag. `unit-has-tag` { tag: 'doomed'|'spotted', side: 'enemy'|'friendly', count_min: int, window?: 'destroyed-this-turn'|'still-on-board' } — at least count_min units of `side` carry the tag (optionally with a destruction filter — Punishment scores when a Doomed unit was destroyed or left the battlefield). `terrain-has-tag` { tag: 'mined'|'marked'|'vanguard', friendly_units_min?: int, enemy_units_max?: int, last_marked?: bool, in_enemy_dz?: bool } — terrain piece state predicate; `last_marked` selects the most-recently-marked piece (Find and Deny / Recover the Relics' Overwhelming Force trigger). `new-objective-controlled` { count_min: int } — at least count_min objectives are controlled this turn that were not controlled in the previous command phase. `engagement-fronts` { count_min: int } — friendly units engage enemies in at least count_min distinct fronts; a 'front' is one of the territory zones from the deployment-pattern's `territories[]`, so this composes with the existing `territory-control` predicate. `destroyed-while-on-objective` { destroyer_on_objective?: bool, victim_on_objective?: bool, count_min: int } — count_min enemy units were destroyed this turn under the named spatial condition (the destroying friendly unit, the destroyed enemy unit, or both were standing on an objective at the moment of the kill)."
 ///}
 /// ```
 /// </details>
@@ -6744,7 +7139,14 @@ pub struct SimpleCondition {
 ///    "disposition-matches",
 ///    "units-destroyed",
 ///    "units-destroyed-comparison",
-///    "objective-majority"
+///    "objective-majority",
+///    "action-completed",
+///    "objective-has-tag",
+///    "unit-has-tag",
+///    "terrain-has-tag",
+///    "new-objective-controlled",
+///    "engagement-fronts",
+///    "destroyed-while-on-objective"
 ///  ]
 ///}
 /// ```
@@ -6820,6 +7222,20 @@ pub enum SimpleConditionType {
     UnitsDestroyedComparison,
     #[serde(rename = "objective-majority")]
     ObjectiveMajority,
+    #[serde(rename = "action-completed")]
+    ActionCompleted,
+    #[serde(rename = "objective-has-tag")]
+    ObjectiveHasTag,
+    #[serde(rename = "unit-has-tag")]
+    UnitHasTag,
+    #[serde(rename = "terrain-has-tag")]
+    TerrainHasTag,
+    #[serde(rename = "new-objective-controlled")]
+    NewObjectiveControlled,
+    #[serde(rename = "engagement-fronts")]
+    EngagementFronts,
+    #[serde(rename = "destroyed-while-on-objective")]
+    DestroyedWhileOnObjective,
 }
 impl ::std::fmt::Display for SimpleConditionType {
     fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
@@ -6855,6 +7271,15 @@ impl ::std::fmt::Display for SimpleConditionType {
             Self::UnitsDestroyed => f.write_str("units-destroyed"),
             Self::UnitsDestroyedComparison => f.write_str("units-destroyed-comparison"),
             Self::ObjectiveMajority => f.write_str("objective-majority"),
+            Self::ActionCompleted => f.write_str("action-completed"),
+            Self::ObjectiveHasTag => f.write_str("objective-has-tag"),
+            Self::UnitHasTag => f.write_str("unit-has-tag"),
+            Self::TerrainHasTag => f.write_str("terrain-has-tag"),
+            Self::NewObjectiveControlled => f.write_str("new-objective-controlled"),
+            Self::EngagementFronts => f.write_str("engagement-fronts"),
+            Self::DestroyedWhileOnObjective => {
+                f.write_str("destroyed-while-on-objective")
+            }
         }
     }
 }
@@ -6893,6 +7318,13 @@ impl ::std::str::FromStr for SimpleConditionType {
             "units-destroyed" => Ok(Self::UnitsDestroyed),
             "units-destroyed-comparison" => Ok(Self::UnitsDestroyedComparison),
             "objective-majority" => Ok(Self::ObjectiveMajority),
+            "action-completed" => Ok(Self::ActionCompleted),
+            "objective-has-tag" => Ok(Self::ObjectiveHasTag),
+            "unit-has-tag" => Ok(Self::UnitHasTag),
+            "terrain-has-tag" => Ok(Self::TerrainHasTag),
+            "new-objective-controlled" => Ok(Self::NewObjectiveControlled),
+            "engagement-fronts" => Ok(Self::EngagementFronts),
+            "destroyed-while-on-objective" => Ok(Self::DestroyedWhileOnObjective),
             _ => Err("invalid value".into()),
         }
     }
@@ -6986,12 +7418,14 @@ impl ::std::convert::TryFrom<::std::string::String> for SimpleConditionType {
 ///        "resource-spend",
 ///        "charge-roll-modifier",
 ///        "terrain-area-tag",
+///        "objective-tag",
+///        "unit-tag",
 ///        "bs-modifier",
 ///        "engagement-passthrough"
 ///      ]
 ///    }
 ///  },
-///  "$comment": "When `type` is `re-roll`, `modifier` must carry `roll` (string) and `subset` (`ones` | `all-failures`). Rerolls always target failures; the subset decides whether only 1s are rerolled or every failed die. The constraint is enforced by AJV at validation time and stripped from the codegen bundle (typify can't model if/then/else) — the generated TS/Rust types therefore see `modifier` as an open object, matching its other-`type` callers. When `type` is `feel-no-pain`, `modifier` carries `threshold` (the FNP save target) and optionally `scope` ∈ {`all`, `mortal`}; an absent scope defaults to `all` (fires on every unsaved wound). The two scopes compose independently against the mortal-wound stream."
+///  "$comment": "When `type` is `re-roll`, `modifier` must carry `roll` (string) and `subset` (`ones` | `all-failures`). Rerolls always target failures; the subset decides whether only 1s are rerolled or every failed die. The constraint is enforced by AJV at validation time and stripped from the codegen bundle (typify can't model if/then/else) — the generated TS/Rust types therefore see `modifier` as an open object, matching its other-`type` callers. When `type` is `feel-no-pain`, `modifier` carries `threshold` (the FNP save target) and optionally `scope` ∈ {`all`, `mortal`}; an absent scope defaults to `all` (fires on every unsaved wound). The two scopes compose independently against the mortal-wound stream. Tag effects (`terrain-area-tag`, `objective-tag`, `unit-tag`) set a transient marker on the named subject; `modifier` carries `tag` (string) and optionally `source` ('this-action'|'destroying-unit') and `clears_on` ('turn-rollover'|'never'). `target` for tag effects names the kind of entity the tag is applied to ('unit', 'self') — a placeholder, since the marker target is the objective/terrain/unit specified by the action context, not a combat target."
 ///}
 /// ```
 /// </details>
@@ -7155,6 +7589,8 @@ impl ::std::convert::TryFrom<::std::string::String> for SingleEffectTarget {
 ///    "resource-spend",
 ///    "charge-roll-modifier",
 ///    "terrain-area-tag",
+///    "objective-tag",
+///    "unit-tag",
 ///    "bs-modifier",
 ///    "engagement-passthrough"
 ///  ]
@@ -7230,6 +7666,10 @@ pub enum SingleEffectType {
     ChargeRollModifier,
     #[serde(rename = "terrain-area-tag")]
     TerrainAreaTag,
+    #[serde(rename = "objective-tag")]
+    ObjectiveTag,
+    #[serde(rename = "unit-tag")]
+    UnitTag,
     #[serde(rename = "bs-modifier")]
     BsModifier,
     #[serde(rename = "engagement-passthrough")]
@@ -7266,6 +7706,8 @@ impl ::std::fmt::Display for SingleEffectType {
             Self::ResourceSpend => f.write_str("resource-spend"),
             Self::ChargeRollModifier => f.write_str("charge-roll-modifier"),
             Self::TerrainAreaTag => f.write_str("terrain-area-tag"),
+            Self::ObjectiveTag => f.write_str("objective-tag"),
+            Self::UnitTag => f.write_str("unit-tag"),
             Self::BsModifier => f.write_str("bs-modifier"),
             Self::EngagementPassthrough => f.write_str("engagement-passthrough"),
         }
@@ -7305,6 +7747,8 @@ impl ::std::str::FromStr for SingleEffectType {
             "resource-spend" => Ok(Self::ResourceSpend),
             "charge-roll-modifier" => Ok(Self::ChargeRollModifier),
             "terrain-area-tag" => Ok(Self::TerrainAreaTag),
+            "objective-tag" => Ok(Self::ObjectiveTag),
+            "unit-tag" => Ok(Self::UnitTag),
             "bs-modifier" => Ok(Self::BsModifier),
             "engagement-passthrough" => Ok(Self::EngagementPassthrough),
             _ => Err("invalid value".into()),
@@ -11158,5 +11602,8 @@ pub mod defaults {
     }
     pub(super) fn secondary_card_card_type() -> super::SecondaryCardCardType {
         super::SecondaryCardCardType::Secondary
+    }
+    pub(super) fn secondary_card_actions_item_use_limit_scope() -> super::SecondaryCardActionsItemUseLimitScope {
+        super::SecondaryCardActionsItemUseLimitScope::PerTurn
     }
 }

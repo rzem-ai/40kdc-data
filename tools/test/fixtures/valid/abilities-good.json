@@ -106,5 +106,128 @@
     "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" },
     "effect": { "type": "engagement-passthrough", "target": "unit" },
     "scope": { "range": "unit", "duration": "phase" }
+  },
+  {
+    "ability_id": "cond-action-completed",
+    "name": "Action Completed condition",
+    "authored_by": "40kdc-community",
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" },
+    "effect": {
+      "type": "conditional",
+      "condition": {
+        "type": "action-completed",
+        "parameters": { "action_id": "sabotage", "target_kind": "objective", "target_filter": { "exclude": "home" }, "count_min": 1, "window": "this-turn" }
+      },
+      "effect": { "type": "cp-gain", "target": "self", "modifier": { "count": 1 } }
+    },
+    "scope": { "range": "any-on-battlefield", "duration": "turn" }
+  },
+  {
+    "ability_id": "cond-objective-has-tag",
+    "name": "Objective Has Tag condition",
+    "authored_by": "40kdc-community",
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" },
+    "effect": {
+      "type": "conditional",
+      "condition": {
+        "type": "objective-has-tag",
+        "parameters": { "tag": "consecrated", "count_min": 3 }
+      },
+      "effect": { "type": "ability-grant", "target": "all-friendly", "modifier": { "ability": "fight-first" } }
+    },
+    "scope": { "range": "any-on-battlefield", "duration": "turn" }
+  },
+  {
+    "ability_id": "cond-unit-has-tag",
+    "name": "Unit Has Tag condition",
+    "authored_by": "40kdc-community",
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" },
+    "effect": {
+      "type": "conditional",
+      "condition": {
+        "type": "unit-has-tag",
+        "parameters": { "tag": "doomed", "side": "enemy", "count_min": 1, "window": "destroyed-this-turn" }
+      },
+      "effect": { "type": "cp-gain", "target": "self", "modifier": { "count": 1 } }
+    },
+    "scope": { "range": "any-on-battlefield", "duration": "turn" }
+  },
+  {
+    "ability_id": "cond-terrain-has-tag",
+    "name": "Terrain Has Tag condition",
+    "authored_by": "40kdc-community",
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" },
+    "effect": {
+      "type": "conditional",
+      "condition": {
+        "type": "terrain-has-tag",
+        "parameters": { "tag": "mined", "friendly_units_min": 1, "enemy_units_max": 0, "last_marked": true }
+      },
+      "effect": { "type": "cp-gain", "target": "self", "modifier": { "count": 1 } }
+    },
+    "scope": { "range": "any-on-battlefield", "duration": "turn" }
+  },
+  {
+    "ability_id": "cond-new-objective-controlled",
+    "name": "New Objective Controlled condition",
+    "authored_by": "40kdc-community",
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" },
+    "effect": {
+      "type": "conditional",
+      "condition": { "type": "new-objective-controlled", "parameters": { "count_min": 1 } },
+      "effect": { "type": "cp-gain", "target": "self", "modifier": { "count": 1 } }
+    },
+    "scope": { "range": "any-on-battlefield", "duration": "turn" }
+  },
+  {
+    "ability_id": "cond-engagement-fronts",
+    "name": "Engagement Fronts condition",
+    "authored_by": "40kdc-community",
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" },
+    "effect": {
+      "type": "conditional",
+      "condition": { "type": "engagement-fronts", "parameters": { "count_min": 3 } },
+      "effect": { "type": "cp-gain", "target": "self", "modifier": { "count": 1 } }
+    },
+    "scope": { "range": "any-on-battlefield", "duration": "turn" }
+  },
+  {
+    "ability_id": "cond-destroyed-while-on-objective",
+    "name": "Destroyed While On Objective condition",
+    "authored_by": "40kdc-community",
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" },
+    "effect": {
+      "type": "conditional",
+      "condition": {
+        "type": "destroyed-while-on-objective",
+        "parameters": { "destroyer_on_objective": true, "count_min": 1 }
+      },
+      "effect": { "type": "cp-gain", "target": "self", "modifier": { "count": 1 } }
+    },
+    "scope": { "range": "any-on-battlefield", "duration": "turn" }
+  },
+  {
+    "ability_id": "effect-objective-tag",
+    "name": "Objective Tag effect",
+    "authored_by": "40kdc-community",
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" },
+    "effect": {
+      "type": "objective-tag",
+      "target": "self",
+      "modifier": { "tag": "consecrated", "source": "destroying-unit", "clears_on": "never" }
+    },
+    "scope": { "range": "any-on-battlefield", "duration": "battle" }
+  },
+  {
+    "ability_id": "effect-unit-tag",
+    "name": "Unit Tag effect",
+    "authored_by": "40kdc-community",
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" },
+    "effect": {
+      "type": "unit-tag",
+      "target": "unit",
+      "modifier": { "tag": "doomed", "source": "this-action", "clears_on": "turn-rollover" }
+    },
+    "scope": { "range": "any-on-battlefield", "duration": "turn" }
   }
 ]

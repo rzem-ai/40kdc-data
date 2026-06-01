@@ -1380,7 +1380,12 @@
       "prow-blade",
       "storm-vortex-projector"
     ],
-    "ability_ids": [],
+    "ability_ids": [
+      "deadly-demise-d3",
+      "deep-strike",
+      "eradicate-the-foe",
+      "power-from-pain"
+    ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"

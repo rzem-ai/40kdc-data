@@ -52,7 +52,10 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "soul-grinder"
+      "soul-grinder",
+      "belakor",
+      "aetaosraukeres",
+      "anggrath-the-unbound"
     ],
     "ability_type": "core",
     "behavior": "activated"
@@ -67,20 +70,61 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "operator": "or",
+        "operands": [
+          {
+            "type": "timing-is",
+            "parameters": {
+              "timing": "normal-move"
+            }
+          },
+          {
+            "type": "timing-is",
+            "parameters": {
+              "timing": "advance"
+            }
+          }
+        ]
+      },
+      "effect": {
+        "type": "sequence",
+        "steps": [
+          {
+            "type": "movement-modifier",
+            "target": "self",
+            "modifier": {
+              "move_type": "over-friendly-monster"
+            }
+          },
+          {
+            "type": "movement-modifier",
+            "target": "self",
+            "modifier": {
+              "move_type": "over-friendly-vehicle"
+            }
+          },
+          {
+            "type": "movement-modifier",
+            "target": "self",
+            "modifier": {
+              "move_type": "through-terrain-max-4-inch"
+            }
+          }
+        ]
+      }
     },
     "scope": {
-      "range": "unit",
-      "duration": "permanent"
+      "range": "self",
+      "duration": "phase"
     },
     "unit_ids": [
       "soul-grinder"
     ],
     "ability_type": "unit",
     "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "daemonic-allegiance",
@@ -318,7 +362,9 @@
       "duration": "one-use"
     },
     "unit_ids": [
-      "rotigus"
+      "rotigus",
+      "belakor",
+      "aetaosraukeres"
     ],
     "ability_type": "core",
     "behavior": "reactive"
@@ -1551,7 +1597,8 @@
       "duration": "phase"
     },
     "unit_ids": [
-      "lord-of-change"
+      "lord-of-change",
+      "aetaosraukeres"
     ],
     "ability_type": "unit",
     "behavior": "passive",
@@ -2020,20 +2067,54 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "operator": "and",
+        "operands": [
+          {
+            "type": "phase-is",
+            "parameters": {
+              "phase": "movement"
+            }
+          },
+          {
+            "type": "player-turn-is",
+            "parameters": {
+              "turn": "own"
+            }
+          },
+          {
+            "type": "timing-is",
+            "parameters": {
+              "timing": "end"
+            }
+          },
+          {
+            "type": "unit-within-range-of",
+            "parameters": {
+              "target_type": "area-terrain"
+            }
+          }
+        ]
+      },
+      "effect": {
+        "type": "terrain-area-tag",
+        "target": "unit",
+        "modifier": {
+          "tag": "shadow-of-chaos"
+        }
+      }
     },
     "scope": {
-      "range": "unit",
-      "duration": "permanent"
+      "range": "self",
+      "duration": "battle"
     },
     "unit_ids": [
       "horticulous-slimux"
     ],
     "ability_type": "unit",
-    "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "behavior": "reactive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "swallow-energy-psychic",
@@ -2415,7 +2496,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "bloodthirster"
+      "bloodthirster",
+      "anggrath-the-unbound"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -3016,20 +3098,55 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "sequence",
+      "steps": [
+        {
+          "type": "terrain-area-tag",
+          "target": "self",
+          "modifier": {
+            "tag": "shadow-of-chaos"
+          }
+        },
+        {
+          "type": "conditional",
+          "condition": {
+            "operator": "and",
+            "operands": [
+              {
+                "type": "unit-has-keyword",
+                "parameters": {
+                  "keyword": "KHORNE"
+                }
+              },
+              {
+                "type": "unit-has-keyword",
+                "parameters": {
+                  "keyword": "LEGIONES DAEMONICA"
+                }
+              }
+            ]
+          },
+          "effect": {
+            "type": "leadership-modifier",
+            "target": "friendly-within-aura",
+            "modifier": {
+              "test": "battle-shock",
+              "operation": "re-roll"
+            }
+          }
+        }
+      ]
     },
     "scope": {
-      "range": "unit",
+      "range": "aura-6",
       "duration": "permanent"
     },
     "unit_ids": [
       "skull-altar"
     ],
     "ability_type": "unit",
-    "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "behavior": "aura",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "cover",
@@ -3327,7 +3444,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "the-changeling"
+      "the-changeling",
+      "belakor"
     ],
     "ability_type": "core",
     "behavior": "passive"
@@ -3342,20 +3460,42 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "sequence",
+      "steps": [
+        {
+          "type": "leadership-modifier",
+          "target": "attacker",
+          "modifier": {
+            "test": "battle-shock",
+            "operation": "force"
+          }
+        },
+        {
+          "type": "conditional",
+          "condition": {
+            "type": "is-battle-shocked",
+            "parameters": {}
+          },
+          "effect": {
+            "type": "attack-restriction",
+            "target": "attacker",
+            "modifier": {
+              "restriction": "cannot-target-bearer"
+            }
+          }
+        }
+      ]
     },
     "scope": {
-      "range": "unit",
-      "duration": "permanent"
+      "range": "self",
+      "duration": "phase"
     },
     "unit_ids": [
       "the-changeling"
     ],
     "ability_type": "unit",
-    "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "behavior": "reactive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "mischief-and-confusion",
@@ -3828,20 +3968,30 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "type": "charged-this-turn"
+      },
+      "effect": {
+        "type": "keyword-grant",
+        "target": "unit",
+        "modifier": {
+          "keywords": [
+            "lance"
+          ]
+        }
+      }
     },
     "scope": {
       "range": "unit",
-      "duration": "permanent"
+      "duration": "turn"
     },
     "unit_ids": [
       "pox-riders"
     ],
     "ability_type": "unit",
     "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "grandfather-s-blessing",
@@ -3949,7 +4099,12 @@
     },
     "faction_id": "chaos-daemons",
     "ability_type": "faction",
-    "behavior": "passive"
+    "behavior": "passive",
+    "unit_ids": [
+      "belakor",
+      "aetaosraukeres",
+      "anggrath-the-unbound"
+    ]
   },
   {
     "ability_id": "daemonic-pact",
@@ -3973,6 +4128,183 @@
     },
     "faction_id": "chaos-daemons",
     "ability_type": "faction",
+    "behavior": "passive",
+    "unit_ids": []
+  },
+  {
+    "ability_id": "the-dark-master-aura",
+    "name": "The Dark Master (Aura)",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "stat-modifier",
+      "target": "unit",
+      "modifier": {}
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "permanent"
+    },
+    "unit_ids": [
+      "belakor"
+    ],
+    "ability_type": "unit",
     "behavior": "passive"
+  },
+  {
+    "ability_id": "shadow-form-abilities",
+    "name": "Shadow Form Abilities",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "stat-modifier",
+      "target": "unit",
+      "modifier": {}
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "permanent"
+    },
+    "unit_ids": [
+      "belakor"
+    ],
+    "ability_type": "unit",
+    "behavior": "passive"
+  },
+  {
+    "ability_id": "supreme-commander",
+    "name": "Supreme Commander",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "ability-grant",
+      "target": "self",
+      "modifier": {
+        "grant_type": "mandatory-warlord-designation"
+      }
+    },
+    "scope": {
+      "range": "self",
+      "duration": "permanent"
+    },
+    "unit_ids": [
+      "belakor"
+    ],
+    "ability_type": "unit",
+    "behavior": "passive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
+  },
+  {
+    "ability_id": "emissary-of-the-great-mutator-aura",
+    "name": "Emissary of the Great Mutator (Aura)",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "leadership-modifier",
+      "target": "friendly-within-aura",
+      "modifier": {
+        "test": "battle-shock",
+        "operation": "re-roll"
+      }
+    },
+    "scope": {
+      "range": "aura-6",
+      "duration": "permanent"
+    },
+    "unit_ids": [
+      "aetaosraukeres"
+    ],
+    "ability_type": "unit",
+    "behavior": "passive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
+  },
+  {
+    "ability_id": "deadly-demise-d6-2",
+    "name": "Deadly Demise D6+2",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "dice-gated",
+      "dice": "D6",
+      "threshold": 6,
+      "comparison": "gte",
+      "on_success": {
+        "type": "sequence",
+        "steps": [
+          {
+            "type": "mortal-wounds",
+            "target": "friendly-within-aura",
+            "modifier": {
+              "count": "D6+2"
+            }
+          },
+          {
+            "type": "mortal-wounds",
+            "target": "enemy-within-aura",
+            "modifier": {
+              "count": "D6+2"
+            }
+          }
+        ]
+      }
+    },
+    "scope": {
+      "range": "aura-6",
+      "duration": "turn"
+    },
+    "unit_ids": [
+      "anggrath-the-unbound"
+    ],
+    "ability_type": "unit",
+    "behavior": "reactive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
+  },
+  {
+    "ability_id": "emissary-of-the-blood-god-aura",
+    "name": "Emissary of the Blood God (Aura)",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "leadership-modifier",
+      "target": "friendly-within-aura",
+      "modifier": {
+        "test": "battle-shock",
+        "operation": "re-roll"
+      }
+    },
+    "scope": {
+      "range": "aura-6",
+      "duration": "permanent"
+    },
+    "unit_ids": [
+      "anggrath-the-unbound"
+    ],
+    "ability_type": "unit",
+    "behavior": "passive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   }
 ]

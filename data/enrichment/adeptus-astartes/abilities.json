@@ -123,7 +123,14 @@
       "duration": "one-use"
     },
     "unit_ids": [
-      "gladiator-lancer"
+      "gladiator-lancer",
+      "rhino-primaris",
+      "relic-razorback",
+      "vindicator-laser-destroyer",
+      "xiphon-interceptor",
+      "whirlwind-scorpius",
+      "leviathan-dreadnought",
+      "sicaran-battle-tank"
     ],
     "ability_type": "core",
     "behavior": "reactive"
@@ -174,7 +181,10 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "terminator-squad"
+      "terminator-squad",
+      "lion-eljonson",
+      "terminator-assault-squad",
+      "dreadnought-drop-pod"
     ],
     "ability_type": "core",
     "behavior": "activated"
@@ -200,7 +210,8 @@
       "duration": "one-use"
     },
     "unit_ids": [
-      "terminator-squad"
+      "terminator-squad",
+      "terminator-assault-squad"
     ],
     "ability_type": "unit",
     "behavior": "activated"
@@ -385,7 +396,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "sword-brethren-squad"
+      "sword-brethren-squad",
+      "decimus-kill-team"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -604,7 +616,16 @@
       "duration": "one-use"
     },
     "unit_ids": [
-      "land-raider-crusader"
+      "land-raider-crusader",
+      "land-raider",
+      "storm-eagle-gunship",
+      "fire-raptor-gunship",
+      "land-raider-helios",
+      "land-raider-prometheus",
+      "terminus-ultra",
+      "land-raider-achilles",
+      "land-raider-excelsior",
+      "spartan"
     ],
     "ability_type": "core",
     "behavior": "reactive"
@@ -630,7 +651,14 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "land-raider-crusader"
+      "land-raider-crusader",
+      "land-raider",
+      "land-raider-helios",
+      "land-raider-prometheus",
+      "terminus-ultra",
+      "land-raider-achilles",
+      "land-raider-excelsior",
+      "spartan"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -944,7 +972,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "impulsor"
+      "impulsor",
+      "rhino-primaris"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -1135,20 +1164,69 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "operator": "and",
+        "operands": [
+          {
+            "type": "timing-is",
+            "parameters": {
+              "timing": "once-per-battle"
+            }
+          },
+          {
+            "type": "phase-is",
+            "parameters": {
+              "phase": "fight"
+            }
+          },
+          {
+            "type": "attack-is-type",
+            "parameters": {
+              "attack_type": "melee"
+            }
+          },
+          {
+            "type": "units-destroyed",
+            "parameters": {
+              "side": "enemy",
+              "window": "phase",
+              "count_min": 1
+            }
+          }
+        ]
+      },
+      "effect": {
+        "type": "conditional",
+        "condition": {
+          "operator": "not",
+          "operands": [
+            {
+              "type": "is-battle-shocked",
+              "parameters": {}
+            }
+          ]
+        },
+        "effect": {
+          "type": "objective-control-modifier",
+          "target": "bearer",
+          "modifier": {
+            "operation": "add",
+            "value": 5
+          }
+        }
+      }
     },
     "scope": {
-      "range": "unit",
-      "duration": "permanent"
+      "range": "self",
+      "duration": "battle"
     },
     "unit_ids": [
       "crusade-ancient"
     ],
     "ability_type": "unit",
-    "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "behavior": "reactive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "stabilised-disembarkation",
@@ -1583,7 +1661,8 @@
       "duration": "one-use"
     },
     "unit_ids": [
-      "blood-angels-captain"
+      "blood-angels-captain",
+      "land-raider-excelsior"
     ],
     "ability_type": "unit",
     "behavior": "activated"
@@ -1685,7 +1764,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "chief-librarian-mephiston"
+      "chief-librarian-mephiston",
+      "lion-eljonson"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -2679,7 +2759,9 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "nephilim-jetfighter"
+      "nephilim-jetfighter",
+      "storm-eagle-gunship",
+      "fire-raptor-gunship"
     ],
     "ability_type": "core",
     "behavior": "activated"
@@ -3172,20 +3254,46 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "type": "timing-is",
+        "parameters": {
+          "timing": "first-model-destroyed"
+        }
+      },
+      "effect": {
+        "type": "conditional",
+        "condition": {
+          "type": "timing-is",
+          "parameters": {
+            "timing": "end-of-phase"
+          }
+        },
+        "effect": {
+          "type": "dice-gated",
+          "dice": "D6",
+          "threshold": 2,
+          "comparison": "gte",
+          "on_success": {
+            "type": "resurrection",
+            "target": "self",
+            "modifier": {
+              "count": 1
+            }
+          }
+        }
+      }
     },
     "scope": {
-      "range": "unit",
-      "duration": "permanent"
+      "range": "self",
+      "duration": "battle"
     },
     "unit_ids": [
       "watch-captain-artemis"
     ],
     "ability_type": "unit",
-    "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "behavior": "reactive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "indomitor-doctrines",
@@ -3254,7 +3362,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "deathwatch-veterans"
+      "deathwatch-veterans",
+      "decimus-kill-team"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -3280,7 +3389,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "deathwatch-veterans"
+      "deathwatch-veterans",
+      "decimus-kill-team"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -3501,7 +3611,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "deathwatch-terminator-squad"
+      "deathwatch-terminator-squad",
+      "terminator-assault-squad"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -3529,7 +3640,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "deathwatch-terminator-squad"
+      "deathwatch-terminator-squad",
+      "terminator-assault-squad"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -3912,20 +4024,55 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "operator": "and",
+        "operands": [
+          {
+            "type": "phase-is",
+            "parameters": {
+              "phase": "movement"
+            }
+          },
+          {
+            "type": "timing-is",
+            "parameters": {
+              "timing": "deep-strike-setup"
+            }
+          }
+        ]
+      },
+      "effect": {
+        "type": "sequence",
+        "steps": [
+          {
+            "type": "movement-modifier",
+            "target": "unit",
+            "modifier": {
+              "move_type": "deep-strike-exclusion-range",
+              "value": 6
+            }
+          },
+          {
+            "type": "attack-restriction",
+            "target": "unit",
+            "modifier": {
+              "restriction": "cannot-charge"
+            }
+          }
+        ]
+      }
     },
     "scope": {
       "range": "unit",
-      "duration": "permanent"
+      "duration": "turn"
     },
     "unit_ids": [
       "inceptor-squad"
     ],
     "ability_type": "unit",
-    "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "behavior": "activated",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "keep-the-banner-high",
@@ -4570,7 +4717,9 @@
       "duration": "one-use"
     },
     "unit_ids": [
-      "dreadnought"
+      "dreadnought",
+      "dreadnought-drop-pod",
+      "chaplain-venerable-dreadnought"
     ],
     "ability_type": "core",
     "behavior": "reactive"
@@ -4711,7 +4860,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "firestrike-servo-turrets"
+      "firestrike-servo-turrets",
+      "tarantula-sentry-battery"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -5131,7 +5281,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "roboute-guilliman"
+      "roboute-guilliman",
+      "lion-eljonson"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -5157,7 +5308,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "drop-pod"
+      "drop-pod",
+      "dreadnought-drop-pod"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -6202,7 +6354,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "stormtalon-gunship"
+      "stormtalon-gunship",
+      "fire-raptor-gunship"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -6365,7 +6518,8 @@
       "duration": "phase"
     },
     "unit_ids": [
-      "razorback"
+      "razorback",
+      "relic-razorback"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -6668,7 +6822,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "whirlwind"
+      "whirlwind",
+      "whirlwind-scorpius"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -6853,7 +7008,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "redemptor-dreadnought"
+      "redemptor-dreadnought",
+      "leviathan-dreadnought"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -7504,7 +7660,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "stormhawk-interceptor"
+      "stormhawk-interceptor",
+      "xiphon-interceptor"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -7540,7 +7697,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "predator-annihilator"
+      "predator-annihilator",
+      "vindicator-laser-destroyer"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -7594,7 +7752,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "stormraven-gunship"
+      "stormraven-gunship",
+      "storm-eagle-gunship"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -7928,7 +8087,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "rhino"
+      "rhino",
+      "rhino-primaris"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -8426,7 +8586,8 @@
       "duration": "one-use"
     },
     "unit_ids": [
-      "chaplain"
+      "chaplain",
+      "chaplain-venerable-dreadnought"
     ],
     "ability_type": "unit",
     "behavior": "activated"
@@ -8928,7 +9089,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "deimos-predator"
+      "deimos-predator",
+      "sicaran-battle-tank"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -9334,20 +9496,42 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "operator": "and",
+        "operands": [
+          {
+            "type": "unit-has-keyword",
+            "parameters": {
+              "keyword": "HOVER"
+            }
+          },
+          {
+            "type": "unit-has-keyword",
+            "parameters": {
+              "keyword": "STRATEGIC RESERVES"
+            }
+          }
+        ]
+      },
+      "effect": {
+        "type": "ability-grant",
+        "target": "self",
+        "modifier": {
+          "grant_type": "reinforcement-any-of-turns-1-to-3"
+        }
+      }
     },
     "scope": {
-      "range": "unit",
-      "duration": "permanent"
+      "range": "self",
+      "duration": "battle"
     },
     "unit_ids": [
       "thunderhawk-transporter"
     ],
     "ability_type": "unit",
     "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "rolling-fortress",
@@ -9840,20 +10024,35 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "operator": "not",
+        "operands": [
+          {
+            "type": "is-battle-shocked",
+            "parameters": {}
+          }
+        ]
+      },
+      "effect": {
+        "type": "objective-control-modifier",
+        "target": "self",
+        "modifier": {
+          "operation": "set",
+          "value": 1
+        }
+      }
     },
     "scope": {
-      "range": "unit",
-      "duration": "permanent"
+      "range": "aura-6",
+      "duration": "battle-round"
     },
     "unit_ids": [
       "fenrisian-wolves"
     ],
     "ability_type": "unit",
     "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "healing-balms",
@@ -10958,7 +11157,8 @@
     "faction_id": "adeptus-astartes",
     "ability_type": "faction",
     "behavior": "passive",
-    "community_notes": "auto-generated from faction rule"
+    "community_notes": "auto-generated from faction rule",
+    "unit_ids": []
   },
   {
     "ability_id": "space-marine-chapters",
@@ -10982,7 +11182,8 @@
     },
     "faction_id": "adeptus-astartes",
     "ability_type": "faction",
-    "behavior": "passive"
+    "behavior": "passive",
+    "unit_ids": []
   },
   {
     "ability_id": "heirs-of-sigismund",
@@ -11006,7 +11207,8 @@
     },
     "faction_id": "adeptus-astartes",
     "ability_type": "faction",
-    "behavior": "passive"
+    "behavior": "passive",
+    "unit_ids": []
   },
   {
     "ability_id": "oath-of-moment",
@@ -11044,7 +11246,31 @@
     },
     "faction_id": "adeptus-astartes",
     "ability_type": "faction",
-    "behavior": "activated"
+    "behavior": "activated",
+    "unit_ids": [
+      "lion-eljonson",
+      "decimus-kill-team",
+      "terminator-assault-squad",
+      "land-raider",
+      "dreadnought-drop-pod",
+      "chaplain-venerable-dreadnought",
+      "rhino-primaris",
+      "relic-razorback",
+      "vindicator-laser-destroyer",
+      "xiphon-interceptor",
+      "whirlwind-scorpius",
+      "leviathan-dreadnought",
+      "sicaran-battle-tank",
+      "storm-eagle-gunship",
+      "fire-raptor-gunship",
+      "land-raider-helios",
+      "land-raider-prometheus",
+      "terminus-ultra",
+      "land-raider-achilles",
+      "land-raider-excelsior",
+      "spartan",
+      "tarantula-sentry-battery"
+    ]
   },
   {
     "ability_id": "the-sons-of-sanguinius",
@@ -11068,7 +11294,8 @@
     },
     "faction_id": "adeptus-astartes",
     "ability_type": "faction",
-    "behavior": "passive"
+    "behavior": "passive",
+    "unit_ids": []
   },
   {
     "ability_id": "the-unforgiven",
@@ -11092,7 +11319,8 @@
     },
     "faction_id": "adeptus-astartes",
     "ability_type": "faction",
-    "behavior": "passive"
+    "behavior": "passive",
+    "unit_ids": []
   },
   {
     "ability_id": "the-ravenwing",
@@ -11116,7 +11344,8 @@
     },
     "faction_id": "adeptus-astartes",
     "ability_type": "faction",
-    "behavior": "passive"
+    "behavior": "passive",
+    "unit_ids": []
   },
   {
     "ability_id": "the-deathwing",
@@ -11140,7 +11369,8 @@
     },
     "faction_id": "adeptus-astartes",
     "ability_type": "faction",
-    "behavior": "passive"
+    "behavior": "passive",
+    "unit_ids": []
   },
   {
     "ability_id": "kill-teams",
@@ -11164,7 +11394,8 @@
     },
     "faction_id": "adeptus-astartes",
     "ability_type": "faction",
-    "behavior": "passive"
+    "behavior": "passive",
+    "unit_ids": []
   },
   {
     "ability_id": "curse-of-the-wulfen",
@@ -11189,7 +11420,8 @@
     },
     "faction_id": "adeptus-astartes",
     "ability_type": "faction",
-    "behavior": "passive"
+    "behavior": "passive",
+    "unit_ids": []
   },
   {
     "ability_id": "sagas",
@@ -11212,7 +11444,8 @@
     "faction_id": "adeptus-astartes",
     "ability_type": "faction",
     "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)",
+    "unit_ids": []
   },
   {
     "ability_id": "sons-of-russ",
@@ -11236,6 +11469,143 @@
     },
     "faction_id": "adeptus-astartes",
     "ability_type": "faction",
+    "behavior": "passive",
+    "unit_ids": []
+  },
+  {
+    "ability_id": "primarch-of-the-first-legion",
+    "name": "Primarch of the First Legion",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "conditional",
+      "condition": {
+        "operator": "and",
+        "operands": [
+          {
+            "type": "phase-is",
+            "parameters": {
+              "phase": "command"
+            }
+          },
+          {
+            "type": "timing-is",
+            "parameters": {
+              "timing": "start"
+            }
+          }
+        ]
+      },
+      "effect": {
+        "type": "ability-grant",
+        "target": "self",
+        "modifier": {
+          "grant_type": "primarch-of-the-first-legion-selection"
+        }
+      }
+    },
+    "scope": {
+      "range": "self",
+      "duration": "battle-round"
+    },
+    "unit_ids": [
+      "lion-eljonson"
+    ],
+    "ability_type": "unit",
+    "behavior": "activated",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
+  },
+  {
+    "ability_id": "the-emperors-shield",
+    "name": "The Emperor’s Shield",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "stat-modifier",
+      "target": "unit",
+      "modifier": {}
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "permanent"
+    },
+    "unit_ids": [
+      "lion-eljonson"
+    ],
+    "ability_type": "unit",
+    "behavior": "passive"
+  },
+  {
+    "ability_id": "dark-angels-bodyguard",
+    "name": "Dark Angels Bodyguard",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "conditional",
+      "condition": {
+        "type": "unit-within-range-of",
+        "parameters": {
+          "target_type": "friendly",
+          "range": 3,
+          "keywords": [
+            "ADEPTUS ASTARTES",
+            "INFANTRY"
+          ]
+        }
+      },
+      "effect": {
+        "type": "ability-grant",
+        "target": "self",
+        "modifier": {
+          "grant_type": "lone-operative"
+        }
+      }
+    },
+    "scope": {
+      "range": "self",
+      "duration": "battle"
+    },
+    "unit_ids": [
+      "lion-eljonson"
+    ],
+    "ability_type": "unit",
+    "behavior": "passive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
+  },
+  {
+    "ability_id": "mission-tactics",
+    "name": "Mission Tactics",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "effect": {
+      "type": "stat-modifier",
+      "target": "unit",
+      "modifier": {}
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "permanent"
+    },
+    "unit_ids": [
+      "decimus-kill-team"
+    ],
+    "ability_type": "unit",
     "behavior": "passive"
   }
 ]

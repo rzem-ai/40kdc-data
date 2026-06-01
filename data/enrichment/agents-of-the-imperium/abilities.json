@@ -246,7 +246,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "watch-captain-artemis"
+      "watch-captain-artemis",
+      "inquisitor-in-terminator-armour"
     ],
     "ability_type": "core",
     "behavior": "passive"
@@ -295,20 +296,48 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "operator": "and",
+        "operands": [
+          {
+            "type": "timing-is",
+            "parameters": {
+              "timing": "end-of-phase"
+            }
+          },
+          {
+            "type": "timing-is",
+            "parameters": {
+              "timing": "once-per-battle"
+            }
+          }
+        ]
+      },
+      "effect": {
+        "type": "dice-gated",
+        "dice": "D6",
+        "threshold": 2,
+        "comparison": "gte",
+        "on_success": {
+          "type": "resurrection",
+          "target": "self",
+          "modifier": {
+            "wounds_remaining": 1
+          }
+        }
+      }
     },
     "scope": {
-      "range": "unit",
-      "duration": "permanent"
+      "range": "self",
+      "duration": "battle"
     },
     "unit_ids": [
       "watch-captain-artemis"
     ],
     "ability_type": "unit",
-    "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "behavior": "reactive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "deadly-demise-d3",
@@ -416,7 +445,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "callidus-assassin"
+      "callidus-assassin",
+      "inquisitor-in-terminator-armour"
     ],
     "ability_type": "core",
     "behavior": "activated"
@@ -619,7 +649,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "inquisitor-greyfax"
+      "inquisitor-greyfax",
+      "inquisitor-in-terminator-armour"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -840,7 +871,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "inquisitor"
+      "inquisitor",
+      "inquisitor-in-terminator-armour"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -872,7 +904,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "inquisitor"
+      "inquisitor",
+      "inquisitor-in-terminator-armour"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -900,7 +933,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "inquisitor"
+      "inquisitor",
+      "inquisitor-in-terminator-armour"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -2794,6 +2828,9 @@
     },
     "faction_id": "agents-of-the-imperium",
     "ability_type": "faction",
-    "behavior": "passive"
+    "behavior": "passive",
+    "unit_ids": [
+      "inquisitor-in-terminator-armour"
+    ]
   }
 ]

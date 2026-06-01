@@ -4,6 +4,10 @@ export * from "./data/index.js";
 // Generated types for every entity in the dataset.
 export * from "./generated.js";
 
+// Plain-English translation of structured data (scoring-card awards + the
+// shared Ability-DSL condition humanizer). Cross-impl pinned by conformance.
+export * from "./translate/index.js";
+
 // Schema access + AJV validation (secondary: this package also validates data
 // against the canonical JSON Schemas).
 export {

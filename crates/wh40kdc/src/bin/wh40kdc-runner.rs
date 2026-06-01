@@ -22,7 +22,7 @@ use wh40kdc::import::{
     import_roster, try_import_roster, AdapterTrial, ImportFailureReason, ImportResult, Roster,
     RosterFormat,
 };
-use wh40kdc::{normalize_name, Dataset, Phase};
+use wh40kdc::{describe_scoring_card, normalize_name, Dataset, Phase};
 
 // ---------------------------------------------------------------------------
 // Spec version + impl identity.
@@ -672,6 +672,23 @@ fn handle_attribution(state: &mut RunnerState, args: &Value) -> Value {
     }
 }
 
+fn handle_translate_scoring(state: &mut RunnerState, args: &Value) -> Value {
+    let Some(card_id) = args.get("cardId").and_then(Value::as_str) else {
+        return err_value(
+            ErrorKind::InvalidInput,
+            Some(json!({ "detail": "translate_scoring.cardId must be a string" })),
+        );
+    };
+    let ds = state.dataset();
+    match ds.secondary_cards.get(card_id) {
+        Some(card) => ok_value(json!({ "awards": describe_scoring_card(card) })),
+        None => err_value(
+            ErrorKind::UnknownEntity,
+            Some(json!({ "kind": "secondary-card", "id": card_id })),
+        ),
+    }
+}
+
 // ---------------------------------------------------------------------------
 // Dispatcher.
 // ---------------------------------------------------------------------------
@@ -700,6 +717,7 @@ fn dispatch(state: &mut RunnerState, op: &str, args: &Value) -> Value {
         "validate" => handle_validate(args),
         "crunch" => handle_crunch(state, args),
         "attribution" => handle_attribution(state, args),
+        "translate_scoring" => handle_translate_scoring(state, args),
         "shutdown" => ok_value(Value::Null),
         other => err_value(ErrorKind::UnknownOp, Some(json!({ "op": other }))),
     }

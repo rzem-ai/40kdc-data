@@ -28,7 +28,8 @@
       "duration": "one-use"
     },
     "unit_ids": [
-      "land-raider-redeemer"
+      "land-raider-redeemer",
+      "land-raider"
     ],
     "ability_type": "core",
     "behavior": "reactive"
@@ -54,7 +55,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "land-raider-redeemer"
+      "land-raider-redeemer",
+      "land-raider"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -88,7 +90,8 @@
       "duration": "one-use"
     },
     "unit_ids": [
-      "grand-master-in-nemesis-dreadknight"
+      "grand-master-in-nemesis-dreadknight",
+      "grey-knights-relic-razorback"
     ],
     "ability_type": "core",
     "behavior": "reactive"
@@ -382,7 +385,8 @@
       "duration": "phase"
     },
     "unit_ids": [
-      "razorback"
+      "razorback",
+      "grey-knights-relic-razorback"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -722,7 +726,8 @@
       "duration": "one-use"
     },
     "unit_ids": [
-      "venerable-dreadnought"
+      "venerable-dreadnought",
+      "grey-knights-dreadnought"
     ],
     "ability_type": "core",
     "behavior": "reactive"
@@ -787,7 +792,8 @@
       "duration": "permanent"
     },
     "unit_ids": [
-      "venerable-dreadnought"
+      "venerable-dreadnought",
+      "grey-knights-dreadnought"
     ],
     "ability_type": "unit",
     "behavior": "passive"
@@ -1644,6 +1650,7 @@
     "faction_id": "grey-knights",
     "ability_type": "faction",
     "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)",
+    "unit_ids": []
   }
 ]
