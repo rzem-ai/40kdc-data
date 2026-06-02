@@ -1014,20 +1014,87 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "operator": "and",
+        "operands": [
+          {
+            "type": "timing-is",
+            "parameters": {
+              "timing": "after-attacking-unit-finishes-attacks"
+            }
+          },
+          {
+            "operator": "not",
+            "operands": [
+              {
+                "type": "units-destroyed",
+                "parameters": {
+                  "side": "self",
+                  "window": "phase",
+                  "count_min": 1
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "effect": {
+        "type": "dice-gated",
+        "dice": "D6",
+        "threshold": 4,
+        "comparison": "gte",
+        "on_success": {
+          "type": "sequence",
+          "steps": [
+            {
+              "type": "conditional",
+              "condition": {
+                "type": "unit-has-keyword",
+                "parameters": {
+                  "keyword": "PINK-HORROR"
+                }
+              },
+              "effect": {
+                "type": "resurrection",
+                "target": "unit",
+                "modifier": {
+                  "count": 2,
+                  "model_type": "BLUE-HORROR"
+                }
+              }
+            },
+            {
+              "type": "conditional",
+              "condition": {
+                "type": "unit-has-keyword",
+                "parameters": {
+                  "keyword": "BLUE-HORROR"
+                }
+              },
+              "effect": {
+                "type": "resurrection",
+                "target": "unit",
+                "modifier": {
+                  "count": 1,
+                  "model_type": "BRIMSTONE-HORROR"
+                }
+              }
+            }
+          ]
+        }
+      }
     },
     "scope": {
-      "range": "unit",
-      "duration": "permanent"
+      "range": "self",
+      "duration": "phase"
     },
     "unit_ids": [
       "pink-horrors"
     ],
     "ability_type": "unit",
-    "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "behavior": "reactive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "horrors-are-pink-horrors-are-blue-where-once-there-was-one-now-there-are-two",
@@ -3693,20 +3760,61 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "operator": "and",
+        "operands": [
+          {
+            "type": "timing-is",
+            "parameters": {
+              "timing": "end-of-phase"
+            }
+          },
+          {
+            "type": "unit-has-keyword",
+            "parameters": {
+              "keyword": "BEASTS-OF-NURGLE"
+            }
+          },
+          {
+            "type": "has-lost-wounds",
+            "parameters": {}
+          },
+          {
+            "operator": "not",
+            "operands": [
+              {
+                "type": "units-destroyed",
+                "parameters": {
+                  "side": "self",
+                  "window": "phase",
+                  "count_min": 1
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "effect": {
+        "type": "stat-modifier",
+        "target": "self",
+        "modifier": {
+          "stat": "W",
+          "operation": "set",
+          "value": 7
+        }
+      }
     },
     "scope": {
-      "range": "unit",
-      "duration": "permanent"
+      "range": "self",
+      "duration": "phase"
     },
     "unit_ids": [
       "beasts-of-nurgle"
     ],
     "ability_type": "unit",
-    "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "behavior": "reactive",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "hunters-from-the-warp",
@@ -4141,19 +4249,22 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "terrain-area-tag",
+      "target": "self",
+      "modifier": {
+        "tag": "shadow-of-chaos"
+      }
     },
     "scope": {
-      "range": "unit",
+      "range": "aura-6",
       "duration": "permanent"
     },
     "unit_ids": [
       "belakor"
     ],
     "ability_type": "unit",
-    "behavior": "passive"
+    "behavior": "aura",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "shadow-form-abilities",

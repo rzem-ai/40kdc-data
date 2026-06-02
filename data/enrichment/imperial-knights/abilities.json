@@ -1521,11 +1521,10 @@
             "threshold": 1,
             "comparison": "eq",
             "on_success": {
-              "type": "bs-modifier",
+              "type": "ability-grant",
               "target": "self",
               "modifier": {
-                "operation": "add",
-                "value": 1
+                "grant_type": "battle-shocked"
               }
             }
           }
@@ -1539,7 +1538,7 @@
     "faction_id": "imperial-knights",
     "ability_type": "faction",
     "behavior": "passive",
-    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21. Battle-shock outcome encoded as an ability-grant stand-in (no status-apply node yet); movement permissions are inert in the damage buff layer."
   },
   {
     "ability_id": "dreadblades",

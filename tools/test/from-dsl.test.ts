@@ -281,6 +281,28 @@ describe("effectToBuffs: compound", () => {
     expect(result.applied).toEqual([]);
     expect(result.unsupported[0].reason).toMatch(/cannot evaluate condition/);
   });
+
+  it("was-hit-by-attack reactive trigger is surfaced, never silently applied", () => {
+    // A static damage calc can't know whether the buffed unit was hit, so the
+    // condition stays "unknown" and the gated buff routes to `unsupported`
+    // rather than firing unconditionally — the parity-neutral guarantee that
+    // lets us add the trigger without touching any cruncher numerics.
+    const result = effectToBuffs(
+      {
+        type: "conditional",
+        condition: { type: "was-hit-by-attack", parameters: { subject: "self" } },
+        effect: {
+          type: "roll-modifier",
+          target: "unit",
+          modifier: { roll: "hit", operation: "subtract", value: 1 },
+        },
+      },
+      unitRule,
+      ctx,
+    );
+    expect(result.applied).toEqual([]);
+    expect(result.unsupported[0].reason).toMatch(/cannot evaluate condition/);
+  });
 });
 
 describe("effectToBuffs: target filtering", () => {

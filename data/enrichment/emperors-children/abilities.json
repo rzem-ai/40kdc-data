@@ -1953,20 +1953,67 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "sequence",
+      "steps": [
+        {
+          "type": "keyword-grant",
+          "target": "unit",
+          "modifier": {
+            "keywords": [
+              "Critical Wounds 3+"
+            ]
+          }
+        },
+        {
+          "type": "conditional",
+          "condition": {
+            "operator": "and",
+            "operands": [
+              {
+                "type": "phase-is",
+                "parameters": {
+                  "phase": "fight"
+                }
+              },
+              {
+                "type": "timing-is",
+                "parameters": {
+                  "timing": "end-of-phase"
+                }
+              },
+              {
+                "operator": "not",
+                "operands": [
+                  {
+                    "type": "units-destroyed",
+                    "parameters": {
+                      "side": "enemy",
+                      "window": "phase",
+                      "count_min": 1
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "effect": {
+            "type": "model-destruction",
+            "target": "unit",
+            "modifier": {}
+          }
+        }
+      ]
     },
     "scope": {
       "range": "unit",
-      "duration": "permanent"
+      "duration": "phase"
     },
     "unit_ids": [
       "flawless-blades"
     ],
     "ability_type": "unit",
-    "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "behavior": "activated",
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21. Crit-Wound grant applies to all attacks (no weapon-type restriction); the end-of-phase self-destruction cannot encode the by-this-unit kill attribution, so it gates on any enemy destroyed that phase."
   },
   {
     "ability_id": "thrill-seekers",

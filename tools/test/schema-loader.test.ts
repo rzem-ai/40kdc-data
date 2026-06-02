@@ -69,4 +69,24 @@ describe("schema-loader", () => {
     });
     expect(invalid).toBe(false);
   });
+
+  it("accepts the was-hit-by-attack condition and still rejects unknown types", () => {
+    const ajv = createValidator();
+    const validate = ajv.getSchema(
+      "https://40kdc.dev/schemas/enrichment/ability-dsl/condition.schema.json",
+    );
+    expect(validate).toBeDefined();
+
+    // The reactive trigger added for "when this unit was hit" rules — the enum
+    // gate is why such effect trees were schema-invalid before.
+    expect(
+      validate!({
+        type: "was-hit-by-attack",
+        parameters: { subject: "target", weapon_name: "graviton-crusher" },
+      }),
+    ).toBe(true);
+
+    // The enum is still closed — a fabricated condition type must fail.
+    expect(validate!({ type: "was-not-a-real-condition" })).toBe(false);
+  });
 });

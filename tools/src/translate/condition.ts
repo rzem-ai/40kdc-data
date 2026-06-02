@@ -84,6 +84,14 @@ export function describeCondition(c: Condition): string {
       return `${negate}the unit is battle-shocked`;
     case "has-lost-wounds":
       return `${negate}the model has lost wounds`;
+    case "was-hit-by-attack": {
+      const subject = p.subject === "target" ? "the target" : "the unit";
+      const atk = p.attack_type ? `${str(p.attack_type)} ` : "";
+      const weapon = p.weapon_name ? ` by ${str(p.weapon_name)}` : "";
+      const n = Number(p.count_min ?? 1);
+      if (n > 1) return `${negate}${subject} was hit by ${n}+ ${atk}attacks${weapon} this phase`;
+      return `${negate}${subject} was hit by ${atk === "" ? "an attack" : `a ${atk}attack`}${weapon} this phase`;
+    }
     case "opponent-unit-within-range":
       return `${negate}an enemy unit is within ${p.range === "engagement" ? "engagement range" : `${str(p.range)}"`}`;
     case "unit-within-range-of":

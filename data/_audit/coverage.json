@@ -28,8 +28,8 @@
       "offensive": 109,
       "defensive": 39,
       "inert": 215,
-      "stub": 20,
-      "stubStructural": 7,
+      "stub": 19,
+      "stubStructural": 6,
       "gwTextLeak": 0,
       "defensiveSkipped": 7
     },
@@ -61,8 +61,8 @@
       "offensive": 33,
       "defensive": 13,
       "inert": 110,
-      "stub": 14,
-      "stubStructural": 7,
+      "stub": 13,
+      "stubStructural": 6,
       "gwTextLeak": 0,
       "defensiveSkipped": 5
     },
@@ -83,8 +83,8 @@
       "offensive": 36,
       "defensive": 14,
       "inert": 104,
-      "stub": 5,
-      "stubStructural": 3,
+      "stub": 3,
+      "stubStructural": 0,
       "gwTextLeak": 0,
       "defensiveSkipped": 5
     },
@@ -94,8 +94,8 @@
       "offensive": 35,
       "defensive": 14,
       "inert": 86,
-      "stub": 9,
-      "stubStructural": 4,
+      "stub": 7,
+      "stubStructural": 1,
       "gwTextLeak": 0,
       "defensiveSkipped": 4
     },
@@ -105,7 +105,7 @@
       "offensive": 18,
       "defensive": 1,
       "inert": 23,
-      "stub": 4,
+      "stub": 3,
       "stubStructural": 2,
       "gwTextLeak": 0,
       "defensiveSkipped": 0
@@ -127,29 +127,29 @@
       "offensive": 19,
       "defensive": 7,
       "inert": 66,
-      "stub": 9,
-      "stubStructural": 5,
+      "stub": 8,
+      "stubStructural": 4,
       "gwTextLeak": 0,
       "defensiveSkipped": 3
     },
     {
       "faction": "drukhari",
       "total": 76,
-      "offensive": 20,
+      "offensive": 21,
       "defensive": 6,
-      "inert": 52,
-      "stub": 9,
-      "stubStructural": 4,
+      "inert": 51,
+      "stub": 7,
+      "stubStructural": 2,
       "gwTextLeak": 0,
       "defensiveSkipped": 1
     },
     {
       "faction": "emperors-children",
       "total": 61,
-      "offensive": 12,
+      "offensive": 13,
       "defensive": 3,
-      "inert": 47,
-      "stub": 9,
+      "inert": 46,
+      "stub": 8,
       "stubStructural": 3,
       "gwTextLeak": 0,
       "defensiveSkipped": 1
@@ -182,8 +182,8 @@
       "offensive": 21,
       "defensive": 3,
       "inert": 23,
-      "stub": 7,
-      "stubStructural": 2,
+      "stub": 5,
+      "stubStructural": 1,
       "gwTextLeak": 0,
       "defensiveSkipped": 1
     },
@@ -204,8 +204,8 @@
       "offensive": 22,
       "defensive": 23,
       "inert": 93,
-      "stub": 9,
-      "stubStructural": 10,
+      "stub": 6,
+      "stubStructural": 6,
       "gwTextLeak": 0,
       "defensiveSkipped": 1
     },
@@ -226,8 +226,8 @@
       "offensive": 32,
       "defensive": 7,
       "inert": 80,
-      "stub": 7,
-      "stubStructural": 4,
+      "stub": 6,
+      "stubStructural": 3,
       "gwTextLeak": 0,
       "defensiveSkipped": 3
     },
@@ -237,8 +237,8 @@
       "offensive": 25,
       "defensive": 8,
       "inert": 67,
-      "stub": 18,
-      "stubStructural": 11,
+      "stub": 17,
+      "stubStructural": 10,
       "gwTextLeak": 0,
       "defensiveSkipped": 2
     },
@@ -248,7 +248,7 @@
       "offensive": 19,
       "defensive": 7,
       "inert": 67,
-      "stub": 6,
+      "stub": 5,
       "stubStructural": 1,
       "gwTextLeak": 0,
       "defensiveSkipped": 6
@@ -267,53 +267,53 @@
   ],
   "totals": {
     "total": 2425,
-    "offensive": 602,
+    "offensive": 604,
     "defensive": 235,
-    "inert": 1672,
-    "stub": 173,
-    "stubStructural": 81,
+    "inert": 1670,
+    "stub": 154,
+    "stubStructural": 63,
     "gwTextLeak": 0,
     "defensiveSkipped": 59
   },
   "unsupportedReasons": [
     {
       "reason": "effect type \"ability-grant\" is not modelled by the buff layer",
-      "count": 375
+      "count": 376
     },
     {
       "reason": "effect type \"movement-modifier\" is not modelled by the buff layer",
-      "count": 151
+      "count": 153
     },
     {
       "reason": "effect type \"mortal-wounds\" is not modelled by the buff layer",
       "count": 121
     },
     {
-      "reason": "effect type \"attack-restriction\" is not modelled by the buff layer",
+      "reason": "dice-gated effect: stochastic; not expressible as a buff",
       "count": 86
     },
     {
-      "reason": "dice-gated effect: stochastic; not expressible as a buff",
-      "count": 85
-    },
-    {
-      "reason": "stat-modifier: operation \"undefined\" not supported",
-      "count": 80
+      "reason": "effect type \"attack-restriction\" is not modelled by the buff layer",
+      "count": 86
     },
     {
       "reason": "effect type \"leadership-modifier\" is not modelled by the buff layer",
       "count": 66
     },
     {
+      "reason": "stat-modifier: operation \"undefined\" not supported",
+      "count": 58
+    },
+    {
       "reason": "effect type \"resurrection\" is not modelled by the buff layer",
       "count": 54
     },
     {
-      "reason": "effect type \"cp-refund\" is not modelled by the buff layer",
-      "count": 45
+      "reason": "conditional: cannot evaluate condition \"undefined\" against current context",
+      "count": 47
     },
     {
-      "reason": "conditional: cannot evaluate condition \"undefined\" against current context",
+      "reason": "effect type \"cp-refund\" is not modelled by the buff layer",
       "count": 45
     },
     {
@@ -374,7 +374,7 @@
     },
     {
       "reason": "conditional: cannot evaluate condition \"unit-within-range-of\" against current context",
-      "count": 9
+      "count": 10
     },
     {
       "reason": "roll-modifier: operation \"crit-on\" not supported",
@@ -425,11 +425,23 @@
       "count": 2
     },
     {
+      "reason": "effect type \"terrain-area-tag\" is not modelled by the buff layer",
+      "count": 2
+    },
+    {
       "reason": "conditional: cannot evaluate condition \"is-battle-shocked\" against current context",
       "count": 2
     },
     {
+      "reason": "effect type \"engagement-passthrough\" is not modelled by the buff layer",
+      "count": 2
+    },
+    {
       "reason": "re-roll on \"blood-surge\" (subset …) is outside the damage path",
+      "count": 2
+    },
+    {
+      "reason": "effect type \"resource-spend\" is not modelled by the buff layer",
       "count": 2
     },
     {
@@ -453,15 +465,7 @@
       "count": 1
     },
     {
-      "reason": "effect type \"terrain-area-tag\" is not modelled by the buff layer",
-      "count": 1
-    },
-    {
       "reason": "conditional: cannot evaluate condition \"destroyed-by-attack-type\" against current context",
-      "count": 1
-    },
-    {
-      "reason": "effect type \"resource-spend\" is not modelled by the buff layer",
       "count": 1
     },
     {
@@ -470,6 +474,10 @@
     },
     {
       "reason": "stat-modifier: operation \"multiply\" not supported",
+      "count": 1
+    },
+    {
+      "reason": "conditional: cannot evaluate condition \"engagement-state\" against current context",
       "count": 1
     },
     {
@@ -2624,11 +2632,11 @@
       "faction": "adeptus-astartes",
       "ability_id": "chapter-master-of-the-raven-guard",
       "name": "Chapter Master of the Raven Guard",
-      "shape": "stat-modifier",
-      "stub": true,
+      "shape": "conditional",
+      "stub": false,
       "offensive": false,
       "defensive": false,
-      "gap": "stat-modifier: operation \"undefined\" not supported"
+      "gap": null
     },
     {
       "faction": "adeptus-astartes",
@@ -6344,11 +6352,11 @@
       "faction": "aeldari",
       "ability_id": "word-of-the-phoenix-psychic",
       "name": "Word of the Phoenix (Psychic)",
-      "shape": "stat-modifier",
-      "stub": true,
+      "shape": "conditional",
+      "stub": false,
       "offensive": false,
       "defensive": false,
-      "gap": "stat-modifier: operation \"undefined\" not supported"
+      "gap": "conditional: cannot evaluate condition \"undefined\" against current context"
     },
     {
       "faction": "aeldari",
@@ -9814,11 +9822,11 @@
       "faction": "astra-militarum",
       "ability_id": "aerial-deployment",
       "name": "Aerial Deployment",
-      "shape": "stat-modifier",
-      "stub": true,
+      "shape": "conditional",
+      "stub": false,
       "offensive": false,
       "defensive": false,
-      "gap": "stat-modifier: operation \"undefined\" not supported"
+      "gap": null
     },
     {
       "faction": "astra-militarum",
@@ -10034,11 +10042,11 @@
       "faction": "astra-militarum",
       "ability_id": "primed-and-ready",
       "name": "Primed and Ready",
-      "shape": "stat-modifier",
-      "stub": true,
+      "shape": "conditional",
+      "stub": false,
       "offensive": false,
       "defensive": false,
-      "gap": "stat-modifier: operation \"undefined\" not supported"
+      "gap": null
     },
     {
       "faction": "astra-militarum",
@@ -10054,11 +10062,11 @@
       "faction": "astra-militarum",
       "ability_id": "fights-first",
       "name": "Fights First",
-      "shape": "stat-modifier",
-      "stub": true,
+      "shape": "conditional",
+      "stub": false,
       "offensive": false,
       "defensive": false,
-      "gap": "stat-modifier: operation \"undefined\" not supported"
+      "gap": null
     },
     {
       "faction": "astra-militarum",
@@ -10374,11 +10382,11 @@
       "faction": "chaos-daemons",
       "ability_id": "split",
       "name": "Split",
-      "shape": "stat-modifier",
-      "stub": true,
+      "shape": "conditional",
+      "stub": false,
       "offensive": false,
       "defensive": false,
-      "gap": "stat-modifier: operation \"undefined\" not supported"
+      "gap": null
     },
     {
       "faction": "chaos-daemons",
@@ -11164,11 +11172,11 @@
       "faction": "chaos-daemons",
       "ability_id": "grotesque-regeneration",
       "name": "Grotesque Regeneration",
-      "shape": "stat-modifier",
-      "stub": true,
+      "shape": "conditional",
+      "stub": false,
       "offensive": false,
       "defensive": false,
-      "gap": "stat-modifier: operation \"undefined\" not supported"
+      "gap": null
     },
     {
       "faction": "chaos-daemons",
@@ -11314,11 +11322,11 @@
       "faction": "chaos-daemons",
       "ability_id": "the-dark-master-aura",
       "name": "The Dark Master (Aura)",
-      "shape": "stat-modifier",
-      "stub": true,
+      "shape": "terrain-area-tag",
+      "stub": false,
       "offensive": false,
       "defensive": false,
-      "gap": "stat-modifier: operation \"undefined\" not supported"
+      "gap": "effect type \"terrain-area-tag\" is not modelled by the buff layer"
     },
     {
       "faction": "chaos-daemons",
@@ -11764,11 +11772,11 @@
       "faction": "chaos-knights",
       "ability_id": "super-heavy-walker",
       "name": "Super-heavy Walker",
-      "shape": "stat-modifier",
+      "shape": "conditional",
       "stub": true,
       "offensive": false,
       "defensive": false,
-      "gap": "stat-modifier: operation \"undefined\" not supported"
+      "gap": "effect type \"movement-modifier\" is not modelled by the buff layer"
     },
     {
       "faction": "chaos-knights",
@@ -13824,11 +13832,11 @@
       "faction": "death-guard",
       "ability_id": "curse-of-the-walking-pox",
       "name": "Curse of the Walking Pox",
-      "shape": "stat-modifier",
-      "stub": true,
+      "shape": "conditional",
+      "stub": false,
       "offensive": false,
       "defensive": false,
-      "gap": "stat-modifier: operation \"undefined\" not supported"
+      "gap": null
     },
     {
       "faction": "death-guard",
@@ -14894,11 +14902,11 @@
       "faction": "drukhari",
       "ability_id": "experimental-enhancements",
       "name": "Experimental Enhancements",
-      "shape": "stat-modifier",
-      "stub": true,
-      "offensive": false,
+      "shape": "conditional",
+      "stub": false,
+      "offensive": true,
       "defensive": false,
-      "gap": "stat-modifier: operation \"undefined\" not supported"
+      "gap": "effect type \"resource-spend\" is not modelled by the buff layer"
     },
     {
       "faction": "drukhari",
@@ -15104,11 +15112,11 @@
       "faction": "drukhari",
       "ability_id": "archon-s-retinue",
       "name": "Archon’s Retinue",
-      "shape": "stat-modifier",
-      "stub": true,
+      "shape": "conditional",
+      "stub": false,
       "offensive": false,
       "defensive": false,
-      "gap": "stat-modifier: operation \"undefined\" not supported"
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
     },
     {
       "faction": "drukhari",
@@ -15834,11 +15842,11 @@
       "faction": "emperors-children",
       "ability_id": "daemonic-patrons",
       "name": "Daemonic Patrons",
-      "shape": "stat-modifier",
+      "shape": "sequence",
       "stub": true,
-      "offensive": false,
+      "offensive": true,
       "defensive": false,
-      "gap": "stat-modifier: operation \"undefined\" not supported"
+      "gap": null
     },
     {
       "faction": "emperors-children",
@@ -17404,11 +17412,11 @@
       "faction": "imperial-knights",
       "ability_id": "grav-pinned",
       "name": "Grav-pinned",
-      "shape": "stat-modifier",
-      "stub": true,
+      "shape": "conditional",
+      "stub": false,
       "offensive": false,
       "defensive": false,
-      "gap": "stat-modifier: operation \"undefined\" not supported"
+      "gap": null
     },
     {
       "faction": "imperial-knights",
@@ -17444,11 +17452,11 @@
       "faction": "imperial-knights",
       "ability_id": "super-heavy-walker",
       "name": "Super-heavy Walker",
-      "shape": "stat-modifier",
+      "shape": "conditional",
       "stub": true,
       "offensive": false,
       "defensive": false,
-      "gap": "stat-modifier: operation \"undefined\" not supported"
+      "gap": "effect type \"movement-modifier\" is not modelled by the buff layer"
     },
     {
       "faction": "imperial-knights",
@@ -18664,11 +18672,11 @@
       "faction": "necrons",
       "ability_id": "chittering-swarm",
       "name": "Chittering Swarm",
-      "shape": "stat-modifier",
-      "stub": true,
+      "shape": "sequence",
+      "stub": false,
       "offensive": false,
       "defensive": false,
-      "gap": "stat-modifier: operation \"undefined\" not supported"
+      "gap": "conditional: cannot evaluate condition \"engagement-state\" against current context"
     },
     {
       "faction": "necrons",
@@ -18874,11 +18882,11 @@
       "faction": "necrons",
       "ability_id": "tunnelling-horrors",
       "name": "Tunnelling Horrors",
-      "shape": "stat-modifier",
-      "stub": true,
+      "shape": "conditional",
+      "stub": false,
       "offensive": false,
       "defensive": false,
-      "gap": "stat-modifier: operation \"undefined\" not supported"
+      "gap": null
     },
     {
       "faction": "necrons",
@@ -18964,11 +18972,11 @@
       "faction": "necrons",
       "ability_id": "obelisk-node-control",
       "name": "Obelisk Node Control",
-      "shape": "stat-modifier",
-      "stub": true,
+      "shape": "conditional",
+      "stub": false,
       "offensive": false,
       "defensive": false,
-      "gap": "stat-modifier: operation \"undefined\" not supported"
+      "gap": "conditional: cannot evaluate condition \"undefined\" against current context"
     },
     {
       "faction": "necrons",
@@ -19244,11 +19252,11 @@
       "faction": "necrons",
       "ability_id": "drain-life",
       "name": "Drain Life",
-      "shape": "stat-modifier",
-      "stub": true,
+      "shape": "conditional",
+      "stub": false,
       "offensive": false,
       "defensive": false,
-      "gap": "stat-modifier: operation \"undefined\" not supported"
+      "gap": null
     },
     {
       "faction": "necrons",
@@ -20564,11 +20572,11 @@
       "faction": "tau-empire",
       "ability_id": "air-caste-colossus",
       "name": "Air Caste Colossus",
-      "shape": "stat-modifier",
-      "stub": true,
+      "shape": "conditional",
+      "stub": false,
       "offensive": false,
       "defensive": false,
-      "gap": "stat-modifier: operation \"undefined\" not supported"
+      "gap": null
     },
     {
       "faction": "tau-empire",
@@ -22354,11 +22362,11 @@
       "faction": "thousand-sons",
       "ability_id": "binding-tendrils-psychic",
       "name": "Binding Tendrils (Psychic)",
-      "shape": "stat-modifier",
-      "stub": true,
+      "shape": "conditional",
+      "stub": false,
       "offensive": false,
       "defensive": false,
-      "gap": "stat-modifier: operation \"undefined\" not supported"
+      "gap": null
     },
     {
       "faction": "thousand-sons",
@@ -23164,11 +23172,11 @@
       "faction": "tyranids",
       "ability_id": "parasitic-infection",
       "name": "Parasitic Infection",
-      "shape": "stat-modifier",
+      "shape": "conditional",
       "stub": true,
       "offensive": false,
       "defensive": false,
-      "gap": "stat-modifier: operation \"undefined\" not supported"
+      "gap": null
     },
     {
       "faction": "tyranids",

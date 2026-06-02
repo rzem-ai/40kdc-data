@@ -1,8 +1,8 @@
 {
   "name": "@alpaca-software/40kdc-data",
-  "version": "0.4.16",
+  "version": "0.4.17",
   "type": "module",
-  "description": "The 40kdc Warhammer 40K dataset behind a linked, typed API — find units, follow them to their weapons, abilities, phases, and factions. Also validates data against the canonical JSON Schemas.",
+  "description": "The 40kdc Warhammer 40K dataset behind a linked, typed API \u2014 find units, follow them to their weapons, abilities, phases, and factions. Also validates data against the canonical JSON Schemas.",
   "keywords": [
     "warhammer",
     "warhammer-40k",

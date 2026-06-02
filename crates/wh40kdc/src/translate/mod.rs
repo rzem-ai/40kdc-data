@@ -199,6 +199,29 @@ fn describe_simple(s: &SimpleCondition) -> String {
         T::AttackIsType => format!("{negate}for {} attacks", ps(p, "attack_type").unwrap_or("")),
         T::IsBattleShocked => format!("{negate}the unit is battle-shocked"),
         T::HasLostWounds => format!("{negate}the model has lost wounds"),
+        T::WasHitByAttack => {
+            let subject = if ps(p, "subject") == Some("target") {
+                "the target"
+            } else {
+                "the unit"
+            };
+            let atk = match ps(p, "attack_type") {
+                Some(t) => format!("{t} "),
+                None => String::new(),
+            };
+            let weapon = match ps(p, "weapon_name") {
+                Some(w) => format!(" by {w}"),
+                None => String::new(),
+            };
+            let n = pu(p, "count_min", 1);
+            if n > 1 {
+                format!("{negate}{subject} was hit by {n}+ {atk}attacks{weapon} this phase")
+            } else if atk.is_empty() {
+                format!("{negate}{subject} was hit by an attack{weapon} this phase")
+            } else {
+                format!("{negate}{subject} was hit by a {atk}attack{weapon} this phase")
+            }
+        }
         T::OpponentUnitWithinRange => {
             let r = if ps(p, "range") == Some("engagement") {
                 "engagement range".to_string()

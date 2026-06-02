@@ -720,6 +720,7 @@ export interface SimpleCondition {
     | "remained-stationary"
     | "is-battle-shocked"
     | "has-lost-wounds"
+    | "was-hit-by-attack"
     | "opponent-unit-within-range"
     | "within-range-of-objective"
     | "attack-is-type"

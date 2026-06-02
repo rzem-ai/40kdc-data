@@ -1247,18 +1247,76 @@
     },
     "version": "2025-q3",
     "effect": {
-      "type": "stat-modifier",
-      "target": "unit",
-      "modifier": {}
+      "type": "conditional",
+      "condition": {
+        "type": "phase-is",
+        "parameters": {
+          "phase": "movement"
+        }
+      },
+      "effect": {
+        "type": "sequence",
+        "steps": [
+          {
+            "type": "movement-modifier",
+            "target": "self",
+            "modifier": {
+              "move_type": "through-non-titanic-models"
+            }
+          },
+          {
+            "type": "movement-modifier",
+            "target": "self",
+            "modifier": {
+              "move_type": "through-terrain-4-or-less"
+            }
+          },
+          {
+            "type": "engagement-passthrough",
+            "target": "self",
+            "modifier": {}
+          },
+          {
+            "type": "movement-modifier",
+            "target": "self",
+            "modifier": {
+              "move_type": "through-terrain-over-4-inches"
+            }
+          },
+          {
+            "type": "conditional",
+            "condition": {
+              "type": "timing-is",
+              "parameters": {
+                "timing": "after-moving-through-tall-terrain"
+              }
+            },
+            "effect": {
+              "type": "dice-gated",
+              "dice": "D6",
+              "threshold": 1,
+              "comparison": "eq",
+              "on_success": {
+                "type": "leadership-modifier",
+                "target": "self",
+                "modifier": {
+                  "test": "battle-shock",
+                  "operation": "apply"
+                }
+              }
+            }
+          }
+        ]
+      }
     },
     "scope": {
-      "range": "any-on-battlefield",
-      "duration": "permanent"
+      "range": "self",
+      "duration": "phase"
     },
     "faction_id": "chaos-knights",
     "ability_type": "faction",
     "behavior": "passive",
-    "community_notes": "auto-generated stub — needs manual authoring (source: 10e Datasheets_abilities; rules text omitted for IP)"
+    "community_notes": "community-authored from 10e source (provisional 11e); see #21"
   },
   {
     "ability_id": "freeblades",
