@@ -6,7 +6,7 @@
 
 # Interface: Violation
 
-Defined in: [data/loadout.ts:30](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/loadout.ts#L30)
+Defined in: [data/loadout.ts:30](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/loadout.ts#L30)
 
 A loadout-rule violation. `id` is the offending weapon/wargear id.
 
@@ -16,7 +16,7 @@ A loadout-rule violation. `id` is the offending weapon/wargear id.
 
 > **id**: `string`
 
-Defined in: [data/loadout.ts:31](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/loadout.ts#L31)
+Defined in: [data/loadout.ts:31](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/loadout.ts#L31)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [data/loadout.ts:31](https://github.com/alpaca-software/40kdc-data/b
 
 > **code**: `"exceeds-max"` \| `"below-min"`
 
-Defined in: [data/loadout.ts:32](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/loadout.ts#L32)
+Defined in: [data/loadout.ts:32](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/loadout.ts#L32)
 
 ***
 
@@ -32,4 +32,4 @@ Defined in: [data/loadout.ts:32](https://github.com/alpaca-software/40kdc-data/b
 
 > **message**: `string`
 
-Defined in: [data/loadout.ts:33](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/loadout.ts#L33)
+Defined in: [data/loadout.ts:33](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/loadout.ts#L33)

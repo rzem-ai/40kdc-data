@@ -6,7 +6,7 @@
 
 # Class: AbilityView
 
-Defined in: [data/entities.ts:87](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L87)
+Defined in: [data/entities.ts:87](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L87)
 
 An ability, linked to the phases it acts in and the units that have it.
 
@@ -25,7 +25,7 @@ units.find("Kharn")!.abilities
 
 > **new AbilityView**(`raw`, `ds`): `AbilityView`
 
-Defined in: [data/entities.ts:88](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L88)
+Defined in: [data/entities.ts:88](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L88)
 
 #### Parameters
 
@@ -49,7 +49,7 @@ The full generated ability record.
 
 > `readonly` **raw**: [`AbilityDSLEntry`](../../generated/interfaces/AbilityDSLEntry.md)
 
-Defined in: [data/entities.ts:90](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L90)
+Defined in: [data/entities.ts:90](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L90)
 
 The full generated ability record.
 
@@ -61,7 +61,7 @@ The full generated ability record.
 
 > **get** **id**(): `string`
 
-Defined in: [data/entities.ts:95](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L95)
+Defined in: [data/entities.ts:95](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L95)
 
 The ability's id (`ability_id` in the raw record).
 
@@ -77,7 +77,7 @@ The ability's id (`ability_id` in the raw record).
 
 > **get** **name**(): `string`
 
-Defined in: [data/entities.ts:99](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L99)
+Defined in: [data/entities.ts:99](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L99)
 
 ##### Returns
 
@@ -91,7 +91,7 @@ Defined in: [data/entities.ts:99](https://github.com/alpaca-software/40kdc-data/
 
 > **get** **phases**(): [`Phase`](../../generated/type-aliases/Phase.md)[]
 
-Defined in: [data/entities.ts:104](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L104)
+Defined in: [data/entities.ts:104](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L104)
 
 Game phases this ability acts in, unioned across its phase-mappings.
 
@@ -107,7 +107,7 @@ Game phases this ability acts in, unioned across its phase-mappings.
 
 > **get** **units**(): [`UnitView`](UnitView.md)[]
 
-Defined in: [data/entities.ts:109](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L109)
+Defined in: [data/entities.ts:109](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L109)
 
 Units that list this ability in their `ability_ids`.
 
@@ -121,7 +121,7 @@ Units that list this ability in their `ability_ids`.
 
 > **getBuffs**(`source`, `context?`, `perspective?`): [`Buff`](../type-aliases/Buff.md)[]
 
-Defined in: [data/entities.ts:122](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L122)
+Defined in: [data/entities.ts:122](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L122)
 
 Buff stack this ability contributes against `context`, with provenance
 tagged via `source` (the caller knows whether this ability is being read
@@ -155,7 +155,7 @@ stat-mods, save rerolls, incoming hit penalties).
 
 > **describeBuffs**(`source`, `context?`, `perspective?`): [`EffectTranslation`](../type-aliases/EffectTranslation.md)
 
-Defined in: [data/entities.ts:135](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L135)
+Defined in: [data/entities.ts:135](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L135)
 
 Full DSL→Buff translation, including the `unsupported` list of effect
 fragments the buff layer can't model. The SPA renders these as warnings

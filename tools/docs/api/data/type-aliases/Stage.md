@@ -8,7 +8,7 @@
 
 > **Stage** = `object`
 
-Defined in: [cruncher/engine.ts:31](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/cruncher/engine.ts#L31)
+Defined in: [cruncher/engine.ts:31](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/cruncher/engine.ts#L31)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [cruncher/engine.ts:31](https://github.com/alpaca-software/40kdc-dat
 
 > **name**: `"attacks"` \| `"hits"` \| `"wounds"` \| `"unsaved"` \| `"damage"` \| `"after-fnp"` \| `"models-killed"`
 
-Defined in: [cruncher/engine.ts:32](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/cruncher/engine.ts#L32)
+Defined in: [cruncher/engine.ts:32](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/cruncher/engine.ts#L32)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [cruncher/engine.ts:32](https://github.com/alpaca-software/40kdc-dat
 
 > **expected**: `number`
 
-Defined in: [cruncher/engine.ts:33](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/cruncher/engine.ts#L33)
+Defined in: [cruncher/engine.ts:33](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/cruncher/engine.ts#L33)
 
 ***
 
@@ -32,4 +32,4 @@ Defined in: [cruncher/engine.ts:33](https://github.com/alpaca-software/40kdc-dat
 
 > **detail**: `string`
 
-Defined in: [cruncher/engine.ts:34](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/cruncher/engine.ts#L34)
+Defined in: [cruncher/engine.ts:34](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/cruncher/engine.ts#L34)

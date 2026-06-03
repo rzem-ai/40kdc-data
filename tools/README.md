@@ -72,7 +72,7 @@ data against them. See the repository root for schema details.
 - Code (`tools/`): **MIT**.
 - Embedded enrichment data (`data/enrichment/`): **CC BY 4.0** —
   attribution: *Alpaca Software and the 40kdc community contributors*
-  (<https://github.com/alpaca-software/40kdc-data>).
+  (<https://github.com/wn-mitch/40kdc-data>).
 - JSON Schemas: **CC0**.
 
 Stat lines and points are numerical facts. Ability and rules text are never

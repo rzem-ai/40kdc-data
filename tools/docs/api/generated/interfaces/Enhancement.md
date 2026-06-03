@@ -6,7 +6,7 @@
 
 # Interface: Enhancement
 
-Defined in: [generated.ts:349](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L349)
+Defined in: [generated.ts:349](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L349)
 
 A purchasable upgrade for a character unit, provided by a detachment.
 
@@ -19,7 +19,7 @@ via the `definition` "enhancement".
 
 > **id**: `string`
 
-Defined in: [generated.ts:350](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L350)
+Defined in: [generated.ts:350](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L350)
 
 ***
 
@@ -27,7 +27,7 @@ Defined in: [generated.ts:350](https://github.com/alpaca-software/40kdc-data/blo
 
 > **name**: `string`
 
-Defined in: [generated.ts:351](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L351)
+Defined in: [generated.ts:351](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L351)
 
 ***
 
@@ -35,7 +35,7 @@ Defined in: [generated.ts:351](https://github.com/alpaca-software/40kdc-data/blo
 
 > **detachment\_id**: `string`
 
-Defined in: [generated.ts:352](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L352)
+Defined in: [generated.ts:352](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L352)
 
 ***
 
@@ -43,7 +43,7 @@ Defined in: [generated.ts:352](https://github.com/alpaca-software/40kdc-data/blo
 
 > **cost**: `number`
 
-Defined in: [generated.ts:353](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L353)
+Defined in: [generated.ts:353](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L353)
 
 ***
 
@@ -51,7 +51,7 @@ Defined in: [generated.ts:353](https://github.com/alpaca-software/40kdc-data/blo
 
 > `optional` **points\_provisional?**: `boolean`
 
-Defined in: [generated.ts:357](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L357)
+Defined in: [generated.ts:357](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L357)
 
 True when the cost is carried over provisionally (e.g. seeded from a prior edition during migration) and not yet confirmed against the current dataslate.
 
@@ -61,7 +61,7 @@ True when the cost is carried over provisionally (e.g. seeded from a prior editi
 
 > `optional` **upgrade\_tag?**: `boolean`
 
-Defined in: [generated.ts:361](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L361)
+Defined in: [generated.ts:361](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L361)
 
 11e: when true, this enhancement applies to up to `max_targets` non-character units while counting as a single Enhancement choice.
 
@@ -71,7 +71,7 @@ Defined in: [generated.ts:361](https://github.com/alpaca-software/40kdc-data/blo
 
 > `optional` **max\_targets?**: `number`
 
-Defined in: [generated.ts:365](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L365)
+Defined in: [generated.ts:365](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L365)
 
 Number of units this enhancement may be applied to. Only meaningful when `upgrade_tag` is true; defaults to 1.
 
@@ -81,7 +81,7 @@ Number of units this enhancement may be applied to. Only meaningful when `upgrad
 
 > `optional` **keyword\_restrictions?**: [`KeywordList`](../type-aliases/KeywordList.md)
 
-Defined in: [generated.ts:366](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L366)
+Defined in: [generated.ts:366](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L366)
 
 ***
 
@@ -89,7 +89,7 @@ Defined in: [generated.ts:366](https://github.com/alpaca-software/40kdc-data/blo
 
 > `optional` **exclusion\_keywords?**: [`KeywordList`](../type-aliases/KeywordList.md) \| `null`
 
-Defined in: [generated.ts:367](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L367)
+Defined in: [generated.ts:367](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L367)
 
 ***
 
@@ -97,7 +97,7 @@ Defined in: [generated.ts:367](https://github.com/alpaca-software/40kdc-data/blo
 
 > `optional` **ability\_id?**: `string` \| `null`
 
-Defined in: [generated.ts:368](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L368)
+Defined in: [generated.ts:368](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L368)
 
 ***
 
@@ -105,7 +105,7 @@ Defined in: [generated.ts:368](https://github.com/alpaca-software/40kdc-data/blo
 
 > `optional` **is\_unique?**: `boolean`
 
-Defined in: [generated.ts:369](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L369)
+Defined in: [generated.ts:369](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L369)
 
 ***
 
@@ -113,4 +113,4 @@ Defined in: [generated.ts:369](https://github.com/alpaca-software/40kdc-data/blo
 
 > **game\_version**: [`GameVersionReference`](GameVersionReference.md)
 
-Defined in: [generated.ts:370](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L370)
+Defined in: [generated.ts:370](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L370)

@@ -11,7 +11,7 @@
   // own subdomain (salvo.alpacasoft.dev), so the landing page is a different
   // origin — a relative hop can't reach it.
   const HOME_URL = "https://40kdc.alpacasoft.dev";
-  const REPO_URL = "https://github.com/alpaca-software/40kdc-data";
+  const REPO_URL = "https://github.com/wn-mitch/40kdc-data";
   const PACKAGE_URL = "https://www.npmjs.com/package/@alpaca-software/40kdc-data";
   const PUBLISHER_URL = "https://alpacasoft.dev";
   const PATREON_URL = "https://www.patreon.com/c/AlpacaSoftware";
@@ -78,7 +78,7 @@
 
   <footer class="app-footer">
     <a href={REPO_URL} target="_blank" rel="noreferrer noopener">
-      github.com/alpaca-software/40kdc-data
+      github.com/wn-mitch/40kdc-data
     </a>
     <span class="dot" aria-hidden="true">·</span>
     <span class="muted">

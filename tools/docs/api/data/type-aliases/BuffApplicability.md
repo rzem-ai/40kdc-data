@@ -8,7 +8,7 @@
 
 > **BuffApplicability** = `object`
 
-Defined in: [cruncher/buffs.ts:95](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/cruncher/buffs.ts#L95)
+Defined in: [cruncher/buffs.ts:95](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/cruncher/buffs.ts#L95)
 
 Optional gating; the resolver drops buffs whose gate fails.
 
@@ -18,7 +18,7 @@ Optional gating; the resolver drops buffs whose gate fails.
 
 > `optional` **phases?**: [`Phase`](../../generated/type-aliases/Phase.md)[]
 
-Defined in: [cruncher/buffs.ts:96](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/cruncher/buffs.ts#L96)
+Defined in: [cruncher/buffs.ts:96](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/cruncher/buffs.ts#L96)
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: [cruncher/buffs.ts:96](https://github.com/alpaca-software/40kdc-data
 
 > `optional` **rollType?**: `"hit"` \| `"wound"` \| `"save"` \| `"damage"`
 
-Defined in: [cruncher/buffs.ts:97](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/cruncher/buffs.ts#L97)
+Defined in: [cruncher/buffs.ts:97](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/cruncher/buffs.ts#L97)
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: [cruncher/buffs.ts:97](https://github.com/alpaca-software/40kdc-data
 
 > `optional` **requiresTargetKeyword?**: `string`
 
-Defined in: [cruncher/buffs.ts:99](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/cruncher/buffs.ts#L99)
+Defined in: [cruncher/buffs.ts:99](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/cruncher/buffs.ts#L99)
 
 Target must carry this keyword (case-insensitive).
 
@@ -44,6 +44,6 @@ Target must carry this keyword (case-insensitive).
 
 > `optional` **requiresAttackerKeyword?**: `string`
 
-Defined in: [cruncher/buffs.ts:101](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/cruncher/buffs.ts#L101)
+Defined in: [cruncher/buffs.ts:101](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/cruncher/buffs.ts#L101)
 
 Attacker must carry this keyword (case-insensitive).

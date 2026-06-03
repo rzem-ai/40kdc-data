@@ -8,7 +8,7 @@
 
 > **ActivatableBuff** = `object`
 
-Defined in: [cruncher/from-dsl.ts:60](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/cruncher/from-dsl.ts#L60)
+Defined in: [cruncher/from-dsl.ts:60](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/cruncher/from-dsl.ts#L60)
 
 A buff-bearing *player decision* the cruncher can't make on its own: a
 dice-pool option, a `choice` branch, or an activation gated on a timing the
@@ -24,7 +24,7 @@ resolver gates them per-target rather than the lever vanishing.
 
 > **id**: `string`
 
-Defined in: [cruncher/from-dsl.ts:62](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/cruncher/from-dsl.ts#L62)
+Defined in: [cruncher/from-dsl.ts:62](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/cruncher/from-dsl.ts#L62)
 
 Stable toggle id, e.g. `"blessings-of-khorne#Warp Blades"`.
 
@@ -34,7 +34,7 @@ Stable toggle id, e.g. `"blessings-of-khorne#Warp Blades"`.
 
 > **label**: `string`
 
-Defined in: [cruncher/from-dsl.ts:64](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/cruncher/from-dsl.ts#L64)
+Defined in: [cruncher/from-dsl.ts:64](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/cruncher/from-dsl.ts#L64)
 
 Human label for the lever (option name, or a summary of its buffs).
 
@@ -44,7 +44,7 @@ Human label for the lever (option name, or a summary of its buffs).
 
 > **buffs**: [`Buff`](Buff.md)[]
 
-Defined in: [cruncher/from-dsl.ts:66](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/cruncher/from-dsl.ts#L66)
+Defined in: [cruncher/from-dsl.ts:66](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/cruncher/from-dsl.ts#L66)
 
 Contributions this activation adds when the player opts in (≥1).
 
@@ -54,6 +54,6 @@ Contributions this activation adds when the player opts in (≥1).
 
 > `optional` **group?**: [`ActivatableGroupRef`](ActivatableGroupRef.md)
 
-Defined in: [cruncher/from-dsl.ts:68](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/cruncher/from-dsl.ts#L68)
+Defined in: [cruncher/from-dsl.ts:68](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/cruncher/from-dsl.ts#L68)
 
 Set when the lever belongs to a mutually-limited pool.

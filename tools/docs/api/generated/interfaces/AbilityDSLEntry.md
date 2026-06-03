@@ -6,7 +6,7 @@
 
 # Interface: AbilityDSLEntry
 
-Defined in: [generated.ts:1400](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1400)
+Defined in: [generated.ts:1400](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1400)
 
 Community-authored structured representation of what a game ability does. NOT GW text.
 
@@ -19,7 +19,7 @@ via the `definition` "ability".
 
 > **ability\_id**: `string`
 
-Defined in: [generated.ts:1401](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1401)
+Defined in: [generated.ts:1401](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1401)
 
 ***
 
@@ -27,7 +27,7 @@ Defined in: [generated.ts:1401](https://github.com/alpaca-software/40kdc-data/bl
 
 > **name**: `string`
 
-Defined in: [generated.ts:1402](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1402)
+Defined in: [generated.ts:1402](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1402)
 
 ***
 
@@ -35,7 +35,7 @@ Defined in: [generated.ts:1402](https://github.com/alpaca-software/40kdc-data/bl
 
 > **authored\_by**: `string`
 
-Defined in: [generated.ts:1403](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1403)
+Defined in: [generated.ts:1403](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1403)
 
 ***
 
@@ -43,7 +43,7 @@ Defined in: [generated.ts:1403](https://github.com/alpaca-software/40kdc-data/bl
 
 > **game\_version**: [`GameVersionReference`](GameVersionReference.md)
 
-Defined in: [generated.ts:1404](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1404)
+Defined in: [generated.ts:1404](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1404)
 
 ***
 
@@ -51,7 +51,7 @@ Defined in: [generated.ts:1404](https://github.com/alpaca-software/40kdc-data/bl
 
 > `optional` **version?**: `string`
 
-Defined in: [generated.ts:1405](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1405)
+Defined in: [generated.ts:1405](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1405)
 
 ***
 
@@ -59,7 +59,7 @@ Defined in: [generated.ts:1405](https://github.com/alpaca-software/40kdc-data/bl
 
 > `optional` **supersedes?**: `string` \| `null`
 
-Defined in: [generated.ts:1406](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1406)
+Defined in: [generated.ts:1406](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1406)
 
 ***
 
@@ -67,7 +67,7 @@ Defined in: [generated.ts:1406](https://github.com/alpaca-software/40kdc-data/bl
 
 > `optional` **unit\_ids?**: `string`[]
 
-Defined in: [generated.ts:1407](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1407)
+Defined in: [generated.ts:1407](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1407)
 
 ***
 
@@ -75,7 +75,7 @@ Defined in: [generated.ts:1407](https://github.com/alpaca-software/40kdc-data/bl
 
 > `optional` **faction\_id?**: `string` \| `null`
 
-Defined in: [generated.ts:1411](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1411)
+Defined in: [generated.ts:1411](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1411)
 
 For faction-type abilities, the faction this rule belongs to
 
@@ -85,7 +85,7 @@ For faction-type abilities, the faction this rule belongs to
 
 > `optional` **detachment\_id?**: `string` \| `null`
 
-Defined in: [generated.ts:1415](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1415)
+Defined in: [generated.ts:1415](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1415)
 
 For detachment/enhancement/stratagem-type abilities, the associated detachment
 
@@ -95,7 +95,7 @@ For detachment/enhancement/stratagem-type abilities, the associated detachment
 
 > `optional` **ability\_type?**: `"stratagem"` \| `"enhancement"` \| `"unit"` \| `"core"` \| `"detachment"` \| `"faction"`
 
-Defined in: [generated.ts:1416](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1416)
+Defined in: [generated.ts:1416](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1416)
 
 ***
 
@@ -103,7 +103,7 @@ Defined in: [generated.ts:1416](https://github.com/alpaca-software/40kdc-data/bl
 
 > `optional` **behavior?**: `"passive"` \| `"activated"` \| `"reactive"` \| `"aura"`
 
-Defined in: [generated.ts:1420](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1420)
+Defined in: [generated.ts:1420](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1420)
 
 How this ability interacts with the game flow — not a runtime predicate
 
@@ -113,7 +113,7 @@ How this ability interacts with the game flow — not a runtime predicate
 
 > **effect**: [`AbilityEffect1`](../type-aliases/AbilityEffect1.md)
 
-Defined in: [generated.ts:1421](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1421)
+Defined in: [generated.ts:1421](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1421)
 
 ***
 
@@ -121,7 +121,7 @@ Defined in: [generated.ts:1421](https://github.com/alpaca-software/40kdc-data/bl
 
 > **scope**: [`AbilityScope`](AbilityScope.md)
 
-Defined in: [generated.ts:1422](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1422)
+Defined in: [generated.ts:1422](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1422)
 
 ***
 
@@ -129,7 +129,7 @@ Defined in: [generated.ts:1422](https://github.com/alpaca-software/40kdc-data/bl
 
 > `optional` **interactions?**: `object`[]
 
-Defined in: [generated.ts:1423](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1423)
+Defined in: [generated.ts:1423](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1423)
 
 #### Index Signature
 
@@ -153,7 +153,7 @@ Defined in: [generated.ts:1423](https://github.com/alpaca-software/40kdc-data/bl
 
 > `optional` **disputed?**: `boolean`
 
-Defined in: [generated.ts:1429](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1429)
+Defined in: [generated.ts:1429](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1429)
 
 ***
 
@@ -161,7 +161,7 @@ Defined in: [generated.ts:1429](https://github.com/alpaca-software/40kdc-data/bl
 
 > `optional` **dispute\_notes?**: `string`
 
-Defined in: [generated.ts:1430](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1430)
+Defined in: [generated.ts:1430](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1430)
 
 ***
 
@@ -169,4 +169,4 @@ Defined in: [generated.ts:1430](https://github.com/alpaca-software/40kdc-data/bl
 
 > `optional` **community\_notes?**: `string`
 
-Defined in: [generated.ts:1431](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1431)
+Defined in: [generated.ts:1431](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1431)

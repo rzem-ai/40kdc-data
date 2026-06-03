@@ -29,7 +29,7 @@
   import { quintOut } from "svelte/easing";
 
   const HOME_URL = "https://40kdc.alpacasoft.dev";
-  const REPO_URL = "https://github.com/alpaca-software/40kdc-data";
+  const REPO_URL = "https://github.com/wn-mitch/40kdc-data";
   const PACKAGE_URL = "https://www.npmjs.com/package/@alpaca-software/40kdc-data";
   const PUBLISHER_URL = "https://alpacasoft.dev";
   const PATREON_URL = "https://www.patreon.com/c/AlpacaSoftware";
@@ -297,7 +297,7 @@
   </main>
 
   <footer class="flex items-center gap-2 px-4 py-2 mt-auto bg-surface border-t border-border text-[11px] text-text-dim shrink-0">
-    <a class="text-text-muted hover:text-accent no-underline" href={REPO_URL} target="_blank" rel="noreferrer noopener">github.com/alpaca-software/40kdc-data</a>
+    <a class="text-text-muted hover:text-accent no-underline" href={REPO_URL} target="_blank" rel="noreferrer noopener">github.com/wn-mitch/40kdc-data</a>
     <span aria-hidden="true">·</span>
     <span class="inline-flex items-center gap-1.5">
       <img src={ALPACA_ICON} alt="" width="16" height="16" class="rounded-[3px]" aria-hidden="true" />

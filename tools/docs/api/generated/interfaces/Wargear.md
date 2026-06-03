@@ -6,7 +6,7 @@
 
 # Interface: Wargear
 
-Defined in: [generated.ts:1288](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1288)
+Defined in: [generated.ts:1288](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1288)
 
 A non-weapon item a model may carry — an icon, attachment, or other piece of equipment with no weapon profile. Weapons live in weapon.schema.json; this entity exists so wargear-option swaps and add-ons can reference equipment that is not a weapon.
 
@@ -19,7 +19,7 @@ via the `definition` "wargear".
 
 > **id**: `string`
 
-Defined in: [generated.ts:1289](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1289)
+Defined in: [generated.ts:1289](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1289)
 
 ***
 
@@ -27,7 +27,7 @@ Defined in: [generated.ts:1289](https://github.com/alpaca-software/40kdc-data/bl
 
 > **name**: `string`
 
-Defined in: [generated.ts:1290](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1290)
+Defined in: [generated.ts:1290](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1290)
 
 ***
 
@@ -35,7 +35,7 @@ Defined in: [generated.ts:1290](https://github.com/alpaca-software/40kdc-data/bl
 
 > `optional` **category?**: `string` \| `null`
 
-Defined in: [generated.ts:1291](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1291)
+Defined in: [generated.ts:1291](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1291)
 
 ***
 
@@ -43,4 +43,4 @@ Defined in: [generated.ts:1291](https://github.com/alpaca-software/40kdc-data/bl
 
 > **game\_version**: [`GameVersionReference`](GameVersionReference.md)
 
-Defined in: [generated.ts:1292](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1292)
+Defined in: [generated.ts:1292](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1292)

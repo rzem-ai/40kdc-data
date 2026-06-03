@@ -29,7 +29,7 @@
   import Palette from "./lib/Palette.svelte";
 
   const HOME_URL = "https://40kdc.alpacasoft.dev";
-  const REPO_URL = "https://github.com/alpaca-software/40kdc-data";
+  const REPO_URL = "https://github.com/wn-mitch/40kdc-data";
   const PUBLISHER_URL = "https://alpacasoft.dev";
   const PATREON_URL = "https://www.patreon.com/c/AlpacaSoftware";
 

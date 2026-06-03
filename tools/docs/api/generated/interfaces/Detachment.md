@@ -6,7 +6,7 @@
 
 # Interface: Detachment
 
-Defined in: [generated.ts:321](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L321)
+Defined in: [generated.ts:321](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L321)
 
 A detachment option within a faction, providing a detachment rule, enhancements, and stratagems.
 
@@ -19,7 +19,7 @@ via the `definition` "detachment".
 
 > **id**: `string`
 
-Defined in: [generated.ts:322](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L322)
+Defined in: [generated.ts:322](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L322)
 
 ***
 
@@ -27,7 +27,7 @@ Defined in: [generated.ts:322](https://github.com/alpaca-software/40kdc-data/blo
 
 > **name**: `string`
 
-Defined in: [generated.ts:323](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L323)
+Defined in: [generated.ts:323](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L323)
 
 ***
 
@@ -35,7 +35,7 @@ Defined in: [generated.ts:323](https://github.com/alpaca-software/40kdc-data/blo
 
 > **faction\_id**: `string`
 
-Defined in: [generated.ts:324](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L324)
+Defined in: [generated.ts:324](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L324)
 
 ***
 
@@ -43,7 +43,7 @@ Defined in: [generated.ts:324](https://github.com/alpaca-software/40kdc-data/blo
 
 > `optional` **detachment\_rule\_id?**: `string` \| `null`
 
-Defined in: [generated.ts:325](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L325)
+Defined in: [generated.ts:325](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L325)
 
 ***
 
@@ -51,7 +51,7 @@ Defined in: [generated.ts:325](https://github.com/alpaca-software/40kdc-data/blo
 
 > `optional` **detachment\_points?**: `number` \| `null`
 
-Defined in: [generated.ts:329](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L329)
+Defined in: [generated.ts:329](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L329)
 
 11e: the detachment-point cost (1–3) charged against the army's detachment-point budget. null when not yet assigned.
 
@@ -61,7 +61,7 @@ Defined in: [generated.ts:329](https://github.com/alpaca-software/40kdc-data/blo
 
 > `optional` **force\_dispositions?**: `string`[]
 
-Defined in: [generated.ts:333](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L333)
+Defined in: [generated.ts:333](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L333)
 
 11e: ids of the Force Disposition entities this detachment grants. Empty until assigned.
 
@@ -71,7 +71,7 @@ Defined in: [generated.ts:333](https://github.com/alpaca-software/40kdc-data/blo
 
 > `optional` **enhancement\_ids?**: `string`[]
 
-Defined in: [generated.ts:334](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L334)
+Defined in: [generated.ts:334](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L334)
 
 ***
 
@@ -79,7 +79,7 @@ Defined in: [generated.ts:334](https://github.com/alpaca-software/40kdc-data/blo
 
 > `optional` **stratagem\_ids?**: `string`[]
 
-Defined in: [generated.ts:335](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L335)
+Defined in: [generated.ts:335](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L335)
 
 ***
 
@@ -87,7 +87,7 @@ Defined in: [generated.ts:335](https://github.com/alpaca-software/40kdc-data/blo
 
 > `optional` **restrictions?**: \{ `required_keywords?`: [`KeywordList`](../type-aliases/KeywordList.md); `excluded_keywords?`: [`KeywordList`](../type-aliases/KeywordList.md); `notes?`: `string`; \} \| `null`
 
-Defined in: [generated.ts:336](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L336)
+Defined in: [generated.ts:336](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L336)
 
 ***
 
@@ -95,4 +95,4 @@ Defined in: [generated.ts:336](https://github.com/alpaca-software/40kdc-data/blo
 
 > **game\_version**: [`GameVersionReference`](GameVersionReference.md)
 
-Defined in: [generated.ts:341](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L341)
+Defined in: [generated.ts:341](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L341)

@@ -1,7 +1,7 @@
 # wh40kdc
 
 The Warhammer 40K dataset for the
-[40kdc-data](https://github.com/alpaca-software/40kdc-data) schema
+[40kdc-data](https://github.com/wn-mitch/40kdc-data) schema
 layer — the canonical community schema for 40K game entities. This crate is the
 Rust counterpart of the `@alpaca-software/40kdc-data` npm package: it ships the
 generated entity types, the **whole dataset embedded** behind a linked, typed

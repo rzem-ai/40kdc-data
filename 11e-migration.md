@@ -11,7 +11,7 @@ The shared [40kdc](https://40kdc.alpacasoft.dev) schema layer is migrating to Wa
 
 ## Status
 
-- **10e archive**: branch [`10e-archive`](https://github.com/alpaca-software/40kdc-data/tree/10e-archive), tags [`10th/2025-q3`](https://github.com/alpaca-software/40kdc-data/releases/tag/10th/2025-q3) and [`10e-final`](https://github.com/alpaca-software/40kdc-data/releases/tag/10e-final) — frozen snapshot of the 10th edition dataset. `10e-final` is the uniform cross-repo marker for the 10e freeze point; `10th/2025-q3` is the dataslate-style native tag (both point at the same commit).
+- **10e archive**: branch [`10e-archive`](https://github.com/wn-mitch/40kdc-data/tree/10e-archive), tags [`10th/2025-q3`](https://github.com/wn-mitch/40kdc-data/releases/tag/10th/2025-q3) and [`10e-final`](https://github.com/wn-mitch/40kdc-data/releases/tag/10e-final) — frozen snapshot of the 10th edition dataset. `10e-final` is the uniform cross-repo marker for the 10e freeze point; `10th/2025-q3` is the dataslate-style native tag (both point at the same commit).
 - **`main`**: 11th edition development. The schema layer carries forward; `data/core/` is being repopulated faction-by-faction as 11e datasheets land.
 
 ## Confirmed 11e mechanics (from WCommunity previews, May 2026; cross-checked against the 11e Core Rules PDF, June 2026)

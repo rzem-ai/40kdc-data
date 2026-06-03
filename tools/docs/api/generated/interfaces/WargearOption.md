@@ -6,7 +6,7 @@
 
 # Interface: WargearOption
 
-Defined in: [generated.ts:1248](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1248)
+Defined in: [generated.ts:1248](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1248)
 
 A wargear option available to models within a unit: a weapon/wargear swap, a pure add-on, or a choice between alternatives. Models start with the unit's base loadout; an option modifies that loadout for the number of models its `model_constraint` permits.
 
@@ -19,7 +19,7 @@ via the `definition` "wargear-option".
 
 > **id**: `string`
 
-Defined in: [generated.ts:1249](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1249)
+Defined in: [generated.ts:1249](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1249)
 
 ***
 
@@ -27,7 +27,7 @@ Defined in: [generated.ts:1249](https://github.com/alpaca-software/40kdc-data/bl
 
 > **unit\_id**: `string`
 
-Defined in: [generated.ts:1250](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1250)
+Defined in: [generated.ts:1250](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1250)
 
 ***
 
@@ -35,7 +35,7 @@ Defined in: [generated.ts:1250](https://github.com/alpaca-software/40kdc-data/bl
 
 > `optional` **model\_constraint?**: \{ `model_name?`: `string`; `per_n_models?`: `number`; `max_count?`: `number`; `any_number?`: `boolean`; \} \| `null`
 
-Defined in: [generated.ts:1251](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1251)
+Defined in: [generated.ts:1251](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1251)
 
 #### Union Members
 
@@ -71,7 +71,7 @@ When true, every model in the unit may take the option ('Any number of models ca
 
 > `optional` **replaces?**: \[`string`, `...string[]`\]
 
-Defined in: [generated.ts:1265](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1265)
+Defined in: [generated.ts:1265](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1265)
 
 Weapon or wargear IDs removed from the model. Omit for a pure add-on (the option only equips new wargear).
 
@@ -85,7 +85,7 @@ Weapon or wargear IDs removed from the model. Omit for a pure add-on (the option
 
 > `optional` **replacement?**: \[`string`, `...string[]`\]
 
-Defined in: [generated.ts:1271](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1271)
+Defined in: [generated.ts:1271](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1271)
 
 Weapon or wargear IDs added to the model — all of them. Exactly one of `replacement` / `replacement_choice` is present.
 
@@ -99,7 +99,7 @@ Weapon or wargear IDs added to the model — all of them. Exactly one of `replac
 
 > `optional` **replacement\_choice?**: \[\[`string`, `...string[]`\], \[`string`, `...string[]`\], `...[string, ...string[]][]`\]
 
-Defined in: [generated.ts:1277](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1277)
+Defined in: [generated.ts:1277](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1277)
 
 A choice of replacements ('one of the following'): pick exactly one inner group; each group's IDs are all added together. Exactly one of `replacement` / `replacement_choice` is present.
 
@@ -113,7 +113,7 @@ A choice of replacements ('one of the following'): pick exactly one inner group;
 
 > `optional` **is\_free?**: `boolean`
 
-Defined in: [generated.ts:1278](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1278)
+Defined in: [generated.ts:1278](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1278)
 
 ***
 
@@ -121,7 +121,7 @@ Defined in: [generated.ts:1278](https://github.com/alpaca-software/40kdc-data/bl
 
 > `optional` **additional\_cost?**: `number` \| `null`
 
-Defined in: [generated.ts:1279](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1279)
+Defined in: [generated.ts:1279](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1279)
 
 ***
 
@@ -129,4 +129,4 @@ Defined in: [generated.ts:1279](https://github.com/alpaca-software/40kdc-data/bl
 
 > **game\_version**: [`GameVersionReference`](GameVersionReference.md)
 
-Defined in: [generated.ts:1280](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L1280)
+Defined in: [generated.ts:1280](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L1280)

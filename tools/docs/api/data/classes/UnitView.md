@@ -6,7 +6,7 @@
 
 # Class: UnitView
 
-Defined in: [data/entities.ts:27](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L27)
+Defined in: [data/entities.ts:27](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L27)
 
 A unit, linked to its faction, weapons, and abilities.
 
@@ -16,7 +16,7 @@ A unit, linked to its faction, weapons, and abilities.
 
 > **new UnitView**(`raw`, `ds`): `UnitView`
 
-Defined in: [data/entities.ts:28](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L28)
+Defined in: [data/entities.ts:28](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L28)
 
 #### Parameters
 
@@ -40,7 +40,7 @@ The full generated `Unit` record.
 
 > `readonly` **raw**: [`Unit`](../../generated/interfaces/Unit.md)
 
-Defined in: [data/entities.ts:30](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L30)
+Defined in: [data/entities.ts:30](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L30)
 
 The full generated `Unit` record.
 
@@ -52,7 +52,7 @@ The full generated `Unit` record.
 
 > **get** **id**(): `string`
 
-Defined in: [data/entities.ts:34](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L34)
+Defined in: [data/entities.ts:34](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L34)
 
 ##### Returns
 
@@ -66,7 +66,7 @@ Defined in: [data/entities.ts:34](https://github.com/alpaca-software/40kdc-data/
 
 > **get** **name**(): `string`
 
-Defined in: [data/entities.ts:38](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L38)
+Defined in: [data/entities.ts:38](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L38)
 
 ##### Returns
 
@@ -80,7 +80,7 @@ Defined in: [data/entities.ts:38](https://github.com/alpaca-software/40kdc-data/
 
 > **get** **faction**(): [`FactionView`](FactionView.md) \| `undefined`
 
-Defined in: [data/entities.ts:43](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L43)
+Defined in: [data/entities.ts:43](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L43)
 
 The unit's faction, or `undefined` if its `faction_id` is unknown.
 
@@ -96,7 +96,7 @@ The unit's faction, or `undefined` if its `faction_id` is unknown.
 
 > **get** **weapons**(): [`WeaponView`](WeaponView.md)[]
 
-Defined in: [data/entities.ts:48](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L48)
+Defined in: [data/entities.ts:48](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L48)
 
 Weapons referenced by `weapon_ids`; unresolved ids are skipped.
 
@@ -112,7 +112,7 @@ Weapons referenced by `weapon_ids`; unresolved ids are skipped.
 
 > **get** **abilities**(): [`AbilityView`](AbilityView.md)[]
 
-Defined in: [data/entities.ts:53](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L53)
+Defined in: [data/entities.ts:53](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L53)
 
 Abilities referenced by `ability_ids`; unresolved ids are skipped.
 
@@ -128,7 +128,7 @@ Abilities referenced by `ability_ids`; unresolved ids are skipped.
 
 > **get** **wargearOptions**(): [`WargearOption`](../../generated/interfaces/WargearOption.md)[]
 
-Defined in: [data/entities.ts:58](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L58)
+Defined in: [data/entities.ts:58](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L58)
 
 Wargear options (weapon swaps, add-ons, choices) authored for this unit.
 
@@ -142,7 +142,7 @@ Wargear options (weapon swaps, add-ons, choices) authored for this unit.
 
 > **profileAt**(`i?`): \{\[`k`: `string`\]: `unknown`; `name?`: `string`; `M`: [`StatValue`](../../generated/type-aliases/StatValue.md); `T`: `number`; `W`: `number`; `Sv`: `number`; `invuln_sv?`: `number` \| `null`; `Ld`: `number`; `OC`: `number`; \} \| \{\[`k`: `string`\]: `unknown`; `name?`: `string`; `M`: [`StatValue`](../../generated/type-aliases/StatValue.md); `T`: `number`; `W`: `number`; `Sv`: `number`; `invuln_sv?`: `number` \| `null`; `Ld`: `number`; `OC`: `number`; \}
 
-Defined in: [data/entities.ts:67](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L67)
+Defined in: [data/entities.ts:67](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L67)
 
 The stat profile at index `i` (default 0). Returns the schema-generated
 profile object directly so callers can feed it straight to the engine

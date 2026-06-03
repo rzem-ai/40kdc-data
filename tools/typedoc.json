@@ -9,5 +9,5 @@
   "githubPages": true,
   "hideGenerator": true,
   "sort": ["source-order"],
-  "sourceLinkTemplate": "https://github.com/alpaca-software/40kdc-data/blob/{gitRevision}/{path}#L{line}"
+  "sourceLinkTemplate": "https://github.com/wn-mitch/40kdc-data/blob/{gitRevision}/{path}#L{line}"
 }

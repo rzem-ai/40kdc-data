@@ -8,7 +8,7 @@
 
 > **EngineInput** = `object`
 
-Defined in: [cruncher/engine.ts:37](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/cruncher/engine.ts#L37)
+Defined in: [cruncher/engine.ts:37](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/cruncher/engine.ts#L37)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [cruncher/engine.ts:37](https://github.com/alpaca-software/40kdc-dat
 
 > **attacker**: [`AttackProfileRef`](AttackProfileRef.md)
 
-Defined in: [cruncher/engine.ts:38](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/cruncher/engine.ts#L38)
+Defined in: [cruncher/engine.ts:38](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/cruncher/engine.ts#L38)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [cruncher/engine.ts:38](https://github.com/alpaca-software/40kdc-dat
 
 > **target**: [`TargetProfileRef`](TargetProfileRef.md)
 
-Defined in: [cruncher/engine.ts:39](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/cruncher/engine.ts#L39)
+Defined in: [cruncher/engine.ts:39](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/cruncher/engine.ts#L39)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [cruncher/engine.ts:39](https://github.com/alpaca-software/40kdc-dat
 
 > **modelsFiring**: `number`
 
-Defined in: [cruncher/engine.ts:40](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/cruncher/engine.ts#L40)
+Defined in: [cruncher/engine.ts:40](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/cruncher/engine.ts#L40)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [cruncher/engine.ts:40](https://github.com/alpaca-software/40kdc-dat
 
 > **buffs**: [`Buff`](Buff.md)[]
 
-Defined in: [cruncher/engine.ts:42](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/cruncher/engine.ts#L42)
+Defined in: [cruncher/engine.ts:42](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/cruncher/engine.ts#L42)
 
 User / ability / manual buffs. Weapon-keyword buffs are auto-injected.
 
@@ -50,4 +50,4 @@ User / ability / manual buffs. Weapon-keyword buffs are auto-injected.
 
 > **context**: [`EngineContext`](EngineContext.md)
 
-Defined in: [cruncher/engine.ts:43](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/cruncher/engine.ts#L43)
+Defined in: [cruncher/engine.ts:43](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/cruncher/engine.ts#L43)

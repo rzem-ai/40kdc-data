@@ -8,7 +8,7 @@
 
 > **StackableBuffGroup** = `object`
 
-Defined in: [data/dataset.ts:75](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/dataset.ts#L75)
+Defined in: [data/dataset.ts:75](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/dataset.ts#L75)
 
 A pool of [StackableBuff](StackableBuff.md) levers limited to `maxActivations` at once.
 
@@ -18,7 +18,7 @@ A pool of [StackableBuff](StackableBuff.md) levers limited to `maxActivations` a
 
 > **id**: `string`
 
-Defined in: [data/dataset.ts:76](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/dataset.ts#L76)
+Defined in: [data/dataset.ts:76](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/dataset.ts#L76)
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: [data/dataset.ts:76](https://github.com/alpaca-software/40kdc-data/b
 
 > **label**: `string`
 
-Defined in: [data/dataset.ts:77](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/dataset.ts#L77)
+Defined in: [data/dataset.ts:77](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/dataset.ts#L77)
 
 ***
 
@@ -34,4 +34,4 @@ Defined in: [data/dataset.ts:77](https://github.com/alpaca-software/40kdc-data/b
 
 > **maxActivations**: `number`
 
-Defined in: [data/dataset.ts:78](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/dataset.ts#L78)
+Defined in: [data/dataset.ts:78](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/dataset.ts#L78)

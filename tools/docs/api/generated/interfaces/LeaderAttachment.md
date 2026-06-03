@@ -6,7 +6,7 @@
 
 # Interface: LeaderAttachment
 
-Defined in: [generated.ts:425](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L425)
+Defined in: [generated.ts:425](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L425)
 
 Defines which character units can attach to which bodyguard units.
 
@@ -19,7 +19,7 @@ via the `definition` "leader-attachment".
 
 > **leader\_id**: `string`
 
-Defined in: [generated.ts:426](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L426)
+Defined in: [generated.ts:426](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L426)
 
 ***
 
@@ -27,7 +27,7 @@ Defined in: [generated.ts:426](https://github.com/alpaca-software/40kdc-data/blo
 
 > **eligible\_bodyguard\_ids**: \[`string`, `...string[]`\]
 
-Defined in: [generated.ts:430](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L430)
+Defined in: [generated.ts:430](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L430)
 
 #### Min Items
 
@@ -39,4 +39,4 @@ Defined in: [generated.ts:430](https://github.com/alpaca-software/40kdc-data/blo
 
 > **game\_version**: [`GameVersionReference`](GameVersionReference.md)
 
-Defined in: [generated.ts:431](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L431)
+Defined in: [generated.ts:431](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L431)

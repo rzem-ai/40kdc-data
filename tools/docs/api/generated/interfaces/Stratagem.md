@@ -6,7 +6,7 @@
 
 # Interface: Stratagem
 
-Defined in: [generated.ts:882](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L882)
+Defined in: [generated.ts:882](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L882)
 
 A CP-costed ability usable during specific game phases.
 
@@ -19,7 +19,7 @@ via the `definition` "stratagem".
 
 > **id**: `string`
 
-Defined in: [generated.ts:883](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L883)
+Defined in: [generated.ts:883](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L883)
 
 ***
 
@@ -27,7 +27,7 @@ Defined in: [generated.ts:883](https://github.com/alpaca-software/40kdc-data/blo
 
 > **name**: `string`
 
-Defined in: [generated.ts:884](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L884)
+Defined in: [generated.ts:884](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L884)
 
 ***
 
@@ -35,7 +35,7 @@ Defined in: [generated.ts:884](https://github.com/alpaca-software/40kdc-data/blo
 
 > **category**: `"core"` \| `"detachment"`
 
-Defined in: [generated.ts:888](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L888)
+Defined in: [generated.ts:888](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L888)
 
 Whether this is a universal core stratagem or tied to a specific detachment
 
@@ -45,7 +45,7 @@ Whether this is a universal core stratagem or tied to a specific detachment
 
 > **type**: `"battle-tactic"` \| `"strategic-ploy"` \| `"epic-deed"` \| `"wargear"`
 
-Defined in: [generated.ts:892](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L892)
+Defined in: [generated.ts:892](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L892)
 
 GW-printed stratagem category from the card
 
@@ -55,7 +55,7 @@ GW-printed stratagem category from the card
 
 > `optional` **detachment\_id?**: `string` \| `null`
 
-Defined in: [generated.ts:896](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L896)
+Defined in: [generated.ts:896](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L896)
 
 Null for core stratagems
 
@@ -65,7 +65,7 @@ Null for core stratagems
 
 > **cp\_cost**: `number`
 
-Defined in: [generated.ts:897](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L897)
+Defined in: [generated.ts:897](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L897)
 
 ***
 
@@ -73,7 +73,7 @@ Defined in: [generated.ts:897](https://github.com/alpaca-software/40kdc-data/blo
 
 > **phases**: [`PhaseList`](../type-aliases/PhaseList.md)
 
-Defined in: [generated.ts:898](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L898)
+Defined in: [generated.ts:898](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L898)
 
 ***
 
@@ -81,7 +81,7 @@ Defined in: [generated.ts:898](https://github.com/alpaca-software/40kdc-data/blo
 
 > **player\_turn**: [`PlayerTurn`](../type-aliases/PlayerTurn.md)
 
-Defined in: [generated.ts:899](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L899)
+Defined in: [generated.ts:899](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L899)
 
 ***
 
@@ -89,7 +89,7 @@ Defined in: [generated.ts:899](https://github.com/alpaca-software/40kdc-data/blo
 
 > **timing**: `"once-per-phase"` \| `"once-per-turn"` \| `"once-per-battle"` \| `"unlimited"`
 
-Defined in: [generated.ts:900](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L900)
+Defined in: [generated.ts:900](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L900)
 
 ***
 
@@ -97,7 +97,7 @@ Defined in: [generated.ts:900](https://github.com/alpaca-software/40kdc-data/blo
 
 > `optional` **target\_restrictions?**: \{ `required_keywords?`: [`KeywordList`](../type-aliases/KeywordList.md); `excluded_keywords?`: [`KeywordList`](../type-aliases/KeywordList.md); `notes?`: `string`; \} \| `null`
 
-Defined in: [generated.ts:901](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L901)
+Defined in: [generated.ts:901](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L901)
 
 ***
 
@@ -105,7 +105,7 @@ Defined in: [generated.ts:901](https://github.com/alpaca-software/40kdc-data/blo
 
 > `optional` **ability\_id?**: `string` \| `null`
 
-Defined in: [generated.ts:906](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L906)
+Defined in: [generated.ts:906](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L906)
 
 ***
 
@@ -113,4 +113,4 @@ Defined in: [generated.ts:906](https://github.com/alpaca-software/40kdc-data/blo
 
 > **game\_version**: [`GameVersionReference`](GameVersionReference.md)
 
-Defined in: [generated.ts:907](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/generated.ts#L907)
+Defined in: [generated.ts:907](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/generated.ts#L907)

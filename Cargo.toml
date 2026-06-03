@@ -5,7 +5,7 @@ members = ["crates/wh40kdc", "xtask"]
 [workspace.package]
 edition = "2021"
 license = "MIT"
-repository = "https://github.com/alpaca-software/40kdc-data"
+repository = "https://github.com/wn-mitch/40kdc-data"
 homepage = "https://40kdc.alpacasoft.dev"
 rust-version = "1.75"
 authors = ["Alpaca Software"]

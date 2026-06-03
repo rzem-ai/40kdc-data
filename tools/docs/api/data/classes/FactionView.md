@@ -6,7 +6,7 @@
 
 # Class: FactionView
 
-Defined in: [data/entities.ts:268](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L268)
+Defined in: [data/entities.ts:268](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L268)
 
 A faction, linked to its units and the records scoped to it.
 
@@ -16,7 +16,7 @@ A faction, linked to its units and the records scoped to it.
 
 > **new FactionView**(`raw`, `ds`): `FactionView`
 
-Defined in: [data/entities.ts:269](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L269)
+Defined in: [data/entities.ts:269](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L269)
 
 #### Parameters
 
@@ -40,7 +40,7 @@ The full generated `Faction` record.
 
 > `readonly` **raw**: [`Faction`](../../generated/interfaces/Faction.md)
 
-Defined in: [data/entities.ts:271](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L271)
+Defined in: [data/entities.ts:271](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L271)
 
 The full generated `Faction` record.
 
@@ -52,7 +52,7 @@ The full generated `Faction` record.
 
 > **get** **id**(): `string`
 
-Defined in: [data/entities.ts:275](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L275)
+Defined in: [data/entities.ts:275](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L275)
 
 ##### Returns
 
@@ -66,7 +66,7 @@ Defined in: [data/entities.ts:275](https://github.com/alpaca-software/40kdc-data
 
 > **get** **name**(): `string`
 
-Defined in: [data/entities.ts:279](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L279)
+Defined in: [data/entities.ts:279](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L279)
 
 ##### Returns
 
@@ -80,7 +80,7 @@ Defined in: [data/entities.ts:279](https://github.com/alpaca-software/40kdc-data
 
 > **get** **units**(): [`UnitView`](UnitView.md)[]
 
-Defined in: [data/entities.ts:284](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L284)
+Defined in: [data/entities.ts:284](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L284)
 
 Units whose `faction_id` is this faction (may be empty for successors).
 
@@ -96,7 +96,7 @@ Units whose `faction_id` is this faction (may be empty for successors).
 
 > **get** **abilities**(): [`AbilityView`](AbilityView.md)[]
 
-Defined in: [data/entities.ts:289](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L289)
+Defined in: [data/entities.ts:289](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L289)
 
 Faction-scoped abilities (abilities whose `faction_id` is this faction).
 
@@ -112,7 +112,7 @@ Faction-scoped abilities (abilities whose `faction_id` is this faction).
 
 > **get** **weapons**(): [`WeaponView`](WeaponView.md)[]
 
-Defined in: [data/entities.ts:294](https://github.com/alpaca-software/40kdc-data/blob/8142c2c1ee9b76b8bb6b93c47c11cdb583e5d4c2/tools/src/data/entities.ts#L294)
+Defined in: [data/entities.ts:294](https://github.com/wn-mitch/40kdc-data/blob/0b6959256a79cf859a201d8971874d4a811c6024/tools/src/data/entities.ts#L294)
 
 Distinct weapons carried by this faction's units.
 
