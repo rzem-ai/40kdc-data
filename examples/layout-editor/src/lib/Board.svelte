@@ -205,16 +205,18 @@
         {/if}
       {/if}
       {#each solver.lines as line (line.edge)}
+        <!-- always mark the selected feature so it's clear which corner/face the
+             dimension draws to, even before a distance is typed -->
+        {#if line.ref.kind === "vertex"}
+          {@const v = selOriented.verticesBoard[line.ref.index]}
+          {#if v}<circle cx={v.x} cy={v.y} r="0.5" class="ind active" />{/if}
+        {:else}
+          {@const seg = faceSeg(selOriented, line.ref.side)}
+          <line x1={seg[0].x} y1={seg[0].y} x2={seg[1].x} y2={seg[1].y} class="ind-edge active" />
+        {/if}
         {#if line.distance}
           {@const g = guide(selOriented, line)}
           <line x1={g.from.x} y1={g.from.y} x2={g.to.x} y2={g.to.y} class="measure" />
-          {#if line.ref.kind === "vertex"}
-            {@const v = selOriented.verticesBoard[line.ref.index]}
-            {#if v}<circle cx={v.x} cy={v.y} r="0.5" class="ind active" />{/if}
-          {:else}
-            {@const seg = faceSeg(selOriented, line.ref.side)}
-            <line x1={seg[0].x} y1={seg[0].y} x2={seg[1].x} y2={seg[1].y} class="ind-edge active" />
-          {/if}
         {/if}
       {/each}
 
