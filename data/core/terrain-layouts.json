@@ -3,6 +3,7 @@
     "id": "gw-11e-crucible",
     "name": "Crucible of Battle",
     "source": "gw-11e",
+    "deployment_pattern_id": "crucible-of-battle",
     "pieces": [
       {
         "id": "piece-1",
@@ -1627,6 +1628,7 @@
     "id": "gw-11e-hammer-anvil",
     "name": "Hammer and Anvil",
     "source": "gw-11e",
+    "deployment_pattern_id": "hammer-and-anvil",
     "pieces": [
       {
         "id": "piece-1",
@@ -3433,6 +3435,9 @@
     "name": "Search and Destroy (Take and Hold vs Purge the Foe 2)",
     "source": "gw-11e",
     "description": "Provisional draft transcribed from the published terrain card. Positions are APPROXIMATE — refine in the layout editor against the card measurements. 180°-rotationally symmetric.",
+    "mission_matchup_id": "take-and-hold-vs-purge-the-foe",
+    "variant": 2,
+    "deployment_pattern_id": "search-and-destroy",
     "pieces": [
       {
         "id": "piece-1",

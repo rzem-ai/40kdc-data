@@ -15,6 +15,7 @@
     type SolverViz,
     type OrientedFootprint,
     type DeployZone,
+    type TerritoryDivider,
   } from "./model.js";
   import type { ResolvedPiece } from "@alpaca-software/40kdc-data";
 
@@ -25,11 +26,12 @@
     selectedPiece: EditPiece | null;
     solver: SolverViz;
     zones: DeployZone[];
+    divider: TerritoryDivider | null;
     onselect: (id: string | null) => void;
     onmove: (id: string, position: Vec2) => void;
     onorient: (id: string, patch: { rotation_degrees?: number; mirror?: Mirror }) => void;
   }
-  let { layout, resolved, selectedId, selectedPiece, solver, zones, onselect, onmove, onorient }: Props =
+  let { layout, resolved, selectedId, selectedPiece, solver, zones, divider, onselect, onmove, onorient }: Props =
     $props();
 
   // The board is shown rotated 90° CW for portrait terrain cards. Board coords stay
@@ -62,7 +64,10 @@
     if (!piece) return;
     (e.target as Element).setPointerCapture(e.pointerId);
     const b = toBoard(e);
-    drag = { id: p.id, offset: { x: b.x - piece.position.x, y: b.y - piece.position.y } };
+    // Drag in board space; for a parented feature the stored centroid is
+    // area-local, so anchor the grab offset to its board-space centroid.
+    const c = orientedFootprint(piece, layout)?.centroid ?? piece.position;
+    drag = { id: p.id, offset: { x: b.x - c.x, y: b.y - c.y } };
   }
   function onPointerMove(e: PointerEvent): void {
     if (!drag) return;
@@ -82,12 +87,12 @@
   // Upper-floor platforms across the layout (dashed overlays).
   const uppers = $derived(
     layout.pieces
-      .map((p) => ({ id: p.id, verts: upperFloorBoardVerts(p) }))
+      .map((p) => ({ id: p.id, verts: upperFloorBoardVerts(p, layout) }))
       .filter((u): u is { id: string; verts: Vec2[] } => !!u.verts),
   );
 
   const selOriented = $derived<OrientedFootprint | null>(
-    selectedPiece ? orientedFootprint(selectedPiece) : null,
+    selectedPiece ? orientedFootprint(selectedPiece, layout) : null,
   );
 
   function refPoint(o: OrientedFootprint, ref: SolverRef): Vec2 {
@@ -118,12 +123,14 @@
     return { from, to: t, mid: { x: (from.x + t.x) / 2, y: (from.y + t.y) / 2 }, text: `${line.distance}″` };
   }
 
-  // Edge labels (board edges, named) so the rotation never hides which edge is which.
+  // Edge labels named for where they sit ON SCREEN after the portrait rotation,
+  // with the board coordinate they pin as a suffix (board x0 runs along the top of
+  // the card, x60 along the bottom; y44/y0 are the left/right ends).
   const edgeLabels = $derived([
-    { at: toDisplay({ x: BOARD.width / 2, y: 0.8 }), text: "top (y0)" },
-    { at: toDisplay({ x: BOARD.width / 2, y: BOARD.height - 0.8 }), text: "bottom (y44)" },
-    { at: toDisplay({ x: 1.4, y: BOARD.height / 2 }), text: "left (x0)" },
-    { at: toDisplay({ x: BOARD.width - 1.4, y: BOARD.height / 2 }), text: "right (x60)" },
+    { at: toDisplay({ x: 1.4, y: BOARD.height / 2 }), text: "top · x0" },
+    { at: toDisplay({ x: BOARD.width - 1.4, y: BOARD.height / 2 }), text: "bottom · x60" },
+    { at: toDisplay({ x: BOARD.width / 2, y: BOARD.height - 0.8 }), text: "left · y44" },
+    { at: toDisplay({ x: BOARD.width / 2, y: 0.8 }), text: "right · y0" },
   ]);
 </script>
 
@@ -162,6 +169,11 @@
     <!-- centre of symmetry -->
     <line x1={BOARD_CENTER.x - 1} y1={BOARD_CENTER.y} x2={BOARD_CENTER.x + 1} y2={BOARD_CENTER.y} class="centre" />
     <line x1={BOARD_CENTER.x} y1={BOARD_CENTER.y - 1} x2={BOARD_CENTER.x} y2={BOARD_CENTER.y + 1} class="centre" />
+
+    <!-- territory divider: the dashed line splitting the two players' halves -->
+    {#if divider}
+      <line x1={divider.from.x} y1={divider.from.y} x2={divider.to.x} y2={divider.to.y} class="divider" />
+    {/if}
 
     {#each resolved as p (p.id ?? p.name)}
       {@const ep = p.id ? editById.get(p.id) : undefined}
@@ -210,7 +222,7 @@
     {/if}
 
     {#if selectedPiece}
-      <Handles piece={selectedPiece} {toBoard} {pxPerInch} onorient={(patch) => onorient(selectedPiece.id, patch)} />
+      <Handles piece={selectedPiece} {layout} {toBoard} {pxPerInch} onorient={(patch) => onorient(selectedPiece.id, patch)} />
     {/if}
   </g>
 
@@ -219,6 +231,13 @@
     {#each edgeLabels as l (l.text)}
       <text x={l.at.x} y={l.at.y} class="edge-label">{l.text}</text>
     {/each}
+    {#if divider}
+      {#each divider.badges as b, i (i)}
+        {@const d = toDisplay(b.at)}
+        <circle cx={d.x} cy={d.y} r="1.4" class="terr-badge" style:fill={b.color} />
+        <text x={d.x} y={d.y} class="terr-badge-text">{b.player}</text>
+      {/each}
+    {/if}
     {#if selOriented}
       {#each solver.lines as line (line.edge)}
         {#if line.distance}
@@ -263,6 +282,27 @@
     stroke: oklch(0.34 0.03 25);
     stroke-width: 0.12;
     opacity: 0.8;
+  }
+  .divider {
+    stroke: oklch(0.28 0.02 255);
+    stroke-width: 0.18;
+    stroke-dasharray: 0.9 0.7;
+    opacity: 0.85;
+    pointer-events: none;
+  }
+  .terr-badge {
+    stroke: oklch(0.97 0.01 220);
+    stroke-width: 0.18;
+    pointer-events: none;
+  }
+  .terr-badge-text {
+    fill: oklch(0.98 0.01 220);
+    font-size: 1.6px;
+    font-weight: 700;
+    text-anchor: middle;
+    dominant-baseline: central;
+    font-family: "Barlow Condensed", sans-serif;
+    pointer-events: none;
   }
   .piece {
     stroke-width: 0.18;

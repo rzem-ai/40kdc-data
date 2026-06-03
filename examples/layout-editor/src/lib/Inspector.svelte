@@ -13,14 +13,17 @@
 
   interface Props {
     piece: EditPiece | null;
+    /** Area pieces the selected feature may be anchored to. */
+    areaOptions: { id: string; name: string }[];
     ondelete: (id: string) => void;
     onmove: (id: string, position: { x: number; y: number }) => void;
     onorient: (id: string, patch: { rotation_degrees?: number; mirror?: Mirror }) => void;
     onlinkgroup: (id: string, group: string | undefined) => void;
+    onparent: (id: string, parentId: string | undefined) => void;
     onsolverhover: (ref: SolverRef | null) => void;
     onsolverlines: (lines: SolverLine[]) => void;
   }
-  let { piece, ondelete, onmove, onorient, onlinkgroup, onsolverhover, onsolverlines }: Props =
+  let { piece, areaOptions, ondelete, onmove, onorient, onlinkgroup, onparent, onsolverhover, onsolverlines }: Props =
     $props();
 
   type FeatureChoice = { label: string; ref: SolverRef };
@@ -120,6 +123,10 @@
       <dd>{templateName}</dd>
       <dt>twin</dt>
       <dd>{piece.twin_id ?? "— (independent)"}</dd>
+      {#if piece.piece_type === "feature"}
+        <dt>parent</dt>
+        <dd>{piece.parent_area_id ?? "— (board)"}</dd>
+      {/if}
     </dl>
 
     <fieldset>
@@ -144,13 +151,30 @@
           <option value="vertical">vertical</option>
         </select>
       </label>
+      {#if piece.piece_type === "feature"}
+        <label
+          >parent area
+          <select
+            value={piece.parent_area_id ?? ""}
+            onchange={(e) => onparent(piece.id, (e.currentTarget as HTMLSelectElement).value || undefined)}
+          >
+            <option value="">(none — board space)</option>
+            {#each areaOptions as a (a.id)}
+              <option value={a.id}>{a.name}</option>
+            {/each}
+          </select>
+        </label>
+      {/if}
       <label
         >link group
         <input type="text" placeholder="(none)" value={piece.link_group ?? ""} oninput={(e) => onlinkgroup(piece.id, (e.currentTarget as HTMLInputElement).value)} /></label
       >
       <p class="hint">
-        The centroid is rotation/mirror-invariant. Edits carry the 180° twin along;
-        the link group is mirrored onto it too.
+        The centroid is rotation/mirror-invariant. Edits carry the 180° twin along.
+        {#if piece.piece_type === "feature"}
+          Anchor a feature to an area so moving or rotating the area carries it; its
+          centroid is then in the area's local frame.
+        {/if}
       </p>
     </fieldset>
 

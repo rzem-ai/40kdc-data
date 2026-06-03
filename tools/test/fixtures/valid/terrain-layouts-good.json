@@ -4,6 +4,9 @@
     "name": "Good Full Layout",
     "source": "fabricated-pack",
     "description": "Fabricated layout exercising every footprint type and piece field.",
+    "mission_matchup_id": "take-and-hold-vs-purge-the-foe",
+    "variant": 2,
+    "deployment_pattern_id": "search-and-destroy",
     "pieces": [
       {
         "id": "central-ruin",

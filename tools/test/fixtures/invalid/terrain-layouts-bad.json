@@ -78,5 +78,17 @@
     "name": "Piece With No Template Or Footprint",
     "pieces": [{ "name": "floating", "position": { "x": 10, "y": 10 } }],
     "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "bad-variant-zero",
+    "name": "Bad Variant Zero",
+    "variant": 0,
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "bad-variant-non-integer",
+    "name": "Bad Variant Non Integer",
+    "variant": 1.5,
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
   }
 ]

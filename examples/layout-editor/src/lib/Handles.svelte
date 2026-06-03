@@ -1,17 +1,26 @@
 <script lang="ts">
-  import { orientedFootprint, bbox, type EditPiece, type Mirror, type Vec2 } from "./model.js";
+  import { orientedFootprint, bbox, type EditLayout, type EditPiece, type Mirror, type Vec2 } from "./model.js";
 
   interface Props {
     piece: EditPiece;
+    /** The working layout, so a parented feature's handles compose through its area. */
+    layout: EditLayout;
     /** Map a pointer event to board coordinates (accounts for the display rotation). */
     toBoard: (e: PointerEvent) => Vec2;
     /** Pixels per board inch, for constant-screen-size handles. */
     pxPerInch: () => number;
     onorient: (patch: { rotation_degrees?: number; mirror?: Mirror }) => void;
   }
-  let { piece, toBoard, pxPerInch, onorient }: Props = $props();
+  let { piece, layout, toBoard, pxPerInch, onorient }: Props = $props();
 
-  const oriented = $derived(orientedFootprint(piece));
+  const oriented = $derived(orientedFootprint(piece, layout));
+  // A parented feature stores its rotation in the area-local frame, so the board
+  // angle the grip measures must have the parent area's rotation removed.
+  const parentRotation = $derived(
+    piece.parent_area_id
+      ? layout.pieces.find((p) => p.id === piece.parent_area_id)?.rotation_degrees ?? 0
+      : 0,
+  );
   const box = $derived(oriented ? bbox(oriented.verticesBoard) : null);
   const ppi = $derived(pxPerInch());
 
@@ -40,7 +49,7 @@
     const deg = (Math.atan2(b.y - c.y, b.x - c.x) * 180) / Math.PI;
     // Handle rests straight up (−y → atan2 = −90°), so +90 makes "up" = 0°. The
     // result is the screen-clockwise degree the resolver's rotateCw consumes.
-    let rot = deg + 90;
+    let rot = deg + 90 - parentRotation;
     if (e.shiftKey) rot = Math.round(rot / 15) * 15;
     onorient({ rotation_degrees: ((Math.round(rot) % 360) + 360) % 360 });
   }

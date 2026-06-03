@@ -109,6 +109,19 @@
       "description": "Mission pack or source the layout originates from."
     },
     "description": { "type": "string" },
+    "mission_matchup_id": {
+      "$ref": "../defs/common.schema.json#/$defs/entity-id",
+      "description": "The 11e Force Disposition matchup this layout's card is built for, named in the card's printed order (e.g. `take-and-hold-vs-purge-the-foe`). One of the enumerated mission-matchup ids. Optional: many cards are not yet classified."
+    },
+    "variant": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "The card's trailing variant number within its mission matchup (1–3 at launch, since three layouts share each pairing). No hard maximum, to avoid a breaking change if more variants ship."
+    },
+    "deployment_pattern_id": {
+      "$ref": "../defs/common.schema.json#/$defs/entity-id",
+      "description": "Id of the deployment-pattern (map) this layout is built on (e.g. `search-and-destroy`). Optional until confirmed."
+    },
     "pieces": {
       "type": "array",
       "description": "Terrain pieces composing the layout. May be empty while a layout is registered by name ahead of its confirmed geometry.",

@@ -28,6 +28,16 @@ describe("terrain (embedded catalog + layout resolution)", () => {
     expect(dataset.terrainLayouts.get("gw-11e-hammer-anvil")).toBeDefined();
   });
 
+  it("exposes the new layout classification fields", () => {
+    expect(dataset.terrainLayouts.get("gw-11e-crucible")!.deployment_pattern_id).toBe(
+      "crucible-of-battle",
+    );
+    const sd = dataset.terrainLayouts.get("gw-11e-search-destroy")!;
+    expect(sd.deployment_pattern_id).toBe("search-and-destroy");
+    expect(sd.mission_matchup_id).toBe("take-and-hold-vs-purge-the-foe");
+    expect(sd.variant).toBe(2);
+  });
+
   it("resolveTerrain produces on-board polygons (mirror of Rust resolve_terrain)", () => {
     const layout = dataset.terrainLayouts.get("gw-11e-crucible")!;
     const resolved = dataset.resolveTerrain(layout);

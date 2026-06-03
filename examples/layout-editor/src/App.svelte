@@ -9,13 +9,16 @@
     movePiece,
     orientPiece,
     setLinkGroup,
+    setParentArea,
     deletePiece,
     repairTwins,
     unpairTwins,
     renameLayout,
     deploymentZones,
+    territoryDivider,
     defaultDeploymentFor,
     DEPLOYMENT_PATTERNS,
+    MISSION_MATCHUPS,
     type EditLayout,
     type EditPiece,
     type Mirror,
@@ -23,6 +26,7 @@
     type SolverLine,
     type SolverViz,
     type DeployZone,
+    type TerritoryDivider,
   } from "./lib/model.js";
   import type { TerrainTemplate } from "@alpaca-software/40kdc-data";
   import Board from "./lib/Board.svelte";
@@ -41,11 +45,15 @@
     { id: "gw-11e-search-destroy", label: "Search and Destroy (draft)" },
   ];
 
+  const initialLayout = loadEmbedded("gw-11e-crucible", true) ?? blankLayout();
   let symmetric = $state(true);
-  let layout = $state<EditLayout>(loadEmbedded("gw-11e-crucible", true) ?? blankLayout());
+  let layout = $state<EditLayout>(initialLayout);
   let selectedId = $state<string | null>(null);
-  let deployment = $state<string | null>(defaultDeploymentFor("gw-11e-crucible"));
+  let deployment = $state<string | null>(
+    initialLayout.deployment_pattern_id ?? defaultDeploymentFor(initialLayout.id),
+  );
   const zones = $derived<DeployZone[]>(deploymentZones(deployment));
+  const divider = $derived<TerritoryDivider | null>(territoryDivider(deployment));
 
   let solverHover = $state<SolverRef | null>(null);
   let solverLines = $state<SolverLine[]>([]);
@@ -60,10 +68,18 @@
   const areas = CATALOG.filter((t) => t.kind === "area");
   const features = CATALOG.filter((t) => t.kind === "feature");
 
+  // Area pieces the selected feature can be anchored to (itself excluded).
+  const areaOptions = $derived(
+    layout.pieces
+      .filter((p) => p.piece_type === "area" && p.id !== selectedId)
+      .map((p) => ({ id: p.id, name: p.name ?? p.id })),
+  );
+
   function loadLayout(id: string): void {
     layout = id === "__new__" ? blankLayout() : loadEmbedded(id, symmetric) ?? blankLayout();
     selectedId = null;
-    deployment = id === "__new__" ? null : defaultDeploymentFor(id);
+    deployment =
+      id === "__new__" ? null : layout.deployment_pattern_id ?? defaultDeploymentFor(id);
   }
   function toggleSymmetry(): void {
     symmetric = !symmetric;
@@ -82,6 +98,13 @@
   }
   function onlinkgroup(id: string, group: string | undefined): void {
     setLinkGroup(layout, id, group);
+  }
+  function onparent(id: string, parentId: string | undefined): void {
+    setParentArea(layout, id, parentId);
+  }
+  function onDeploymentChange(value: string): void {
+    deployment = value || null;
+    layout.deployment_pattern_id = deployment ?? undefined;
   }
   function remove(id: string): void {
     const twin = layout.pieces.find((p) => p.id === id)?.twin_id;
@@ -149,11 +172,33 @@
       <select
         aria-label="Deployment overlay"
         value={deployment ?? ""}
-        onchange={(e) => (deployment = e.currentTarget.value || null)}
+        onchange={(e) => onDeploymentChange(e.currentTarget.value)}
       >
         <option value="">No deployment</option>
         {#each DEPLOYMENT_PATTERNS as d (d.id)}<option value={d.id}>{d.name}</option>{/each}
       </select>
+      <select
+        aria-label="Mission pairing"
+        value={layout.mission_matchup_id ?? ""}
+        onchange={(e) => (layout.mission_matchup_id = e.currentTarget.value || undefined)}
+      >
+        <option value="">No pairing</option>
+        {#each MISSION_MATCHUPS as m (m.id)}<option value={m.id}>{m.label}</option>{/each}
+      </select>
+      <input
+        class="variant"
+        type="number"
+        min="1"
+        step="1"
+        placeholder="#"
+        aria-label="Layout variant number"
+        title="Variant number within the mission pairing"
+        value={layout.variant ?? ""}
+        oninput={(e) => {
+          const v = Number(e.currentTarget.value);
+          layout.variant = Number.isFinite(v) && v >= 1 ? Math.floor(v) : undefined;
+        }}
+      />
       <a class="home" href={HOME_URL}>← 40kdc-data</a>
       <a class="home" href={PUBLISHER_URL} target="_blank" rel="noreferrer noopener">alpacasoft.dev</a>
       <a class="home" href={PATREON_URL} target="_blank" rel="noreferrer noopener">Patreon</a>
@@ -180,6 +225,7 @@
         {selectedPiece}
         solver={solverViz}
         {zones}
+        {divider}
         onselect={(id) => (selectedId = id)}
         {onmove}
         {onorient}
@@ -193,10 +239,12 @@
     <aside class="rail side">
       <Inspector
         piece={selectedPiece}
+        {areaOptions}
         ondelete={remove}
         {onmove}
         {onorient}
         {onlinkgroup}
+        {onparent}
         onsolverhover={(ref) => (solverHover = ref)}
         onsolverlines={(lines) => (solverLines = lines)}
       />
@@ -327,6 +375,16 @@
   nav select {
     padding: 0.25rem 0.4rem;
     font-size: 0.85rem;
+  }
+  nav .variant {
+    width: 3rem;
+    padding: 0.25rem 0.4rem;
+    font-size: 0.85rem;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--rim);
+    border-radius: 4px;
+    font-family: inherit;
   }
   .sym {
     font: inherit;

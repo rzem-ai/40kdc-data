@@ -9360,6 +9360,10 @@ impl ::std::convert::TryFrom<::std::string::String> for TerrainAreaKeyword {
 ///    "name"
 ///  ],
 ///  "properties": {
+///    "deployment_pattern_id": {
+///      "description": "Id of the deployment-pattern (map) this layout is built on (e.g. `search-and-destroy`). Optional until confirmed.",
+///      "$ref": "#/$defs/entity-id"
+///    },
 ///    "description": {
 ///      "type": "string"
 ///    },
@@ -9367,6 +9371,10 @@ impl ::std::convert::TryFrom<::std::string::String> for TerrainAreaKeyword {
 ///      "$ref": "#/$defs/game-version-ref"
 ///    },
 ///    "id": {
+///      "$ref": "#/$defs/entity-id"
+///    },
+///    "mission_matchup_id": {
+///      "description": "The 11e Force Disposition matchup this layout's card is built for, named in the card's printed order (e.g. `take-and-hold-vs-purge-the-foe`). One of the enumerated mission-matchup ids. Optional: many cards are not yet classified.",
 ///      "$ref": "#/$defs/entity-id"
 ///    },
 ///    "name": {
@@ -9386,6 +9394,11 @@ impl ::std::convert::TryFrom<::std::string::String> for TerrainAreaKeyword {
 ///      "type": "string",
 ///      "maxLength": 64,
 ///      "minLength": 1
+///    },
+///    "variant": {
+///      "description": "The card's trailing variant number within its mission matchup (1–3 at launch, since three layouts share each pairing). No hard maximum, to avoid a breaking change if more variants ship.",
+///      "type": "integer",
+///      "minimum": 1.0
 ///    }
 ///  },
 ///  "additionalProperties": false
@@ -9395,10 +9408,16 @@ impl ::std::convert::TryFrom<::std::string::String> for TerrainAreaKeyword {
 #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct TerrainLayout {
+    ///Id of the deployment-pattern (map) this layout is built on (e.g. `search-and-destroy`). Optional until confirmed.
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub deployment_pattern_id: ::std::option::Option<EntityId>,
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub description: ::std::option::Option<::std::string::String>,
     pub game_version: GameVersionRef,
     pub id: EntityId,
+    ///The 11e Force Disposition matchup this layout's card is built for, named in the card's printed order (e.g. `take-and-hold-vs-purge-the-foe`). One of the enumerated mission-matchup ids. Optional: many cards are not yet classified.
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub mission_matchup_id: ::std::option::Option<EntityId>,
     pub name: TerrainLayoutName,
     ///Terrain pieces composing the layout. May be empty while a layout is registered by name ahead of its confirmed geometry.
     #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
@@ -9406,6 +9425,9 @@ pub struct TerrainLayout {
     ///Mission pack or source the layout originates from.
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub source: ::std::option::Option<TerrainLayoutSource>,
+    ///The card's trailing variant number within its mission matchup (1–3 at launch, since three layouts share each pairing). No hard maximum, to avoid a breaking change if more variants ship.
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub variant: ::std::option::Option<::std::num::NonZeroU64>,
 }
 ///`TerrainLayoutName`
 ///

@@ -1020,6 +1020,18 @@ export interface TerrainLayout {
   source?: string;
   description?: string;
   /**
+   * Kebab-case identifier
+   */
+  mission_matchup_id?: string;
+  /**
+   * The card's trailing variant number within its mission matchup (1–3 at launch, since three layouts share each pairing). No hard maximum, to avoid a breaking change if more variants ship.
+   */
+  variant?: number;
+  /**
+   * Kebab-case identifier
+   */
+  deployment_pattern_id?: string;
+  /**
    * Terrain pieces composing the layout. May be empty while a layout is registered by name ahead of its confirmed geometry.
    */
   pieces?: Piece[];
