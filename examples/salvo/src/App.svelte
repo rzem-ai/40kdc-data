@@ -5,6 +5,7 @@
   import TargetPane from "./lib/target-pane.svelte";
   import OutputPane from "./lib/output-pane.svelte";
   import Pane from "./lib/Pane.svelte";
+  import SupportModal from "../../_shared/SupportModal.svelte";
   import { salvo } from "./lib/store.svelte.js";
 
   // Absolute link to the 40kdc landing page. Each example is deployed to its
@@ -86,4 +87,6 @@
       <a href={PACKAGE_URL} target="_blank" rel="noreferrer noopener"><code>@alpaca-software/40kdc-data</code></a>
     </span>
   </footer>
+
+  <SupportModal patreonUrl={PATREON_URL} appName="Salvo" />
 </div>

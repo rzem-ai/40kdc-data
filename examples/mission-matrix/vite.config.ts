@@ -1,7 +1,16 @@
+import { readFileSync } from "node:fs";
 import { defineConfig, type Plugin } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import tailwindcss from "@tailwindcss/vite";
 import { VitePWA } from "vite-plugin-pwa";
+
+// Read this app's version straight from package.json (fs, not a JSON import, to
+// stay agnostic to Node's import-assertion syntax). Exposed to the app as the
+// compile-time constant `__APP_VERSION__`; the PWA install prompt re-arms when
+// it changes.
+const APP_VERSION: string = JSON.parse(
+  readFileSync(new URL("./package.json", import.meta.url), "utf8"),
+).version;
 
 /**
  * The 40kdc-data package's barrel re-exports schema-loader and validate, which
@@ -128,5 +137,8 @@ export default defineConfig({
       },
     }),
   ],
+  define: {
+    __APP_VERSION__: JSON.stringify(APP_VERSION),
+  },
   base: process.env.TOOLLET_BASE ?? "/",
 });

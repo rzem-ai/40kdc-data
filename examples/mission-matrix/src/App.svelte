@@ -25,6 +25,8 @@
   } from "./lib/data.js";
   import PlayerColumn from "./lib/PlayerColumn.svelte";
   import WtcResult from "./lib/WtcResult.svelte";
+  import PwaInstallPrompt from "./lib/PwaInstallPrompt.svelte";
+  import SupportModal from "../../_shared/SupportModal.svelte";
   import { slide } from "svelte/transition";
   import { quintOut } from "svelte/easing";
 
@@ -69,6 +71,10 @@
   let activeYou = $state<string | null>(saved.activeYou ?? null);
   let activeOpp = $state<string | null>(saved.activeOpp ?? null);
   let matrixOpen = $state<boolean>(!(saved.dispYou && saved.dispOpp));
+
+  // When the PWA install prompt is showing (version bump, not yet installed), hold
+  // back the support modal so the two popups never stack.
+  let pwaPromptOpen = $state<boolean>(false);
 
   $effect(() => {
     const blob: Saved = { dispYou, dispOpp, round, gameYou, gameOpp, activeYou, activeOpp };
@@ -308,4 +314,7 @@
     <span aria-hidden="true">·</span>
     <a class="text-text-muted hover:text-accent no-underline" href={PATREON_URL} target="_blank" rel="noreferrer noopener">Support on Patreon</a>
   </footer>
+
+  <PwaInstallPrompt bind:open={pwaPromptOpen} />
+  <SupportModal patreonUrl={PATREON_URL} appName="Mission Matrix" enabled={!pwaPromptOpen} />
 </div>

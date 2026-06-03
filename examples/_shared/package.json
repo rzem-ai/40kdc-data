@@ -1,0 +1,7 @@
+{
+  "name": "@40kdc/example-shared",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Shared Svelte components for the 40kdc example apps. Imported by relative path (source .svelte) — not published."
+}

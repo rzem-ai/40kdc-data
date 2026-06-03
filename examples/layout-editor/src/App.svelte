@@ -27,6 +27,7 @@
   import Board from "./lib/Board.svelte";
   import Inspector from "./lib/Inspector.svelte";
   import Palette from "./lib/Palette.svelte";
+  import SupportModal from "../../_shared/SupportModal.svelte";
 
   const HOME_URL = "https://40kdc.alpacasoft.dev";
   const REPO_URL = "https://github.com/wn-mitch/40kdc-data";
@@ -181,6 +182,8 @@
       </section>
     </aside>
   </main>
+
+  <SupportModal patreonUrl={PATREON_URL} appName="Layout Editor" />
 </div>
 
 <style>

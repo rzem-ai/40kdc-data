@@ -1323,5 +1323,54 @@
     ],
     "text": "Protect a key position. From the second battle round, at the end of the opponent's turn (or the fifth battle round), score for controlling your home objective, with a bonus if there are no enemy units within your deployment zone. If drawn in the first battle round, redraw and shuffle this card back.",
     "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "tempting-target",
+    "name": "Tempting Target",
+    "card_type": "secondary",
+    "actions": [
+      {
+        "action_id": "nominate-tempting-target",
+        "starts": "command",
+        "player_turn": "your-turn"
+      }
+    ],
+    "awards": [
+      {
+        "trigger": { "timing": "end-of-turn", "player_turn": "your-turn" },
+        "vp": 4,
+        "mode": "fixed"
+      },
+      {
+        "trigger": { "timing": "end-of-turn", "player_turn": "your-turn" },
+        "vp": 5,
+        "mode": "tactical"
+      }
+    ],
+    "text": "PROVISIONAL — values not yet verified against the printed 11e card. At the start of your Command phase nominate one objective marker you do not control; at the end of your turn, score if you control that nominated marker. The fixed and tactical tracks score different flat values. The VP figures here are placeholders pending the official card.",
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
+  },
+  {
+    "id": "a-grievous-blow",
+    "name": "A Grievous Blow",
+    "card_type": "secondary",
+    "when_drawn": {
+      "operation": "redraw",
+      "condition": {
+        "subject": "opponent",
+        "quantifier": "none",
+        "unit_filter": { "model_count_min": 14 }
+      }
+    },
+    "awards": [
+      {
+        "trigger": { "timing": "end-of-turn", "player_turn": "either" },
+        "vp_per": 4,
+        "per": "enemy-unit-of-14-or-more-starting-models-destroyed-this-turn",
+        "vp_max": 5
+      }
+    ],
+    "text": "PROVISIONAL — values not yet verified against the printed 11e card. The 11e renaming of 10e 'Cull the Horde'. Score per destroyed enemy unit that began the battle at 14 or more models, evaluated at the end of a turn, up to a ceiling. If the opponent's army contains no unit of 14 or more models when this card is drawn, redraw and shuffle it back. The per-kill VP and ceiling here are placeholders pending the official card.",
+    "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
   }
 ]
