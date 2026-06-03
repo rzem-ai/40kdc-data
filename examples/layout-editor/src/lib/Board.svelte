@@ -212,7 +212,8 @@
           <line x1={seg[0].x} y1={seg[0].y} x2={seg[1].x} y2={seg[1].y} class="ind-edge hover" />
         {/if}
       {/if}
-      {#each solver.lines as line (line.edge)}
+      <!-- keyed by index: triangulation lines can share a board edge -->
+      {#each solver.lines as line, li (li)}
         <!-- always mark the selected feature so it's clear which corner/face the
              dimension draws to, even before a distance is typed -->
         {#if line.ref.kind === "vertex"}
@@ -255,7 +256,7 @@
       {/if}
     {/each}
     {#if selOriented}
-      {#each solver.lines as line (line.edge)}
+      {#each solver.lines as line, li (li)}
         {#if line.distance}
           {@const g = guide(selOriented, line)}
           {@const d = toDisplay(g.mid)}
