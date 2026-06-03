@@ -11,8 +11,11 @@
   interface Props {
     /** Bindable so the parent can suppress the support modal while this is open. */
     open?: boolean;
+    /** When true, hold back the auto-show (e.g. the first-run tutorial is up).
+     *  The nudge re-fires on the next version bump, so skipping one session is fine. */
+    suppressed?: boolean;
   }
-  let { open = $bindable(false) }: Props = $props();
+  let { open = $bindable(false), suppressed = false }: Props = $props();
 
   interface BeforeInstallPromptEvent extends Event {
     prompt(): Promise<void>;
@@ -55,6 +58,7 @@
   // reload within the same version won't re-nag.
   function maybeShow(): void {
     if (open) return;
+    if (suppressed) return;
     if (isStandalone()) return;
     if (storedVersion() === __APP_VERSION__) return;
     if (deferred === null && !isIOS) return; // no install path available yet

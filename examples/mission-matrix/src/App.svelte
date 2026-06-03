@@ -25,7 +25,9 @@
   } from "./lib/data.js";
   import PlayerColumn from "./lib/PlayerColumn.svelte";
   import WtcResult from "./lib/WtcResult.svelte";
+  import MissionCard from "./lib/MissionCard.svelte";
   import PwaInstallPrompt from "./lib/PwaInstallPrompt.svelte";
+  import TutorialModal from "./lib/TutorialModal.svelte";
   import SupportModal from "../../_shared/SupportModal.svelte";
   import { slide } from "svelte/transition";
   import { quintOut } from "svelte/easing";
@@ -51,6 +53,8 @@
     gameOpp: PlayerGame;
     activeYou: string | null;
     activeOpp: string | null;
+    autoCollapse?: boolean;
+    verbose?: boolean;
   }
   function load(): Partial<Saved> {
     try {
@@ -70,14 +74,22 @@
   let gameOpp = $state<PlayerGame>(saved.gameOpp ?? emptyPlayerGame());
   let activeYou = $state<string | null>(saved.activeYou ?? null);
   let activeOpp = $state<string | null>(saved.activeOpp ?? null);
-  let matrixOpen = $state<boolean>(!(saved.dispYou && saved.dispOpp));
+  // Matrix display preferences (persisted). `autoCollapse` keeps today's behavior
+  // of folding the matrix once both dispositions are picked; `verbose` expands the
+  // selected disposition's row into full mission cards for comparison.
+  let autoCollapse = $state<boolean>(saved.autoCollapse ?? true);
+  let verbose = $state<boolean>(saved.verbose ?? false);
+  let matrixOpen = $state<boolean>(!(saved.autoCollapse ?? true) || !(saved.dispYou && saved.dispOpp));
 
-  // When the PWA install prompt is showing (version bump, not yet installed), hold
-  // back the support modal so the two popups never stack.
+  // When the PWA install prompt or first-run tutorial is showing, hold back the
+  // support modal so the popups never stack.
   let pwaPromptOpen = $state<boolean>(false);
+  let tutorialOpen = $state<boolean>(false);
 
   $effect(() => {
-    const blob: Saved = { dispYou, dispOpp, round, gameYou, gameOpp, activeYou, activeOpp };
+    const blob: Saved = {
+      dispYou, dispOpp, round, gameYou, gameOpp, activeYou, activeOpp, autoCollapse, verbose,
+    };
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(blob));
     } catch {
@@ -145,11 +157,11 @@
 
   function pickYou(d: ForceDispositionId): void {
     dispYou = dispYou === d ? null : d;
-    if (dispYou && dispOpp) matrixOpen = false;
+    if (autoCollapse && dispYou && dispOpp) matrixOpen = false;
   }
   function pickOpp(d: ForceDispositionId): void {
     dispOpp = dispOpp === d ? null : d;
-    if (dispYou && dispOpp) matrixOpen = false;
+    if (autoCollapse && dispYou && dispOpp) matrixOpen = false;
   }
   function cellState(row: ForceDispositionId, col: ForceDispositionId): "your" | "opp" | null {
     if (!ready) return null;
@@ -178,6 +190,7 @@
       </span>
     </a>
     <nav class="flex items-center gap-3 shrink-0">
+      <button type="button" class="inline-flex items-center justify-center w-6 h-6 rounded-full border border-border text-text-muted hover:text-accent hover:border-accent font-heading text-xs font-bold cursor-pointer" onclick={() => (tutorialOpen = true)} aria-label="How to use Mission Matrix">?</button>
       <a class="font-heading text-[11px] font-bold uppercase tracking-wide text-text-muted hover:text-accent no-underline whitespace-nowrap" href={HOME_URL} aria-label="Back to 40kdc-data examples">← 40kdc-data</a>
       <a class="inline-flex items-center text-text-muted hover:text-accent" href={REPO_URL} target="_blank" rel="noreferrer noopener" aria-label="GitHub repository">
         <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
@@ -193,22 +206,38 @@
   <main class="flex-1 w-full max-w-[1200px] mx-auto px-4 py-5 flex flex-col gap-5">
     <!-- Collapsible disposition matrix → both primaries. -->
     <div class="rounded border border-border bg-surface">
-      <button
-        type="button"
-        class="w-full text-left cursor-pointer flex items-center gap-2 px-3 py-2 font-heading text-[11px] font-bold uppercase tracking-wider text-text-muted hover:text-accent"
-        aria-expanded={matrixOpen}
-        onclick={() => (matrixOpen = !matrixOpen)}
-      >
-        <span class="inline-block transition-transform duration-200 {matrixOpen ? 'rotate-90' : ''}">▶</span>
-        Force Disposition
-        {#if ready}
-          <span class="text-text-dim font-normal normal-case tracking-normal">
-            — You: {DISPOSITION_LABELS[dispYou!]} vs Opp: {DISPOSITION_LABELS[dispOpp!]}
-          </span>
-        {:else}
-          <span class="text-text-dim font-normal normal-case tracking-normal">— pick both to set primaries</span>
-        {/if}
-      </button>
+      <div class="flex items-center gap-2 px-3 py-2">
+        <button
+          type="button"
+          class="flex-1 min-w-0 text-left cursor-pointer flex items-center gap-2 font-heading text-[11px] font-bold uppercase tracking-wider text-text-muted hover:text-accent"
+          aria-expanded={matrixOpen}
+          onclick={() => (matrixOpen = !matrixOpen)}
+        >
+          <span class="inline-block transition-transform duration-200 {matrixOpen ? 'rotate-90' : ''}">▶</span>
+          Force Disposition
+          {#if ready}
+            <span class="truncate text-text-dim font-normal normal-case tracking-normal">
+              — You: {DISPOSITION_LABELS[dispYou!]} vs Opp: {DISPOSITION_LABELS[dispOpp!]}
+            </span>
+          {:else}
+            <span class="truncate text-text-dim font-normal normal-case tracking-normal">— pick both to set primaries</span>
+          {/if}
+        </button>
+        <button
+          type="button"
+          class="focus-ring shrink-0 font-heading text-[10px] font-bold uppercase tracking-wide rounded border px-2 py-1 transition-colors {!autoCollapse ? 'bg-accent text-accent-foreground border-accent' : 'bg-panel text-text-muted border-border hover:border-accent hover:text-accent'}"
+          aria-pressed={!autoCollapse}
+          title="Keep the matrix open instead of collapsing it once both dispositions are picked"
+          onclick={() => (autoCollapse = !autoCollapse)}
+        >Keep open</button>
+        <button
+          type="button"
+          class="focus-ring shrink-0 font-heading text-[10px] font-bold uppercase tracking-wide rounded border px-2 py-1 transition-colors {verbose ? 'bg-accent text-accent-foreground border-accent' : 'bg-panel text-text-muted border-border hover:border-accent hover:text-accent'}"
+          aria-pressed={verbose}
+          title="Expand your selected disposition's row into full mission cards for comparison"
+          onclick={() => (verbose = !verbose)}
+        >Verbose</button>
+      </div>
 
       {#if matrixOpen}
         <div class="px-3 pb-3" transition:slide={{ duration: 220, easing: quintOut }}>
@@ -228,9 +257,14 @@
             {#each DISPOSITIONS as col (col)}
               {@const m = missionFor(row, col)}
               {@const state = cellState(row, col)}
-              <div class="relative flex items-center justify-center text-center min-h-14 px-2 pt-3 pb-2 rounded border bg-panel text-text text-xs leading-tight {state === 'your' ? 'border-accent bg-accent-dim shadow-[0_0_0_2px_var(--color-accent)]' : state === 'opp' ? 'border-accent bg-accent-dim opacity-45' : 'border-border'}">
+              {@const expanded = verbose && row === dispYou}
+              <div class="relative rounded border bg-panel text-text {expanded ? 'flex flex-col text-left px-2 pt-5 pb-2 text-xs leading-tight' : 'flex items-center justify-center text-center min-h-14 px-2 pt-3 pb-2 text-xs leading-tight'} {state === 'your' ? 'border-accent bg-accent-dim shadow-[0_0_0_2px_var(--color-accent)]' : state === 'opp' ? 'border-accent bg-accent-dim opacity-45' : 'border-border'}">
                 {#if state}<span class="absolute top-1 left-1.5 font-heading text-[9px] font-bold uppercase tracking-wide {state === 'your' ? 'text-text' : 'text-accent'}">{state === "your" ? (isMirror ? "YOU·OPP" : "YOU") : "OPP"}</span>{/if}
-                <span class:text-text={state === "your"}>{m?.name ?? "—"}</span>
+                {#if expanded}
+                  <MissionCard mission={m} card={m ? scoringCardFor(m.id) : undefined} />
+                {:else}
+                  <span class:text-text={state === "your"}>{m?.name ?? "—"}</span>
+                {/if}
               </div>
             {/each}
           {/each}
@@ -250,6 +284,23 @@
             </div>
           {/each}
         </div>
+
+        {#if verbose && dispYou}
+          <div class="sm:hidden mt-4 flex flex-col gap-3" aria-label="Missions for {DISPOSITION_LABELS[dispYou]}">
+            <span class="font-heading text-[11px] font-bold uppercase tracking-wider text-text-muted">
+              {DISPOSITION_LABELS[dispYou]} vs each opponent
+            </span>
+            {#each DISPOSITIONS as col (col)}
+              {@const m = missionFor(dispYou, col)}
+              <div class="rounded border bg-panel px-3 py-2 {col === dispOpp ? 'border-accent bg-accent-dim shadow-[0_0_0_2px_var(--color-accent)]' : 'border-border'}">
+                <span class="block mb-2 font-heading text-[10px] font-bold uppercase tracking-wide text-text-dim">
+                  vs {DISPOSITION_LABELS[col]}{#if col === dispOpp} — current{/if}
+                </span>
+                <MissionCard mission={m} card={m ? scoringCardFor(m.id) : undefined} />
+              </div>
+            {/each}
+          </div>
+        {/if}
         </div>
       {/if}
     </div>
@@ -315,6 +366,7 @@
     <a class="text-text-muted hover:text-accent no-underline" href={PATREON_URL} target="_blank" rel="noreferrer noopener">Support on Patreon</a>
   </footer>
 
-  <PwaInstallPrompt bind:open={pwaPromptOpen} />
-  <SupportModal patreonUrl={PATREON_URL} appName="Mission Matrix" enabled={!pwaPromptOpen} />
+  <TutorialModal bind:open={tutorialOpen} />
+  <PwaInstallPrompt bind:open={pwaPromptOpen} suppressed={tutorialOpen} />
+  <SupportModal patreonUrl={PATREON_URL} appName="Mission Matrix" enabled={!pwaPromptOpen && !tutorialOpen} />
 </div>
