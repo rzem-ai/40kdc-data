@@ -26,21 +26,34 @@
   let { piece, areaOptions, ondelete, onmove, onorient, onlinkgroup, onparent, onsolverhover, onsolverlines }: Props =
     $props();
 
+  // The card is shown portrait (board rotated 90° CW), so the card's own
+  // left/right run along the board Y axis and its top/bottom along board X — the
+  // same orientation the edge labels now use. The solver below speaks in CARD
+  // directions and maps them to the board edges `solveCentroid` expects:
+  //   card left  → board y=44 (solver "bottom")   card right → board y=0  (solver "top")
+  //   card top   → board x=0  (solver "left")      card bottom→ board x=60 (solver "right")
+  type CardEdge = "left" | "right" | "top" | "bottom";
+  const toBoardEdge = (e: CardEdge): SolverLine["edge"] =>
+    e === "left" ? "bottom" : e === "right" ? "top" : e === "top" ? "left" : "right";
+
   type FeatureChoice = { label: string; ref: SolverRef };
-  function featureChoices(axis: "x" | "y"): FeatureChoice[] {
+  // `line: "h"` is a horizontal card dimension (from a left/right edge, pins
+  // board Y); `line: "v"` is vertical (top/bottom edge, pins board X). Faces are
+  // named for the card and map to the matching board face.
+  function featureChoices(line: "h" | "v"): FeatureChoice[] {
     if (!piece) return [];
     const fp = footprintOf(piece);
     if (!fp) return [];
     const n = footprintVertices(fp as never).length;
     const faces: FeatureChoice[] =
-      axis === "x"
+      line === "h"
         ? [
-            { label: "left face", ref: { kind: "face", side: "min-x" } },
-            { label: "right face", ref: { kind: "face", side: "max-x" } },
+            { label: "left face", ref: { kind: "face", side: "max-y" } },
+            { label: "right face", ref: { kind: "face", side: "min-y" } },
           ]
         : [
-            { label: "top face", ref: { kind: "face", side: "min-y" } },
-            { label: "bottom face", ref: { kind: "face", side: "max-y" } },
+            { label: "top face", ref: { kind: "face", side: "min-x" } },
+            { label: "bottom face", ref: { kind: "face", side: "max-x" } },
           ];
     const verts: FeatureChoice[] = Array.from({ length: n }, (_, i) => ({
       label: `v${i}`,
@@ -48,16 +61,16 @@
     }));
     return [...faces, ...verts];
   }
-  const xFeatures = $derived(featureChoices("x"));
-  const yFeatures = $derived(featureChoices("y"));
+  const hFeatures = $derived(featureChoices("h"));
+  const vFeatures = $derived(featureChoices("v"));
 
-  // Solver form state.
-  let xEdge = $state<"left" | "right">("left");
-  let xDist = $state<number>(0);
-  let xRef = $state<SolverRef>({ kind: "face", side: "min-x" });
-  let yEdge = $state<"top" | "bottom">("top");
-  let yDist = $state<number>(0);
-  let yRef = $state<SolverRef>({ kind: "face", side: "min-y" });
+  // Solver form state, in card directions.
+  let hEdge = $state<"left" | "right">("left");
+  let hDist = $state<number>(0);
+  let hRef = $state<SolverRef>({ kind: "face", side: "max-y" });
+  let vEdge = $state<"top" | "bottom">("top");
+  let vDist = $state<number>(0);
+  let vRef = $state<SolverRef>({ kind: "face", side: "min-x" });
   let solveError = $state<string | null>(null);
 
   const sameRef = (a: SolverRef, b: SolverRef): boolean =>
@@ -67,11 +80,12 @@
         ? a.side === b.side
         : false;
 
-  // Push the current dimension lines to the board so the guides track live.
+  // Push the current dimension lines (in board-edge terms) to the board so the
+  // guides track live.
   $effect(() => {
     onsolverlines([
-      { edge: xEdge, distance: xDist, ref: xRef },
-      { edge: yEdge, distance: yDist, ref: yRef },
+      { edge: toBoardEdge(hEdge), distance: hDist, ref: hRef },
+      { edge: toBoardEdge(vEdge), distance: vDist, ref: vRef },
     ]);
   });
 
@@ -90,8 +104,8 @@
         mirror: piece.mirror,
         board: { width: BOARD.width, height: BOARD.height },
         lines: [
-          { edge: xEdge, distance: xDist, feature: xRef },
-          { edge: yEdge, distance: yDist, feature: yRef },
+          { edge: toBoardEdge(hEdge), distance: hDist, feature: hRef },
+          { edge: toBoardEdge(vEdge), distance: vDist, feature: vRef },
         ],
       });
       onmove(piece.id, { x: Math.round(pos.x * 1e4) / 1e4, y: Math.round(pos.y * 1e4) / 1e4 });
@@ -186,37 +200,37 @@
       </p>
 
       <div class="line">
-        <select value={xEdge} onchange={(e) => (xEdge = (e.currentTarget as HTMLSelectElement).value as "left" | "right")}>
+        <select value={hEdge} onchange={(e) => (hEdge = (e.currentTarget as HTMLSelectElement).value as "left" | "right")}>
           <option value="left">from left edge</option>
           <option value="right">from right edge</option>
         </select>
-        <input type="number" step="0.05" value={xDist} oninput={(e) => (xDist = num(e))} aria-label="x distance" />″ to
+        <input type="number" step="0.05" value={hDist} oninput={(e) => (hDist = num(e))} aria-label="distance from left/right edge" />″ to
       </div>
       <div class="features">
-        {#each xFeatures as f (f.label)}
+        {#each hFeatures as f (f.label)}
           <button
-            class="feat {sameRef(xRef, f.ref) ? 'on' : ''}"
+            class="feat {sameRef(hRef, f.ref) ? 'on' : ''}"
             onpointerenter={() => onsolverhover(f.ref)}
             onpointerleave={() => onsolverhover(null)}
-            onclick={() => (xRef = f.ref)}>{f.label}</button
+            onclick={() => (hRef = f.ref)}>{f.label}</button
           >
         {/each}
       </div>
 
       <div class="line">
-        <select value={yEdge} onchange={(e) => (yEdge = (e.currentTarget as HTMLSelectElement).value as "top" | "bottom")}>
+        <select value={vEdge} onchange={(e) => (vEdge = (e.currentTarget as HTMLSelectElement).value as "top" | "bottom")}>
           <option value="top">from top edge</option>
           <option value="bottom">from bottom edge</option>
         </select>
-        <input type="number" step="0.05" value={yDist} oninput={(e) => (yDist = num(e))} aria-label="y distance" />″ to
+        <input type="number" step="0.05" value={vDist} oninput={(e) => (vDist = num(e))} aria-label="distance from top/bottom edge" />″ to
       </div>
       <div class="features">
-        {#each yFeatures as f (f.label)}
+        {#each vFeatures as f (f.label)}
           <button
-            class="feat {sameRef(yRef, f.ref) ? 'on' : ''}"
+            class="feat {sameRef(vRef, f.ref) ? 'on' : ''}"
             onpointerenter={() => onsolverhover(f.ref)}
             onpointerleave={() => onsolverhover(null)}
-            onclick={() => (yRef = f.ref)}>{f.label}</button
+            onclick={() => (vRef = f.ref)}>{f.label}</button
           >
         {/each}
       </div>
