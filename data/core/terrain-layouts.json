@@ -3725,8 +3725,8 @@
         "piece_type": "feature",
         "template": "corner-ruin-left",
         "position": {
-          "x": -2.67,
-          "y": 2.33
+          "x": -2.8981,
+          "y": 2.3081
         },
         "rotation_degrees": 270,
         "parent_area_id": "area-large-17"
@@ -3737,8 +3737,8 @@
         "piece_type": "feature",
         "template": "corner-ruin-left",
         "position": {
-          "x": -2.67,
-          "y": 2.33
+          "x": -2.8981,
+          "y": 2.3081
         },
         "rotation_degrees": 270,
         "parent_area_id": "area-large-18"
@@ -4019,8 +4019,8 @@
         "piece_type": "feature",
         "template": "corner-ruin-right",
         "position": {
-          "x": 2.6,
-          "y": 2.34
+          "x": 2.8281,
+          "y": 2.3181
         },
         "rotation_degrees": 90,
         "parent_area_id": "area-large-1"
@@ -4031,8 +4031,8 @@
         "piece_type": "feature",
         "template": "corner-ruin-right",
         "position": {
-          "x": 2.6,
-          "y": 2.34
+          "x": 2.8281,
+          "y": 2.3181
         },
         "rotation_degrees": 90,
         "parent_area_id": "area-large-2"
@@ -4136,8 +4136,8 @@
         "piece_type": "feature",
         "template": "corner-ruin-left",
         "position": {
-          "x": -4.84,
-          "y": -0.92
+          "x": -4.8181,
+          "y": -1.1481
         },
         "parent_area_id": "area-large-13"
       },
@@ -4147,8 +4147,8 @@
         "piece_type": "feature",
         "template": "corner-ruin-left",
         "position": {
-          "x": -4.84,
-          "y": -0.92
+          "x": -4.8181,
+          "y": -1.1481
         },
         "parent_area_id": "area-large-14"
       },
@@ -4568,8 +4568,8 @@
         "piece_type": "feature",
         "template": "corner-ruin-right",
         "position": {
-          "x": -2.68,
-          "y": -2.41
+          "x": -2.9081,
+          "y": -2.3881
         },
         "rotation_degrees": 270,
         "parent_area_id": "area-large-1"
@@ -4580,8 +4580,8 @@
         "piece_type": "feature",
         "template": "corner-ruin-right",
         "position": {
-          "x": -2.68,
-          "y": -2.41
+          "x": -2.9081,
+          "y": -2.3881
         },
         "rotation_degrees": 270,
         "parent_area_id": "area-large-2"
@@ -4829,8 +4829,8 @@
         "piece_type": "feature",
         "template": "corner-ruin-left",
         "position": {
-          "x": -2.79,
-          "y": 2.49
+          "x": -3.0181,
+          "y": 2.4681
         },
         "rotation_degrees": 270,
         "parent_area_id": "area-large-29"
@@ -4841,8 +4841,8 @@
         "piece_type": "feature",
         "template": "corner-ruin-left",
         "position": {
-          "x": -2.79,
-          "y": 2.49
+          "x": -3.0181,
+          "y": 2.4681
         },
         "rotation_degrees": 270,
         "parent_area_id": "area-large-30"
@@ -5053,8 +5053,8 @@
         "piece_type": "feature",
         "template": "corner-ruin-left",
         "position": {
-          "x": 4.96,
-          "y": 0.65
+          "x": 4.9381,
+          "y": 0.8781
         },
         "rotation_degrees": 180,
         "parent_area_id": "area-large-1"
@@ -5065,8 +5065,8 @@
         "piece_type": "feature",
         "template": "corner-ruin-left",
         "position": {
-          "x": 4.96,
-          "y": 0.65
+          "x": 4.9381,
+          "y": 0.8781
         },
         "rotation_degrees": 180,
         "parent_area_id": "area-large-2"
@@ -5292,8 +5292,8 @@
         "piece_type": "feature",
         "template": "corner-ruin-right",
         "position": {
-          "x": -33.15,
-          "y": 15.48
+          "x": -33.1281,
+          "y": 15.7081
         },
         "rotation_degrees": 180,
         "parent_area_id": "area-large-21"
@@ -5304,8 +5304,8 @@
         "piece_type": "feature",
         "template": "corner-ruin-right",
         "position": {
-          "x": -33.15,
-          "y": 15.48
+          "x": -33.1281,
+          "y": 15.7081
         },
         "rotation_degrees": 180,
         "parent_area_id": "area-large-22"
