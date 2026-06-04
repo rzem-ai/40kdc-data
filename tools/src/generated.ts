@@ -1001,6 +1001,27 @@ export interface Piece {
      */
     control_range_inches?: number;
   };
+  /**
+   * Measurement keystones: the author-selected dimension lines a reference card prints so a player can place this piece with a tape measure (board edge → a feature of the placed piece). Only the selection is stored — the distance is always DERIVED from the resolved geometry by the shared keystone resolver (pinned by the conformance corpus), so a keystone can never disagree with the layout. Vertex indices follow the resolver's pinned vertex order; re-authoring a template's footprint invalidates them, so review keystones when geometry changes.
+   */
+  keystones?: {
+    /**
+     * The board edge the measurement runs from, in the y-down board frame (left/right pin x against board width; top/bottom pin y against board height).
+     */
+    edge: "left" | "right" | "top" | "bottom";
+    /**
+     * Which feature of the placed piece the measurement reaches: a footprint vertex (by resolver vertex order) or an axis-aligned bounding face of the placed footprint.
+     */
+    ref:
+      | {
+          kind: "vertex";
+          index: number;
+        }
+      | {
+          kind: "face";
+          side: "min-x" | "max-x" | "min-y" | "max-y";
+        };
+  }[];
 }
 /**
  * A 2D point in board inches. Origin at a board corner; JSON uses y-down (downstream renderers may flip to y-up).

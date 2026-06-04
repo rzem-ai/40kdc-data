@@ -4916,6 +4916,74 @@ pub struct PhaseMapping {
 ///      "default": false,
 ///      "type": "boolean"
 ///    },
+///    "keystones": {
+///      "description": "Measurement keystones: the author-selected dimension lines a reference card prints so a player can place this piece with a tape measure (board edge → a feature of the placed piece). Only the selection is stored — the distance is always DERIVED from the resolved geometry by the shared keystone resolver (pinned by the conformance corpus), so a keystone can never disagree with the layout. Vertex indices follow the resolver's pinned vertex order; re-authoring a template's footprint invalidates them, so review keystones when geometry changes.",
+///      "type": "array",
+///      "items": {
+///        "type": "object",
+///        "required": [
+///          "edge",
+///          "ref"
+///        ],
+///        "properties": {
+///          "edge": {
+///            "description": "The board edge the measurement runs from, in the y-down board frame (left/right pin x against board width; top/bottom pin y against board height).",
+///            "type": "string",
+///            "enum": [
+///              "left",
+///              "right",
+///              "top",
+///              "bottom"
+///            ]
+///          },
+///          "ref": {
+///            "description": "Which feature of the placed piece the measurement reaches: a footprint vertex (by resolver vertex order) or an axis-aligned bounding face of the placed footprint.",
+///            "oneOf": [
+///              {
+///                "type": "object",
+///                "required": [
+///                  "index",
+///                  "kind"
+///                ],
+///                "properties": {
+///                  "index": {
+///                    "type": "integer",
+///                    "minimum": 0.0
+///                  },
+///                  "kind": {
+///                    "const": "vertex"
+///                  }
+///                },
+///                "additionalProperties": false
+///              },
+///              {
+///                "type": "object",
+///                "required": [
+///                  "kind",
+///                  "side"
+///                ],
+///                "properties": {
+///                  "kind": {
+///                    "const": "face"
+///                  },
+///                  "side": {
+///                    "type": "string",
+///                    "enum": [
+///                      "min-x",
+///                      "max-x",
+///                      "min-y",
+///                      "max-y"
+///                    ]
+///                  }
+///                },
+///                "additionalProperties": false
+///              }
+///            ]
+///          }
+///        },
+///        "additionalProperties": false
+///      }
+///    },
 ///    "link_group": {
 ///      "description": "Pieces sharing a `link_group` value are linked terrain — treated as a single terrain feature (and, where an objective sits among them, a single objective).",
 ///      "type": "string",
@@ -5020,6 +5088,9 @@ pub struct Piece {
     ///Whether this piece carries an objective marker.
     #[serde(default)]
     pub is_objective: bool,
+    ///Measurement keystones: the author-selected dimension lines a reference card prints so a player can place this piece with a tape measure (board edge → a feature of the placed piece). Only the selection is stored — the distance is always DERIVED from the resolved geometry by the shared keystone resolver (pinned by the conformance corpus), so a keystone can never disagree with the layout. Vertex indices follow the resolver's pinned vertex order; re-authoring a template's footprint invalidates them, so review keystones when geometry changes.
+    #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+    pub keystones: ::std::vec::Vec<PieceKeystonesItem>,
     ///Pieces sharing a `link_group` value are linked terrain — treated as a single terrain feature (and, where an objective sits among them, a single objective).
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub link_group: ::std::option::Option<PieceLinkGroup>,
@@ -5050,6 +5121,318 @@ pub struct Piece {
     ///Terrain-area keywords this piece's area carries; overrides the template default.
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub terrain_area_keywords: ::std::option::Option<Vec<TerrainAreaKeyword>>,
+}
+///`PieceKeystonesItem`
+///
+/// <details><summary>JSON schema</summary>
+///
+/// ```json
+///{
+///  "type": "object",
+///  "required": [
+///    "edge",
+///    "ref"
+///  ],
+///  "properties": {
+///    "edge": {
+///      "description": "The board edge the measurement runs from, in the y-down board frame (left/right pin x against board width; top/bottom pin y against board height).",
+///      "type": "string",
+///      "enum": [
+///        "left",
+///        "right",
+///        "top",
+///        "bottom"
+///      ]
+///    },
+///    "ref": {
+///      "description": "Which feature of the placed piece the measurement reaches: a footprint vertex (by resolver vertex order) or an axis-aligned bounding face of the placed footprint.",
+///      "oneOf": [
+///        {
+///          "type": "object",
+///          "required": [
+///            "index",
+///            "kind"
+///          ],
+///          "properties": {
+///            "index": {
+///              "type": "integer",
+///              "minimum": 0.0
+///            },
+///            "kind": {
+///              "const": "vertex"
+///            }
+///          },
+///          "additionalProperties": false
+///        },
+///        {
+///          "type": "object",
+///          "required": [
+///            "kind",
+///            "side"
+///          ],
+///          "properties": {
+///            "kind": {
+///              "const": "face"
+///            },
+///            "side": {
+///              "type": "string",
+///              "enum": [
+///                "min-x",
+///                "max-x",
+///                "min-y",
+///                "max-y"
+///              ]
+///            }
+///          },
+///          "additionalProperties": false
+///        }
+///      ]
+///    }
+///  },
+///  "additionalProperties": false
+///}
+/// ```
+/// </details>
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct PieceKeystonesItem {
+    ///The board edge the measurement runs from, in the y-down board frame (left/right pin x against board width; top/bottom pin y against board height).
+    pub edge: PieceKeystonesItemEdge,
+    ///Which feature of the placed piece the measurement reaches: a footprint vertex (by resolver vertex order) or an axis-aligned bounding face of the placed footprint.
+    #[serde(rename = "ref")]
+    pub ref_: PieceKeystonesItemRef,
+}
+///The board edge the measurement runs from, in the y-down board frame (left/right pin x against board width; top/bottom pin y against board height).
+///
+/// <details><summary>JSON schema</summary>
+///
+/// ```json
+///{
+///  "description": "The board edge the measurement runs from, in the y-down board frame (left/right pin x against board width; top/bottom pin y against board height).",
+///  "type": "string",
+///  "enum": [
+///    "left",
+///    "right",
+///    "top",
+///    "bottom"
+///  ]
+///}
+/// ```
+/// </details>
+#[derive(
+    ::serde::Deserialize,
+    ::serde::Serialize,
+    Clone,
+    Copy,
+    Debug,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd
+)]
+pub enum PieceKeystonesItemEdge {
+    #[serde(rename = "left")]
+    Left,
+    #[serde(rename = "right")]
+    Right,
+    #[serde(rename = "top")]
+    Top,
+    #[serde(rename = "bottom")]
+    Bottom,
+}
+impl ::std::fmt::Display for PieceKeystonesItemEdge {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        match *self {
+            Self::Left => f.write_str("left"),
+            Self::Right => f.write_str("right"),
+            Self::Top => f.write_str("top"),
+            Self::Bottom => f.write_str("bottom"),
+        }
+    }
+}
+impl ::std::str::FromStr for PieceKeystonesItemEdge {
+    type Err = self::error::ConversionError;
+    fn from_str(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        match value {
+            "left" => Ok(Self::Left),
+            "right" => Ok(Self::Right),
+            "top" => Ok(Self::Top),
+            "bottom" => Ok(Self::Bottom),
+            _ => Err("invalid value".into()),
+        }
+    }
+}
+impl ::std::convert::TryFrom<&str> for PieceKeystonesItemEdge {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<&::std::string::String> for PieceKeystonesItemEdge {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<::std::string::String> for PieceKeystonesItemEdge {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: ::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+///Which feature of the placed piece the measurement reaches: a footprint vertex (by resolver vertex order) or an axis-aligned bounding face of the placed footprint.
+///
+/// <details><summary>JSON schema</summary>
+///
+/// ```json
+///{
+///  "description": "Which feature of the placed piece the measurement reaches: a footprint vertex (by resolver vertex order) or an axis-aligned bounding face of the placed footprint.",
+///  "oneOf": [
+///    {
+///      "type": "object",
+///      "required": [
+///        "index",
+///        "kind"
+///      ],
+///      "properties": {
+///        "index": {
+///          "type": "integer",
+///          "minimum": 0.0
+///        },
+///        "kind": {
+///          "const": "vertex"
+///        }
+///      },
+///      "additionalProperties": false
+///    },
+///    {
+///      "type": "object",
+///      "required": [
+///        "kind",
+///        "side"
+///      ],
+///      "properties": {
+///        "kind": {
+///          "const": "face"
+///        },
+///        "side": {
+///          "type": "string",
+///          "enum": [
+///            "min-x",
+///            "max-x",
+///            "min-y",
+///            "max-y"
+///          ]
+///        }
+///      },
+///      "additionalProperties": false
+///    }
+///  ]
+///}
+/// ```
+/// </details>
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, PartialEq)]
+#[serde(tag = "kind", deny_unknown_fields)]
+pub enum PieceKeystonesItemRef {
+    #[serde(rename = "vertex")]
+    Vertex { index: u64 },
+    #[serde(rename = "face")]
+    Face { side: PieceKeystonesItemRefSide },
+}
+///`PieceKeystonesItemRefSide`
+///
+/// <details><summary>JSON schema</summary>
+///
+/// ```json
+///{
+///  "type": "string",
+///  "enum": [
+///    "min-x",
+///    "max-x",
+///    "min-y",
+///    "max-y"
+///  ]
+///}
+/// ```
+/// </details>
+#[derive(
+    ::serde::Deserialize,
+    ::serde::Serialize,
+    Clone,
+    Copy,
+    Debug,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd
+)]
+pub enum PieceKeystonesItemRefSide {
+    #[serde(rename = "min-x")]
+    MinX,
+    #[serde(rename = "max-x")]
+    MaxX,
+    #[serde(rename = "min-y")]
+    MinY,
+    #[serde(rename = "max-y")]
+    MaxY,
+}
+impl ::std::fmt::Display for PieceKeystonesItemRefSide {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        match *self {
+            Self::MinX => f.write_str("min-x"),
+            Self::MaxX => f.write_str("max-x"),
+            Self::MinY => f.write_str("min-y"),
+            Self::MaxY => f.write_str("max-y"),
+        }
+    }
+}
+impl ::std::str::FromStr for PieceKeystonesItemRefSide {
+    type Err = self::error::ConversionError;
+    fn from_str(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        match value {
+            "min-x" => Ok(Self::MinX),
+            "max-x" => Ok(Self::MaxX),
+            "min-y" => Ok(Self::MinY),
+            "max-y" => Ok(Self::MaxY),
+            _ => Err("invalid value".into()),
+        }
+    }
+}
+impl ::std::convert::TryFrom<&str> for PieceKeystonesItemRefSide {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<&::std::string::String> for PieceKeystonesItemRefSide {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<::std::string::String> for PieceKeystonesItemRefSide {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: ::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
 }
 ///Pieces sharing a `link_group` value are linked terrain — treated as a single terrain feature (and, where an objective sits among them, a single objective).
 ///
