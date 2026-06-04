@@ -40,7 +40,22 @@
   // 60×44 y-down; the content group carries the rotation, and we map pointers back
   // through its CTM so all geometry stays in true board space.
   let gEl = $state<SVGGElement | null>(null);
+  let svgEl = $state<SVGSVGElement | null>(null);
   let drag = $state<{ id: string; offset: Vec2 } | null>(null);
+
+  /**
+   * Map a client-space point into board inches, for drops that originate
+   * outside this component (palette drag). Null when the point is not over
+   * the board svg — the caller treats that as "cancel".
+   */
+  export function clientToBoard(clientX: number, clientY: number): Vec2 | null {
+    const ctm = gEl?.getScreenCTM();
+    if (!ctm || !svgEl) return null;
+    const r = svgEl.getBoundingClientRect();
+    if (clientX < r.left || clientX > r.right || clientY < r.top || clientY > r.bottom) return null;
+    const pt = new DOMPoint(clientX, clientY).matrixTransform(ctm.inverse());
+    return { x: pt.x, y: pt.y };
+  }
 
   function toBoard(e: PointerEvent): Vec2 {
     const ctm = gEl?.getScreenCTM();
@@ -137,6 +152,7 @@
 </script>
 
 <svg
+  bind:this={svgEl}
   class="board"
   viewBox="0 0 44 60"
   preserveAspectRatio="xMidYMid meet"

@@ -40,6 +40,7 @@
   import Inspector from "./lib/Inspector.svelte";
   import Library from "./lib/Library.svelte";
   import Palette from "./lib/Palette.svelte";
+  import Thumbnail from "./lib/Thumbnail.svelte";
   import SupportModal from "../../_shared/SupportModal.svelte";
 
   const HOME_URL = "https://40kdc.alpacasoft.dev";
@@ -122,6 +123,32 @@
   function add(t: TerrainTemplate): void {
     selectedId = addTemplate(layout, t, symmetric).id;
   }
+
+  // ── palette drag-to-place ────────────────────────────────────────────────
+  // The palette arms the drag (past a movement threshold); from there the app
+  // tracks the pointer globally, floats a ghost thumbnail at the cursor, and
+  // on release asks the board to map the point into board inches. Off-board
+  // release cancels.
+  let boardRef = $state<{ clientToBoard: (x: number, y: number) => { x: number; y: number } | null } | null>(null);
+  let paletteDrag = $state<{ template: TerrainTemplate; x: number; y: number } | null>(null);
+
+  function onPaletteDragStart(t: TerrainTemplate, e: PointerEvent): void {
+    paletteDrag = { template: t, x: e.clientX, y: e.clientY };
+  }
+  function onDragPointerMove(e: PointerEvent): void {
+    if (!paletteDrag) return;
+    paletteDrag.x = e.clientX;
+    paletteDrag.y = e.clientY;
+  }
+  function onDragPointerUp(e: PointerEvent): void {
+    if (!paletteDrag) return;
+    const at = boardRef?.clientToBoard(e.clientX, e.clientY) ?? null;
+    if (at) selectedId = addTemplate(layout, paletteDrag.template, symmetric, at).id;
+    paletteDrag = null;
+  }
+  function onDragCancel(): void {
+    paletteDrag = null;
+  }
   function onmove(id: string, position: { x: number; y: number }): void {
     movePiece(layout, id, position);
   }
@@ -190,7 +217,12 @@
   }
 </script>
 
-<svelte:window onkeydown={onKeydown} />
+<svelte:window
+  onkeydown={onKeydown}
+  onpointermove={onDragPointerMove}
+  onpointerup={onDragPointerUp}
+  onpointercancel={onDragCancel}
+/>
 
 <div class="app">
   <header class="app-header">
@@ -247,7 +279,7 @@
 
   <main>
     <aside class="rail palette-rail">
-      <Palette {areas} {features} onadd={add} />
+      <Palette {areas} {features} onadd={add} ondragstart={onPaletteDragStart} />
     </aside>
 
     <section class="canvas">
@@ -259,6 +291,7 @@
         placeholder="Untitled layout"
       />
       <Board
+        bind:this={boardRef}
         {layout}
         {resolved}
         {selectedId}
@@ -305,6 +338,12 @@
       </section>
     </aside>
   </main>
+
+  {#if paletteDrag}
+    <div class="drag-ghost" style:left="{paletteDrag.x}px" style:top="{paletteDrag.y}px">
+      <Thumbnail template={paletteDrag.template} size={48} />
+    </div>
+  {/if}
 
   <Library
     bind:open={libraryOpen}
@@ -437,6 +476,17 @@
     border: 1px solid var(--rim);
     border-radius: 4px;
     font-family: inherit;
+  }
+  .drag-ghost {
+    position: fixed;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 0.85;
+    z-index: 50;
+    background: var(--surface-2);
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    padding: 0.25rem;
   }
   .library-btn {
     font: inherit;

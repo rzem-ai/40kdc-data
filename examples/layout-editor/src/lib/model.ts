@@ -674,15 +674,20 @@ function makePiece(template: TerrainTemplate, position: Vec2): EditPiece {
 }
 
 /**
- * Add a catalog template to the layout. In symmetric mode the piece is placed
- * off-centre and a twin is created at its point-reflection so both halves appear.
+ * Add a catalog template to the layout, at `at` (board inches, clamped) when
+ * given — e.g. a palette drag-drop — else at the default off-centre spot. In
+ * symmetric mode a twin is created at the point-reflection so both halves appear.
  */
 export function addTemplate(
   layout: EditLayout,
   template: TerrainTemplate,
   symmetric: boolean,
+  at?: Vec2,
 ): EditPiece {
-  const primary = makePiece(template, { x: BOARD.width * 0.32, y: BOARD.height * 0.32 });
+  const primary = makePiece(
+    template,
+    at ? clampToBoard(at) : { x: BOARD.width * 0.32, y: BOARD.height * 0.32 },
+  );
   layout.pieces.push(primary);
   if (symmetric && !isBoardCentre(primary.position)) {
     const twin = makePiece(template, twinPosition(primary.position));
