@@ -7,6 +7,7 @@
     upperFloorBoardVerts,
     isGroundBlocked,
     bbox,
+    keystoneDisplays,
     type EditLayout,
     type EditPiece,
     type Mirror,
@@ -140,6 +141,39 @@
     return { from, to: t, mid: { x: (from.x + t.x) / 2, y: (from.y + t.y) / 2 }, text: `${line.distance}″` };
   }
 
+  // Persisted keystones — the card's printed dimension lines — render for
+  // EVERY piece, always, with live derived distances. Solid amber, unlike the
+  // dashed teal solver guides (which are ephemeral and selection-scoped). An
+  // unmeasurable keystone (stale vertex index after a footprint change) draws
+  // its anchor with a "?" label instead of crashing.
+  const keystoneGuides = $derived.by(() => {
+    const byPiece = new Map(layout.pieces.map((p) => [p.id, p]));
+    const out: { from: Vec2; to: Vec2; mid: Vec2; text: string; invalid: boolean }[] = [];
+    for (const d of keystoneDisplays(layout)) {
+      const p = byPiece.get(d.pieceId);
+      if (!p) continue;
+      const o = orientedFootprint(p, layout);
+      if (!o) continue;
+      const t = refPoint(o, d.keystone.ref);
+      const from: Vec2 =
+        d.keystone.edge === "left"
+          ? { x: 0, y: t.y }
+          : d.keystone.edge === "right"
+            ? { x: BOARD.width, y: t.y }
+            : d.keystone.edge === "top"
+              ? { x: t.x, y: 0 }
+              : { x: t.x, y: BOARD.height };
+      out.push({
+        from,
+        to: t,
+        mid: { x: (from.x + t.x) / 2, y: (from.y + t.y) / 2 },
+        text: d.distance != null ? `${Math.round(d.distance * 100) / 100}″` : "?",
+        invalid: d.distance == null,
+      });
+    }
+    return out;
+  });
+
   // Edge labels named for where they sit ON SCREEN after the portrait rotation,
   // with the board coordinate they pin as a suffix (board x0 runs along the top of
   // the card, x60 along the bottom; y44/y0 are the left/right ends).
@@ -217,6 +251,12 @@
       <circle cx={m.at.x} cy={m.at.y} r="0.25" class="objective-dot" />
     {/each}
 
+    <!-- persisted keystones: the card's printed dimension lines, every piece -->
+    {#each keystoneGuides as g, gi (gi)}
+      <line x1={g.from.x} y1={g.from.y} x2={g.to.x} y2={g.to.y} class="keystone {g.invalid ? 'invalid' : ''}" />
+      <circle cx={g.to.x} cy={g.to.y} r="0.35" class="keystone-dot {g.invalid ? 'invalid' : ''}" />
+    {/each}
+
     <!-- solver indicators on the selected piece -->
     {#if selOriented}
       {#if solver.hover}
@@ -280,6 +320,10 @@
         {/if}
       {/each}
     {/if}
+    {#each keystoneGuides as g, gi (gi)}
+      {@const d = toDisplay(g.mid)}
+      <text x={d.x} y={d.y} class="keystone-label {g.invalid ? 'invalid' : ''}">{g.text}</text>
+    {/each}
   </g>
 </svg>
 
@@ -433,6 +477,36 @@
     stroke-width: 0.14;
     stroke-dasharray: 0.4 0.3;
     pointer-events: none;
+  }
+  /* Persisted keystones — solid amber, distinct from the dashed teal solver
+     guides. `.invalid` marks a keystone whose ref no longer measures. */
+  .keystone {
+    stroke: oklch(0.55 0.13 70);
+    stroke-width: 0.16;
+    pointer-events: none;
+  }
+  .keystone-dot {
+    fill: oklch(0.55 0.13 70);
+    pointer-events: none;
+  }
+  .keystone.invalid,
+  .keystone-dot.invalid {
+    stroke: oklch(0.55 0.18 25);
+    fill: oklch(0.55 0.18 25);
+  }
+  .keystone-label {
+    fill: oklch(0.45 0.13 70);
+    font-size: 1.5px;
+    font-weight: 600;
+    text-anchor: middle;
+    font-family: "JetBrains Mono", monospace;
+    paint-order: stroke;
+    stroke: oklch(0.82 0.008 220);
+    stroke-width: 0.3px;
+    pointer-events: none;
+  }
+  .keystone-label.invalid {
+    fill: oklch(0.5 0.18 25);
   }
   .edge-label {
     fill: oklch(0.32 0.02 235);

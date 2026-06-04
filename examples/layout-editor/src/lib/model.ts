@@ -23,6 +23,7 @@ import {
   footprintVertices,
   orientedOffsets,
   polygonCentroid,
+  keystoneMeasurements,
 } from "@alpaca-software/40kdc-data";
 import type {
   ResolvedPiece,
@@ -52,6 +53,16 @@ export type SolverRef =
 export interface SolverLine {
   edge: "left" | "right" | "top" | "bottom";
   distance: number;
+  ref: SolverRef;
+}
+
+/**
+ * One authored measurement keystone: the dimension line the printed card keeps
+ * (board edge → piece feature). Only the selection persists — distances are
+ * always derived from geometry via the package's `keystoneMeasurements`.
+ */
+export interface EditKeystone {
+  edge: SolverLine["edge"];
   ref: SolverRef;
 }
 
@@ -90,6 +101,8 @@ export interface EditPiece {
   is_objective?: boolean;
   /** Opaque objective-marker metadata, round-tripped as authored. */
   objective?: { position?: Vec2; control_range_inches?: number };
+  /** Authored measurement keystones (per piece, not mirrored to the twin). */
+  keystones?: EditKeystone[];
   /** Editor-only: the id of this piece's symmetry twin. Never serialized. */
   twin_id?: string;
 }
@@ -931,6 +944,97 @@ export function setLinkGroup(layout: EditLayout, id: string, group: string | und
   if (t) t.link_group = group || undefined;
 }
 
+// ── measurement keystones ─────────────────────────────────────────────────────
+// Authoring keeps only the {edge, ref} selection on the piece; distances are
+// always derived live through the package's `keystoneMeasurements` (the same
+// pinned helper the cards render with), so a keystone can never drift from the
+// geometry. Keystones are per-piece — they are NOT mirrored to the twin, since
+// each printed card draws its own dimension lines.
+
+export const sameSolverRef = (a: SolverRef, b: SolverRef): boolean =>
+  a.kind === "vertex" && b.kind === "vertex"
+    ? a.index === b.index
+    : a.kind === "face" && b.kind === "face"
+      ? a.side === b.side
+      : false;
+
+/**
+ * Whether a keystone is measurable against the piece's current footprint: the
+ * vertex index must exist, and a face ref's axis must match the edge's. Can go
+ * false after a template's footprint is re-authored — surfaced as an inline
+ * warning, never a crash.
+ */
+export function keystoneValid(piece: EditPiece, k: EditKeystone): boolean {
+  if (k.ref.kind === "face") {
+    const edgeOnX = k.edge === "left" || k.edge === "right";
+    const sideOnX = k.ref.side === "min-x" || k.ref.side === "max-x";
+    return edgeOnX === sideOnX;
+  }
+  const fp = footprintOf(piece);
+  if (!fp) return false;
+  return k.ref.index >= 0 && k.ref.index < footprintVertices(fp as never).length;
+}
+
+/** Pin a keystone on a piece (no-op for an exact duplicate). */
+export function addKeystone(layout: EditLayout, id: string, k: EditKeystone): void {
+  const p = byId(layout, id);
+  if (!p) return;
+  const ks = p.keystones ?? [];
+  if (ks.some((e) => e.edge === k.edge && sameSolverRef(e.ref, k.ref))) return;
+  p.keystones = [...ks, k];
+}
+
+/** Remove the piece's keystone at `index`. */
+export function removeKeystone(layout: EditLayout, id: string, index: number): void {
+  const p = byId(layout, id);
+  if (!p?.keystones) return;
+  const next = p.keystones.filter((_, i) => i !== index);
+  p.keystones = next.length > 0 ? next : undefined;
+}
+
+/** One keystone with its live derived distance (null when unmeasurable). */
+export interface KeystoneDisplay {
+  pieceId: string;
+  /** Index into the owning piece's `keystones` array. */
+  index: number;
+  keystone: EditKeystone;
+  distance: number | null;
+}
+
+/**
+ * Every keystone in the layout with its live distance. Invalid keystones (and
+ * all keystones, if the layout itself fails to resolve mid-edit) come back
+ * with `distance: null` so the UI can warn instead of crashing.
+ */
+export function keystoneDisplays(layout: EditLayout): KeystoneDisplay[] {
+  const order: { display: KeystoneDisplay; valid: boolean }[] = [];
+  const pieces = layout.pieces.map((p) => {
+    const valid: EditKeystone[] = [];
+    for (const [i, k] of (p.keystones ?? []).entries()) {
+      const ok = keystoneValid(p, k);
+      order.push({ display: { pieceId: p.id, index: i, keystone: k, distance: null }, valid: ok });
+      if (ok) valid.push(k);
+    }
+    return { ...p, keystones: valid };
+  });
+  let measured: number[] = [];
+  try {
+    measured = keystoneMeasurements(
+      { ...layout, pieces } as unknown as Parameters<typeof keystoneMeasurements>[0],
+      CATALOG as unknown as Parameters<typeof keystoneMeasurements>[1],
+    ).map((m) => m.distance);
+  } catch {
+    // Layout doesn't resolve mid-edit (e.g. a piece lost its footprint):
+    // distances read as unmeasurable until it does again.
+    measured = [];
+  }
+  let mi = 0;
+  return order.map(({ display, valid }) => ({
+    ...display,
+    distance: valid ? (measured[mi++] ?? null) : null,
+  }));
+}
+
 export type ObjectiveRole = "home" | "expansion" | "center";
 
 /** Every piece that forms the same objective as `p`: its link_group union, else just itself — each with its twin. */
@@ -1111,6 +1215,7 @@ export function loadEmbedded(id: string, symmetric = true): EditLayout | undefin
     objective_role: p.objective_role,
     is_objective: p.is_objective,
     objective: p.objective,
+    keystones: p.keystones as EditKeystone[] | undefined,
   }));
   if (symmetric) autoPairTwins(pieces);
   return {
@@ -1153,6 +1258,7 @@ export function toCanonicalJson(layout: EditLayout): unknown {
         ...(p.objective_role ? { objective_role: p.objective_role } : {}),
         ...(p.is_objective ? { is_objective: true } : {}),
         ...(p.objective ? { objective: p.objective } : {}),
+        ...(p.keystones?.length ? { keystones: p.keystones } : {}),
       })),
       game_version: { edition: "11th", dataslate: "pre-launch-provisional" },
     },

@@ -12,6 +12,9 @@
     movePiece,
     orientPiece,
     setLinkGroup,
+    addKeystone,
+    removeKeystone,
+    keystoneDisplays,
     setParentArea,
     snapToAreaCenter,
     snapFeatureToAreaCorner,
@@ -76,6 +79,10 @@
     selectedPiece ? boardCentroid(layout, selectedPiece) : { x: 0, y: 0 },
   );
   const markers = $derived(objectiveMarkers(layout));
+  // The selected piece's keystones with live derived distances (inspector list).
+  const selectedKeystones = $derived(
+    selectedPiece ? keystoneDisplays(layout).filter((d) => d.pieceId === selectedPiece.id) : [],
+  );
   const exportText = $derived(JSON.stringify(toCanonicalJson(layout), null, 2));
 
   const areas = CATALOG.filter((t) => t.kind === "area");
@@ -355,6 +362,9 @@
         {onobjectiverole}
         onsolverhover={(ref) => (solverHover = ref)}
         onsolverlines={(lines) => (solverLines = lines)}
+        keystones={selectedKeystones}
+        onaddkeystone={(id, k) => addKeystone(layout, id, k)}
+        onremovekeystone={(id, i) => removeKeystone(layout, id, i)}
       />
       <section class="export">
         <h2>

@@ -7,6 +7,8 @@
     solveCentroidTriangulated,
     templateById,
     type EditPiece,
+    type EditKeystone,
+    type KeystoneDisplay,
     type Mirror,
     type SolverRef,
     type SolverLine,
@@ -19,6 +21,8 @@
     boardPos: { x: number; y: number };
     /** Area pieces the selected feature may be anchored to. */
     areaOptions: { id: string; name: string }[];
+    /** The selected piece's keystones with live derived distances. */
+    keystones: KeystoneDisplay[];
     ondelete: (id: string) => void;
     onmove: (id: string, position: { x: number; y: number }) => void;
     onorient: (id: string, patch: { rotation_degrees?: number; mirror?: Mirror }) => void;
@@ -29,11 +33,14 @@
     onsnapcorner: (id: string) => void;
     onsolverhover: (ref: SolverRef | null) => void;
     onsolverlines: (lines: SolverLine[]) => void;
+    onaddkeystone: (id: string, k: EditKeystone) => void;
+    onremovekeystone: (id: string, index: number) => void;
   }
   let {
     piece,
     boardPos,
     areaOptions,
+    keystones,
     ondelete,
     onmove,
     onorient,
@@ -44,6 +51,8 @@
     onsnapcorner,
     onsolverhover,
     onsolverlines,
+    onaddkeystone,
+    onremovekeystone,
   }: Props = $props();
 
   // The card is shown portrait (board rotated 90° CW), so the card's own
@@ -55,6 +64,10 @@
   type CardEdge = "left" | "right" | "top" | "bottom";
   const toBoardEdge = (e: CardEdge): SolverLine["edge"] =>
     e === "left" ? "bottom" : e === "right" ? "top" : e === "top" ? "left" : "right";
+  const fromBoardEdge = (e: SolverLine["edge"]): CardEdge =>
+    e === "bottom" ? "left" : e === "top" ? "right" : e === "left" ? "top" : "bottom";
+  const refLabel = (r: SolverRef): string =>
+    r.kind === "vertex" ? `v${r.index}` : r.side;
 
   type FeatureChoice = { label: string; ref: SolverRef };
   // `line: "h"` is a horizontal card dimension (from a left/right edge, pins
@@ -357,7 +370,21 @@
           {/each}
         </div>
 
-        <button class="primary" onclick={solve}>Solve &amp; place</button>
+        <div class="snaps">
+          <button class="primary" onclick={solve}>Solve &amp; place</button>
+          <button
+            class="feat"
+            title="Persist the H line's edge + feature on this piece as a printed card measurement (distance always derived from geometry)"
+            onclick={() => onaddkeystone(piece.id, { edge: toBoardEdge(hEdge), ref: hRef })}
+            >Pin H keystone</button
+          >
+          <button
+            class="feat"
+            title="Persist the V line's edge + feature on this piece as a printed card measurement (distance always derived from geometry)"
+            onclick={() => onaddkeystone(piece.id, { edge: toBoardEdge(vEdge), ref: vRef })}
+            >Pin V keystone</button
+          >
+        </div>
       {:else}
         <p class="hint">
           For pieces at non-90° angles: set mirror to match the card, then enter the
@@ -395,12 +422,56 @@
                 >
               {/each}
             </span>
+            <button
+              class="feat"
+              title="Persist this row's edge + corner on the piece as a printed card measurement"
+              onclick={() => onaddkeystone(piece.id, { edge: toBoardEdge(t.edge), ref: { kind: "vertex", index: t.vertex } })}
+              >Pin</button
+            >
           </div>
         {/each}
 
         <button class="primary" onclick={solveTriangulatedPlace}>Triangulate &amp; place</button>
       {/if}
       {#if solveError}<p class="error">{solveError}</p>{/if}
+    </fieldset>
+
+    <fieldset>
+      <legend>Keystones</legend>
+      {#if keystones.length === 0}
+        <p class="hint">
+          None pinned. Keystones are the dimension lines the printed card keeps —
+          pin the solver's current edge + feature above. Distances are always
+          derived from the geometry, so they follow the piece as it moves.
+        </p>
+      {:else}
+        <ul class="keystones">
+          {#each keystones as k (k.index)}
+            <li>
+              <span
+                class="ks-label"
+                role="img"
+                aria-label="keystone from card {fromBoardEdge(k.keystone.edge)} edge to {refLabel(k.keystone.ref)}"
+                onpointerenter={() => onsolverhover(k.keystone.ref)}
+                onpointerleave={() => onsolverhover(null)}
+              >
+                {fromBoardEdge(k.keystone.edge)} → {refLabel(k.keystone.ref)}
+              </span>
+              {#if k.distance != null}
+                <span class="ks-dist">{Math.round(k.distance * 100) / 100}″</span>
+              {:else}
+                <span class="ks-dist invalid" title="The referenced feature no longer exists on this footprint (re-authored template?). Remove and re-pin.">unmeasurable</span>
+              {/if}
+              <button
+                class="danger small"
+                aria-label="remove keystone {k.index + 1}"
+                onclick={() => onremovekeystone(piece.id, k.index)}>×</button
+              >
+            </li>
+          {/each}
+        </ul>
+        <p class="hint">Edges named in card directions; distances derive live from geometry.</p>
+      {/if}
     </fieldset>
   </div>
 {/if}
@@ -546,5 +617,39 @@
     color: var(--danger);
     font-size: 0.78rem;
     margin: 0.4rem 0 0;
+  }
+  .keystones {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .keystones li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.82rem;
+  }
+  .ks-label {
+    flex: 1 1 auto;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    cursor: help;
+  }
+  .ks-dist {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.82rem;
+    color: var(--text);
+  }
+  .ks-dist.invalid {
+    color: var(--danger);
+    cursor: help;
+  }
+  button.small {
+    line-height: 1;
+    padding: 0.1rem 0.4rem;
   }
 </style>
