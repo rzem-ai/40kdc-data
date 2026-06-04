@@ -442,6 +442,8 @@
       powered by <a class="text-text-muted hover:text-accent no-underline" href={PACKAGE_URL} target="_blank" rel="noreferrer noopener"><code class="font-mono">@alpaca-software/40kdc-data</code></a>
     </span>
     <span aria-hidden="true">·</span>
+    <a class="text-text-muted hover:text-accent no-underline" href="https://layout-editor.alpacasoft.dev" target="_blank" rel="noreferrer noopener">Terrain layouts</a>
+    <span aria-hidden="true">·</span>
     <a class="text-text-muted hover:text-accent no-underline" href={PUBLISHER_URL} target="_blank" rel="noreferrer noopener">alpacasoft.dev</a>
     <span aria-hidden="true">·</span>
     <a class="text-text-muted hover:text-accent no-underline" href={PATREON_URL} target="_blank" rel="noreferrer noopener">Support on Patreon</a>
