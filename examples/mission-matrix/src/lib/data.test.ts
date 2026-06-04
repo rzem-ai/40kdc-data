@@ -1,6 +1,13 @@
 import { describe, expect, it } from "vitest";
 import type { ScoreEntry, SecondaryCard } from "@alpaca-software/40kdc-data";
-import { SECONDARY_DECK, drawSecondary, excludedIds } from "./data.js";
+import {
+  SECONDARY_DECK,
+  canonicalMatchupId,
+  drawSecondary,
+  excludedIds,
+  layoutAvailability,
+  layoutsForMatchup,
+} from "./data.js";
 
 // A tiny fixture deck keeps the draw tests hermetic — independent of which
 // cards the embedded dataset ships.
@@ -63,5 +70,34 @@ describe("drawSecondary", () => {
       expect(got?.id).not.toBe(scored.id);
       expect(got?.id).not.toBe(discarded.id);
     }
+  });
+});
+
+describe("terrain layouts per matchup", () => {
+  it("canonicalMatchupId is symmetric over the unordered pair", () => {
+    const ab = canonicalMatchupId("take-and-hold", "purge-the-foe");
+    const ba = canonicalMatchupId("purge-the-foe", "take-and-hold");
+    expect(ab).toBeDefined();
+    expect(ab).toBe(ba);
+    // Canonical = lower DISPOSITIONS index first.
+    expect(ab).toBe("take-and-hold-vs-purge-the-foe");
+  });
+
+  it("layoutsForMatchup is variant-ordered and order-insensitive", () => {
+    const a = layoutsForMatchup("take-and-hold", "purge-the-foe");
+    const b = layoutsForMatchup("purge-the-foe", "take-and-hold");
+    expect(a.map((l) => l.id)).toEqual(b.map((l) => l.id));
+    const variants = a.map((l) => l.variant ?? 0);
+    expect([...variants].sort((x, y) => x - y)).toEqual(variants);
+    expect(a.length).toBeGreaterThan(0);
+    for (const l of a) expect(l.mission_matchup_id).toBe("take-and-hold-vs-purge-the-foe");
+  });
+
+  it("layoutAvailability counts authored variants and is 0 for untagged pairings", () => {
+    expect(layoutAvailability("take-and-hold", "take-and-hold")).toBe(
+      layoutsForMatchup("take-and-hold", "take-and-hold").length,
+    );
+    // No layouts are tagged for this pairing yet.
+    expect(layoutAvailability("disruption", "reconnaissance")).toBe(0);
   });
 });
