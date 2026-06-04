@@ -91,7 +91,7 @@
               aria-hidden="true"
               class="shrink-0 w-5 h-5 rounded-sm border flex items-center justify-center text-[11px] {ticked
                 ? 'bg-accent text-accent-foreground border-accent'
-                : 'border-border text-transparent'}">✓</span
+                : 'border-border-strong text-transparent'}">✓</span
             >
             <span class="min-w-0 flex-1">
               <span class="block text-xs leading-snug text-text">{describeAward(a)}</span>
@@ -105,7 +105,7 @@
             <div class="flex items-center gap-1" class:opacity-40={!ticked}>
               <button
                 type="button"
-                class="focus-ring w-6 h-6 rounded bg-panel border border-border text-text-muted hover:border-accent hover:text-accent"
+                class="focus-ring w-6 h-6 rounded bg-panel border border-border-strong text-text-muted hover:border-accent hover:text-accent"
                 disabled={!ticked}
                 aria-label="decrease count"
                 onclick={() => setCount(i, a, countFor(i, a) - 1)}>−</button
@@ -113,7 +113,7 @@
               <span class="font-mono tabular-nums text-sm w-5 text-center">{countFor(i, a)}</span>
               <button
                 type="button"
-                class="focus-ring w-6 h-6 rounded bg-panel border border-border text-text-muted hover:border-accent hover:text-accent"
+                class="focus-ring w-6 h-6 rounded bg-panel border border-border-strong text-text-muted hover:border-accent hover:text-accent"
                 disabled={!ticked}
                 aria-label="increase count"
                 onclick={() => setCount(i, a, countFor(i, a) + 1)}>+</button
@@ -132,7 +132,7 @@
       {#if extraAction}
         <button
           type="button"
-          class="focus-ring shrink-0 font-heading text-xs font-bold uppercase tracking-wide rounded border px-3 py-2.5 bg-panel text-text-muted border-border hover:border-danger hover:text-danger disabled:opacity-40 disabled:hover:border-border disabled:hover:text-text-muted"
+          class="focus-ring shrink-0 font-heading text-xs font-bold uppercase tracking-wide rounded border px-3 py-2.5 bg-panel text-text-muted border-border-strong hover:border-danger hover:text-danger disabled:opacity-40 disabled:hover:border-border-strong disabled:hover:text-text-muted"
           disabled={extraAction.disabled}
           onclick={extraAction.onClick}
         >

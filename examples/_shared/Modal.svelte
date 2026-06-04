@@ -115,7 +115,7 @@
     place-items: center;
     background: #0c0c0e;
     color: #a8a8b2;
-    border: 1px solid #2e2e34;
+    border: 1px solid #66666f; /* control outline — matches --color-border-strong */
     border-radius: 4px;
     cursor: pointer;
   }

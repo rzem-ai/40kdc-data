@@ -206,7 +206,7 @@
       </span>
     </a>
     <nav class="flex items-center gap-3 shrink-0">
-      <button type="button" class="inline-flex items-center justify-center w-6 h-6 rounded-full border border-border text-text-muted hover:text-accent hover:border-accent font-heading text-xs font-bold cursor-pointer" onclick={() => (tutorialOpen = true)} aria-label="How to use Mission Matrix">?</button>
+      <button type="button" class="inline-flex items-center justify-center w-6 h-6 rounded-full border border-border-strong text-text-muted hover:text-accent hover:border-accent font-heading text-xs font-bold" onclick={() => (tutorialOpen = true)} aria-label="How to use Mission Matrix">?</button>
       <a class="font-heading text-[11px] font-bold uppercase tracking-wide text-text-muted hover:text-accent no-underline whitespace-nowrap" href={HOME_URL} aria-label="Back to 40kdc-data examples">← 40kdc-data</a>
       <a class="inline-flex items-center text-text-muted hover:text-accent" href={REPO_URL} target="_blank" rel="noreferrer noopener" aria-label="GitHub repository">
         <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
@@ -241,14 +241,14 @@
         </button>
         <button
           type="button"
-          class="focus-ring shrink-0 font-heading text-[10px] font-bold uppercase tracking-wide rounded border px-2 py-1 transition-colors {!autoCollapse ? 'bg-accent text-accent-foreground border-accent' : 'bg-panel text-text-muted border-border hover:border-accent hover:text-accent'}"
+          class="focus-ring shrink-0 font-heading text-[10px] font-bold uppercase tracking-wide rounded border px-2 py-1 transition-colors {!autoCollapse ? 'bg-accent text-accent-foreground border-accent' : 'bg-panel text-text-muted border-border-strong hover:border-accent hover:text-accent'}"
           aria-pressed={!autoCollapse}
           title="Keep the matrix open instead of collapsing it once both dispositions are picked"
           onclick={() => (autoCollapse = !autoCollapse)}
         >Keep open</button>
         <button
           type="button"
-          class="focus-ring shrink-0 font-heading text-[10px] font-bold uppercase tracking-wide rounded border px-2 py-1 transition-colors {verbose ? 'bg-accent text-accent-foreground border-accent' : 'bg-panel text-text-muted border-border hover:border-accent hover:text-accent'}"
+          class="focus-ring shrink-0 font-heading text-[10px] font-bold uppercase tracking-wide rounded border px-2 py-1 transition-colors {verbose ? 'bg-accent text-accent-foreground border-accent' : 'bg-panel text-text-muted border-border-strong hover:border-accent hover:text-accent'}"
           aria-pressed={verbose}
           title="Expand your selected disposition's row into full mission cards for comparison"
           onclick={() => (verbose = !verbose)}
@@ -262,12 +262,12 @@
             <span>You ▼</span><span class="self-end">Opp ▶</span>
           </div>
           {#each DISPOSITIONS as col (col)}
-            <button type="button" class="focus-ring flex items-end justify-center text-center font-heading text-[11px] font-bold uppercase tracking-wider rounded border px-1 py-2 transition-colors {dispOpp === col ? 'bg-accent text-accent-foreground border-accent' : 'bg-panel text-text-muted border-border hover:border-accent hover:text-accent'}" aria-pressed={dispOpp === col} onclick={() => pickOpp(col)}>
+            <button type="button" class="focus-ring flex items-end justify-center text-center font-heading text-[11px] font-bold uppercase tracking-wider rounded border px-1 py-2 transition-colors {dispOpp === col ? 'bg-accent text-accent-foreground border-accent' : 'bg-panel text-text-muted border-border-strong hover:border-accent hover:text-accent'}" aria-pressed={dispOpp === col} onclick={() => pickOpp(col)}>
               {DISPOSITION_LABELS[col]}
             </button>
           {/each}
           {#each DISPOSITIONS as row (row)}
-            <button type="button" class="focus-ring flex items-center text-left font-heading text-[11px] font-bold uppercase tracking-wider rounded border px-2 py-1 transition-colors {dispYou === row ? 'bg-accent text-accent-foreground border-accent' : 'bg-panel text-text-muted border-border hover:border-accent hover:text-accent'}" aria-pressed={dispYou === row} onclick={() => pickYou(row)}>
+            <button type="button" class="focus-ring flex items-center text-left font-heading text-[11px] font-bold uppercase tracking-wider rounded border px-2 py-1 transition-colors {dispYou === row ? 'bg-accent text-accent-foreground border-accent' : 'bg-panel text-text-muted border-border-strong hover:border-accent hover:text-accent'}" aria-pressed={dispYou === row} onclick={() => pickYou(row)}>
               {DISPOSITION_LABELS[row]}
             </button>
             {#each DISPOSITIONS as col (col)}
@@ -292,7 +292,7 @@
               <span class="block mb-2 font-heading text-[11px] font-bold uppercase tracking-wider text-text-muted">{group.label}</span>
               <div class="flex flex-wrap gap-2">
                 {#each DISPOSITIONS as d (d)}
-                  <button type="button" class="focus-ring font-heading text-[11px] font-bold uppercase tracking-wide rounded border px-3 py-2 transition-colors {group.cur === d ? 'bg-accent text-accent-foreground border-accent' : 'bg-panel text-text-muted border-border hover:border-accent hover:text-accent'}" aria-pressed={group.cur === d} onclick={() => group.pick(d)}>
+                  <button type="button" class="focus-ring font-heading text-[11px] font-bold uppercase tracking-wide rounded border px-3 py-2 transition-colors {group.cur === d ? 'bg-accent text-accent-foreground border-accent' : 'bg-panel text-text-muted border-border-strong hover:border-accent hover:text-accent'}" aria-pressed={group.cur === d} onclick={() => group.pick(d)}>
                     {DISPOSITION_LABELS[d]}
                   </button>
                 {/each}

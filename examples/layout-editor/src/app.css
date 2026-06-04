@@ -11,6 +11,9 @@
   --surface-1: oklch(0.22 0.013 200);
   --surface-2: oklch(0.26 0.015 200);
   --rim: oklch(0.34 0.018 200);
+  /* Interactive-control outlines — ≥3:1 (WCAG 1.4.11) on surface-1/surface-2.
+     Structural panel rims stay on --rim. */
+  --rim-strong: oklch(0.54 0.018 200);
   --grid: oklch(0.3 0.012 200);
 
   /* text */

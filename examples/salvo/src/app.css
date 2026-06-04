@@ -8,6 +8,8 @@
   --panel-surface: #151517;   /* shallow nested (table head, etc.) */
   --panel-hover: #1e1e22;     /* hovered row */
   --border: #2e2e34;
+  /* Interactive-control outlines - >=3:1 on every surface tier */
+  --border-strong: #66666f;
   --border-subtle: #262629;
   --text: #ededf0;
   --muted: #a8a8b2;
@@ -102,7 +104,7 @@ hr {
 button {
   background: var(--panel-2);
   color: var(--text);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-md);
   cursor: pointer;
@@ -114,7 +116,7 @@ button:hover { border-color: var(--accent); color: var(--accent); }
 button:disabled { opacity: 0.45; cursor: not-allowed; }
 select:not(:disabled),
 summary { cursor: pointer; }
-button:disabled:hover { border-color: var(--border); color: var(--text); }
+button:disabled:hover { border-color: var(--border-strong); color: var(--text); }
 button.primary {
   background: var(--accent);
   color: var(--accent-foreground);
@@ -133,7 +135,7 @@ textarea:focus-visible {
 input, select, textarea {
   background: var(--panel-2);
   color: var(--text);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   padding: var(--space-1) var(--space-2);
   border-radius: var(--radius-md);
   font: inherit;

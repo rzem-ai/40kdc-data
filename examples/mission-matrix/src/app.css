@@ -11,6 +11,9 @@
   --color-surface: #1b1b1f;
   --color-border: #2e2e34;
   --color-border-subtle: #262629;
+  /* Interactive-control outlines — ≥3:1 (WCAG 1.4.11) on every surface tier
+     (panel-surface 3.21, surface 3.02). Containers keep --color-border. */
+  --color-border-strong: #66666f;
   --color-text: #ededf0;
   --color-text-muted: #a8a8b2; /* AAA 7.9:1 on --color-bg */
   --color-text-dim: #8a8a94; /* AA 5.1:1 on --color-bg */

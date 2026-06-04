@@ -27,7 +27,7 @@
         type="button"
         class="focus-ring w-7 h-7 rounded font-mono text-sm border transition-colors {r === round
           ? 'bg-accent text-accent-foreground border-accent'
-          : 'bg-panel text-text-muted border-border hover:border-accent hover:text-accent'}"
+          : 'bg-panel text-text-muted border-border-strong hover:border-accent hover:text-accent'}"
         aria-pressed={r === round}
         onclick={() => onRound(r)}>{r}</button
       >

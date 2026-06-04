@@ -116,7 +116,7 @@
   .secondary {
     background: #0c0c0e;
     color: #a8a8b2;
-    border-color: #2e2e34;
+    border-color: #66666f; /* control outline — matches --color-border-strong */
   }
   .secondary:hover {
     color: #ededf0;

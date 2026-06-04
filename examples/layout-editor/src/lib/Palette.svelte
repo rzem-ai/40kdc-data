@@ -166,7 +166,7 @@
     gap: 0.3rem;
     padding: 0.5rem 0.35rem 0.4rem;
     background: var(--surface-2);
-    border: 1px solid var(--rim);
+    border: 1px solid var(--rim-strong);
     border-radius: 6px;
     cursor: pointer;
     color: var(--text-dim);
@@ -204,7 +204,7 @@
     font-size: 0.78rem;
     background: var(--surface-2);
     color: var(--text-dim);
-    border: 1px solid var(--rim);
+    border: 1px solid var(--rim-strong);
     border-radius: 6px;
     padding: 0.35rem 0.4rem;
     cursor: pointer;

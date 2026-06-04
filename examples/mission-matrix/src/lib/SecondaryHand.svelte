@@ -38,7 +38,7 @@
     </span>
     <div class="flex items-center gap-2">
       <select
-        class="focus-ring max-w-[10rem] bg-panel border border-border rounded px-2 py-1 text-xs text-text-muted hover:border-accent disabled:opacity-40"
+        class="focus-ring max-w-[10rem] bg-panel border border-border-strong rounded px-2 py-1 text-xs text-text-muted hover:border-accent disabled:opacity-40"
         disabled={available.length === 0}
         onchange={pick}
         aria-label="Add a specific secondary"

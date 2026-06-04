@@ -468,7 +468,7 @@
     letter-spacing: 0.01em;
   }
   .layout-title:hover {
-    border-color: var(--rim);
+    border-color: var(--rim-strong);
   }
   .layout-title:focus {
     outline: none;
@@ -493,7 +493,7 @@
   .export textarea {
     background: var(--bg);
     color: var(--text);
-    border: 1px solid var(--rim);
+    border: 1px solid var(--rim-strong);
     border-radius: 4px;
     font: inherit;
   }
@@ -507,7 +507,7 @@
     font-size: 0.85rem;
     background: var(--bg);
     color: var(--text);
-    border: 1px solid var(--rim);
+    border: 1px solid var(--rim-strong);
     border-radius: 4px;
     font-family: inherit;
   }
@@ -527,7 +527,7 @@
     font-size: 0.85rem;
     background: var(--surface-2);
     color: var(--text);
-    border: 1px solid var(--rim);
+    border: 1px solid var(--rim-strong);
     border-radius: 4px;
     padding: 0.25rem 0.6rem;
     cursor: pointer;
@@ -541,7 +541,7 @@
     font-size: 0.8rem;
     background: var(--surface-2);
     color: var(--text-dim);
-    border: 1px solid var(--rim);
+    border: 1px solid var(--rim-strong);
     border-radius: 4px;
     padding: 0.25rem 0.55rem;
     cursor: pointer;
@@ -568,7 +568,7 @@
     font-size: 0.74rem;
     background: var(--surface-2);
     color: var(--text-dim);
-    border: 1px solid var(--rim);
+    border: 1px solid var(--rim-strong);
     border-radius: 4px;
     padding: 0.15rem 0.5rem;
     cursor: pointer;

@@ -95,7 +95,7 @@
             class="focus-ring font-heading text-[10px] font-bold uppercase tracking-wide rounded border px-2 py-0.5 transition-colors {game.approach ===
             m
               ? 'bg-accent text-accent-foreground border-accent'
-              : 'bg-panel text-text-muted border-border hover:border-accent hover:text-accent'}"
+              : 'bg-panel text-text-muted border-border-strong hover:border-accent hover:text-accent'}"
             aria-pressed={game.approach === m}
             onclick={() => onApproach(m)}>{m}</button
           >

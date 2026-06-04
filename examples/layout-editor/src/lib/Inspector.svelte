@@ -459,7 +459,7 @@
   select {
     background: var(--bg);
     color: var(--text);
-    border: 1px solid var(--rim);
+    border: 1px solid var(--rim-strong);
     border-radius: 4px;
     padding: 0.2rem 0.35rem;
     font: inherit;
@@ -510,7 +510,7 @@
     font-size: 0.72rem;
     background: var(--surface-2);
     color: var(--text-dim);
-    border: 1px solid var(--rim);
+    border: 1px solid var(--rim-strong);
     border-radius: 4px;
     padding: 0.12rem 0.4rem;
     cursor: pointer;
@@ -523,7 +523,7 @@
   button {
     font: inherit;
     border-radius: 4px;
-    border: 1px solid var(--rim);
+    border: 1px solid var(--rim-strong);
     padding: 0.3rem 0.7rem;
     cursor: pointer;
     background: var(--surface-2);

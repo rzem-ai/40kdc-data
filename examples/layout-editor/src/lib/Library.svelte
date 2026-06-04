@@ -231,7 +231,7 @@
     font-size: 0.85rem;
     background: var(--surface-2);
     color: var(--text-dim);
-    border: 1px solid var(--rim);
+    border: 1px solid var(--rim-strong);
     border-radius: 4px;
     padding: 0.25rem 0.6rem;
     cursor: pointer;
@@ -250,7 +250,7 @@
     place-items: center;
     background: var(--bg);
     color: var(--text-dim);
-    border: 1px solid var(--rim);
+    border: 1px solid var(--rim-strong);
     border-radius: 4px;
     cursor: pointer;
   }
@@ -297,7 +297,7 @@
     gap: 0.3rem;
     padding: 0.4rem 0.4rem 0.35rem;
     background: var(--surface-2);
-    border: 1px solid var(--rim);
+    border: 1px solid var(--rim-strong);
     border-radius: 5px;
     cursor: pointer;
     color: var(--text-dim);
