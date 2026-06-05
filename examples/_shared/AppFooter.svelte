@@ -18,6 +18,8 @@
     publisherUrl = PUBLISHER_URL,
     patreonUrl = PATREON_URL,
     links = [],
+    version,
+    build,
   }: {
     repoUrl?: string;
     packageUrl?: string;
@@ -25,6 +27,10 @@
     patreonUrl?: string;
     /** Cross-app links (e.g. the other example apps), after the package segment. */
     links?: { label: string; href: string }[];
+    /** Bundled @alpaca-software/40kdc-data version, shown as a staleness stamp. */
+    version?: string;
+    /** Short commit hash of the build, appended to the stamp. */
+    build?: string;
   } = $props();
 </script>
 
@@ -46,6 +52,11 @@
   <a href={publisherUrl} target="_blank" rel="noreferrer noopener">alpacasoft.dev</a>
   <span class="dot" aria-hidden="true">·</span>
   <a href={patreonUrl} target="_blank" rel="noreferrer noopener">Support on Patreon</a>
+  {#if version || build}
+    <span class="stamp" title="Bundled dataset version · build commit">
+      {#if version}v{version}{/if}{#if version && build}&nbsp;·&nbsp;{/if}{#if build}{build}{/if}
+    </span>
+  {/if}
 </footer>
 
 <style>
@@ -84,6 +95,14 @@
   }
   .dot {
     color: var(--border-strong, oklch(0.513 0.014 286));
+  }
+  .stamp {
+    margin-left: auto;
+    font-family: var(--font-mono, "JetBrains Mono", ui-monospace, monospace);
+    font-size: var(--text-2xs, 11px);
+    color: var(--dim, oklch(0.637 0.015 286));
+    white-space: nowrap;
+    cursor: help;
   }
   @media (max-width: 640px) {
     .app-footer {

@@ -3,6 +3,7 @@ import { defineConfig, type Plugin } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import tailwindcss from "@tailwindcss/vite";
 import { VitePWA } from "vite-plugin-pwa";
+import { buildSha, dataPackageVersion } from "../_shared/build-stamp.js";
 
 // Read this app's version straight from package.json (fs, not a JSON import, to
 // stay agnostic to Node's import-assertion syntax). Exposed to the app as the
@@ -139,6 +140,9 @@ export default defineConfig({
   ],
   define: {
     __APP_VERSION__: JSON.stringify(APP_VERSION),
+    // Footer staleness stamp: bundled dataset version + build commit.
+    __DATA_VERSION__: JSON.stringify(dataPackageVersion(import.meta.url)),
+    __BUILD_SHA__: JSON.stringify(buildSha()),
   },
   base: process.env.TOOLLET_BASE ?? "/",
 });

@@ -439,6 +439,8 @@
       { label: "Terrain layouts", href: LAYOUT_EDITOR_URL },
       { label: "Salvo", href: SALVO_URL },
     ]}
+    version={__DATA_VERSION__}
+    build={__BUILD_SHA__}
   />
 
   <TutorialModal bind:open={tutorialOpen} />

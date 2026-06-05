@@ -183,6 +183,8 @@
       { label: "Salvo", href: SALVO_URL },
       { label: "Mission Matrix", href: MISSION_MATRIX_URL },
     ]}
+    version={__DATA_VERSION__}
+    build={__BUILD_SHA__}
   />
   <SupportModal patreonUrl={PATREON_URL} appName="Terrain Layouts" />
 </div>

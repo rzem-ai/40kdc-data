@@ -1,5 +1,6 @@
 import { defineConfig, type Plugin } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
+import { buildSha, dataPackageVersion } from "../_shared/build-stamp.js";
 
 /**
  * The 40kdc-data package's barrel re-exports schema-loader and validate, which
@@ -68,4 +69,9 @@ function stubNodeOnlyModules(): Plugin {
 export default defineConfig({
   plugins: [stubNodeOnlyModules(), svelte()],
   base: process.env.TOOLLET_BASE ?? "/",
+  define: {
+    // Footer staleness stamp: bundled dataset version + build commit.
+    __DATA_VERSION__: JSON.stringify(dataPackageVersion(import.meta.url)),
+    __BUILD_SHA__: JSON.stringify(buildSha()),
+  },
 });
