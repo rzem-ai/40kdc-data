@@ -88,6 +88,24 @@ jobs:
       - name: Rust conformance suite
         run: cargo test -p wh40kdc --test conformance
 
+  examples:
+    # The example apps gate too: svelte-check, unit tests (mission-matrix's
+    # scoring/pairing logic, salvo's projection helpers, the shared
+    # matchup-grid module), and a production build per app.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      # The examples resolve @alpaca-software/40kdc-data through the workspace,
+      # so the package's dist must exist first.
+      - run: cd tools && npm run build
+      - run: npm run check --workspace @40kdc/salvo --workspace @40kdc/mission-matrix --workspace @40kdc/layout-editor
+      - run: npm test --workspace @40kdc/salvo --workspace @40kdc/mission-matrix
+      - run: npm run build --workspace @40kdc/salvo --workspace @40kdc/mission-matrix --workspace @40kdc/layout-editor
+
   publish-crate:
     # Auto-publish wh40kdc to crates.io once main is green. Self-gates on the
     # crate version: if this version is already on the registry the publish is
