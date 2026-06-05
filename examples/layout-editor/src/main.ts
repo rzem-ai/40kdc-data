@@ -1,7 +1,17 @@
 import { mount } from "svelte";
-import App from "./App.svelte";
 import "./app.css";
 
-const app = mount(App, { target: document.getElementById("app")! });
+// Viewer by default; the authoring editor stays behind #edit. The dynamic
+// imports keep the two as split bundles, so the editor's model/board weight
+// never loads for viewers.
+const editor = location.hash === "#edit";
+const load = editor ? import("./App.svelte") : import("./Viewer.svelte");
+void load.then(({ default: Root }) => {
+  mount(Root, { target: document.getElementById("app")! });
+});
 
-export default app;
+// The mode is decided at boot; flipping the hash mid-session reloads into the
+// other app rather than hot-swapping component trees.
+window.addEventListener("hashchange", () => {
+  if ((location.hash === "#edit") !== editor) location.reload();
+});
