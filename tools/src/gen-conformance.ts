@@ -25,7 +25,7 @@ import { fileURLToPath } from "node:url";
 
 import { Dataset } from "./data/dataset.js";
 import { normalizeName } from "./data/normalize.js";
-import { describeScoringCard } from "./translate/index.js";
+import { describeScoringCard, describeAbility, type Effect } from "./translate/index.js";
 import { awardsOf } from "./scoring/index.js";
 import { createRunnerState, dispatch } from "./runner.js";
 import { exportRoster, type ExportFormat } from "./export/index.js";
@@ -970,11 +970,64 @@ function genTerrainKeystones(): void {
   console.log(`terrain-keystones/cases.json: ${cases.length} cases`);
 }
 
+/**
+ * Effect-translation corpus: pin the Ability-DSL effect describer
+ * (`describeEffect`/`describeAbility` — the "ability.print()") across the TS
+ * and Rust ports. Cases embed the raw `effect` (+ `scope`) so parity does not
+ * depend on collection dup-id resolution; selection greedily covers every
+ * effect node type at least once (up to 5 exemplars per type) over the
+ * id-sorted ability list, so the corpus stays small but exhaustive by shape.
+ */
+function genEffectTranslation(): void {
+  const ds = Dataset.embedded();
+  mkdirSync(join(CONFORMANCE, "effect-translation"), { recursive: true });
+
+  const collectTypes = (e: unknown, out: Set<string>): void => {
+    if (Array.isArray(e)) {
+      for (const v of e) collectTypes(v, out);
+      return;
+    }
+    if (typeof e !== "object" || e === null) return;
+    const rec = e as Record<string, unknown>;
+    if (typeof rec.type === "string") out.add(rec.type);
+    for (const key of ["effect", "on_success", "on_fail", "steps", "options", "condition"]) {
+      if (key in rec) collectTypes(rec[key], out);
+    }
+  };
+
+  const abilities = ds.abilities.all
+    .slice()
+    .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+
+  const seen = new Map<string, number>();
+  const CAP = 5;
+  const cases: unknown[] = [];
+  for (const a of abilities) {
+    const types = new Set<string>();
+    collectTypes(a.raw.effect, types);
+    let fresh = false;
+    for (const t of types) {
+      if ((seen.get(t) ?? 0) < CAP) fresh = true;
+    }
+    if (!fresh) continue;
+    for (const t of types) seen.set(t, (seen.get(t) ?? 0) + 1);
+    cases.push({
+      caseId: `${a.id}#${cases.length}`,
+      effect: a.raw.effect,
+      scope: a.raw.scope ?? null,
+      expected: { text: describeAbility({ effect: a.raw.effect as Effect, scope: a.raw.scope }) },
+    });
+  }
+  writeJson(join(CONFORMANCE, "effect-translation", "cases.json"), cases);
+  console.log(`effect-translation/cases.json: ${cases.length} cases (${seen.size} node types)`);
+}
+
 genNormalize();
 genRosters();
 genLinkedApi();
 genAttribution();
 genScoringTranslation();
+genEffectTranslation();
 genScoring();
 genTerrainResolver();
 genTerrainKeystones();

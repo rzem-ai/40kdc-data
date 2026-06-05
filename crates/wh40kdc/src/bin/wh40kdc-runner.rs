@@ -27,7 +27,10 @@ use wh40kdc::scoring::{
     score_cap, score_primary_event, score_secondary, score_secondary_event, score_turn,
     set_primary, wtc_result, AssertedAward, ScoringMode,
 };
-use wh40kdc::{describe_scoring_card, normalize_name, Dataset, Phase, SecondaryCard};
+use wh40kdc::{
+    describe_effect_with_scope, describe_scoring_card, normalize_name, Dataset, Phase,
+    SecondaryCard,
+};
 
 // ---------------------------------------------------------------------------
 // Spec version + impl identity.
@@ -771,6 +774,30 @@ fn handle_translate_scoring(state: &mut RunnerState, args: &Value) -> Value {
     }
 }
 
+fn handle_translate_effect(args: &Value) -> Value {
+    let Some(effect_value) = args.get("effect") else {
+        return err_value(
+            ErrorKind::InvalidInput,
+            Some(json!({ "detail": "translate_effect.effect must be an object" })),
+        );
+    };
+    let effect: wh40kdc::EffectNode = match serde_json::from_value(effect_value.clone())
+    {
+        Ok(e) => e,
+        Err(e) => {
+            return err_value(
+                ErrorKind::InvalidInput,
+                Some(json!({ "detail": format!("translate_effect.effect did not parse: {e}") })),
+            )
+        }
+    };
+    let scope: Option<wh40kdc::Scope> = args
+        .get("scope")
+        .filter(|v| !v.is_null())
+        .and_then(|v| serde_json::from_value(v.clone()).ok());
+    ok_value(json!({ "text": describe_effect_with_scope(&effect, scope.as_ref()) }))
+}
+
 // ---------------------------------------------------------------------------
 // Scoring engine ops. Awards are referenced by index into a card's `awards`
 // array (never serialized over the wire); both impls reconstruct the same
@@ -1110,6 +1137,7 @@ fn dispatch(state: &mut RunnerState, op: &str, args: &Value) -> Value {
         "crunch" => handle_crunch(state, args),
         "attribution" => handle_attribution(state, args),
         "translate_scoring" => handle_translate_scoring(state, args),
+        "translate_effect" => handle_translate_effect(args),
         "score_event" => handle_score_event(state, args),
         "score_state" => handle_score_state(state, args),
         "wtc_result" => handle_wtc_result(args),

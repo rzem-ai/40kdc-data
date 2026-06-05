@@ -176,6 +176,24 @@ unknown `cardId` returns `error_kind: "UNKNOWN_ENTITY"`. Only `card_type:
 "primary"` cards are exercised by the corpus today (the secondary deck isn't
 revealed yet, but the op works for any card present in the dataset).
 
+### `translate_effect`
+
+```json
+{"op":"translate_effect","args":{"effect":{"type":"feel-no-pain","target":"unit","modifier":{"threshold":5}},"scope":{"range":"unit","duration":"phase"}}}
+```
+
+Humanizes an Ability-DSL `effect` tree (plus an optional `scope`) into the
+generated plain-English approximation — the dataset's "ability.print()". The
+`effect` is embedded in the request verbatim (no dataset lookup, so parity is
+independent of duplicate-ability-id resolution); `scope` may be omitted or
+`null`. Response value is `{"text": "<multi-line ASCII string>"}` — container
+nodes render block-style with two-space indentation and an ASCII `-> ` arrow,
+and the scope renders as a trailing `Scope: …. Duration: ….` line. Equivalent
+to TS `describeAbility({effect, scope})` / Rust
+`describe_effect_with_scope(&effect, scope.as_ref())`. The differ compares the
+value structurally (exact string equality). A non-object `effect` returns
+`error_kind: "INVALID_INPUT"`.
+
 ### `score_event`
 
 ```json

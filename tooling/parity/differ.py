@@ -354,6 +354,22 @@ def iter_scoring_translation_cases(corpus: Path) -> Iterator[Case]:
         )
 
 
+def iter_effect_translation_cases(corpus: Path) -> Iterator[Case]:
+    path = corpus / "effect-translation" / "cases.json"
+    cases = json.loads(path.read_text())
+    for entry in cases:
+        args = {"effect": entry["effect"]}
+        if entry.get("scope") is not None:
+            args["scope"] = entry["scope"]
+        yield Case(
+            area="effect-translation",
+            case_id=f"effect-translation/{entry['caseId']}",
+            op="translate_effect",
+            args=args,
+            compare_mode="struct",
+        )
+
+
 def iter_scoring_cases(corpus: Path) -> Iterator[Case]:
     path = corpus / "scoring" / "cases.json"
     cases = json.loads(path.read_text())
@@ -412,6 +428,7 @@ AREA_ITERATORS: dict[str, Any] = {
     "linked-api": iter_linked_api_cases,
     "attribution": iter_attribution_cases,
     "scoring-translation": iter_scoring_translation_cases,
+    "effect-translation": iter_effect_translation_cases,
     "scoring": iter_scoring_cases,
     "terrain-resolver": iter_terrain_resolver_cases,
     "terrain-keystones": iter_terrain_keystones_cases,
@@ -535,6 +552,7 @@ def run_corpus(
         "linked-api": ["linked_query"],
         "attribution": ["attribution"],
         "scoring-translation": ["translate_scoring"],
+        "effect-translation": ["translate_effect"],
     }
     probes: set[str] = set()
     for a in areas:

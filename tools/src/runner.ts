@@ -28,7 +28,7 @@ import { importRoster, tryImportRoster, REGISTERED_ADAPTERS } from "./import/imp
 import { selectAdapter } from "./import/adapter.js";
 import { createValidator } from "./schema-loader.js";
 import { attributeStages, crunch, type Buff, type EngineContext, type EngineInput } from "./cruncher/index.js";
-import { describeScoringCard, type ScoringMode } from "./translate/index.js";
+import { describeScoringCard, describeAbility, type ScoringMode, type Effect, type AbilityScope } from "./translate/index.js";
 import {
   awardsOf,
   scoreTurn,
@@ -560,6 +560,21 @@ function handleTranslateScoring(state: RunnerState, args: unknown): RunnerRespon
   return ok({ awards: describeScoringCard(card) });
 }
 
+function handleTranslateEffect(args: unknown): RunnerResponse {
+  if (typeof args !== "object" || args === null) {
+    return err("INVALID_INPUT", { detail: "translate_effect args must be an object" });
+  }
+  const a = args as { effect?: unknown; scope?: unknown };
+  if (typeof a.effect !== "object" || a.effect === null) {
+    return err("INVALID_INPUT", { detail: "translate_effect.effect must be an object" });
+  }
+  const scope =
+    typeof a.scope === "object" && a.scope !== null ? (a.scope as AbilityScope) : undefined;
+  return ok({
+    text: describeAbility({ effect: a.effect as Effect, ...(scope ? { scope } : {}) }),
+  });
+}
+
 // -----------------------------------------------------------------------------
 // Scoring engine ops. Awards are referenced by index into the card's `awards`
 // array (never serialized over the wire) so both impls reconstruct the same
@@ -821,6 +836,8 @@ export function dispatch(state: RunnerState, req: { op: string; args?: unknown }
       return handleAttribution(state, req.args);
     case "translate_scoring":
       return handleTranslateScoring(state, req.args);
+    case "translate_effect":
+      return handleTranslateEffect(req.args);
     case "score_event":
       return handleScoreEvent(state, req.args);
     case "score_state":

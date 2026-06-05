@@ -13,6 +13,10 @@ export * from "./translate/index.js";
 // two wildcard re-exports in favour of the generated, schema-canonical type.
 export type { ScoringTrigger } from "./generated.js";
 
+// `AbilityScope` likewise: ./translate/effect.ts hand-authors a looser view
+// for the describer; prefer the generated, schema-canonical type.
+export type { AbilityScope } from "./generated.js";
+
 // Terrain geometry resolver (template-anchored layout → board-space vertices).
 // Curated (not wildcard) so its internal type aliases don't clash with the
 // generated Footprint/TerrainTemplate/TerrainLayout types. Cross-impl pinned.

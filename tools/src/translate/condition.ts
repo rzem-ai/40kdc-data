@@ -28,6 +28,7 @@ export function dekebab(s: string): string {
 }
 
 function str(v: unknown): string {
+  if (v == null) return "?";
   return typeof v === "string" ? v : String(v);
 }
 

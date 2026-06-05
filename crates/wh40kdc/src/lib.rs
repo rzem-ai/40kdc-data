@@ -112,7 +112,10 @@ pub mod cruncher;
 /// available even in a types-only (`default-features = false`) build.
 pub mod translate;
 
-pub use translate::{describe_award, describe_condition, describe_scoring_card, describe_trigger};
+pub use translate::{
+    describe_ability, describe_award, describe_condition, describe_effect, describe_effect_inline,
+    describe_effect_with_scope, describe_scope, describe_scoring_card, describe_trigger,
+};
 
 /// Terrain layout geometry: resolve template-anchored layouts to absolute
 /// board-space vertices. Pure (no data deps), so available in every build.

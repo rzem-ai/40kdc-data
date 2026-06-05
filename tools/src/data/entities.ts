@@ -22,6 +22,7 @@ import {
   type TranslationPerspective,
 } from "../cruncher/from-dsl.js";
 import type { Dataset } from "./dataset.js";
+import { describeAbility } from "../translate/effect.js";
 
 /** A unit, linked to its faction, weapons, and abilities. */
 export class UnitView {
@@ -98,6 +99,16 @@ export class AbilityView {
 
   get name(): string {
     return this.raw.name;
+  }
+
+  /**
+   * Generated plain-English approximation of this ability's effect + scope,
+   * rendered from the DSL by the conformance-pinned describer
+   * (`translate/effect.ts`). The dataset carries no rules prose; this is the
+   * displayable stand-in.
+   */
+  describe(): string {
+    return describeAbility(this.raw);
   }
 
   /** Game phases this ability acts in, unioned across its phase-mappings. */

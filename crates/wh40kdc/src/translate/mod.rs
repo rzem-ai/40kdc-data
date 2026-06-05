@@ -13,6 +13,12 @@ use crate::generated::{
     SimpleConditionType,
 };
 
+mod effect;
+pub use effect::{
+    describe_ability, describe_effect, describe_effect_inline, describe_effect_with_scope,
+    describe_scope,
+};
+
 /// kebab-case → space-separated words (`enemy-territory` → `enemy territory`).
 pub fn dekebab(s: &str) -> String {
     s.replace('-', " ")
@@ -31,6 +37,11 @@ fn pb(p: &Map<String, Value>, k: &str) -> bool {
 }
 fn po<'a>(p: &'a Map<String, Value>, k: &str) -> Option<&'a Map<String, Value>> {
     p.get(k).and_then(Value::as_object)
+}
+/// JS-template stringification of a parameter (numbers print bare, missing or
+/// null prints `?`) — mirrors the TS `str(p.key)` after its nullish guard.
+fn pj(p: &Map<String, Value>, k: &str) -> String {
+    p.get(k).map(effect::jval).unwrap_or_else(|| "?".to_string())
 }
 
 /// `2` + `objective` → `2+ objectives`. All nouns here are regular plurals.
@@ -226,7 +237,7 @@ fn describe_simple(s: &SimpleCondition) -> String {
             let r = if ps(p, "range") == Some("engagement") {
                 "engagement range".to_string()
             } else {
-                format!("{}\"", ps(p, "range").unwrap_or(""))
+                format!("{}\"", pj(p, "range"))
             };
             format!("{negate}an enemy unit is within {r}")
         }
@@ -237,7 +248,7 @@ fn describe_simple(s: &SimpleCondition) -> String {
             };
             format!(
                 "{negate}within {}\" of {}{kw}",
-                ps(p, "range").unwrap_or(""),
+                pj(p, "range"),
                 ps(p, "target_type").unwrap_or("target")
             )
         }
@@ -279,26 +290,25 @@ fn describe_simple(s: &SimpleCondition) -> String {
             "{negate}{} destroyed {}",
             count(
                 pu(p, "count_min", 1),
-                &format!("{} unit", ps(p, "side").unwrap_or(""))
+                &format!("{} unit", pj(p, "side"))
             ),
-            dekebab(ps(p, "window").unwrap_or(""))
+            dekebab(&pj(p, "window"))
         ),
         T::UnitsDestroyedComparison => {
-            let subj = po(p, "subject");
-            let refr = po(p, "reference");
-            let ss = subj.and_then(|m| ps(m, "side")).unwrap_or("");
-            let sw = subj.and_then(|m| ps(m, "window")).unwrap_or("");
-            let rs = refr.and_then(|m| ps(m, "side")).unwrap_or("");
-            let rw = refr.and_then(|m| ps(m, "window")).unwrap_or("");
+            let empty = Map::new();
+            let subj = po(p, "subject").unwrap_or(&empty);
+            let refr = po(p, "reference").unwrap_or(&empty);
             let (cmp, link) = if ps(p, "comparator") == Some("greater-or-equal") {
                 ("at least as many", "as")
             } else {
                 ("more", "than")
             };
             format!(
-                "{negate}you destroyed {cmp} {ss} units {} {link} {rs} units {}",
-                dekebab(sw),
-                dekebab(rw)
+                "{negate}you destroyed {cmp} {} units {} {link} {} units {}",
+                pj(subj, "side"),
+                dekebab(&pj(subj, "window")),
+                pj(refr, "side"),
+                dekebab(&pj(refr, "window"))
             )
         }
         T::NewObjectiveControlled => format!(
