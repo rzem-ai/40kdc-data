@@ -5,12 +5,14 @@
     footprintVertices,
     solveCentroid,
     solveCentroidTriangulated,
+    solveCentroidAttached,
     templateById,
     type EditPiece,
     type EditKeystone,
     type KeystoneDisplay,
     type Mirror,
     type SolverRef,
+    type SolverHover,
     type SolverLine,
     type ObjectiveRole,
   } from "./model.js";
@@ -21,6 +23,8 @@
     boardPos: { x: number; y: number };
     /** Area pieces the selected feature may be anchored to. */
     areaOptions: { id: string; name: string }[];
+    /** Other top-level areas the attachment solver can attach the selection to. */
+    attachTargets: EditPiece[];
     /** The selected piece's keystones with live derived distances. */
     keystones: KeystoneDisplay[];
     ondelete: (id: string) => void;
@@ -31,7 +35,7 @@
     onobjectiverole: (id: string, role: ObjectiveRole | undefined) => void;
     onsnapcenter: (id: string) => void;
     onsnapcorner: (id: string) => void;
-    onsolverhover: (ref: SolverRef | null) => void;
+    onsolverhover: (hover: SolverHover | null) => void;
     onsolverlines: (lines: SolverLine[]) => void;
     onaddkeystone: (id: string, k: EditKeystone) => void;
     onremovekeystone: (id: string, index: number) => void;
@@ -40,6 +44,7 @@
     piece,
     boardPos,
     areaOptions,
+    attachTargets,
     keystones,
     ondelete,
     onmove,
@@ -98,7 +103,7 @@
   const vFeatures = $derived(featureChoices("v"));
 
   // Solver form state, in card directions.
-  let solverMode = $state<"two" | "three">("two");
+  let solverMode = $state<"two" | "three" | "attach">("two");
   let hEdge = $state<"left" | "right">("left");
   let hDist = $state<number>(0);
   let hRef = $state<SolverRef>({ kind: "face", side: "max-y" });
@@ -120,6 +125,30 @@
     return fp ? footprintVertices(fp as never).length : 0;
   });
 
+  // Attachment (lock + attach) state — the cluster-card pattern: each piece's
+  // card pins ONE corner with two dimension lines; the attachment to the
+  // neighbouring area supplies both rotations. The solve re-poses BOTH pieces.
+  let aLockVertex = $state(0);
+  let aLockH = $state<{ edge: "left" | "right"; dist: number }>({ edge: "left", dist: 0 });
+  let aLockV = $state<{ edge: "top" | "bottom"; dist: number }>({ edge: "top", dist: 0 });
+  let attachKind = $state<"vertex" | "edge">("vertex");
+  let aAttach = $state(0);
+  let attachTargetId = $state("");
+  let bAttach = $state(0);
+  let bLockVertex = $state(0);
+  let bLockH = $state<{ edge: "left" | "right"; dist: number }>({ edge: "left", dist: 0 });
+  let bLockV = $state<{ edge: "top" | "bottom"; dist: number }>({ edge: "top", dist: 0 });
+
+  const targetPiece = $derived(attachTargets.find((p) => p.id === attachTargetId) ?? null);
+  const targetVertexCount = $derived.by(() => {
+    if (!targetPiece) return 0;
+    const fp = footprintOf(targetPiece);
+    return fp ? footprintVertices(fp as never).length : 0;
+  });
+  /** The attach picker's ref for slot i — a corner, or the edge v[i]→v[i+1]. */
+  const attachRef = (i: number): SolverHover["ref"] =>
+    attachKind === "vertex" ? { kind: "vertex", index: i } : { kind: "edge", index: i };
+
   const sameRef = (a: SolverRef, b: SolverRef): boolean =>
     a.kind === "vertex" && b.kind === "vertex"
       ? a.index === b.index
@@ -128,7 +157,8 @@
         : false;
 
   // Push the current dimension lines (in board-edge terms) to the board so the
-  // guides track live — two lines in known-angle mode, three in triangulation.
+  // guides track live — two lines in known-angle mode, three in triangulation,
+  // two per piece in attachment mode (the target's carry its pieceId).
   $effect(() => {
     if (solverMode === "three") {
       onsolverlines(
@@ -138,6 +168,18 @@
           ref: { kind: "vertex", index: t.vertex },
         })),
       );
+    } else if (solverMode === "attach") {
+      const lines: SolverLine[] = [
+        { edge: toBoardEdge(aLockH.edge), distance: aLockH.dist, ref: { kind: "vertex", index: aLockVertex } },
+        { edge: toBoardEdge(aLockV.edge), distance: aLockV.dist, ref: { kind: "vertex", index: aLockVertex } },
+      ];
+      if (targetPiece) {
+        lines.push(
+          { edge: toBoardEdge(bLockH.edge), distance: bLockH.dist, ref: { kind: "vertex", index: bLockVertex }, pieceId: targetPiece.id },
+          { edge: toBoardEdge(bLockV.edge), distance: bLockV.dist, ref: { kind: "vertex", index: bLockVertex }, pieceId: targetPiece.id },
+        );
+      }
+      onsolverlines(lines);
     } else {
       onsolverlines([
         { edge: toBoardEdge(hEdge), distance: hDist, ref: hRef },
@@ -198,6 +240,73 @@
       onmove(piece.id, { x: Math.round(res.x * 1e4) / 1e4, y: Math.round(res.y * 1e4) / 1e4 });
     } catch (e) {
       solveError = (e as Error).message;
+    }
+  }
+
+  // Solve BOTH pieces of an attached pair from the cluster-card pattern: each
+  // card pins one corner with two lines, and the attachment (corners coincide /
+  // edges flush) supplies the rotations. Intended for top-level (area) pieces;
+  // the current rotations of both pieces seed the root choice.
+  function solveAttachedPlace(): void {
+    solveError = null;
+    if (!piece) return;
+    const target = targetPiece;
+    if (!target) {
+      solveError = "pick the area this piece attaches to";
+      return;
+    }
+    const fpA = footprintOf(piece);
+    const fpB = footprintOf(target);
+    if (!fpA || !fpB) {
+      solveError = "both pieces need a footprint to solve against";
+      return;
+    }
+    try {
+      const res = solveCentroidAttached({
+        board: { width: BOARD.width, height: BOARD.height },
+        a: {
+          footprint: fpA as never,
+          mirror: piece.mirror,
+          lockVertex: aLockVertex,
+          lines: [
+            { edge: toBoardEdge(aLockH.edge), distance: aLockH.dist },
+            { edge: toBoardEdge(aLockV.edge), distance: aLockV.dist },
+          ],
+          attach: { kind: attachKind, index: aAttach },
+          rotationHint: piece.rotation_degrees,
+        },
+        b: {
+          footprint: fpB as never,
+          mirror: target.mirror,
+          lockVertex: bLockVertex,
+          lines: [
+            { edge: toBoardEdge(bLockH.edge), distance: bLockH.dist },
+            { edge: toBoardEdge(bLockV.edge), distance: bLockV.dist },
+          ],
+          attach: { kind: attachKind, index: bAttach },
+          rotationHint: target.rotation_degrees,
+        },
+      });
+      for (const [id, pose] of [
+        [piece.id, res.a],
+        [target.id, res.b],
+      ] as const) {
+        onorient(id, { rotation_degrees: Math.round(pose.rotation * 100) / 100 });
+        onmove(id, { x: Math.round(pose.x * 1e4) / 1e4, y: Math.round(pose.y * 1e4) / 1e4 });
+      }
+    } catch (e) {
+      solveError = (e as Error).message;
+    }
+  }
+
+  /** Persist all four lock lines as printed card measurements, two per piece. */
+  function pinAttachKeystones(): void {
+    if (!piece) return;
+    onaddkeystone(piece.id, { edge: toBoardEdge(aLockH.edge), ref: { kind: "vertex", index: aLockVertex } });
+    onaddkeystone(piece.id, { edge: toBoardEdge(aLockV.edge), ref: { kind: "vertex", index: aLockVertex } });
+    if (targetPiece) {
+      onaddkeystone(targetPiece.id, { edge: toBoardEdge(bLockH.edge), ref: { kind: "vertex", index: bLockVertex } });
+      onaddkeystone(targetPiece.id, { edge: toBoardEdge(bLockV.edge), ref: { kind: "vertex", index: bLockVertex } });
     }
   }
 
@@ -326,6 +435,9 @@
         <button class="feat {solverMode === 'three' ? 'on' : ''}" onclick={() => (solverMode = "three")}
           >3 corners · solve angle</button
         >
+        <button class="feat {solverMode === 'attach' ? 'on' : ''}" onclick={() => (solverMode = "attach")}
+          >lock corner · attach</button
+        >
       </div>
 
       {#if solverMode === "two"}
@@ -345,9 +457,13 @@
           {#each hFeatures as f (f.label)}
             <button
               class="feat {sameRef(hRef, f.ref) ? 'on' : ''}"
-              onpointerenter={() => onsolverhover(f.ref)}
+              onpointerenter={() => onsolverhover({ ref: f.ref })}
               onpointerleave={() => onsolverhover(null)}
-              onclick={() => (hRef = f.ref)}>{f.label}</button
+              onclick={() => {
+                hRef = f.ref;
+                // A face names its card edge — pre-populate the dropdown to match.
+                if (f.ref.kind === "face") hEdge = f.ref.side === "max-y" ? "left" : "right";
+              }}>{f.label}</button
             >
           {/each}
         </div>
@@ -363,9 +479,13 @@
           {#each vFeatures as f (f.label)}
             <button
               class="feat {sameRef(vRef, f.ref) ? 'on' : ''}"
-              onpointerenter={() => onsolverhover(f.ref)}
+              onpointerenter={() => onsolverhover({ ref: f.ref })}
               onpointerleave={() => onsolverhover(null)}
-              onclick={() => (vRef = f.ref)}>{f.label}</button
+              onclick={() => {
+                vRef = f.ref;
+                // A face names its card edge — pre-populate the dropdown to match.
+                if (f.ref.kind === "face") vEdge = f.ref.side === "min-x" ? "top" : "bottom";
+              }}>{f.label}</button
             >
           {/each}
         </div>
@@ -385,7 +505,7 @@
             >Pin V keystone</button
           >
         </div>
-      {:else}
+      {:else if solverMode === "three"}
         <p class="hint">
           For pieces at non-90° angles: set mirror to match the card, then enter the
           card's three corner measurements — two from the same pair of edges
@@ -416,7 +536,7 @@
               {#each Array.from({ length: vertexCount }, (_, vi) => vi) as vi (vi)}
                 <button
                   class="feat {t.vertex === vi ? 'on' : ''}"
-                  onpointerenter={() => onsolverhover({ kind: "vertex", index: vi })}
+                  onpointerenter={() => onsolverhover({ ref: { kind: "vertex", index: vi } })}
                   onpointerleave={() => onsolverhover(null)}
                   onclick={() => (tri[i].vertex = vi)}>v{vi}</button
                 >
@@ -432,6 +552,123 @@
         {/each}
 
         <button class="primary" onclick={solveTriangulatedPlace}>Triangulate &amp; place</button>
+      {:else}
+        <p class="hint">
+          For a cluster the card pins by single corners: lock one corner of this
+          piece with its two card lines, attach a corner or edge to the
+          neighbouring area, then lock that area's keystone corner the same way.
+          Solves position <em>and</em> rotation of <em>both</em> pieces — corners
+          pivot, edges slide. Rough both rotations in first; they pick the fit.
+        </p>
+
+        <span class="sub">This piece — locked corner</span>
+        <div class="features">
+          {#each Array.from({ length: vertexCount }, (_, vi) => vi) as vi (vi)}
+            <button
+              class="feat {aLockVertex === vi ? 'on' : ''}"
+              onpointerenter={() => onsolverhover({ ref: { kind: "vertex", index: vi } })}
+              onpointerleave={() => onsolverhover(null)}
+              onclick={() => (aLockVertex = vi)}>v{vi}</button
+            >
+          {/each}
+        </div>
+        <div class="line">
+          <select value={aLockH.edge} onchange={(e) => (aLockH.edge = (e.currentTarget as HTMLSelectElement).value as "left" | "right")}>
+            <option value="left">from left edge</option>
+            <option value="right">from right edge</option>
+          </select>
+          <input type="number" step="0.05" value={aLockH.dist} oninput={(e) => (aLockH.dist = num(e))} aria-label="this piece's lock distance from left/right edge" />″
+        </div>
+        <div class="line">
+          <select value={aLockV.edge} onchange={(e) => (aLockV.edge = (e.currentTarget as HTMLSelectElement).value as "top" | "bottom")}>
+            <option value="top">from top edge</option>
+            <option value="bottom">from bottom edge</option>
+          </select>
+          <input type="number" step="0.05" value={aLockV.dist} oninput={(e) => (aLockV.dist = num(e))} aria-label="this piece's lock distance from top/bottom edge" />″
+        </div>
+
+        <span class="sub">Attachment</span>
+        <div class="mode">
+          <button class="feat {attachKind === 'vertex' ? 'on' : ''}" onclick={() => (attachKind = "vertex")}
+            >corner ↔ corner</button
+          >
+          <button class="feat {attachKind === 'edge' ? 'on' : ''}" onclick={() => (attachKind = "edge")}
+            >edge ↔ edge</button
+          >
+        </div>
+        <div class="line">
+          this piece's {attachKind === "vertex" ? "corner" : "edge"}:
+          <span class="features inline">
+            {#each Array.from({ length: vertexCount }, (_, i) => i) as i (i)}
+              <button
+                class="feat {aAttach === i ? 'on' : ''}"
+                onpointerenter={() => onsolverhover({ ref: attachRef(i) })}
+                onpointerleave={() => onsolverhover(null)}
+                onclick={() => (aAttach = i)}>{attachKind === "vertex" ? "v" : "e"}{i}</button
+              >
+            {/each}
+          </span>
+        </div>
+
+        <span class="sub">Attached-to area</span>
+        <label
+          >area
+          <select value={attachTargetId} onchange={(e) => (attachTargetId = (e.currentTarget as HTMLSelectElement).value)}>
+            <option value="">(pick an area)</option>
+            {#each attachTargets as t (t.id)}
+              <option value={t.id}>{t.name ?? t.id}</option>
+            {/each}
+          </select>
+        </label>
+        {#if targetPiece}
+          <div class="line">
+            its {attachKind === "vertex" ? "corner" : "edge"}:
+            <span class="features inline">
+              {#each Array.from({ length: targetVertexCount }, (_, i) => i) as i (i)}
+                <button
+                  class="feat {bAttach === i ? 'on' : ''}"
+                  onpointerenter={() => onsolverhover({ pieceId: targetPiece.id, ref: attachRef(i) })}
+                  onpointerleave={() => onsolverhover(null)}
+                  onclick={() => (bAttach = i)}>{attachKind === "vertex" ? "v" : "e"}{i}</button
+                >
+              {/each}
+            </span>
+          </div>
+          <span class="sub">Its keystone anchor corner</span>
+          <div class="features">
+            {#each Array.from({ length: targetVertexCount }, (_, vi) => vi) as vi (vi)}
+              <button
+                class="feat {bLockVertex === vi ? 'on' : ''}"
+                onpointerenter={() => onsolverhover({ pieceId: targetPiece.id, ref: { kind: "vertex", index: vi } })}
+                onpointerleave={() => onsolverhover(null)}
+                onclick={() => (bLockVertex = vi)}>v{vi}</button
+              >
+            {/each}
+          </div>
+          <div class="line">
+            <select value={bLockH.edge} onchange={(e) => (bLockH.edge = (e.currentTarget as HTMLSelectElement).value as "left" | "right")}>
+              <option value="left">from left edge</option>
+              <option value="right">from right edge</option>
+            </select>
+            <input type="number" step="0.05" value={bLockH.dist} oninput={(e) => (bLockH.dist = num(e))} aria-label="target area's lock distance from left/right edge" />″
+          </div>
+          <div class="line">
+            <select value={bLockV.edge} onchange={(e) => (bLockV.edge = (e.currentTarget as HTMLSelectElement).value as "top" | "bottom")}>
+              <option value="top">from top edge</option>
+              <option value="bottom">from bottom edge</option>
+            </select>
+            <input type="number" step="0.05" value={bLockV.dist} oninput={(e) => (bLockV.dist = num(e))} aria-label="target area's lock distance from top/bottom edge" />″
+          </div>
+        {/if}
+
+        <div class="snaps">
+          <button class="primary" onclick={solveAttachedPlace}>Attach &amp; place both</button>
+          <button
+            class="feat"
+            title="Persist all four lock lines as printed card measurements, two on each piece (distances always derived from geometry)"
+            onclick={pinAttachKeystones}>Pin keystones</button
+          >
+        </div>
       {/if}
       {#if solveError}<p class="error">{solveError}</p>{/if}
     </fieldset>
@@ -452,7 +689,7 @@
                 class="ks-label"
                 role="img"
                 aria-label="keystone from card {fromBoardEdge(k.keystone.edge)} edge to {refLabel(k.keystone.ref)}"
-                onpointerenter={() => onsolverhover(k.keystone.ref)}
+                onpointerenter={() => onsolverhover({ ref: k.keystone.ref })}
                 onpointerleave={() => onsolverhover(null)}
               >
                 {fromBoardEdge(k.keystone.edge)} → {refLabel(k.keystone.ref)}
@@ -546,6 +783,16 @@
     font-size: 0.74rem;
     color: var(--text-mute);
     margin: 0.3rem 0 0;
+  }
+  /* Sub-section label inside the attachment solver's longer form. */
+  .sub {
+    display: block;
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin: 0.55rem 0 0.25rem;
   }
   .solver .line {
     display: flex;

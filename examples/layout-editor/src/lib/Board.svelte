@@ -13,6 +13,7 @@
     type Mirror,
     type Vec2,
     type SolverRef,
+    type SolverLine,
     type SolverViz,
     type OrientedFootprint,
     type DeployZone,
@@ -126,6 +127,30 @@
   const selOriented = $derived<OrientedFootprint | null>(
     selectedPiece ? orientedFootprint(selectedPiece, layout) : null,
   );
+
+  // The piece a solver line/hover draws against — the selection unless the
+  // viz names another piece (the attachment solver points at both pieces).
+  function orientedFor(pieceId: string | undefined): OrientedFootprint | null {
+    if (!pieceId) return selOriented;
+    const p = editById.get(pieceId);
+    return p ? orientedFootprint(p, layout) : null;
+  }
+  const solverGuides = $derived(
+    solver.lines
+      .map((line) => ({ line, o: orientedFor(line.pieceId) }))
+      .filter((g): g is { line: SolverLine; o: OrientedFootprint } => !!g.o),
+  );
+  const hoverView = $derived.by(() => {
+    if (!solver.hover) return null;
+    const o = orientedFor(solver.hover.pieceId);
+    return o ? { ref: solver.hover.ref, o } : null;
+  });
+  /** The edge segment a viz edge ref names: vertex `index` → the next vertex. */
+  function edgeSeg(o: OrientedFootprint, index: number): [Vec2, Vec2] | null {
+    const v0 = o.verticesBoard[index];
+    const v1 = o.verticesBoard[(index + 1) % o.verticesBoard.length];
+    return v0 && v1 ? [v0, v1] : null;
+  }
 
   function refPoint(o: OrientedFootprint, ref: SolverRef): Vec2 {
     if (ref.kind === "vertex") return o.verticesBoard[ref.index] ?? o.centroid;
@@ -283,34 +308,38 @@
       <circle cx={g.to.x} cy={g.to.y} r="0.35" class="keystone-dot {g.invalid ? 'invalid' : ''}" />
     {/each}
 
-    <!-- solver indicators on the selected piece -->
-    {#if selOriented}
-      {#if solver.hover}
-        {#if solver.hover.kind === "vertex"}
-          {@const v = selOriented.verticesBoard[solver.hover.index]}
-          {#if v}<circle cx={v.x} cy={v.y} r="0.7" class="ind hover" />{/if}
-        {:else}
-          {@const seg = faceSeg(selOriented, solver.hover.side)}
-          <line x1={seg[0].x} y1={seg[0].y} x2={seg[1].x} y2={seg[1].y} class="ind-edge hover" />
-        {/if}
+    <!-- solver indicators: each line/hover draws on its own piece (the
+         selection unless the attachment solver names the other piece) -->
+    {#if hoverView}
+      {#if hoverView.ref.kind === "vertex"}
+        {@const v = hoverView.o.verticesBoard[hoverView.ref.index]}
+        {#if v}<circle cx={v.x} cy={v.y} r="0.7" class="ind hover" />{/if}
+      {:else if hoverView.ref.kind === "edge"}
+        {@const seg = edgeSeg(hoverView.o, hoverView.ref.index)}
+        {#if seg}<line x1={seg[0].x} y1={seg[0].y} x2={seg[1].x} y2={seg[1].y} class="ind-edge hover" />{/if}
+      {:else}
+        {@const seg = faceSeg(hoverView.o, hoverView.ref.side)}
+        <line x1={seg[0].x} y1={seg[0].y} x2={seg[1].x} y2={seg[1].y} class="ind-edge hover" />
       {/if}
-      <!-- keyed by index: triangulation lines can share a board edge -->
-      {#each solver.lines as line, li (li)}
-        <!-- always mark the selected feature so it's clear which corner/face the
-             dimension draws to, even before a distance is typed -->
-        {#if line.ref.kind === "vertex"}
-          {@const v = selOriented.verticesBoard[line.ref.index]}
-          {#if v}<circle cx={v.x} cy={v.y} r="0.5" class="ind active" />{/if}
-        {:else}
-          {@const seg = faceSeg(selOriented, line.ref.side)}
-          <line x1={seg[0].x} y1={seg[0].y} x2={seg[1].x} y2={seg[1].y} class="ind-edge active" />
-        {/if}
-        {#if line.distance}
-          {@const g = guide(selOriented, line)}
-          <line x1={g.from.x} y1={g.from.y} x2={g.to.x} y2={g.to.y} class="measure" />
-        {/if}
-      {/each}
+    {/if}
+    <!-- keyed by index: triangulation lines can share a board edge -->
+    {#each solverGuides as { line, o }, li (li)}
+      <!-- always mark the selected feature so it's clear which corner/face the
+           dimension draws to, even before a distance is typed -->
+      {#if line.ref.kind === "vertex"}
+        {@const v = o.verticesBoard[line.ref.index]}
+        {#if v}<circle cx={v.x} cy={v.y} r="0.5" class="ind active" />{/if}
+      {:else}
+        {@const seg = faceSeg(o, line.ref.side)}
+        <line x1={seg[0].x} y1={seg[0].y} x2={seg[1].x} y2={seg[1].y} class="ind-edge active" />
+      {/if}
+      {#if line.distance}
+        {@const g = guide(o, line)}
+        <line x1={g.from.x} y1={g.from.y} x2={g.to.x} y2={g.to.y} class="measure" />
+      {/if}
+    {/each}
 
+    {#if selOriented}
       <circle cx={selOriented.centroid.x} cy={selOriented.centroid.y} r="0.3" class="anchor" />
     {/if}
 
@@ -337,15 +366,13 @@
         <text x={d.x} y={d.y - 2.1} class="objective-label">{m.role}</text>
       {/if}
     {/each}
-    {#if selOriented}
-      {#each solver.lines as line, li (li)}
-        {#if line.distance}
-          {@const g = guide(selOriented, line)}
-          {@const d = toDisplay(g.labelAt)}
-          <text x={d.x} y={d.y} class="measure-label">{g.text}</text>
-        {/if}
-      {/each}
-    {/if}
+    {#each solverGuides as { line, o }, li (li)}
+      {#if line.distance}
+        {@const g = guide(o, line)}
+        {@const d = toDisplay(g.labelAt)}
+        <text x={d.x} y={d.y} class="measure-label">{g.text}</text>
+      {/if}
+    {/each}
     {#each keystoneGuides as g, gi (gi)}
       {@const d = toDisplay(g.labelAt)}
       <text x={d.x} y={d.y} class="keystone-label {g.invalid ? 'invalid' : ''}">{g.text}</text>

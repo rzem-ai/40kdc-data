@@ -6,6 +6,7 @@
     addCenterRuin,
     blankLayout,
     blankLayoutFor,
+    footprintOf,
     loadEmbedded,
     resolve,
     toCanonicalJson,
@@ -33,7 +34,7 @@
     type EditLayout,
     type EditPiece,
     type Mirror,
-    type SolverRef,
+    type SolverHover,
     type SolverLine,
     type SolverViz,
     type DeployZone,
@@ -69,7 +70,7 @@
   const zones = $derived<DeployZone[]>(deploymentZones(deployment));
   const divider = $derived<TerritoryDivider | null>(territoryDivider(deployment));
 
-  let solverHover = $state<SolverRef | null>(null);
+  let solverHover = $state<SolverHover | null>(null);
   let solverLines = $state<SolverLine[]>([]);
   const solverViz = $derived<SolverViz>({ hover: solverHover, lines: solverLines });
 
@@ -113,6 +114,19 @@
     return out;
   });
 
+  // Areas the attachment solver can attach the selection to. Unlike
+  // `areaOptions`, twins are NOT collapsed — the author attaches to one
+  // specific physical neighbour. The selection and its own twin are excluded.
+  const attachTargets = $derived(
+    layout.pieces.filter(
+      (p) =>
+        p.piece_type === "area" &&
+        p.id !== selectedId &&
+        p.id !== selectedPiece?.twin_id &&
+        !!footprintOf(p),
+    ),
+  );
+
   function loadLayout(id: string): void {
     layout = loadEmbedded(id, symmetric) ?? blankLayout();
     selectedId = null;
@@ -134,8 +148,16 @@
     else unpairTwins(layout);
   }
 
+  // A feature added while an AREA is selected anchors to that area on arrival
+  // (the usual flow: select the area, then stock it with features).
+  function autoParentTarget(t: TerrainTemplate): EditPiece | null {
+    return t.kind === "feature" && selectedPiece?.piece_type === "area" ? selectedPiece : null;
+  }
   function add(t: TerrainTemplate): void {
-    selectedId = addTemplate(layout, t, symmetric).id;
+    const parent = autoParentTarget(t);
+    const added = addTemplate(layout, t, symmetric);
+    if (parent) setParentArea(layout, added.id, parent.id);
+    selectedId = added.id;
   }
   function addTerrainSet(s: TerrainSetDef): void {
     selectedId = addSet(layout, s, symmetric)?.id ?? selectedId;
@@ -170,10 +192,15 @@
     const at = boardRef?.clientToBoard(e.clientX, e.clientY) ?? null;
     if (at) {
       const p = paletteDrag.payload;
-      selectedId =
-        (p.kind === "template"
-          ? addTemplate(layout, p.template, symmetric, at).id
-          : addSet(layout, p.set, symmetric, at)?.id) ?? selectedId;
+      if (p.kind === "template") {
+        // Capture the auto-parent area BEFORE the selection moves to the new piece.
+        const parent = autoParentTarget(p.template);
+        const added = addTemplate(layout, p.template, symmetric, at);
+        if (parent) setParentArea(layout, added.id, parent.id);
+        selectedId = added.id;
+      } else {
+        selectedId = addSet(layout, p.set, symmetric, at)?.id ?? selectedId;
+      }
     }
     paletteDrag = null;
   }
@@ -364,6 +391,7 @@
         piece={selectedPiece}
         boardPos={selectedBoardPos}
         {areaOptions}
+        {attachTargets}
         ondelete={remove}
         {onmove}
         {onorient}

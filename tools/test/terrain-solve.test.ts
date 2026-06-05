@@ -1,8 +1,16 @@
 import { describe, it, expect } from "vitest";
-import { resolveLayout, type Footprint, type Mirror, type Vec2 } from "../src/terrain/resolve.js";
+import {
+  resolveLayout,
+  orientedOffsets,
+  type Footprint,
+  type Mirror,
+  type Vec2,
+} from "../src/terrain/resolve.js";
 import {
   solveCentroid,
   solveCentroidTriangulated,
+  solveCentroidAttached,
+  type AttachLine,
   type BoardEdge,
   type FeatureRef,
 } from "../src/terrain/solve.js";
@@ -177,5 +185,230 @@ describe("solveCentroidTriangulated (centroid + rotation from three corners)", (
         ],
       }),
     ).toThrow();
+  });
+});
+
+/** A piece's board-space vertices from a pose (exact — no resolver rounding). */
+function poseVerts(fp: Footprint, rotation: number, mirror: Mirror, centroid: Vec2): Vec2[] {
+  return orientedOffsets(fp, rotation, mirror).map((o) => ({ x: centroid.x + o.x, y: centroid.y + o.y }));
+}
+
+/** The two perpendicular card lines that pin a board point (varied edges for coverage). */
+function linesFor(P: Vec2, fromFar = false): [AttachLine, AttachLine] {
+  return fromFar
+    ? [
+        { edge: "right", distance: BOARD.width - P.x },
+        { edge: "bottom", distance: BOARD.height - P.y },
+      ]
+    : [
+        { edge: "left", distance: P.x },
+        { edge: "top", distance: P.y },
+      ];
+}
+
+describe("solveCentroidAttached (two-body lock + attach)", () => {
+  /**
+   * Vertex-mode round-trip. Build the truth constructively: place A, land B so
+   * the chosen attach vertices coincide, derive each piece's two lock lines
+   * from where its lock vertex actually sits, then assert the solver recovers
+   * BOTH poses from only those four card lines (+ rough rotation hints).
+   */
+  function vertexRoundTrip(opts: {
+    rotA: number;
+    rotB: number;
+    mirA?: Mirror;
+    mirB?: Mirror;
+    hintA?: number;
+    hintB?: number;
+  }) {
+    const mirA = opts.mirA ?? "none";
+    const mirB = opts.mirB ?? "none";
+    const cA = { x: 24, y: 18 };
+    const attachA = 1;
+    const attachB = 0;
+    const lockA = 3;
+    const lockB = 2;
+    const vertsA = poseVerts(RECT, opts.rotA, mirA, cA);
+    const X = vertsA[attachA]; // the shared corner
+    const offB = orientedOffsets(TRAP, opts.rotB, mirB);
+    const cB = { x: X.x - offB[attachB].x, y: X.y - offB[attachB].y };
+    const vertsB = poseVerts(TRAP, opts.rotB, mirB, cB);
+    const res = solveCentroidAttached({
+      board: BOARD,
+      a: {
+        footprint: RECT,
+        mirror: mirA,
+        lockVertex: lockA,
+        lines: linesFor(vertsA[lockA]),
+        attach: { kind: "vertex", index: attachA },
+        rotationHint: opts.hintA ?? opts.rotA,
+      },
+      b: {
+        footprint: TRAP,
+        mirror: mirB,
+        lockVertex: lockB,
+        lines: linesFor(vertsB[lockB], true),
+        attach: { kind: "vertex", index: attachB },
+        rotationHint: opts.hintB ?? opts.rotB,
+      },
+    });
+    return { res, cA, cB };
+  }
+
+  it("recovers both poses when corners meet (rotated pieces)", () => {
+    const { res, cA, cB } = vertexRoundTrip({ rotA: 41.81, rotB: 339, hintA: 45, hintB: 330 });
+    expect(close(res.a.x, cA.x) && close(res.a.y, cA.y) && closeAng(res.a.rotation, 41.81)).toBe(true);
+    expect(close(res.b.x, cB.x) && close(res.b.y, cB.y) && closeAng(res.b.rotation, 339)).toBe(true);
+  });
+
+  it("recovers both poses with a mirrored piece", () => {
+    const { res, cA, cB } = vertexRoundTrip({ rotA: 217, rotB: 55, mirB: "horizontal" });
+    expect(close(res.a.x, cA.x) && close(res.a.y, cA.y) && closeAng(res.a.rotation, 217)).toBe(true);
+    expect(close(res.b.x, cB.x) && close(res.b.y, cB.y) && closeAng(res.b.rotation, 55)).toBe(true);
+  });
+
+  it("the two circle roots are both reachable; the hints pick between them", () => {
+    const truth = vertexRoundTrip({ rotA: 30, rotB: 290 });
+    // Same card lines, hints far from the truth: the solver lands on the OTHER
+    // root — still a valid attachment (corners coincide), different rotations.
+    const other = vertexRoundTrip({ rotA: 30, rotB: 290, hintA: 30 + 180, hintB: 290 + 180 });
+    expect(closeAng(other.res.a.rotation, truth.res.a.rotation)).toBe(false);
+    const va = poseVerts(RECT, other.res.a.rotation, "none", { x: other.res.a.x, y: other.res.a.y })[1];
+    const vb = poseVerts(TRAP, other.res.b.rotation, "none", { x: other.res.b.x, y: other.res.b.y })[0];
+    expect(close(va.x, vb.x) && close(va.y, vb.y)).toBe(true);
+  });
+
+  /**
+   * Edge-mode round-trip. Build the truth on a shared line L through Q at
+   * angle psi: each piece's rotation aligns its edge with L (B anti-parallel —
+   * the flush case), and each slides to its own offset along L.
+   */
+  function edgeRoundTrip(psiDeg: number, hintNudge = 0) {
+    const Q = { x: 28, y: 20 };
+    const psi = (psiDeg * Math.PI) / 180;
+    const t = { x: Math.cos(psi), y: Math.sin(psi) };
+    const edgeA = 1; // RECT v1→v2
+    const edgeB = 2; // TRAP v2→v3
+    const lockA = 0;
+    const lockB = 1;
+    const place = (fp: Footprint, edge: number, antiParallel: boolean, slide: number) => {
+      const off0 = orientedOffsets(fp, 0, "none");
+      const u = {
+        x: off0[(edge + 1) % off0.length].x - off0[edge].x,
+        y: off0[(edge + 1) % off0.length].y - off0[edge].y,
+      };
+      const rot =
+        ((psiDeg - (Math.atan2(u.y, u.x) * 180) / Math.PI + (antiParallel ? 180 : 0)) % 360 + 360) % 360;
+      const off = orientedOffsets(fp, rot, "none");
+      // Put the edge's start vertex at Q + slide·t̂ — the whole edge then lies on L.
+      const c = { x: Q.x + slide * t.x - off[edge].x, y: Q.y + slide * t.y - off[edge].y };
+      return { rot, c };
+    };
+    const A = place(RECT, edgeA, false, 1.5);
+    const B = place(TRAP, edgeB, true, 7);
+    const vertsA = poseVerts(RECT, A.rot, "none", A.c);
+    const vertsB = poseVerts(TRAP, B.rot, "none", B.c);
+    const res = solveCentroidAttached({
+      board: BOARD,
+      a: {
+        footprint: RECT,
+        mirror: "none",
+        lockVertex: lockA,
+        lines: linesFor(vertsA[lockA]),
+        attach: { kind: "edge", index: edgeA },
+        rotationHint: A.rot + hintNudge,
+      },
+      b: {
+        footprint: TRAP,
+        mirror: "none",
+        lockVertex: lockB,
+        lines: linesFor(vertsB[lockB], true),
+        attach: { kind: "edge", index: edgeB },
+        rotationHint: B.rot + hintNudge,
+      },
+    });
+    return { res, A, B };
+  }
+
+  it("recovers both poses when edges lie flush on a common line", () => {
+    const { res, A, B } = edgeRoundTrip(28.6);
+    expect(close(res.a.x, A.c.x) && close(res.a.y, A.c.y) && closeAng(res.a.rotation, A.rot)).toBe(true);
+    expect(close(res.b.x, B.c.x) && close(res.b.y, B.c.y) && closeAng(res.b.rotation, B.rot)).toBe(true);
+  });
+
+  it("tolerates rough rotation hints in edge mode", () => {
+    const { res, A, B } = edgeRoundTrip(331, 12);
+    expect(closeAng(res.a.rotation, A.rot) && closeAng(res.b.rotation, B.rot)).toBe(true);
+  });
+
+  const PIECE_A = {
+    footprint: RECT,
+    mirror: "none" as Mirror,
+    lockVertex: 0,
+    lines: linesFor({ x: 10, y: 10 }),
+    attach: { kind: "vertex" as const, index: 1 },
+  };
+
+  it("rejects mixed attachment kinds", () => {
+    expect(() =>
+      solveCentroidAttached({
+        board: BOARD,
+        a: PIECE_A,
+        b: { ...PIECE_A, lines: linesFor({ x: 20, y: 10 }), attach: { kind: "edge", index: 1 } },
+      }),
+    ).toThrow(/kinds must match/);
+  });
+
+  it("rejects lock lines that pin the same axis", () => {
+    expect(() =>
+      solveCentroidAttached({
+        board: BOARD,
+        a: {
+          ...PIECE_A,
+          lines: [
+            { edge: "left", distance: 10 },
+            { edge: "right", distance: 40 },
+          ],
+        },
+        b: { ...PIECE_A, lines: linesFor({ x: 20, y: 10 }) },
+      }),
+    ).toThrow(/different axes/);
+  });
+
+  it("rejects an out-of-range lock vertex", () => {
+    expect(() =>
+      solveCentroidAttached({
+        board: BOARD,
+        a: { ...PIECE_A, lockVertex: 9 },
+        b: { ...PIECE_A, lines: linesFor({ x: 20, y: 10 }) },
+      }),
+    ).toThrow(/out of range/);
+  });
+
+  it("rejects corners that cannot meet (lock points too far apart)", () => {
+    expect(() =>
+      solveCentroidAttached({
+        board: BOARD,
+        a: PIECE_A,
+        b: { ...PIECE_A, lines: linesFor({ x: 50, y: 40 }) },
+      }),
+    ).toThrow(/cannot meet/);
+  });
+
+  it("rejects edges that cannot reach a common line", () => {
+    // A's lock vertex sits ON its edge (offset 0); B's is 7″ off its edge; the
+    // lock points are only 3″ apart — no line can satisfy both offsets.
+    expect(() =>
+      solveCentroidAttached({
+        board: BOARD,
+        a: { ...PIECE_A, lockVertex: 0, attach: { kind: "edge", index: 0 } },
+        b: {
+          ...PIECE_A,
+          lockVertex: 2,
+          lines: linesFor({ x: 13, y: 10 }),
+          attach: { kind: "edge", index: 0 },
+        },
+      }),
+    ).toThrow(/common line/);
   });
 });

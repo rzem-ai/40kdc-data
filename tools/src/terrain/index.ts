@@ -12,7 +12,12 @@ export {
   TerrainResolveError,
 } from "./resolve.js";
 export type { Keystone, ResolvedPiece, Vec2 as ResolvedVec2 } from "./resolve.js";
-export { solveCentroid, solveCentroidTriangulated, TerrainSolveError } from "./solve.js";
+export {
+  solveCentroid,
+  solveCentroidTriangulated,
+  solveCentroidAttached,
+  TerrainSolveError,
+} from "./solve.js";
 export type {
   BoardEdge,
   FeatureRef,
@@ -20,6 +25,9 @@ export type {
   SolveInput,
   TriangulationLine,
   TriangulateInput,
+  AttachLine,
+  AttachPiece,
+  AttachInput,
 } from "./solve.js";
 export { keystoneMeasurements, BOARD_INCHES, TerrainKeystoneError } from "./keystones.js";
 export type { KeystoneMeasurement } from "./keystones.js";

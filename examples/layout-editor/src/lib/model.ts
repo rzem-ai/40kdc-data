@@ -20,6 +20,7 @@ import {
   resolveLayout,
   solveCentroid,
   solveCentroidTriangulated,
+  solveCentroidAttached,
   footprintVertices,
   orientedOffsets,
   polygonCentroid,
@@ -29,6 +30,7 @@ import type {
   ResolvedPiece,
   ResolvedVec2,
   SolveInput,
+  AttachInput,
   TerrainTemplate,
   TerrainLayout,
 } from "@alpaca-software/40kdc-data";
@@ -49,11 +51,29 @@ export type SolverRef =
   | { kind: "vertex"; index: number }
   | { kind: "face"; side: "min-x" | "max-x" | "min-y" | "max-y" };
 
+/**
+ * A footprint feature the solver UI can point at: a keystone ref, or — for the
+ * attachment solver — the edge running from vertex `index` to `index + 1`.
+ * Viz-only; never persisted (keystones keep the narrower {@link SolverRef}).
+ */
+export type SolverFeatureRef = SolverRef | { kind: "edge"; index: number };
+
+/**
+ * A highlighted solver feature. `pieceId` targets a piece other than the
+ * selection — the attachment solver points at the attached-to area too.
+ */
+export interface SolverHover {
+  pieceId?: string;
+  ref: SolverFeatureRef;
+}
+
 /** One committed solver dimension line, for drawing the measurement guide on the board. */
 export interface SolverLine {
   edge: "left" | "right" | "top" | "bottom";
   distance: number;
   ref: SolverRef;
+  /** The piece the line measures to, when not the selection (attachment solver). */
+  pieceId?: string;
 }
 
 /**
@@ -69,7 +89,7 @@ export interface EditKeystone {
 /** What the board draws to make the solver's edge/corner measurements legible. */
 export interface SolverViz {
   /** A feature being hovered in the picker (preview highlight). */
-  hover: SolverRef | null;
+  hover: SolverHover | null;
   /** The committed x and y dimension lines. */
   lines: SolverLine[];
 }
@@ -1266,5 +1286,12 @@ export function toCanonicalJson(layout: EditLayout): unknown {
 }
 
 // Re-exports the inspector's solver panel and on-canvas affordances lean on.
-export { solveCentroid, solveCentroidTriangulated, footprintVertices, orientedOffsets, polygonCentroid };
-export type { SolveInput };
+export {
+  solveCentroid,
+  solveCentroidTriangulated,
+  solveCentroidAttached,
+  footprintVertices,
+  orientedOffsets,
+  polygonCentroid,
+};
+export type { SolveInput, AttachInput };

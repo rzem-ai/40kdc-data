@@ -243,3 +243,251 @@ export function solveCentroidTriangulated(
   const rotation = (((theta * 180) / Math.PI) % 360 + 360) % 360;
   return { x, y, rotation };
 }
+
+/**
+ * One card dimension line in an attachment solve: `distance` inches from board
+ * `edge` to the piece's lock vertex. No feature ref — both of a piece's lines
+ * reach the same locked vertex (the card pattern this solver exists for).
+ */
+export interface AttachLine {
+  edge: BoardEdge;
+  distance: number;
+}
+
+/**
+ * One piece of a two-body attachment solve. The card pins exactly ONE vertex
+ * (the keystone anchor) with two perpendicular dimension lines; the piece is
+ * otherwise free to rotate about that point. The `attach` feature is what
+ * connects it to the other piece and removes that rotational freedom.
+ */
+export interface AttachPiece {
+  footprint: Footprint;
+  mirror: Mirror;
+  /** The vertex pinned by `lines` — the piece's keystone anchor vertex. */
+  lockVertex: number;
+  /** Two perpendicular card lines pinning the lock vertex: one must pin x, one y. */
+  lines: [AttachLine, AttachLine];
+  /**
+   * The attached feature: a specific vertex, or the footprint edge running
+   * from vertex `index` to vertex `index + 1` (wrapping).
+   */
+  attach: { kind: "vertex" | "edge"; index: number };
+  /** Current rotation in degrees, used to pick among the candidate roots. */
+  rotationHint?: number;
+}
+
+export interface AttachInput {
+  /** Board extents in inches (40kdc standard is 60 × 44). */
+  board: { width: number; height: number };
+  /** The piece being placed. */
+  a: AttachPiece;
+  /** The piece it attaches to. */
+  b: AttachPiece;
+}
+
+/** How far apart attached corners may be (measurement noise) before the solve refuses. */
+const ATTACH_TOLERANCE = 0.1;
+
+const cross = (p: Vec2, q: Vec2): number => p.x * q.y - p.y * q.x;
+const angle = (v: Vec2): number => Math.atan2(v.y, v.x);
+
+/** The board point a pair of perpendicular lock lines pins. */
+function lockPoint(lines: [AttachLine, AttachLine], board: { width: number; height: number }): Vec2 {
+  const coord = (l: AttachLine): { axis: "x" | "y"; value: number } => {
+    switch (l.edge) {
+      case "left":
+        return { axis: "x", value: l.distance };
+      case "right":
+        return { axis: "x", value: board.width - l.distance };
+      case "top":
+        return { axis: "y", value: l.distance };
+      case "bottom":
+        return { axis: "y", value: board.height - l.distance };
+    }
+  };
+  const a = coord(lines[0]);
+  const b = coord(lines[1]);
+  if (a.axis === b.axis) {
+    throw new TerrainSolveError(
+      "the two lock lines must pin different axes (one of left/right, one of top/bottom)",
+    );
+  }
+  return { x: a.axis === "x" ? a.value : b.value, y: a.axis === "y" ? a.value : b.value };
+}
+
+interface AttachPrepared {
+  /** Fixed board position of the lock vertex. */
+  P: Vec2;
+  /** Mirror-applied, pre-rotation offset of the lock vertex from the centroid. */
+  lockOffset: Vec2;
+  /** Mirror-applied, pre-rotation offsets of every vertex from the centroid. */
+  offsets: Vec2[];
+  hint: number;
+}
+
+function prepAttach(piece: AttachPiece, board: { width: number; height: number }): AttachPrepared {
+  const offsets = orientedOffsets(piece.footprint, 0, piece.mirror);
+  const lockOffset = offsets[piece.lockVertex];
+  if (!lockOffset) throw new TerrainSolveError(`lock vertex index ${piece.lockVertex} out of range`);
+  const n = offsets.length;
+  if (piece.attach.index < 0 || piece.attach.index >= n) {
+    throw new TerrainSolveError(`attach ${piece.attach.kind} index ${piece.attach.index} out of range`);
+  }
+  return {
+    P: lockPoint(piece.lines, board),
+    lockOffset,
+    offsets,
+    hint: ((piece.rotationHint ?? 0) * Math.PI) / 180,
+  };
+}
+
+/** A candidate rotation pair (radians) for the two pieces. */
+type AttachCandidate = { thetaA: number; thetaB: number };
+
+/**
+ * Vertex ↔ vertex (corners coincide; the joint pivots): each attach vertex
+ * traces a circle about its lock point with the rigid lock→attach radius, so
+ * the shared corner is a circle–circle intersection — two candidate points.
+ */
+function vertexCandidates(
+  a: AttachPrepared,
+  b: AttachPrepared,
+  attachA: number,
+  attachB: number,
+): AttachCandidate[] {
+  const relA = { x: a.offsets[attachA].x - a.lockOffset.x, y: a.offsets[attachA].y - a.lockOffset.y };
+  const relB = { x: b.offsets[attachB].x - b.lockOffset.x, y: b.offsets[attachB].y - b.lockOffset.y };
+  const r1 = Math.hypot(relA.x, relA.y);
+  const r2 = Math.hypot(relB.x, relB.y);
+  if (r1 < 1e-9 || r2 < 1e-9) {
+    throw new TerrainSolveError("the attach vertex must differ from the lock vertex");
+  }
+  const D = { x: b.P.x - a.P.x, y: b.P.y - a.P.y };
+  const d = Math.hypot(D.x, D.y);
+  if (d < 1e-9) throw new TerrainSolveError("the two lock points coincide — nothing to attach across");
+  const miss = Math.max(d - (r1 + r2), Math.abs(r1 - r2) - d);
+  if (miss > ATTACH_TOLERANCE) {
+    throw new TerrainSolveError(
+      `attached corners cannot meet: the lock points are ${round2(d)}″ apart but the corner radii are ${round2(r1)}″ and ${round2(r2)}″`,
+    );
+  }
+  // Circle–circle intersection; a tiny miss (measurement noise) clamps to tangent.
+  const along = (d * d + r1 * r1 - r2 * r2) / (2 * d);
+  const h = Math.sqrt(Math.max(0, r1 * r1 - along * along));
+  const u = { x: D.x / d, y: D.y / d };
+  const foot = { x: a.P.x + along * u.x, y: a.P.y + along * u.y };
+  const points: Vec2[] =
+    h < 1e-9
+      ? [foot]
+      : [
+          { x: foot.x - h * u.y, y: foot.y + h * u.x },
+          { x: foot.x + h * u.y, y: foot.y - h * u.x },
+        ];
+  return points.map((X) => ({
+    thetaA: angle({ x: X.x - a.P.x, y: X.y - a.P.y }) - angle(relA),
+    thetaB: angle({ x: X.x - b.P.x, y: X.y - b.P.y }) - angle(relB),
+  }));
+}
+
+/**
+ * Edge ↔ edge (edges flush; the contact slides): the signed perpendicular
+ * offset of a lock vertex from its own edge line is rotation-invariant, so the
+ * shared line is a common tangent of the two circles those offsets define.
+ * With line direction `t̂(ψ)`: `cross(t̂, P_a − P_b) = σ_a − ε·σ_b` for the two
+ * relative edge senses ε — up to four candidate orientations.
+ */
+function edgeCandidates(
+  a: AttachPrepared,
+  b: AttachPrepared,
+  edgeA: number,
+  edgeB: number,
+): AttachCandidate[] {
+  const edgeGeom = (p: AttachPrepared, e: number): { uAng: number; sigma: number } => {
+    const v0 = p.offsets[e];
+    const v1 = p.offsets[(e + 1) % p.offsets.length];
+    const a0 = { x: v0.x - p.lockOffset.x, y: v0.y - p.lockOffset.y };
+    const u = { x: v1.x - v0.x, y: v1.y - v0.y };
+    const len = Math.hypot(u.x, u.y);
+    if (len < 1e-9) throw new TerrainSolveError(`edge ${e} is degenerate (zero length)`);
+    const uHat = { x: u.x / len, y: u.y / len };
+    // Signed distance of the lock vertex from the (lock-relative) edge line.
+    return { uAng: angle(uHat), sigma: cross(uHat, { x: -a0.x, y: -a0.y }) };
+  };
+  const ga = edgeGeom(a, edgeA);
+  const gb = edgeGeom(b, edgeB);
+  const D = { x: a.P.x - b.P.x, y: a.P.y - b.P.y };
+  const d = Math.hypot(D.x, D.y);
+  if (d < 1e-9) throw new TerrainSolveError("the two lock points coincide — nothing to attach across");
+  const beta = angle(D);
+  const out: AttachCandidate[] = [];
+  for (const eps of [1, -1]) {
+    const k = ga.sigma - eps * gb.sigma;
+    const s = k / d;
+    if (s > 1 + 1e-9 || s < -1 - 1e-9) continue;
+    const asin = Math.asin(Math.max(-1, Math.min(1, s)));
+    for (const psi of [beta - asin, beta - (Math.PI - asin)]) {
+      out.push({
+        thetaA: psi - ga.uAng,
+        thetaB: psi - gb.uAng + (eps < 0 ? Math.PI : 0),
+      });
+    }
+  }
+  if (out.length === 0) {
+    throw new TerrainSolveError(
+      `attached edges cannot lie on a common line: the lock points are ${round2(d)}″ apart but the edge offsets are ${round2(ga.sigma)}″ and ${round2(gb.sigma)}″`,
+    );
+  }
+  return out;
+}
+
+const round2 = (n: number): number => Math.round(n * 100) / 100;
+
+function attachPose(p: AttachPrepared, theta: number): { x: number; y: number; rotation: number } {
+  const cos = Math.cos(theta);
+  const sin = Math.sin(theta);
+  return {
+    x: p.P.x - (cos * p.lockOffset.x - sin * p.lockOffset.y),
+    y: p.P.y - (sin * p.lockOffset.x + cos * p.lockOffset.y),
+    rotation: ((((theta * 180) / Math.PI) % 360) + 360) % 360,
+  };
+}
+
+/**
+ * Back-solve the centroid AND rotation of TWO pieces at once from the cluster
+ * card pattern: each piece's card prints exactly two dimension lines, both to
+ * one vertex — pinning that vertex's board position but not the rotation. The
+ * rotations come from the pieces' attachment to each other: matched vertices
+ * coincide (the pair pivots), or matched edges lie on one line (the contact
+ * slides — each piece's position along the line is fixed by its lock vertex).
+ *
+ * Closed form: with each lock vertex pinned, one rotation per piece is the
+ * only unknown. Vertex mode intersects the two circles the attach vertices
+ * sweep; edge mode finds the common line via the rotation-invariant signed
+ * offset of each lock vertex from its own edge. Both yield a small candidate
+ * set; the pair nearest the pieces' current rotations is chosen — rough both
+ * pieces in first.
+ */
+export function solveCentroidAttached(input: AttachInput): {
+  a: { x: number; y: number; rotation: number };
+  b: { x: number; y: number; rotation: number };
+} {
+  const { a, b } = input;
+  if (a.attach.kind !== b.attach.kind) {
+    throw new TerrainSolveError(
+      "attachment kinds must match: vertex pairs pivot, edge pairs slide — no mixing",
+    );
+  }
+  const pa = prepAttach(a, input.board);
+  const pb = prepAttach(b, input.board);
+  const candidates =
+    a.attach.kind === "vertex"
+      ? vertexCandidates(pa, pb, a.attach.index, b.attach.index)
+      : edgeCandidates(pa, pb, a.attach.index, b.attach.index);
+  const best = candidates.reduce((bestSoFar, c) =>
+    angularGap(c.thetaA, pa.hint) + angularGap(c.thetaB, pb.hint) <
+    angularGap(bestSoFar.thetaA, pa.hint) + angularGap(bestSoFar.thetaB, pb.hint)
+      ? c
+      : bestSoFar,
+  );
+  return { a: attachPose(pa, best.thetaA), b: attachPose(pb, best.thetaB) };
+}

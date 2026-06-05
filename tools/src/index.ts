@@ -24,6 +24,7 @@ export {
   TerrainResolveError,
   solveCentroid,
   solveCentroidTriangulated,
+  solveCentroidAttached,
   TerrainSolveError,
   keystoneMeasurements,
   BOARD_INCHES,
@@ -40,6 +41,9 @@ export type {
   SolveInput,
   TriangulationLine,
   TriangulateInput,
+  AttachLine,
+  AttachPiece,
+  AttachInput,
 } from "./terrain/index.js";
 
 // Card-driven secondary-mission scoring: compute VP from asserted awards and
