@@ -7,6 +7,8 @@
     type ManualTarget,
   } from "./store.svelte.js";
   import { SvelteSet, SvelteMap } from "svelte/reactivity";
+  import { slide } from "svelte/transition";
+  import { quintOut } from "svelte/easing";
   import {
     attributeStages,
     crunch,
@@ -17,8 +19,6 @@
     type EngineContext,
     type EngineInput,
     type StackableBuff,
-    type Stage,
-    type StageLift,
     type Unit,
     type Weapon,
     maximalLoadout,
@@ -28,6 +28,15 @@
   } from "@alpaca-software/40kdc-data";
   import EmptyState from "./EmptyState.svelte";
   import { buildDebugSnapshot } from "./debug-export.js";
+  import {
+    STAGE_COLUMNS,
+    aggregateStages,
+    fmt,
+    fmtSigned,
+    labelForSource as labelForSourceIn,
+    srcKey,
+    stageOf,
+  } from "./projection-model.js";
 
   function synthTarget(t: ManualTarget): Unit {
     return {
@@ -255,38 +264,9 @@
     });
   });
 
-  /** The 7 pipeline stages as ordered columns, abbreviated with a full title. */
-  const STAGE_COLUMNS: { name: Stage["name"]; short: string; full: string }[] = [
-    { name: "attacks", short: "Atk", full: "Attacks" },
-    { name: "hits", short: "Hit", full: "Hits" },
-    { name: "wounds", short: "Wnd", full: "Wounds" },
-    { name: "unsaved", short: "Uns", full: "Unsaved" },
-    { name: "damage", short: "Dmg", full: "Damage" },
-    { name: "after-fnp", short: "FNP", full: "After FNP" },
-    { name: "models-killed", short: "Kill", full: "Models killed" },
-  ];
-
-  function stageOf(attributed: AttributedStage[], name: Stage["name"]): AttributedStage | undefined {
-    return attributed.find((s) => s.name === name);
-  }
-
-  /** Stable per-source key — mirrors the engine's buff grouping. */
-  function srcKey(s: BuffSource): string {
-    if (s.kind === "ability") return `a:${s.abilityId}:${s.sourceUnitId ?? ""}`;
-    if (s.kind === "manual") return `m:${s.label}`;
-    return `w:${s.weaponId}:${s.keywordId}`;
-  }
-
-  /** Human label for a buff source, resolving ability/unit names from the dataset. */
+  /** Human label for a buff source, bound to this app's dataset. */
   function labelForSource(s: BuffSource): string {
-    if (s.kind === "manual") return s.label;
-    if (s.kind === "weapon-keyword") return s.keywordId;
-    const name = ds.abilities.get(s.abilityId)?.name ?? s.abilityId;
-    if (s.abilityKind === "attached" && s.sourceUnitId) {
-      const unit = ds.units.get(s.sourceUnitId)?.name ?? s.sourceUnitId;
-      return `${name} · ${unit}`;
-    }
-    return name;
+    return labelForSourceIn(ds, s);
   }
 
   // Excluded set (default empty = all included). An exclude-set means lines
@@ -297,89 +277,26 @@
     if (excludedLines.has(id)) excludedLines.delete(id);
     else excludedLines.add(id);
   }
-  const EPS = 1e-6;
 
-  // The "Combined" row: one AttributedStage per pipeline stage, decomposed the
-  // same way per-line cells are so the aggregate cells hover too. Stages 1–6
-  // sum by linearity (expected, baseline, residual, and per-source lifts all
-  // add); models-killed is NOT additive — its lift is recomputed through the
-  // cap formula on the summed after-fnp, never summed from per-line kills.
-  const aggregate = $derived.by<AttributedStage[]>(() => {
-    const included = lineResults.filter((r) => !excludedLines.has(r.id) && !r.error);
-    const W = salvo.manualTarget.W;
-    const modelCount = salvo.manualTarget.modelCount;
-    const killed = (afterFnp: number) => (W > 0 ? Math.min(modelCount, afterFnp / W) : 0);
+  // The "Combined" row, decomposed the same way per-line cells are (see
+  // aggregateStages for the additive vs models-killed math).
+  const aggregate = $derived.by<AttributedStage[]>(() =>
+    aggregateStages(
+      lineResults.filter((r) => !excludedLines.has(r.id) && !r.error),
+      salvo.manualTarget.W,
+      salvo.manualTarget.modelCount,
+    ),
+  );
 
-    // Sum a source-keyed lift map across the included lines for one stage.
-    function sumLifts(name: Stage["name"]): Map<string, StageLift> {
-      const map = new Map<string, StageLift>();
-      for (const r of included) {
-        for (const l of stageOf(r.attributed, name)?.lifts ?? []) {
-          const key = srcKey(l.source);
-          const cur = map.get(key);
-          if (cur) cur.delta += l.delta;
-          else map.set(key, { source: l.source, delta: l.delta });
-        }
-      }
-      return map;
-    }
-
-    const out: AttributedStage[] = [];
-    const additive: Stage["name"][] = ["attacks", "hits", "wounds", "unsaved", "damage", "after-fnp"];
-    for (const name of additive) {
-      let expected = 0;
-      let baseline = 0;
-      let residual = 0;
-      const intrinsics = new Set<string>();
-      for (const r of included) {
-        const s = stageOf(r.attributed, name);
-        if (!s) continue;
-        expected += s.expected;
-        baseline += s.baseline;
-        residual += s.residual;
-        for (const k of s.intrinsics) intrinsics.add(k);
-      }
-      out.push({
-        name,
-        expected,
-        detail: name === "attacks" ? `${included.length} weapon line(s)` : "",
-        baseline,
-        lifts: [...sumLifts(name).values()].filter((l) => Math.abs(l.delta) > EPS),
-        residual: Math.abs(residual) > EPS ? residual : 0,
-        intrinsics: [...intrinsics],
-      });
-    }
-
-    // models-killed via the aggregate (non-additive) path.
-    const sumAfterFnp = included.reduce(
-      (s, r) => s + (stageOf(r.attributed, "after-fnp")?.expected ?? 0),
-      0,
-    );
-    const sumAfterFnpBaseline = included.reduce(
-      (s, r) => s + (stageOf(r.attributed, "after-fnp")?.baseline ?? 0),
-      0,
-    );
-    const killedExpected = killed(sumAfterFnp);
-    const killedBaseline = killed(sumAfterFnpBaseline);
-    const killedLifts: StageLift[] = [];
-    let killedLiftSum = 0;
-    for (const { source, delta } of sumLifts("after-fnp").values()) {
-      const d = killedExpected - killed(sumAfterFnp - delta);
-      killedLiftSum += d;
-      if (Math.abs(d) > EPS) killedLifts.push({ source, delta: d });
-    }
-    const killedResidual = killedExpected - killedBaseline - killedLiftSum;
-    out.push({
-      name: "models-killed",
-      expected: killedExpected,
-      detail: `W${W} per model, capped at ${modelCount}`,
-      baseline: killedBaseline,
-      lifts: killedLifts,
-      residual: Math.abs(killedResidual) > EPS ? killedResidual : 0,
-      intrinsics: [],
-    });
-    return out;
-  });
+  // Below 640px each weapon line renders as a stacked card: headline damage
+  // and kills always visible, the full pipeline + buff breakdown behind a
+  // per-card toggle (the hover popover has no touch equivalent).
+  const expandedCards = $state(new SvelteSet<string>());
+  function toggleCard(id: string): void {
+    if (expandedCards.has(id)) expandedCards.delete(id);
+    else expandedCards.add(id);
+  }
+  const COMBINED_CARD = "__combined__";
 
   const projection = $derived.by(() => {
     if (!salvo.selectedUnitId || !salvo.selectedWeaponId) return null;
@@ -418,15 +335,6 @@
 
   let showDebug = $state(false);
   let copied = $state(false);
-
-  function fmt(n: number): string {
-    return Number.isFinite(n) ? n.toFixed(2) : "—";
-  }
-
-  function fmtSigned(n: number): string {
-    if (!Number.isFinite(n)) return "—";
-    return `${n >= 0 ? "+" : ""}${n.toFixed(2)}`;
-  }
 
   async function copySnapshot(): Promise<void> {
     const snapshot = buildDebugSnapshot({
@@ -472,9 +380,121 @@
   </td>
 {/snippet}
 
+{#snippet stageBreakdown(s: AttributedStage)}
+  <div class="bk">
+    <span class="bk-row bk-baseline"><span>baseline</span><span class="num">{fmt(s.baseline)}</span></span>
+    {#each s.lifts as l (srcKey(l.source))}
+      <span class="bk-row"><span>{labelForSource(l.source)}</span><span class="num delta">{fmtSigned(l.delta)}</span></span>
+    {/each}
+    {#if s.residual}
+      <span class="bk-row overlap"><span>overlap (capped)</span><span class="num delta">{fmtSigned(s.residual)}</span></span>
+    {/if}
+    {#if s.intrinsics.length}
+      <span class="bk-intrinsics">weapon: {s.intrinsics.join(", ")}</span>
+    {/if}
+  </div>
+{/snippet}
+
+{#snippet cardDetail(stages: AttributedStage[], id: string)}
+  <div
+    class="wcard-detail"
+    id="wcard-detail-{id}"
+    role="region"
+    transition:slide={{ duration: 200, easing: quintOut }}
+  >
+    {#each STAGE_COLUMNS as col (col.name)}
+      {@const s = stageOf(stages, col.name)}
+      <div class="wcard-stage">
+        <span class="stage-label">{col.full}</span>
+        <span class="stage-value num">{s ? fmt(s.expected) : "—"}</span>
+      </div>
+      {#if s && (s.lifts.length > 0 || s.residual !== 0 || s.intrinsics.length > 0)}
+        {@render stageBreakdown(s)}
+      {/if}
+    {/each}
+  </div>
+{/snippet}
+
+{#snippet headline(stages: AttributedStage[])}
+  <div class="wcard-headline">
+    <span class="metric">
+      <span class="metric-label" title="Expected damage after feel-no-pain">damage</span>
+      <span class="metric-num">{fmt(stageOf(stages, "after-fnp")?.expected ?? NaN)}</span>
+    </span>
+    <span class="metric">
+      <span class="metric-label" title="Expected models killed">killed</span>
+      <span class="metric-num">{fmt(stageOf(stages, "models-killed")?.expected ?? NaN)}</span>
+    </span>
+  </div>
+{/snippet}
+
 {#if weaponLines.length === 0}
   <EmptyState>Pick a unit and target to see a projection.</EmptyState>
 {:else}
+  <!-- Below 640px the table becomes stacked weapon cards: headline numbers up
+       front, the full pipeline and buff breakdown behind a per-card toggle. -->
+  <div class="proj-cards">
+    <article class="wcard combined">
+      <div class="wcard-top">
+        <button
+          class="wcard-toggle"
+          aria-expanded={expandedCards.has(COMBINED_CARD)}
+          aria-controls="wcard-detail-{COMBINED_CARD}"
+          onclick={() => toggleCard(COMBINED_CARD)}
+        >
+          <span class="chev" class:open={expandedCards.has(COMBINED_CARD)} aria-hidden="true"></span>
+          <span class="wcard-name">Combined</span>
+        </button>
+      </div>
+      {@render headline(aggregate)}
+      {#if expandedCards.has(COMBINED_CARD)}
+        {@render cardDetail(aggregate, COMBINED_CARD)}
+      {/if}
+    </article>
+
+    {#each lineResults as r (r.id)}
+      <article class="wcard" class:excluded={excludedLines.has(r.id)}>
+        <div class="wcard-top">
+          <input
+            type="checkbox"
+            checked={!excludedLines.has(r.id)}
+            onchange={() => toggleLine(r.id)}
+            aria-label={`Include ${r.label} in combined total`}
+          />
+          <button
+            class="wcard-toggle"
+            aria-expanded={expandedCards.has(r.id)}
+            aria-controls="wcard-detail-{r.id}"
+            onclick={() => toggleCard(r.id)}
+          >
+            <span class="chev" class:open={expandedCards.has(r.id)} aria-hidden="true"></span>
+            <span class="wcard-name">{r.label}</span>
+          </button>
+          <label class="wcard-models">
+            <span>models</span>
+            <input
+              type="number"
+              min="1"
+              class="models-input"
+              value={modelsFor(r)}
+              oninput={(e) => setModels(r, Number((e.currentTarget as HTMLInputElement).value))}
+              aria-label={`Models firing ${r.label}`}
+            />
+          </label>
+        </div>
+        {#if r.error}
+          <p class="error">{r.error}</p>
+        {:else}
+          {@render headline(r.attributed)}
+          {#if expandedCards.has(r.id)}
+            {@render cardDetail(r.attributed, r.id)}
+          {/if}
+        {/if}
+      </article>
+    {/each}
+  </div>
+
+  <div class="proj-table-wrap">
   <p class="hint dim">Hover any value for the per-buff breakdown.</p>
   <table class="stages proj">
     <thead>
@@ -528,6 +548,7 @@
       </tr>
     </tbody>
   </table>
+  </div>
 
   <div class="row debug-row">
     <button onclick={() => (showDebug = !showDebug)}>
@@ -549,6 +570,138 @@
     margin: 0 0 var(--space-2);
     font-size: var(--text-xs);
   }
+
+  /* ── card view (phones) vs table view ──────────────────────────────────── */
+  .proj-cards { display: none; }
+  @media (max-width: 640px) {
+    .proj-table-wrap { display: none; }
+    .proj-cards {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      margin-bottom: var(--space-3);
+    }
+  }
+
+  .wcard {
+    background: var(--panel-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: var(--space-2) var(--space-3);
+  }
+  .wcard.excluded > :not(.wcard-top),
+  .wcard.excluded .wcard-toggle { opacity: 0.45; }
+  .wcard.combined { border-color: var(--accent-dim); }
+  .wcard.combined .metric-num { color: var(--accent); }
+
+  .wcard-top {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 32px;
+  }
+  .wcard-top input[type="checkbox"] { cursor: pointer; flex: 0 0 auto; }
+  .wcard-toggle {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: none;
+    border: none;
+    padding: var(--space-1) 0;
+    text-align: left;
+    font-size: var(--text-sm);
+    color: var(--text);
+  }
+  .wcard-toggle:hover { border: none; color: var(--accent); }
+  .wcard-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .chev {
+    flex: 0 0 auto;
+    width: 7px;
+    height: 7px;
+    border-right: 1.5px solid var(--muted);
+    border-bottom: 1.5px solid var(--muted);
+    transform: rotate(-45deg);
+    transition: transform 150ms cubic-bezier(0.22, 1, 0.36, 1);
+    margin-left: 2px;
+  }
+  .chev.open { transform: rotate(45deg); border-color: var(--text); }
+  .wcard-models {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    color: var(--muted);
+    font-size: var(--text-2xs);
+  }
+
+  .wcard-headline {
+    display: flex;
+    gap: var(--space-4);
+    padding: var(--space-1) 0 var(--space-1) calc(7px + 2px + var(--space-2));
+  }
+  .metric {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+  }
+  .metric-label {
+    font-family: var(--font-heading);
+    font-size: var(--text-2xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--muted);
+  }
+  .metric-num {
+    font-family: var(--font-mono);
+    font-size: var(--text-md);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .wcard-detail {
+    margin-top: var(--space-1);
+    padding: var(--space-2) 0 var(--space-1) calc(7px + 2px + var(--space-2));
+    border-top: 1px solid var(--border-subtle);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .wcard-stage {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-2);
+    font-size: var(--text-xs);
+  }
+  .stage-label { color: var(--muted); }
+  .num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+  .bk {
+    margin: 1px 0 var(--space-1);
+    padding-left: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    font-size: var(--text-2xs);
+    border-left: 1px solid var(--border-subtle);
+  }
+  .bk-row {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+  .bk-baseline { color: var(--dim); }
+  .bk-row.overlap { color: var(--dim); font-style: italic; }
+  .bk .delta { color: var(--accent); }
+  .bk-intrinsics { color: var(--dim); }
   .proj { margin-bottom: var(--space-3); width: 100%; }
   .proj th.r,
   .proj td.numcell { text-align: right; }
