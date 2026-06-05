@@ -67,9 +67,7 @@ fn truthy(m: &Map<String, Value>, k: &str) -> bool {
 
 /// TS `m.a ?? m.b` over the modifier map (first present-and-not-null value).
 fn first<'a>(m: &'a Map<String, Value>, keys: &[&str]) -> Option<&'a Value> {
-    keys.iter()
-        .filter_map(|k| m.get(*k))
-        .find(|v| !v.is_null())
+    keys.iter().filter_map(|k| m.get(*k)).find(|v| !v.is_null())
 }
 
 /// `+3` / `-1` — sign from `operation` (`add`/`improve` positive), value via
@@ -84,7 +82,10 @@ fn signed(m: &Map<String, Value>) -> String {
     format!("{sign}{}", jv(m, "value"))
 }
 
-fn format_comparison(comp: DiceGatedEffectComparison, threshold: &DiceGatedEffectThreshold) -> String {
+fn format_comparison(
+    comp: DiceGatedEffectComparison,
+    threshold: &DiceGatedEffectThreshold,
+) -> String {
     let th = match threshold {
         DiceGatedEffectThreshold::Integer(i) => i.to_string(),
         DiceGatedEffectThreshold::String(s) => s.to_string(),
@@ -187,7 +188,11 @@ fn describe_single(e: &SingleEffect) -> String {
                 return format!("modify stats for {target}");
             }
             if m.get("operation").and_then(Value::as_str) == Some("set") {
-                format!("set {} to {}{scope} for {target}", jv(m, "stat"), jv(m, "value"))
+                format!(
+                    "set {} to {}{scope} for {target}",
+                    jv(m, "stat"),
+                    jv(m, "value")
+                )
             } else {
                 format!("{} {}{scope} for {target}", signed(m), jv(m, "stat"))
             }
@@ -284,14 +289,19 @@ fn describe_single(e: &SingleEffect) -> String {
             format!("reduce incoming damage to {target} by {amount}")
         }
         T::Resurrection => {
-            let count = first(m, &["count"]).map(jval).unwrap_or_else(|| "1".to_string());
+            let count = first(m, &["count"])
+                .map(jval)
+                .unwrap_or_else(|| "1".to_string());
             let wounds = first(m, &["wounds_remaining"])
                 .map(jval)
                 .unwrap_or_else(|| "full".to_string());
             format!("return {count} model(s) to {target} with {wounds} wounds")
         }
         T::ModelDestruction => {
-            format!("destroy {} non-leader model(s) from {target}", jv(m, "count"))
+            format!(
+                "destroy {} non-leader model(s) from {target}",
+                jv(m, "count")
+            )
         }
         T::CpGain => format!("gain {} CP", jv(m, "amount")),
         T::CpRefund => format!("refund {} CP", jv(m, "amount")),

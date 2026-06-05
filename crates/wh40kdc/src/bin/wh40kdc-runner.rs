@@ -781,8 +781,7 @@ fn handle_translate_effect(args: &Value) -> Value {
             Some(json!({ "detail": "translate_effect.effect must be an object" })),
         );
     };
-    let effect: wh40kdc::EffectNode = match serde_json::from_value(effect_value.clone())
-    {
+    let effect: wh40kdc::EffectNode = match serde_json::from_value(effect_value.clone()) {
         Ok(e) => e,
         Err(e) => {
             return err_value(

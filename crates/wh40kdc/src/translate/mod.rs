@@ -41,7 +41,9 @@ fn po<'a>(p: &'a Map<String, Value>, k: &str) -> Option<&'a Map<String, Value>> 
 /// JS-template stringification of a parameter (numbers print bare, missing or
 /// null prints `?`) — mirrors the TS `str(p.key)` after its nullish guard.
 fn pj(p: &Map<String, Value>, k: &str) -> String {
-    p.get(k).map(effect::jval).unwrap_or_else(|| "?".to_string())
+    p.get(k)
+        .map(effect::jval)
+        .unwrap_or_else(|| "?".to_string())
 }
 
 /// `2` + `objective` → `2+ objectives`. All nouns here are regular plurals.
@@ -288,10 +290,7 @@ fn describe_simple(s: &SimpleCondition) -> String {
         }
         T::UnitsDestroyed => format!(
             "{negate}{} destroyed {}",
-            count(
-                pu(p, "count_min", 1),
-                &format!("{} unit", pj(p, "side"))
-            ),
+            count(pu(p, "count_min", 1), &format!("{} unit", pj(p, "side"))),
             dekebab(&pj(p, "window"))
         ),
         T::UnitsDestroyedComparison => {
