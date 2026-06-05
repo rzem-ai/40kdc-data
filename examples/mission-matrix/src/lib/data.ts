@@ -7,29 +7,17 @@ import type {
   ScoreEntry,
   TerrainLayout,
 } from "@alpaca-software/40kdc-data";
+import {
+  layoutAvailability as sharedLayoutAvailability,
+  canonicalMatchupId as sharedCanonicalMatchupId,
+  layoutsForMatchup as sharedLayoutsForMatchup,
+} from "../../../_shared/matchup-grid.js";
 
 /** The embedded 40kdc dataset — the whole point of the demo is reading the
  *  linked, typed API: matchup → mission_id → mission. */
 export const ds: Dataset = Dataset.embedded();
 
-/** The five launch Force Dispositions, in the schema enum order. */
-export const DISPOSITIONS: ForceDispositionId[] = [
-  "take-and-hold",
-  "disruption",
-  "purge-the-foe",
-  "priority-assets",
-  "reconnaissance",
-];
-
-/** Display names. The core dataset ships no force-disposition records (only an
- *  `_example` file), so these factual objective names are kept here. */
-export const DISPOSITION_LABELS: Record<ForceDispositionId, string> = {
-  "take-and-hold": "Take and Hold",
-  disruption: "Disruption",
-  "purge-the-foe": "Purge the Foe",
-  "priority-assets": "Priority Assets",
-  reconnaissance: "Reconnaissance",
-};
+export { DISPOSITIONS, DISPOSITION_LABELS } from "../../../_shared/matchup-grid.js";
 
 const pairKey = (own: ForceDispositionId, opp: ForceDispositionId): string =>
   `${own}|${opp}`;
@@ -93,34 +81,15 @@ export function secondaryName(id: string): string {
 
 // ── terrain layouts per matchup ───────────────────────────────────────────────
 // Each matrix cell (an unordered disposition pair) gets three terrain layouts;
-// layouts carry `mission_matchup_id` (the canonical ordered pairing) plus a
-// `variant` number. 15 pairings × 3 variants = the full 45-card set.
+// the pairing math and indexing live in the shared matchup-grid module — these
+// wrappers just bind it to this app's dataset singleton.
 
-const DISPOSITION_INDEX = new Map(DISPOSITIONS.map((d, i) => [d, i] as const));
-
-/**
- * The canonical ordered matchup id for an unordered disposition pair: the
- * form with the lower-index disposition first (all 25 ordered ids exist in
- * the data; layout cards are tagged with the canonical one).
- */
+/** The canonical ordered matchup id for an unordered disposition pair. */
 export function canonicalMatchupId(
   a: ForceDispositionId,
   b: ForceDispositionId,
 ): string | undefined {
-  const [lo, hi] =
-    (DISPOSITION_INDEX.get(a) ?? 99) <= (DISPOSITION_INDEX.get(b) ?? 99) ? [a, b] : [b, a];
-  return matchupByPair.get(pairKey(lo, hi))?.id;
-}
-
-const layoutsByMatchup = new Map<string, TerrainLayout[]>();
-for (const l of ds.terrainLayouts.all) {
-  if (!l.mission_matchup_id) continue;
-  const list = layoutsByMatchup.get(l.mission_matchup_id) ?? [];
-  list.push(l);
-  layoutsByMatchup.set(l.mission_matchup_id, list);
-}
-for (const list of layoutsByMatchup.values()) {
-  list.sort((a, b) => (a.variant ?? 99) - (b.variant ?? 99));
+  return sharedCanonicalMatchupId(ds, a, b);
 }
 
 /** The matchup's authored terrain layouts, ordered by variant number. */
@@ -128,13 +97,12 @@ export function layoutsForMatchup(
   a: ForceDispositionId,
   b: ForceDispositionId,
 ): TerrainLayout[] {
-  const id = canonicalMatchupId(a, b);
-  return id ? (layoutsByMatchup.get(id) ?? []) : [];
+  return sharedLayoutsForMatchup(ds, a, b);
 }
 
 /** How many of the matchup's three layout variants are authored (cell dots). */
 export function layoutAvailability(a: ForceDispositionId, b: ForceDispositionId): number {
-  return layoutsForMatchup(a, b).length;
+  return sharedLayoutAvailability(ds, a, b);
 }
 
 /**
