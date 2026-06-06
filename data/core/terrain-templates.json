@@ -116,7 +116,7 @@
     "source": "gw-11e",
     "footprint": { "type": "rectangle", "width": 5.5, "height": 1 },
     "default_height_inches": 2,
-    "default_blocking": false,
+    "default_blocking": true,
     "game_version": { "edition": "11th", "dataslate": "pre-launch-provisional" }
   },
   {
@@ -126,7 +126,7 @@
     "source": "gw-11e",
     "footprint": { "type": "rectangle", "width": 2, "height": 2 },
     "default_height_inches": 3,
-    "default_blocking": false,
+    "default_blocking": true,
     "ground_accessible": false,
     "upper_floor": {
       "footprint": { "type": "rectangle", "width": 2, "height": 2 },
@@ -141,7 +141,7 @@
     "source": "gw-11e",
     "footprint": { "type": "rectangle", "width": 7, "height": 2 },
     "default_height_inches": 3,
-    "default_blocking": false,
+    "default_blocking": true,
     "ground_accessible": false,
     "upper_floor": {
       "footprint": { "type": "rectangle", "width": 7, "height": 2 },
