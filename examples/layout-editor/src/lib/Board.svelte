@@ -34,7 +34,7 @@
     markers: ObjectiveMarker[];
     /** Draw the pinned keystone dimension lines (the pins themselves stay on the pieces). */
     showKeystones?: boolean;
-    /** Rotate keystone labels to face the player whose half holds the piece (needs `divider`). */
+    /** Rotate keystone labels to face the player whose board half holds the piece — always an axis-aligned top/bottom or left/right split (needs `divider`). */
     keystoneFacing?: boolean;
     onselect: (id: string | null) => void;
     onmove: (id: string, position: Vec2) => void;

@@ -51,8 +51,10 @@ export interface DiagramGuide {
   text: string;
   /**
    * Label rotation (degrees, display frame, about the label anchor): turns the
-   * text to face the player whose territory holds the owning piece. 0 when
-   * player-facing is off or the layout has no territory divider.
+   * text to face the player whose board half holds the owning piece. Always
+   * axis-aligned (0/±90/180) — the split is top/bottom or left/right, never
+   * the deployment diagonal. 0 when player-facing is off or the layout has no
+   * territory divider.
    */
   facingAngle: number;
 }
@@ -192,25 +194,26 @@ const toDisplay = (b: Vec2): Vec2 => ({ x: BOARD.height - b.y, y: b.x });
 
 /**
  * Rotation (degrees, display frame) that turns a keystone label to face the
- * player whose side of the territory divider holds `centroidBoard`: baseline
- * parallel to the divider, descenders toward that player's table edge. Works
- * for any divider angle — orthogonal deployments give 0/±90/180, diagonal
- * ones the matching ~45°. 0 when the divider is degenerate.
+ * player whose board half holds `centroidBoard`. The divider is snapped to
+ * its dominant axis, so the split is always a plain top/bottom or left/right
+ * halving of the board — diagonal deployments (Crucible of Battle, Search
+ * and Destroy) read like their nearest orthogonal cousin instead of tilting
+ * labels to match the diagonal. Returns exactly 0, ±90, or 180; 0 when the
+ * divider is degenerate.
  */
 export function facingAngle(divider: { from: Vec2; to: Vec2 }, centroidBoard: Vec2): number {
   const a = toDisplay(divider.from);
   const b = toDisplay(divider.to);
   const u = { x: b.x - a.x, y: b.y - a.y };
-  const len = Math.hypot(u.x, u.y);
-  if (len < 1e-6) return 0;
-  // Unit normal of the divider, sign-corrected to point at the owning piece's
-  // half — that direction is the text's "down" (toward the reading player).
-  let n = { x: -u.y / len, y: u.x / len };
+  if (Math.hypot(u.x, u.y) < 1e-6) return 0;
+  // Side test against the snapped axis line through the divider midpoint
+  // (the board centre for every current pattern). Descenders point toward
+  // the reading player's table edge: SVG rotate(a) sends local-down (0,1)
+  // to (−sin a, cos a), so up→180, down→0, left→90, right→−90.
   const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
   const c = toDisplay(centroidBoard);
-  if (n.x * (c.x - mid.x) + n.y * (c.y - mid.y) < 0) n = { x: -n.x, y: -n.y };
-  // SVG rotate(a) sends local-down (0,1) to (−sin a, cos a); solve for a = n.
-  return (Math.atan2(-n.x, n.y) * 180) / Math.PI;
+  if (Math.abs(u.x) >= Math.abs(u.y)) return c.y < mid.y ? 180 : 0; // horizontal divider → top/bottom split
+  return c.x < mid.x ? 90 : -90; // vertical divider → left/right split
 }
 
 /** Everything the LayoutDiagram draws for one layout entity. */
