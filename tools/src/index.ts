@@ -55,6 +55,11 @@ export type {
 // module and pinned by the `conformance/scoring` corpus.
 export * from "./scoring/index.js";
 
+// Damage-projection engine (expected-value math over weapon/unit profiles).
+// Mirrored by the Rust `wh40kdc::cruncher` module and pinned by the
+// `conformance/cruncher` corpus. Pure functions — universal (Node + browser).
+export * from "./cruncher/index.js";
+
 // Schema access + AJV validation lives behind the `./validate` subpath export
 // (`@alpaca-software/40kdc-data/validate`), NOT the root barrel: it reads
 // schema files from disk at module load (node:fs/node:url), which breaks
