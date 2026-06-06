@@ -15,6 +15,7 @@
     scoreSecondaryEvent,
     scoreTurn,
     playerTotal,
+    awardsForApproach,
   } from "@alpaca-software/40kdc-data";
   import {
     DISPOSITIONS,
@@ -26,7 +27,12 @@
     layoutsForMatchup,
     layoutAvailability,
     secondariesByIds,
+    assertedFromTicks,
+    emptyTicks,
+    type PrimaryTicks,
+    type PrimaryTicksByRound,
   } from "./lib/data.js";
+  import { untrack } from "svelte";
   import PlayerColumn from "./lib/PlayerColumn.svelte";
   import Scoreboard from "./lib/Scoreboard.svelte";
   import MissionCard from "./lib/MissionCard.svelte";
@@ -62,6 +68,11 @@
     // load unchanged. Scored discards live in each game's `log` already.
     discardsYou?: string[];
     discardsOpp?: string[];
+    // Persistent per-round primary award ticks, per side. Optional like the
+    // discards. A pre-existing blob loads with no ticks but keeps its stored
+    // round primaries (the grid stays authoritative; re-tick to edit a round).
+    primaryTicksYou?: PrimaryTicksByRound;
+    primaryTicksOpp?: PrimaryTicksByRound;
   }
   function load(): Partial<Saved> {
     try {
@@ -83,6 +94,8 @@
   let activeOpp = $state<string | null>(saved.activeOpp ?? null);
   let discardsYou = $state<string[]>(saved.discardsYou ?? []);
   let discardsOpp = $state<string[]>(saved.discardsOpp ?? []);
+  let primaryTicksYou = $state<PrimaryTicksByRound>(saved.primaryTicksYou ?? {});
+  let primaryTicksOpp = $state<PrimaryTicksByRound>(saved.primaryTicksOpp ?? {});
   // Matrix display preferences (persisted). `autoCollapse` keeps today's behavior
   // of folding the matrix once both dispositions are picked; `verbose` expands the
   // selected disposition's row into full mission cards for comparison.
@@ -109,7 +122,7 @@
   $effect(() => {
     const blob: Saved = {
       dispYou, dispOpp, round, gameYou, gameOpp, activeYou, activeOpp, autoCollapse, verbose,
-      discardsYou, discardsOpp,
+      discardsYou, discardsOpp, primaryTicksYou, primaryTicksOpp,
     };
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(blob));
@@ -140,6 +153,41 @@
   const effCapYou = $derived(Math.max(0, Math.min(capYou, gameCapYou - otherPrimary(gameYou))));
   const effCapOpp = $derived(Math.max(0, Math.min(capOpp, gameCapOpp - otherPrimary(gameOpp))));
 
+  // Changing a disposition mid-game swaps a side's primary card, so its stored
+  // award-index ticks (and the primaries derived from them) describe the wrong
+  // card — wipe both for that side. Tracked against the last *defined* mission
+  // id, baselined on the effect's first run, so restoring a saved blob never
+  // wipes, and toggling a disposition off and back to the same pick
+  // (mission → undefined → same id) is harmless.
+  const lastPrimaryId: Record<Side, string | null | undefined> = {
+    you: undefined,
+    opp: undefined,
+  };
+  $effect(() => {
+    const ids: Record<Side, string | null> = {
+      you: missionYou?.id ?? null,
+      opp: missionOpp?.id ?? null,
+    };
+    // untrack: the wipe reads/writes game state the effect must not depend on.
+    untrack(() => {
+      for (const s of ["you", "opp"] as const) {
+        const id = ids[s];
+        if (lastPrimaryId[s] === undefined) {
+          lastPrimaryId[s] = id; // first run — adopt the restored mission
+          continue;
+        }
+        if (id === null) continue; // matrix mid-edit — keep everything
+        if (lastPrimaryId[s] !== null && lastPrimaryId[s] !== id) {
+          setPrimaryTicks(s, {});
+          const g = gameOf(s);
+          setGame(s, { ...g, rounds: g.rounds.map((c) => ({ ...c, primary: 0 })) });
+          notify("Mission changed — primary scoring reset");
+        }
+        lastPrimaryId[s] = id;
+      }
+    });
+  });
+
   // --- side-bound state access (keeps the two columns DRY) ---
   const gameOf = (s: Side): PlayerGame => (s === "you" ? gameYou : gameOpp);
   function setGame(s: Side, g: PlayerGame): void {
@@ -155,6 +203,12 @@
   function setDiscards(s: Side, ids: string[]): void {
     if (s === "you") discardsYou = ids;
     else discardsOpp = ids;
+  }
+  const primaryTicksOf = (s: Side): PrimaryTicksByRound =>
+    s === "you" ? primaryTicksYou : primaryTicksOpp;
+  function setPrimaryTicks(s: Side, t: PrimaryTicksByRound): void {
+    if (s === "you") primaryTicksYou = t;
+    else primaryTicksOpp = t;
   }
 
   // Cards out of the deck per side: in hand, scored (game.log), or manually
@@ -178,6 +232,14 @@
     if (!discardsOf(s).includes(id)) setDiscards(s, [...discardsOf(s), id]);
     if (activeOf(s) === id) setActive(s, g.handIds[0] ?? null);
   }
+  /** Shuffle a held card back into the deck: it leaves the hand without
+   *  entering the discard pile, so `excludedIds` drops it and it can be
+   *  drawn again — for cards not doable yet (round-restricted). */
+  function returnToDeckFor(s: Side, id: string): void {
+    const g = removeFromHand(gameOf(s), id);
+    setGame(s, g);
+    if (activeOf(s) === id) setActive(s, g.handIds[0] ?? null);
+  }
   /** Undo a manual discard: the card leaves the pile and returns to hand. */
   function restoreFor(s: Side, id: string): void {
     setDiscards(s, discardsOf(s).filter((d) => d !== id));
@@ -197,12 +259,23 @@
   function removeScoreFor(s: Side, index: number): void {
     setGame(s, removeScore(gameOf(s), index));
   }
-  function scorePrimaryFor(s: Side, asserted: AssertedAward[]): void {
+  /**
+   * A primary tick changed: store the round's ticks and re-bank that round's
+   * primary live. The *raw* round/game caps go to `setPrimary` — it subtracts
+   * the other rounds' primary itself, so passing the pre-computed effective
+   * cap would double-count them.
+   */
+  function primaryTicksChangeFor(s: Side, ticks: PrimaryTicks): void {
+    setPrimaryTicks(s, { ...primaryTicksOf(s), [round]: ticks });
+    const card = s === "you" ? cardYou : cardOpp;
+    const awards = card ? awardsForApproach(card, gameOf(s).approach) : [];
+    const vp = scoreTurn(assertedFromTicks(awards, ticks));
     const roundCap = s === "you" ? capYou : capOpp;
     const gameCap = s === "you" ? gameCapYou : gameCapOpp;
-    setGame(s, setPrimary(gameOf(s), round, scoreTurn(asserted), { roundCap, gameCap }));
+    setGame(s, setPrimary(gameOf(s), round, vp, { roundCap, gameCap }));
   }
   function clearPrimaryFor(s: Side): void {
+    setPrimaryTicks(s, { ...primaryTicksOf(s), [round]: emptyTicks() });
     setGame(s, setPrimary(gameOf(s), round, 0));
   }
   function approachFor(s: Side, mode: ScoringMode): void {
@@ -231,6 +304,8 @@
     activeOpp = null;
     discardsYou = [];
     discardsOpp = [];
+    primaryTicksYou = {};
+    primaryTicksOpp = {};
     round = 1;
     notify("Game reset");
   }
@@ -397,10 +472,12 @@
         onAdd={(id) => addCard("you", id)}
         onSelect={(id) => setActive("you", id)}
         onDiscard={(id) => discardFor("you", id)}
+        onReturn={(id) => returnToDeckFor("you", id)}
         onRestore={(id) => restoreFor("you", id)}
         onScore={(a) => scoreFor("you", a)}
         onRemoveScore={(i) => removeScoreFor("you", i)}
-        onPrimaryScore={(a) => scorePrimaryFor("you", a)}
+        primaryTicks={primaryTicksYou[round]}
+        onPrimaryTicksChange={(t) => primaryTicksChangeFor("you", t)}
         onClearPrimary={() => clearPrimaryFor("you")}
         onApproach={(m) => approachFor("you", m)}
       />
@@ -423,10 +500,12 @@
         onAdd={(id) => addCard("opp", id)}
         onSelect={(id) => setActive("opp", id)}
         onDiscard={(id) => discardFor("opp", id)}
+        onReturn={(id) => returnToDeckFor("opp", id)}
         onRestore={(id) => restoreFor("opp", id)}
         onScore={(a) => scoreFor("opp", a)}
         onRemoveScore={(i) => removeScoreFor("opp", i)}
-        onPrimaryScore={(a) => scorePrimaryFor("opp", a)}
+        primaryTicks={primaryTicksOpp[round]}
+        onPrimaryTicksChange={(t) => primaryTicksChangeFor("opp", t)}
         onClearPrimary={() => clearPrimaryFor("opp")}
         onApproach={(m) => approachFor("opp", m)}
       />

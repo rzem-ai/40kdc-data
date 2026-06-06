@@ -11,6 +11,7 @@
     onAdd,
     onSelect,
     onDiscard,
+    onReturn,
     onRestore,
   }: {
     hand: SecondaryCard[];
@@ -23,6 +24,8 @@
     onAdd: (id: string) => void;
     onSelect: (id: string) => void;
     onDiscard: (id: string) => void;
+    /** Shuffle a held card back into the draw deck (drawable again). */
+    onReturn: (id: string) => void;
     onRestore: (id: string) => void;
   } = $props();
 
@@ -83,9 +86,16 @@
           </button>
           <button
             type="button"
+            class="focus-ring px-2.5 lg:px-1.5 bg-panel-surface border-l border-panel-border text-text-dim hover:text-accent"
+            aria-label="return {card.name} to the deck"
+            title="Return to deck (shuffled back in — may be drawn again)"
+            onclick={() => onReturn(card.id)}>↩</button
+          >
+          <button
+            type="button"
             class="focus-ring px-3 lg:px-1.5 bg-panel-surface border-l border-panel-border text-text-dim hover:text-danger"
             aria-label="discard {card.name}"
-            title="Discard (out of the deck for the rest of the game)"
+            title="Remove for the game (won't be drawn again; restorable from Discarded)"
             onclick={() => onDiscard(card.id)}>×</button
           >
         </li>

@@ -7,7 +7,13 @@
     AssertedAward,
   } from "@alpaca-software/40kdc-data";
   import { awardsForApproach, scoreCap } from "@alpaca-software/40kdc-data";
-  import { SECONDARY_DECK, secondariesByIds, secondaryName } from "./data.js";
+  import {
+    SECONDARY_DECK,
+    emptyTicks,
+    secondariesByIds,
+    secondaryName,
+    type PrimaryTicks,
+  } from "./data.js";
   import MissionCard from "./MissionCard.svelte";
   import WtcGrid from "./WtcGrid.svelte";
   import SecondaryHand from "./SecondaryHand.svelte";
@@ -30,10 +36,12 @@
     onAdd,
     onSelect,
     onDiscard,
+    onReturn,
     onRestore,
     onScore,
     onRemoveScore,
-    onPrimaryScore,
+    primaryTicks,
+    onPrimaryTicksChange,
     onClearPrimary,
     onApproach,
   }: {
@@ -56,10 +64,15 @@
     onAdd: (id: string) => void;
     onSelect: (id: string) => void;
     onDiscard: (id: string) => void;
+    /** Shuffle a held card back into the draw deck (drawable again). */
+    onReturn: (id: string) => void;
     onRestore: (id: string) => void;
     onScore: (asserted: AssertedAward[]) => void;
     onRemoveScore: (index: number) => void;
-    onPrimaryScore: (asserted: AssertedAward[]) => void;
+    /** The current round's persistent primary award ticks (undefined = none yet). */
+    primaryTicks: PrimaryTicks | undefined;
+    /** Every tick change re-banks the current round's primary live. */
+    onPrimaryTicksChange: (ticks: PrimaryTicks) => void;
     onClearPrimary: () => void;
     onApproach: (mode: ScoringMode) => void;
   } = $props();
@@ -80,6 +93,7 @@
   // Primary scoring inputs for the mission's primary card (no `mode`, so all show).
   const primaryAwards = $derived(card ? awardsForApproach(card, game.approach) : []);
   const currentPrimary = $derived(game.rounds[round - 1]?.primary ?? 0);
+  const anyPrimaryTicks = $derived(Object.values(primaryTicks?.on ?? {}).some(Boolean));
   const capLabel = (c: number): string => (c === Infinity ? "∞" : String(c));
 </script>
 
@@ -149,21 +163,27 @@
     </summary>
     <div class="px-3 pb-3 pt-1">
       {#if mission && card && primaryAwards.length > 0}
-        <!-- Score this round's primary by ticking the awards achieved; the
-             commit writes the current round's cell, capped at the round/game cap. -->
-        {#key `${mission.id}:${round}`}
-          <ScoringPanel
-            title={mission.name}
-            text={card.text}
-            awards={primaryAwards}
-            cap={effectiveRoundCap}
-            capLabel={capLabel(effectiveRoundCap)}
-            commitLabel={(vp) => `Score ${vp} VP → Round ${round}`}
-            emptyHint="No primary scoring for this mission."
-            onCommit={onPrimaryScore}
-            extraAction={{ label: "Clear round", disabled: currentPrimary === 0, onClick: onClearPrimary }}
-          />
-        {/key}
+        <!-- Score this round's primary by ticking awards as they happen. The
+             ticks persist for the round (controlled mode — no {#key} remount:
+             the state lives upstream, keyed by round) and every change
+             re-banks the round's cell, capped at the round/game cap. -->
+        <ScoringPanel
+          title={mission.name}
+          text={card.text}
+          awards={primaryAwards}
+          {round}
+          cap={effectiveRoundCap}
+          capLabel={capLabel(effectiveRoundCap)}
+          emptyHint="No primary scoring for this mission."
+          ticks={primaryTicks ?? emptyTicks()}
+          onTicksChange={onPrimaryTicksChange}
+          banked={currentPrimary}
+          extraAction={{
+            label: "Clear round",
+            disabled: currentPrimary === 0 && !anyPrimaryTicks,
+            onClick: onClearPrimary,
+          }}
+        />
       {:else if mission}
         <MissionCard {mission} {card} />
       {:else}
@@ -183,6 +203,7 @@
     {onAdd}
     {onSelect}
     {onDiscard}
+    {onReturn}
     {onRestore}
   />
   <div class="rounded border border-panel-border bg-panel-surface p-3">
@@ -192,6 +213,7 @@
           title={activeCard.name}
           text={activeCard.text}
           awards={secondaryAwards}
+          {round}
           cap={secondaryCap}
           capLabel={capLabel(secondaryCap)}
           commitLabel={(vp) => `Score ${vp} VP & discard`}

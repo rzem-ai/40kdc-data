@@ -1,10 +1,13 @@
-import { Dataset } from "@alpaca-software/40kdc-data";
+import { Dataset, describeTrigger, describeAward } from "@alpaca-software/40kdc-data";
 import type {
+  AssertedAward,
   Mission,
   MissionMatchup,
   ForceDispositionId,
   SecondaryCard,
   ScoreEntry,
+  ScoringAward,
+  ScoringTrigger,
   TerrainLayout,
 } from "@alpaca-software/40kdc-data";
 import {
@@ -103,6 +106,114 @@ export function layoutsForMatchup(
 /** How many of the matchup's three layout variants are authored (cell dots). */
 export function layoutAvailability(a: ForceDispositionId, b: ForceDispositionId): number {
   return sharedLayoutAvailability(ds, a, b);
+}
+
+// ── award grouping for the scoring panel ─────────────────────────────────────
+// Awards on a card share triggers in runs (e.g. battlefield-dominance: one
+// end-of-turn award, then two end-of-Command-phase awards). The panel renders
+// each run under one timing header instead of repeating the trigger per row.
+
+/** One award row inside a trigger group. `index` is the award's position in
+ *  the card's original `awards` array — the panel keys tick state by it. */
+export interface AwardRow {
+  award: ScoringAward;
+  index: number;
+  label: string;
+}
+
+/** A run of consecutive same-trigger awards under one humanized header. */
+export interface AwardGroup {
+  header: string;
+  trigger: ScoringTrigger | undefined;
+  rows: AwardRow[];
+}
+
+// describeAward's wording for an award with no trigger block.
+const NO_TRIGGER_HEADER = "Any time";
+
+function triggerHeader(t: ScoringTrigger | undefined): string {
+  return t ? describeTrigger(t) : NO_TRIGGER_HEADER;
+}
+
+/**
+ * The award's `describeAward` line minus the trigger prefix (the group header
+ * already says it) and the `[highest tier]` suffix (the panel's tier chip
+ * already says it). The cumulative `+ ` marker is preserved. The prefix is
+ * rebuilt with the same conformance-pinned `describeTrigger`, so the strip is
+ * exact — if the formats ever drift the full line passes through untouched.
+ */
+export function awardRowLabel(a: ScoringAward): string {
+  const full = describeAward(a);
+  const marker = a.cumulative ? "+ " : "";
+  const prefix = `${marker}${triggerHeader(a.trigger)}: `;
+  let body = full.startsWith(prefix) ? full.slice(prefix.length) : full;
+  const tier = " [highest tier]";
+  if (body.endsWith(tier)) body = body.slice(0, -tier.length);
+  return body === full ? full : `${marker}${body}`;
+}
+
+/**
+ * Group consecutive awards that share a trigger (by its humanized form) for
+ * sectioned rendering. Array order is load-bearing and preserved — runs are
+ * never merged across a different trigger in between.
+ */
+export function groupAwards(awards: readonly ScoringAward[]): AwardGroup[] {
+  const groups: AwardGroup[] = [];
+  awards.forEach((award, index) => {
+    const header = triggerHeader(award.trigger);
+    const row: AwardRow = { award, index, label: awardRowLabel(award) };
+    const last = groups[groups.length - 1];
+    if (last && last.header === header) last.rows.push(row);
+    else groups.push({ header, trigger: award.trigger, rows: [row] });
+  });
+  return groups;
+}
+
+/**
+ * Whether `round` falls inside the trigger's battle-round window. No trigger
+ * or no window means the award is live in every round.
+ */
+export function triggerContainsRound(
+  t: ScoringTrigger | undefined,
+  round: number,
+): boolean {
+  const br = t?.battle_round;
+  if (!br) return true;
+  return round >= (br.min ?? 1) && round <= (br.max ?? Infinity);
+}
+
+// ── persistent primary tick state ─────────────────────────────────────────────
+// The primary is scored by ticking awards as they happen during a round; the
+// ticks persist for the whole round (and across reloads) so the player can see
+// what they already banked at each timing. The round's primary VP is derived
+// live from the ticks — there is no commit step.
+
+/** One round's award selection, keyed by award index in the card's `awards`. */
+export interface PrimaryTicks {
+  on: Record<number, boolean>;
+  counts: Record<number, number>;
+}
+
+/** Per-round tick state for one side, keyed by battle round (1-5). */
+export type PrimaryTicksByRound = Record<number, PrimaryTicks>;
+
+export function emptyTicks(): PrimaryTicks {
+  return { on: {}, counts: {} };
+}
+
+/**
+ * Rebuild the asserted-award list a tick state represents — the same
+ * derivation the scoring panel uses (count defaults to `per_max ?? 1`).
+ * Feed the result to `scoreTurn` to get the round's raw primary VP.
+ */
+export function assertedFromTicks(
+  awards: readonly ScoringAward[],
+  ticks: PrimaryTicks | undefined,
+): AssertedAward[] {
+  if (!ticks) return [];
+  return awards.flatMap((award, i) =>
+    ticks.on[i] ? [{ award, count: ticks.counts[i] ?? award.per_max ?? 1 }] : [],
+  );
 }
 
 /**
