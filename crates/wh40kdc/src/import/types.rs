@@ -38,6 +38,8 @@ pub enum RosterFormat {
     Rosterizer,
     Gw,
     ListforgeText,
+    /// The canonical 40kdc export (`roster.schema.json` shape) re-imported.
+    RosterJson,
 }
 
 /// Diagnostic warning codes emitted during an import.

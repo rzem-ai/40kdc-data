@@ -188,6 +188,29 @@ describe("conformance corpus (ties out with the Rust crate)", () => {
       expect(JSON.parse(JSON.stringify(parsed))).toEqual(expectedParsed);
     });
 
+    it(`roster/${entry.name}: the roster-json golden re-imports to the roster golden`, () => {
+      // The corpus-wide round-trip contract for the canonical format: every
+      // case's roster-json export golden must come back through
+      // tryImportRoster (source/diagnostics excluded). Mirrors
+      // `roster_json_goldens_reimport_to_roster_goldens` in conformance.rs.
+      const goldenPath = join(caseDir, "expected.roster-json.json");
+      if (!readdirSync(caseDir).includes("expected.roster-json.json")) return;
+      const result = tryImportRoster(readText(goldenPath), { dataset: ds });
+      if (!result.ok) {
+        throw new Error(
+          `roster/${entry.name}: roster-json golden failed to import: ${result.reason}: ${result.message}`,
+        );
+      }
+      expect(result.format).toBe("roster-json");
+      const stable = (r: unknown) => {
+        const x = JSON.parse(JSON.stringify(r)) as Record<string, unknown>;
+        delete x.source;
+        delete x.diagnostics;
+        return x;
+      };
+      expect(stable(result.roster)).toEqual(stable(expected));
+    });
+
     it(`roster/${entry.name}: every export matches its golden`, () => {
       // Every fixture carries export goldens for all six formats. The
       // defensive filter below tolerates a fixture authored without one of

@@ -15,7 +15,8 @@ use serde_json::Value;
 use wh40kdc::import::{
     try_import_roster, GwAdapter, GwHeaderlessAdapter, ImportFailureReason, ImportResult,
     ListForgeTextAdapter, NewRecruitJsonAdapter, NewRecruitSimpleAdapter,
-    NewRecruitWtcCompactAdapter, NewRecruitWtcFullAdapter, RosterFormat, RosterizerAdapter,
+    NewRecruitWtcCompactAdapter, NewRecruitWtcFullAdapter, RosterFormat, RosterJsonAdapter,
+    RosterizerAdapter,
 };
 use wh40kdc::import::{FormatAdapter, ListForgeAdapter};
 use wh40kdc::Dataset;
@@ -167,7 +168,7 @@ fn rejects_unknown_json_shape() {
         ImportResult::Err { reason, trials, .. } => {
             assert_eq!(reason, ImportFailureReason::NoAdapterMatched);
             // Every adapter should have been polled.
-            assert_eq!(trials.len(), 9);
+            assert_eq!(trials.len(), 10);
             for t in trials {
                 assert!(!t.matched, "{:?} should not have matched", t.id);
             }
@@ -188,11 +189,64 @@ fn rejects_freeform_text() {
 }
 
 #[test]
+#[cfg(feature = "export")]
+fn roster_json_export_round_trips() {
+    use wh40kdc::export::{export_roster, ExportFormat};
+
+    // Strip fields that legitimately vary across the hop: `source` records
+    // the (different) adapter, and diagnostics are re-derived on import.
+    // Mirrors the conformance `stable()` helper.
+    fn stable(v: &Value) -> Value {
+        let mut copy = v.clone();
+        if let Some(obj) = copy.as_object_mut() {
+            obj.remove("source");
+            obj.remove("diagnostics");
+        }
+        copy
+    }
+
+    let ds = Dataset::embedded();
+    for f in fixtures() {
+        let original = match try_import_roster(&f.input, ds) {
+            ImportResult::Ok { roster, .. } => roster,
+            ImportResult::Err { message, .. } => {
+                panic!("fixture {} failed to import: {message}", f.label)
+            }
+        };
+
+        let exported = export_roster(&original, ExportFormat::RosterJson);
+        let reimported = match try_import_roster(&exported, ds) {
+            ImportResult::Ok { roster, format } => {
+                assert_eq!(
+                    format,
+                    RosterFormat::RosterJson,
+                    "roster-json export of {} mis-detected",
+                    f.label
+                );
+                roster
+            }
+            ImportResult::Err { message, .. } => panic!(
+                "roster-json export of {} failed to re-import: {message}",
+                f.label
+            ),
+        };
+
+        assert_eq!(
+            stable(&serde_json::to_value(&reimported).unwrap()),
+            stable(&serde_json::to_value(&original).unwrap()),
+            "roster-json round-trip drifted for {}",
+            f.label
+        );
+    }
+}
+
+#[test]
 fn adapter_matchers_are_disjoint_per_fixture() {
     // Greedy first-match dispatch relies on at most one adapter accepting a
     // given decoded payload. Guard the invariant against regressions.
     // Registry order matches `try_import_roster`'s dispatch.
     let adapters: Vec<Box<dyn FormatAdapter>> = vec![
+        Box::new(RosterJsonAdapter),
         Box::new(RosterizerAdapter),
         Box::new(NewRecruitJsonAdapter),
         Box::new(GwAdapter),

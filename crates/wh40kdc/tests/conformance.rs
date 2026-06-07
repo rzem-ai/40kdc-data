@@ -26,7 +26,7 @@ use wh40kdc::import::{
     import_roster, import_roster_text, select_adapter, try_import_roster, FormatAdapter, GwAdapter,
     ImportResult, ListForgeAdapter, ListForgeTextAdapter, NewRecruitJsonAdapter,
     NewRecruitSimpleAdapter, NewRecruitWtcCompactAdapter, NewRecruitWtcFullAdapter, RosterFormat,
-    RosterizerAdapter,
+    RosterJsonAdapter, RosterizerAdapter,
 };
 use wh40kdc::{normalize_name, Dataset};
 
@@ -35,6 +35,7 @@ use wh40kdc::{normalize_name, Dataset};
 /// going through resolve.
 fn conformance_adapters() -> Vec<Box<dyn FormatAdapter>> {
     vec![
+        Box::new(RosterJsonAdapter),
         Box::new(RosterizerAdapter),
         Box::new(NewRecruitJsonAdapter),
         Box::new(GwAdapter),
@@ -227,6 +228,51 @@ fn imported_rosters_match_reference_goldens() {
     }
 
     assert!(total_inputs > 0, "no roster inputs exercised");
+}
+
+/// Every case's `expected.roster-json.json` export golden re-imports through
+/// `try_import_roster` as the roster-json format and lands (source/diagnostics
+/// excluded) back on the case's `expected.roster.json` golden — the full
+/// corpus-wide round-trip contract for the canonical format. Mirrors the same
+/// test in `tools/test/conformance.test.ts`.
+#[test]
+fn roster_json_goldens_reimport_to_roster_goldens() {
+    let ds = Dataset::embedded();
+    let roster_dir = conformance_dir().join("roster");
+    let cases = case_dirs(&roster_dir);
+    assert!(!cases.is_empty(), "no roster conformance cases found");
+
+    let mut total = 0;
+    for case_dir in &cases {
+        let case_name = case_dir.file_name().and_then(|s| s.to_str()).unwrap_or("?");
+        let golden_path = case_dir.join("expected.roster-json.json");
+        if !golden_path.exists() {
+            continue;
+        }
+        let raw = read_text(&golden_path);
+        let expected = read_json(&case_dir.join("expected.roster.json"));
+
+        match try_import_roster(&raw, ds) {
+            ImportResult::Ok { roster, format } => {
+                assert_eq!(
+                    format,
+                    RosterFormat::RosterJson,
+                    "roster/{case_name}: roster-json golden mis-detected as {format:?}"
+                );
+                let actual = serde_json::to_value(&roster).expect("Roster serializes");
+                assert_eq!(
+                    stable(&actual),
+                    stable(&expected),
+                    "roster/{case_name}: roster-json re-import diverged from the roster golden"
+                );
+            }
+            ImportResult::Err {
+                reason, message, ..
+            } => panic!("roster/{case_name}: roster-json golden failed to import {reason:?}: {message}"),
+        }
+        total += 1;
+    }
+    assert!(total > 0, "no roster-json goldens exercised");
 }
 
 #[test]

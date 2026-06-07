@@ -83,5 +83,6 @@ pub fn format_id(fmt: RosterFormat) -> &'static str {
         RosterFormat::Rosterizer => "rosterizer",
         RosterFormat::Gw => "gw",
         RosterFormat::ListforgeText => "listforge-text",
+        RosterFormat::RosterJson => "roster-json",
     }
 }

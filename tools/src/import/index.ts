@@ -26,6 +26,7 @@ export { decodeListForge } from "./decode.js";
 export { resolve } from "./resolve.js";
 export { listForgeAdapter } from "./listforge.js";
 export { listForgeTextAdapter } from "./listforge-text.js";
+export { rosterJsonAdapter } from "./roster-json.js";
 export { newRecruitJsonAdapter } from "./newrecruit-json.js";
 export { newRecruitSimpleAdapter } from "./newrecruit-simple.js";
 export {

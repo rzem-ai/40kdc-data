@@ -276,6 +276,7 @@ fn roster_format_str(f: RosterFormat) -> &'static str {
         RosterFormat::Rosterizer => "rosterizer",
         RosterFormat::Gw => "gw",
         RosterFormat::ListforgeText => "listforge-text",
+        RosterFormat::RosterJson => "roster-json",
     }
 }
 

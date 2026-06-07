@@ -24,6 +24,7 @@ import {
   newRecruitWtcFullAdapter,
 } from "./newrecruit-wtc.js";
 import { resolve } from "./resolve.js";
+import { rosterJsonAdapter } from "./roster-json.js";
 import { rosterizerAdapter } from "./rosterizer.js";
 import type { Roster, RosterFormat } from "./types.js";
 
@@ -45,6 +46,10 @@ import type { Roster, RosterFormat } from "./types.js";
  * `roster.forces` shape.
  */
 const ADAPTERS: readonly FormatAdapter[] = [
+  // roster-json runs first: its matcher is the most specific (the canonical
+  // source.format + game_version + diagnostics envelope), so a 40kdc-native
+  // export is never mis-detected by a looser matcher.
+  rosterJsonAdapter,
   rosterizerAdapter,
   newRecruitJsonAdapter,
   gwAdapter,

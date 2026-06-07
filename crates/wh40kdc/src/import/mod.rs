@@ -51,6 +51,8 @@ mod newrecruit_wtc;
 #[cfg(feature = "import")]
 mod resolve;
 #[cfg(feature = "import")]
+mod roster_json;
+#[cfg(feature = "import")]
 mod rosterizer;
 
 pub use types::{
@@ -79,6 +81,8 @@ pub use newrecruit_simple::NewRecruitSimpleAdapter;
 pub use newrecruit_wtc::{NewRecruitWtcCompactAdapter, NewRecruitWtcFullAdapter};
 #[cfg(feature = "import")]
 pub use resolve::resolve;
+#[cfg(feature = "import")]
+pub use roster_json::RosterJsonAdapter;
 #[cfg(feature = "import")]
 pub use rosterizer::RosterizerAdapter;
 
@@ -135,6 +139,10 @@ impl From<ParseError> for ImportError {
 #[cfg(feature = "import")]
 fn adapters() -> Vec<Box<dyn FormatAdapter>> {
     vec![
+        // roster-json runs first: its detect is the most specific (the
+        // canonical source.format + game_version + diagnostics envelope), so
+        // a 40kdc-native export is never mis-detected by a looser matcher.
+        Box::new(RosterJsonAdapter),
         Box::new(RosterizerAdapter),
         Box::new(NewRecruitJsonAdapter),
         Box::new(GwAdapter),
