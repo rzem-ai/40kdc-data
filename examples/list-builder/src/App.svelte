@@ -1,10 +1,12 @@
 <script lang="ts">
+import { onMount } from "svelte";
 import { ds } from "$lib/data/dataset";
 import ArmyBuilder from "$lib/components/game/builder/ArmyBuilder.svelte";
 import {
 	rosterTextToBuilderState,
 	type BuilderState,
 } from "$lib/data/builder";
+import { decodeShareLink } from "$lib/data/share-link";
 import AppHeader from "../../_shared/AppHeader.svelte";
 import AppFooter from "../../_shared/AppFooter.svelte";
 import {
@@ -70,6 +72,24 @@ let importError = $state<string | null>(null);
 let toast = $state<string | null>(null);
 
 const sorted = $derived(entries.slice().sort((a, b) => b.modified - a.modified));
+
+// Open a shared list from the URL: `#list=<compressed roster-json>`. Decoded
+// client-side (no backend), then the hash is cleared so refresh/save can't
+// re-trigger the import.
+onMount(() => {
+	const match = location.hash.match(/^#list=(.+)$/);
+	if (!match) return;
+	const json = decodeShareLink(match[1]);
+	const state = json ? rosterTextToBuilderState(json, "Shared list", null) : null;
+	if (state) {
+		seed = state;
+		editingId = null;
+		view = "build";
+	} else {
+		flash("That share link couldn't be opened.");
+	}
+	history.replaceState(null, "", location.pathname + location.search);
+});
 
 function flash(msg: string) {
 	toast = msg;

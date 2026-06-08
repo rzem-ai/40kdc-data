@@ -7,6 +7,7 @@ import {
 	totalPoints,
 	pointsLimit,
 	builderViolations,
+	builderToRoster,
 	builderToRosterJson,
 	groupDraftByRole,
 	cloneBuilderUnit,
@@ -18,6 +19,7 @@ import {
 import UnitPicker from './UnitPicker.svelte';
 import BuilderUnitRow from './BuilderUnitRow.svelte';
 import UnitDetailPanel from './UnitDetailPanel.svelte';
+import ShareModal from '../../ShareModal.svelte';
 
 interface Props {
 	/** Seed for "Edit in Builder"; omitted for a from-scratch build. */
@@ -72,6 +74,10 @@ const overLimit = $derived(total > limit);
 const armyIssues = $derived(builderViolations(draft).filter((v) => v.unitKey === null));
 const draftGroups = $derived(groupDraftByRole(draft));
 const selected = $derived(draft.units.find((u) => u.key === selectedKey) ?? null);
+
+// Share modal: lower the draft to a canonical Roster only while the modal is open.
+let shareOpen = $state(false);
+const shareRoster = $derived(shareOpen ? builderToRoster(draft) : null);
 
 function setFaction(id: string) {
 	// Keep the units — many armies field allied / agent units from other
@@ -179,25 +185,28 @@ function save() {
 		<label class="flex flex-col text-[10px] uppercase tracking-wider text-text-dim">
 			Disposition
 			{#if forcedDispositions.length > 1}
-				<!-- Detachment grants several — choose within the granted set. -->
-				<select
-					class="bg-panel border-panel-border text-text mt-0.5 rounded border px-1.5 py-1 text-sm"
-					value={draft.disposition ?? ''}
-					onchange={(e) => (draft.disposition = (e.target as HTMLSelectElement).value || null)}
-				>
-					{#each forcedDispositions as id (id)}
-						<option value={id}>{dispositionName(id)}</option>
-					{/each}
-				</select>
-				<span class="mt-0.5 normal-case text-text-dim/70">🔒 from detachment</span>
-			{:else if forcedDispositions.length === 1}
-				<!-- Single granted disposition — locked. -->
-				<div
-					class="bg-panel/60 border-panel-border text-text mt-0.5 rounded border px-1.5 py-1 text-sm normal-case"
-				>
-					{dispositionName(draft.disposition)}
+				<!-- Detachment grants several — choose within the granted set. Lock stays
+				     inline so the field height matches the unlocked state (no redraw). -->
+				<div class="mt-0.5 flex items-center gap-1">
+					<select
+						class="bg-panel border-panel-border text-text min-w-0 flex-1 rounded border px-1.5 py-1 text-sm"
+						value={draft.disposition ?? ''}
+						onchange={(e) => (draft.disposition = (e.target as HTMLSelectElement).value || null)}
+					>
+						{#each forcedDispositions as id (id)}
+							<option value={id}>{dispositionName(id)}</option>
+						{/each}
+					</select>
+					<span class="shrink-0 text-text-dim/70" title="Set by your detachment" aria-label="Set by your detachment">🔒</span>
 				</div>
-				<span class="mt-0.5 normal-case text-text-dim/70">🔒 from detachment</span>
+			{:else if forcedDispositions.length === 1}
+				<!-- Single granted disposition — locked, lock inline on the same line. -->
+				<div
+					class="bg-panel/60 border-panel-border text-text mt-0.5 flex items-center justify-between gap-1 rounded border px-1.5 py-1 text-sm normal-case"
+				>
+					<span class="truncate">{dispositionName(draft.disposition)}</span>
+					<span class="shrink-0 text-text-dim/70" title="Set by your detachment" aria-label="Set by your detachment">🔒</span>
+				</div>
 			{:else}
 				<!-- No mapping in the data yet — manual pick (the project's spine). -->
 				<select
@@ -287,11 +296,21 @@ function save() {
 	<!-- Footer. Save is never disabled — violations are advisory. -->
 	<div class="flex shrink-0 items-center justify-between">
 		<button class="text-text-muted hover:text-text text-xs" onclick={oncancel}>Cancel</button>
-		<button
-			class="bg-accent text-accent-foreground hover:bg-accent-hover rounded px-4 py-1.5 text-sm font-semibold transition-colors"
-			onclick={save}
-		>
-			Save to Library
-		</button>
+		<div class="flex items-center gap-2">
+			<button
+				class="border-panel-border text-text hover:border-panel-border/80 rounded border px-3 py-1.5 text-sm font-medium transition-colors"
+				onclick={() => (shareOpen = true)}
+			>
+				Share
+			</button>
+			<button
+				class="bg-accent text-accent-foreground hover:bg-accent-hover rounded px-4 py-1.5 text-sm font-semibold transition-colors"
+				onclick={save}
+			>
+				Save to Library
+			</button>
+		</div>
 	</div>
+
+	<ShareModal bind:open={shareOpen} roster={shareRoster} />
 </div>
