@@ -317,6 +317,24 @@ def iter_compare_cases(corpus: Path) -> Iterator[Case]:
         )
 
 
+def iter_loadout_cases(corpus: Path) -> Iterator[Case]:
+    root = corpus / "loadout"
+    for case_path in sorted(root.glob("*.json")):
+        case = json.loads(case_path.read_text())
+        yield Case(
+            area="loadout",
+            case_id=f"loadout/{case_path.name}",
+            op="loadout",
+            args={
+                "lines": case["lines"],
+                "targetProfileId": case["targetProfileId"],
+                "distance": case["distance"],
+                "phase": case["phase"],
+            },
+            compare_mode="floats",
+        )
+
+
 def iter_linked_api_cases(corpus: Path) -> Iterator[Case]:
     path = corpus / "linked-api" / "cases.json"
     cases = json.loads(path.read_text())
@@ -464,6 +482,7 @@ AREA_ITERATORS: dict[str, Any] = {
     "roster": iter_roster_cases,
     "cruncher": iter_cruncher_cases,
     "compare": iter_compare_cases,
+    "loadout": iter_loadout_cases,
     "linked-api": iter_linked_api_cases,
     "attribution": iter_attribution_cases,
     "scoring-translation": iter_scoring_translation_cases,
@@ -593,6 +612,9 @@ def run_corpus(
         # runner answers UNKNOWN_OP and the area skips for rust pairings; ts↔py
         # exercises it (same pattern as the validator area).
         "compare": ["compare"],
+        # Loadout ranking builds on compare/defensiveBuffsFor — same Rust
+        # exemption as the compare area; ts↔py exercises it.
+        "loadout": ["loadout"],
         "linked-api": ["linked_query"],
         "attribution": ["attribution"],
         "scoring-translation": ["translate_scoring"],

@@ -24,7 +24,7 @@ from typing import Any, TypeGuard
 
 from wh40kdc._spec import SPEC_VERSION
 from wh40kdc._version import __version__ as IMPL_VERSION
-from wh40kdc.compare import compare_cell
+from wh40kdc.compare import LoadoutLine, compare_cell, loadout_cell
 from wh40kdc.cruncher import attribute_stages, crunch
 from wh40kdc.data.base import encode_base
 from wh40kdc.data.dataset import Dataset
@@ -391,6 +391,39 @@ def _handle_compare(state: RunnerState, args: Any) -> Response:
         return _err("UNKNOWN_ENTITY", {"detail": str(e)})
 
 
+def _handle_loadout(state: RunnerState, args: Any) -> Response:
+    if not isinstance(args, dict):
+        return _err("INVALID_INPUT", {"detail": "loadout args must be an object"})
+    lines = args.get("lines")
+    phase = args.get("phase")
+    if (
+        not isinstance(lines, list)
+        or not isinstance(args.get("targetProfileId"), str)
+        or not _is_number(args.get("distance"))
+        or phase not in ("shooting", "fight")
+    ):
+        return _err("INVALID_INPUT", {"detail": "loadout: malformed lines/target/distance/phase"})
+    try:
+        parsed = [
+            LoadoutLine(
+                weapon_id=line["weaponId"],
+                count=int(line["count"]),
+                profile_index=int(line.get("profileIndex", 0)),
+            )
+            for line in lines
+        ]
+        cell = loadout_cell(
+            state.dataset(),
+            lines=parsed,
+            target_profile_id=args["targetProfileId"],
+            distance=float(args["distance"]),
+            phase=phase,
+        )
+        return _ok(cell)
+    except (KeyError, ValueError, IndexError, TypeError) as e:
+        return _err("UNKNOWN_ENTITY", {"detail": str(e)})
+
+
 def _handle_attribution(state: RunnerState, args: Any) -> Response:
     if not isinstance(args, dict):
         return _err("INVALID_INPUT", {"detail": "attribution args must be an object"})
@@ -664,6 +697,8 @@ def dispatch(state: RunnerState, req: dict[str, Any]) -> Response:
         return _handle_crunch(state, args)
     if op == "compare":
         return _handle_compare(state, args)
+    if op == "loadout":
+        return _handle_loadout(state, args)
     if op == "attribution":
         return _handle_attribution(state, args)
     if op == "translate_scoring":

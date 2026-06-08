@@ -116,6 +116,41 @@ export function expectedKills(
 }
 
 /**
+ * Expected post-FNP damage (wounds dealt) for one weapon profile against a
+ * target. The summable counterpart to {@link expectedKills}: damage adds
+ * linearly across weapons, so a unit's total output is built by summing this
+ * over its loadout and converting to kills once — never by summing per-weapon
+ * kills (each weapon's models-killed caps independently, which over-counts).
+ */
+export function expectedDamage(
+  ds: Dataset,
+  weaponRaw: Weapon,
+  profileIndex: number,
+  target: ResolvedTarget,
+  phase: ComparePhase,
+  modelsFiring: number,
+  withinHalfRange: boolean,
+): number {
+  const ctx: EngineContext = { phase, withinHalfRange };
+  const buffs = ds.defensiveBuffsFor(
+    { unitId: target.unitRaw.id, factionId: target.unitRaw.faction_id },
+    ctx,
+  );
+  const out = crunch(
+    {
+      attacker: { weapon: weaponRaw, profileIndex },
+      target: { unit: target.unitRaw, profileIndex: 0, modelCount: target.modelCount },
+      modelsFiring,
+      buffs,
+      context: ctx,
+    },
+    ds,
+  );
+  const stage = out.stages.find((s) => s.name === "after-fnp");
+  return stage ? stage.expected : 0;
+}
+
+/**
  * Evaluate every phase-appropriate weapon profile of one attacker unit against
  * one target, returning per-weapon results plus the best.
  */
@@ -224,6 +259,215 @@ export function buildMatrix(
     return { unitId: unit.id, unitName: unit.name, cells, peak };
   });
   return rows.sort((a, b) => b.peak - a.peak);
+}
+
+// ---------------------------------------------------------------------------
+// Loadout ranking — "what's the best shooting loadout for this unit/slot?"
+// ---------------------------------------------------------------------------
+
+/** One weapon in a loadout: `count` copies of `weaponId` profile `profileIndex`. */
+export interface LoadoutLine {
+  weaponId: string;
+  profileIndex?: number;
+  count: number;
+}
+
+/** A named weapon configuration to evaluate. `points` enables per-point ranking
+ * and lets you compare unit *choices* (one Defiler vs two Forgefiends) on equal
+ * footing — a config can span multiple bodies (just list all their weapons). */
+export interface LoadoutConfig {
+  label: string;
+  points?: number | null;
+  lines: LoadoutLine[];
+}
+
+export interface LoadoutTargetResult {
+  targetProfileId: string;
+  targetProfileName: string;
+  /** Total post-FNP wounds the whole config deals to this target. */
+  damage: number;
+  /** Models killed = min(modelCount, damage / W) — capped once, after summing. */
+  kills: number;
+}
+
+export interface LoadoutRanking {
+  config: LoadoutConfig;
+  results: LoadoutTargetResult[];
+  /** The metric the configs were ranked by (damage against the rank target, or
+   * summed across all targets when no rank target is given). */
+  score: number;
+  /** `score` per 100 points, or null when the config carries no points. */
+  scorePer100Points: number | null;
+}
+
+/**
+ * Total a single loadout against one target, summing post-FNP damage across all
+ * weapon lines (each fired by `count` models) and converting to kills *once*.
+ * A line whose weapon can't reach `distance` contributes nothing.
+ */
+export function loadoutOutput(
+  ds: Dataset,
+  config: LoadoutConfig,
+  target: ResolvedTarget,
+  distance: number,
+  phase: ComparePhase,
+): LoadoutTargetResult {
+  let damage = 0;
+  for (const line of config.lines) {
+    const weapon = ds.weapons.get(line.weaponId);
+    if (!weapon) continue;
+    const profileIndex = line.profileIndex ?? 0;
+    const rng = weapon.raw.profiles[profileIndex]?.range;
+    const isRanged = typeof rng === "number";
+    if (isRanged && (rng as number) < distance) continue; // out of range
+    const withinHalf = isRanged && distance <= (rng as number) / 2;
+    damage += expectedDamage(ds, weapon.raw, profileIndex, target, phase, line.count, withinHalf);
+  }
+  const w = target.unitRaw.profiles[0]?.W ?? 1;
+  const kills = w > 0 ? Math.min(target.modelCount, damage / w) : 0;
+  return {
+    targetProfileId: target.profileId,
+    targetProfileName: target.profileName,
+    damage,
+    kills,
+  };
+}
+
+/**
+ * Rank loadout configs against a set of targets. Each config is scored by its
+ * damage against `rankTargetId` (or summed across all targets when omitted);
+ * results are sorted high-to-low, with `scorePer100Points` for points-aware
+ * comparison across unit choices.
+ */
+export function rankLoadouts(
+  ds: Dataset,
+  configs: LoadoutConfig[],
+  targets: ResolvedTarget[],
+  distance: number,
+  phase: ComparePhase,
+  rankTargetId?: string,
+): LoadoutRanking[] {
+  const ranked = configs.map((config) => {
+    const results = targets.map((t) => loadoutOutput(ds, config, t, distance, phase));
+    const score = rankTargetId
+      ? (results.find((r) => r.targetProfileId === rankTargetId)?.damage ?? 0)
+      : results.reduce((sum, r) => sum + r.damage, 0);
+    const scorePer100Points =
+      config.points && config.points > 0 ? (score / config.points) * 100 : null;
+    return { config, results, score, scorePer100Points };
+  });
+  return ranked.sort((a, b) => b.score - a.score);
+}
+
+/**
+ * Evaluate one loadout against one target by ids — the single-call entry point
+ * for the conformance runner. Throws on unknown profile so the runner maps it
+ * to the closed error enum.
+ */
+export function loadoutCell(
+  ds: Dataset,
+  opts: {
+    lines: LoadoutLine[];
+    targetProfileId: string;
+    distance: number;
+    phase: ComparePhase;
+  },
+): { damage: number; kills: number } {
+  const profile = ds.targetProfiles.get(opts.targetProfileId);
+  if (!profile) throw new Error(`unknown target profile: ${opts.targetProfileId}`);
+  const target = resolveTarget(ds, profile);
+  if (!target) throw new Error(`target profile ${opts.targetProfileId} references a missing unit`);
+  const res = loadoutOutput(ds, { label: "", lines: opts.lines }, target, opts.distance, opts.phase);
+  return { damage: res.damage, kills: res.kills };
+}
+
+/** Result of deriving a unit's shooting-loadout space from its wargear. */
+export interface EnumeratedLoadouts {
+  configs: LoadoutConfig[];
+  diagnostics: string[];
+  /** Always false: the dataset doesn't record per-model weapon counts, so every
+   * line defaults to count=1. Configs are reliable for *relative* slot ranking;
+   * absolute totals need counts supplied by hand. */
+  countsKnown: boolean;
+}
+
+function resolveWeaponId(ref: string, weaponIds: Set<string>): string | null {
+  if (weaponIds.has(ref)) return ref;
+  if (ref.endsWith("s") && weaponIds.has(ref.slice(0, -1))) return ref.slice(0, -1);
+  return null;
+}
+
+/**
+ * Derive the shooting-loadout choice space for a unit from its wargear options:
+ * each mutually-exclusive ranged-weapon swap (grouped by option id) is an axis,
+ * and the cross product yields candidate configs (count=1 per weapon). Mirror
+ * of the Python `enumerate_loadouts`. Heuristic, not spec-pinned — it reflects
+ * the (imperfect) wargear data and conservatively drops refs it can't resolve.
+ */
+export function enumerateLoadouts(
+  ds: Dataset,
+  factionId: string,
+  unitId: string,
+): EnumeratedLoadouts {
+  const unit = ds.units.getInFaction(unitId, factionId);
+  if (!unit) throw new Error(`unit ${unitId} not found in faction ${factionId}`);
+  const weaponIds = new Set(ds.weapons.all.map((w) => w.raw.id));
+  const isRanged = (wid: string): boolean => ds.weapons.get(wid)?.raw.type === "ranged";
+  const baseRanged = [
+    ...new Set(unit.weapons.filter((w) => w.raw.type === "ranged").map((w) => w.raw.id)),
+  ].sort();
+  const diagnostics: string[] = [];
+
+  // Group choices by option id so duplicate rows of one physical slot union
+  // into a single exclusive axis (rather than letting two of its options stack).
+  const choicesByOption = new Map<string, string[][]>();
+  for (const opt of ds.wargearOptionsOf(unit.raw)) {
+    const oid = opt.id ?? JSON.stringify(opt);
+    const rawChoices: string[][] = [];
+    const o = opt as { replaces?: string[]; replacement?: string[]; replacement_choice?: string[][] };
+    if (o.replaces) rawChoices.push(o.replaces);
+    if (o.replacement) rawChoices.push(o.replacement);
+    for (const ch of o.replacement_choice ?? []) rawChoices.push(ch);
+    const bucket = choicesByOption.get(oid) ?? [];
+    for (const ch of rawChoices) {
+      const rids: string[] = [];
+      for (const ref of ch) {
+        const wid = resolveWeaponId(ref, weaponIds);
+        if (wid === null) diagnostics.push(`option ${oid}: unresolved ref ${JSON.stringify(ref)}`);
+        else if (isRanged(wid)) rids.push(wid);
+      }
+      if (rids.length) {
+        const key = [...rids].sort().join("|");
+        if (!bucket.some((b) => [...b].sort().join("|") === key)) bucket.push(rids);
+      }
+    }
+    choicesByOption.set(oid, bucket);
+  }
+
+  const axes = [...choicesByOption.values()].filter((c) => c.length > 1);
+  const swapMembers = new Set(axes.flat(2));
+  const fixed = baseRanged.filter((w) => !swapMembers.has(w));
+
+  let combos: string[][] = [fixed];
+  for (const axis of axes) {
+    combos = combos.flatMap((combo) => axis.map((choice) => [...combo, ...choice]));
+  }
+
+  const byLabel = new Map<string, LoadoutConfig>();
+  const points = unit.raw.points?.[0]?.cost ?? null;
+  for (const combo of combos) {
+    const weapons = [...new Set(combo)].sort();
+    if (!weapons.length) continue;
+    const label = weapons.map((w) => ds.weapons.get(w)?.name ?? w).join(" + ");
+    if (!byLabel.has(label)) {
+      byLabel.set(label, {
+        label,
+        points,
+        lines: weapons.map((w) => ({ weaponId: w, count: 1 })),
+      });
+    }
+  }
+  return { configs: [...byLabel.values()], diagnostics: [...new Set(diagnostics)].sort(), countsKnown: false };
 }
 
 /** Render a matrix as a Discord-paste markdown table. */

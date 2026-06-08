@@ -1,0 +1,24 @@
+{
+  "name": "Defiler cannon + twin-lascannon + combi-bolter vs Rhino @15\"",
+  "lines": [
+    {
+      "weaponId": "defiler-cannon",
+      "count": 1
+    },
+    {
+      "weaponId": "twin-lascannon",
+      "count": 1
+    },
+    {
+      "weaponId": "combi-bolter",
+      "count": 1
+    }
+  ],
+  "targetProfileId": "rhino",
+  "distance": 15,
+  "phase": "shooting",
+  "expected": {
+    "damage": 5.5247,
+    "kills": 0.5525
+  }
+}

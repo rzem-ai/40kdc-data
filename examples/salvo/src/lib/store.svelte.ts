@@ -186,6 +186,10 @@ class SalvoState {
   compareTargetIds = $state<string[]>([]);
   compareDistance = $state<number>(15);
   comparePhase = $state<PhaseChoice>("shooting");
+  /** Compare sub-mode: the unit×target matrix, or per-unit loadout ranking. */
+  compareMode = $state<"matrix" | "loadouts">("matrix");
+  /** Unit whose loadouts are ranked in "loadouts" sub-mode. */
+  compareLoadoutUnitId = $state<string | null>(null);
 
   /** Apply a target-profile preset: point the dataset target at its unit. */
   applyTargetPreset(profileId: string): void {

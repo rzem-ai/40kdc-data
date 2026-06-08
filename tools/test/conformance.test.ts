@@ -24,7 +24,7 @@ import { importRoster, tryImportRoster, REGISTERED_ADAPTERS } from "../src/impor
 import { selectAdapter } from "../src/import/adapter.js";
 import type { RosterFormat } from "../src/import/types.js";
 import { crunch, type Buff, type EngineContext, type Stage } from "../src/cruncher/index.js";
-import { compareCell, type ComparePhase } from "../src/compare.js";
+import { compareCell, loadoutCell, type ComparePhase, type LoadoutLine } from "../src/compare.js";
 import { attributeStages } from "../src/cruncher/attribution.js";
 import type { Phase } from "../src/generated.js";
 import { effectToBuffs } from "../src/cruncher/from-dsl.js";
@@ -313,6 +313,48 @@ describe("compare conformance corpus", () => {
         delta < CRUNCHER_TOLERANCE,
         `compare/${filename} expectedKills: expected ${c.expected.expectedKills}, got ${cell.expectedKills} (Δ ${delta})`,
       ).toBe(true);
+    });
+  }
+});
+
+// Loadout conformance — each case names a weapon-line list, a target profile, a
+// distance and phase, with expected {damage, kills}. Pins the damage-level
+// totaling (sum after-FNP across weapons, convert to kills once). ts↔py.
+
+interface LoadoutConformanceCase {
+  name: string;
+  lines: LoadoutLine[];
+  targetProfileId: string;
+  distance: number;
+  phase: ComparePhase;
+  expected: { damage: number; kills: number };
+}
+
+describe("loadout conformance corpus", () => {
+  const ds = Dataset.embedded();
+  const dir = join(CONFORMANCE, "loadout");
+  const files = readdirSync(dir).filter((n) => n.endsWith(".json")).sort();
+
+  it("the loadout corpus is non-empty", () => {
+    expect(files.length).toBeGreaterThan(0);
+  });
+
+  for (const filename of files) {
+    const c = readJson(join(dir, filename)) as LoadoutConformanceCase;
+    it(`loadout/${filename}: damage+kills match within ${CRUNCHER_TOLERANCE}`, () => {
+      const cell = loadoutCell(ds, {
+        lines: c.lines,
+        targetProfileId: c.targetProfileId,
+        distance: c.distance,
+        phase: c.phase,
+      });
+      for (const key of ["damage", "kills"] as const) {
+        const delta = Math.abs(cell[key] - c.expected[key]);
+        expect(
+          delta < CRUNCHER_TOLERANCE,
+          `loadout/${filename} ${key}: expected ${c.expected[key]}, got ${cell[key]} (Δ ${delta})`,
+        ).toBe(true);
+      }
     });
   }
 });

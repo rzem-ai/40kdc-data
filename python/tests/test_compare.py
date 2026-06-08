@@ -160,3 +160,99 @@ def test_cli_unknown_target_errors(capsys: pytest.CaptureFixture[str]) -> None:
     rc = compare.main(["--attacker-faction", "world-eaters", "--targets", "nope"])
     assert rc == 2
     assert "unknown target profile" in capsys.readouterr().err
+
+
+# --- loadout ranking --------------------------------------------------------
+
+
+def test_loadout_totals_at_damage_level_not_kills(ds: Dataset) -> None:
+    """A 2-Hades loadout totals damage then caps kills once — not the sum of two
+    independently-capped per-weapon kills."""
+    meq = compare.resolve_target(ds, ds.target_profiles.get("meq-intercessors"))
+    cfg = compare.LoadoutConfig(
+        label="2x Hades", lines=[compare.LoadoutLine("hades-autocannon", 2)], points=165
+    )
+    res = compare.loadout_output(ds, cfg, meq, distance=15, phase="shooting")
+    single = compare.loadout_output(
+        ds,
+        compare.LoadoutConfig("1x", [compare.LoadoutLine("hades-autocannon", 1)]),
+        meq,
+        15,
+        "shooting",
+    )
+    assert res["damage"] == pytest.approx(2 * single["damage"], rel=1e-9)
+    assert res["kills"] == pytest.approx(min(5, res["damage"] / 2), rel=1e-9)
+
+
+def test_loadout_kills_capped_at_model_count(ds: Dataset) -> None:
+    guard = compare.resolve_target(ds, ds.target_profiles.get("geq-guardsmen"))
+    cfg = compare.LoadoutConfig("4x Hades", [compare.LoadoutLine("hades-autocannon", 4)])
+    res = compare.loadout_output(ds, cfg, guard, distance=15, phase="shooting")
+    assert res["kills"] <= guard.model_count
+
+
+def test_out_of_range_line_excluded_from_total(ds: Dataset) -> None:
+    meq = compare.resolve_target(ds, ds.target_profiles.get("meq-intercessors"))
+    mixed = compare.LoadoutConfig(
+        "mixed",
+        [compare.LoadoutLine("hades-autocannon", 1), compare.LoadoutLine("combi-bolter", 1)],
+    )
+    hades_only = compare.LoadoutConfig("hades", [compare.LoadoutLine("hades-autocannon", 1)])
+    assert compare.loadout_output(ds, mixed, meq, 30, "shooting")["damage"] == pytest.approx(
+        compare.loadout_output(ds, hades_only, meq, 30, "shooting")["damage"], rel=1e-9
+    )
+
+
+def test_rank_loadouts_sorts_and_scores_per_point(ds: Dataset) -> None:
+    targets = [
+        compare.resolve_target(ds, ds.target_profiles.get(p)) for p in ("geq-guardsmen", "rhino")
+    ]
+    configs = [
+        compare.LoadoutConfig("2x Hades", [compare.LoadoutLine("hades-autocannon", 2)], points=165),
+        compare.LoadoutConfig("2x Ecto", [compare.LoadoutLine("ectoplasma-cannon", 2)], points=165),
+    ]
+    ranked = compare.rank_loadouts(ds, configs, targets, 15, "shooting")
+    assert ranked[0]["score"] >= ranked[1]["score"]
+    assert all(r["scorePer100Points"] == pytest.approx(r["score"] / 165 * 100) for r in ranked)
+
+
+def test_rank_by_specific_target(ds: Dataset) -> None:
+    targets = [
+        compare.resolve_target(ds, ds.target_profiles.get(p)) for p in ("geq-guardsmen", "rhino")
+    ]
+    configs = [
+        compare.LoadoutConfig("2x Hades", [compare.LoadoutLine("hades-autocannon", 2)], points=165),
+        compare.LoadoutConfig("2x Ecto", [compare.LoadoutLine("ectoplasma-cannon", 2)], points=165),
+    ]
+    ranked = compare.rank_loadouts(ds, configs, targets, 15, "shooting", rank_target_id="rhino")
+    assert ranked[0]["config"].label == "2x Ecto"  # S10 AP-3 out-damages Hades into a Rhino
+
+
+def test_enumerate_forgefiend_two_clean_configs(ds: Dataset) -> None:
+    en = compare.enumerate_loadouts(ds, "world-eaters", "forgefiend")
+    assert {c.label for c in en.configs} == {"Hades autocannon", "Ectoplasma cannon"}
+    assert en.counts_known is False
+    assert all(c.points == 165 for c in en.configs)
+
+
+def test_enumerate_defiler_configs_are_mutually_exclusive(ds: Dataset) -> None:
+    en = compare.enumerate_loadouts(ds, "world-eaters", "defiler")
+    assert len(en.configs) > 1
+    heavy = {
+        "reaper-autocannon",
+        "twin-heavy-bolter",
+        "twin-lascannon",
+        "twin-inferno-heavy-bolter",
+    }
+    for c in en.configs:
+        chosen = [ln.weapon_id for ln in c.lines if ln.weapon_id in heavy]
+        assert len(chosen) <= 1, f"{c.label}: {chosen}"
+
+
+def test_cli_enumerate_mode(capsys: pytest.CaptureFixture[str]) -> None:
+    rc = compare.main(
+        ["--attacker-faction", "world-eaters", "--enumerate", "forgefiend", "--range", "15"]
+    )
+    assert rc == 0
+    out = capsys.readouterr().out
+    assert "Hades autocannon" in out and "Dmg/100pt" in out

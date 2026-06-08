@@ -1,0 +1,16 @@
+{
+  "name": "Forgefiend 2x Ectoplasma vs Rhino @15\"",
+  "lines": [
+    {
+      "weaponId": "ectoplasma-cannon",
+      "count": 2
+    }
+  ],
+  "targetProfileId": "rhino",
+  "distance": 15,
+  "phase": "shooting",
+  "expected": {
+    "damage": 3.7037,
+    "kills": 0.3704
+  }
+}

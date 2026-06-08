@@ -87,6 +87,26 @@ class ResolvedTarget:
     model_count: int
 
 
+@dataclass
+class LoadoutLine:
+    """``count`` copies of ``weapon_id`` profile ``profile_index``."""
+
+    weapon_id: str
+    count: int
+    profile_index: int = 0
+
+
+@dataclass
+class LoadoutConfig:
+    """A named weapon configuration. ``points`` enables per-point ranking and
+    lets you compare unit *choices* (one Defiler vs two Forgefiends) — a config
+    may span multiple bodies; just list all their weapon lines."""
+
+    label: str
+    lines: list[LoadoutLine]
+    points: int | None = None
+
+
 def resolve_target(ds: Dataset, profile: dict[str, Any]) -> ResolvedTarget:
     """Resolve a target profile to its referenced unit.
 
@@ -149,6 +169,48 @@ def expected_kills(
     return 0.0  # unreachable: crunch always emits a models-killed stage
 
 
+def expected_damage(
+    ds: Dataset,
+    *,
+    weapon_raw: dict[str, Any],
+    profile_index: int,
+    target: ResolvedTarget,
+    phase: Phase,
+    models_firing: int,
+    within_half_range: bool,
+) -> float:
+    """Expected post-FNP damage (wounds dealt) for one weapon profile.
+
+    The summable counterpart to :func:`expected_kills`: damage adds linearly
+    across weapons, so a unit's total output is the sum of this over its
+    loadout, converted to kills *once* — never the sum of per-weapon kills
+    (each weapon's models-killed caps independently, over-counting).
+    """
+    ctx: dict[str, Any] = {"phase": phase, "withinHalfRange": within_half_range}
+    buffs = ds.defensive_buffs_for(
+        {"unitId": target.unit_raw["id"], "factionId": target.unit_raw["faction_id"]},
+        ctx,
+    )
+    out = crunch(
+        {
+            "attacker": {"weapon": weapon_raw, "profileIndex": profile_index},
+            "target": {
+                "unit": target.unit_raw,
+                "profileIndex": 0,
+                "modelCount": target.model_count,
+            },
+            "modelsFiring": models_firing,
+            "buffs": buffs,
+            "context": ctx,
+        },
+        ds,
+    )
+    for stage in out["stages"]:
+        if stage["name"] == "after-fnp":
+            return float(stage["expected"])
+    return 0.0
+
+
 def compare_cell(
     ds: Dataset,
     *,
@@ -201,6 +263,205 @@ def compare_cell(
         "withinHalfRange": within_half,
         "modelCount": target.model_count,
     }
+
+
+def loadout_cell(
+    ds: Dataset,
+    *,
+    lines: list[LoadoutLine],
+    target_profile_id: str,
+    distance: float,
+    phase: Phase,
+) -> dict[str, Any]:
+    """Evaluate one loadout against one target by ids — the single-call entry
+    point for the conformance runner. Returns ``{damage, kills}``. Raises
+    ``KeyError`` for an unknown profile."""
+    profile = ds.target_profiles.get(target_profile_id)
+    if profile is None:
+        raise KeyError(f"unknown target profile {target_profile_id!r}")
+    target = resolve_target(ds, profile)
+    res = loadout_output(ds, LoadoutConfig(label="", lines=lines), target, distance, phase)
+    return {"damage": res["damage"], "kills": res["kills"]}
+
+
+def _resolve_weapon_id(ref: str, weapon_ids: set[str]) -> str | None:
+    """Resolve a wargear-option ref string to a weapon id. Exact match first,
+    then a de-pluralize fallback (the source data carries some weapon names
+    pluralized, e.g. ``hades-autocannons`` for ``hades-autocannon``)."""
+    if ref in weapon_ids:
+        return ref
+    if ref.endswith("s") and ref[:-1] in weapon_ids:
+        return ref[:-1]
+    return None
+
+
+@dataclass
+class EnumeratedLoadouts:
+    """Result of deriving a unit's shooting loadout space from its wargear.
+
+    ``counts_known`` is always False: the dataset does not record how many of
+    each weapon a model mounts (a Forgefiend's *two* Hades autocannons aren't
+    encoded anywhere), so every line defaults to ``count=1``. The configs are
+    therefore reliable for *relative* ranking of one slot's options; absolute
+    totals and cross-unit comparison still need counts supplied by hand.
+    ``diagnostics`` lists wargear refs that could not be resolved to a weapon.
+    """
+
+    configs: list[LoadoutConfig]
+    diagnostics: list[str]
+    counts_known: bool = False
+
+
+def enumerate_loadouts(ds: Dataset, faction_id: str, unit_id: str) -> EnumeratedLoadouts:
+    """Derive the shooting-loadout choice space for a unit from its wargear
+    options. Each mutually-exclusive ranged-weapon swap becomes an axis; the
+    cross product of axes yields candidate configs (count=1 per weapon).
+
+    Heuristic, not spec-pinned: it reflects the (imperfect) wargear data, so it
+    is deliberately conservative — an axis whose refs don't resolve to ranged
+    weapons is dropped with a diagnostic rather than guessed at.
+    """
+    unit = ds.units.get_in_faction(unit_id, faction_id)
+    if unit is None:
+        raise ValueError(f"unit {unit_id!r} not found in faction {faction_id!r}")
+    weapon_ids = {w.raw["id"] for w in ds.weapons.all}
+
+    def is_ranged(wid: str) -> bool:
+        w = ds.weapons.get(wid)
+        return w is not None and w.raw.get("type") == "ranged"
+
+    base_ranged = sorted({w.raw["id"] for w in unit.weapons if w.raw.get("type") == "ranged"})
+    diagnostics: list[str] = []
+
+    # Each axis is a list of mutually-exclusive ranged-weapon choices (each a
+    # tuple of weapon ids). Group by option *id* — the same physical swap slot
+    # can appear as several rows in the (duplicated) source data, so we union
+    # their alternatives into one exclusive choice rather than treating them as
+    # independent axes (which would let two alternatives of one slot co-occur).
+    choices_by_option: dict[str, list[tuple[str, ...]]] = {}
+    for opt in ds.wargear_options_of(unit.raw):
+        oid = opt.get("id") or repr(opt)
+        raw_choices: list[list[str]] = []
+        if opt.get("replaces"):
+            raw_choices.append(opt["replaces"])
+        if opt.get("replacement"):
+            raw_choices.append(opt["replacement"])
+        for ch in opt.get("replacement_choice") or []:
+            raw_choices.append(ch)
+        bucket = choices_by_option.setdefault(oid, [])
+        for ch in raw_choices:
+            rids: list[str] = []
+            for ref in ch:
+                wid = _resolve_weapon_id(ref, weapon_ids)
+                if wid is None:
+                    diagnostics.append(f"option {oid}: unresolved ref {ref!r}")
+                elif is_ranged(wid):
+                    rids.append(wid)
+            if rids:
+                t = tuple(sorted(rids))
+                if t not in bucket:
+                    bucket.append(t)
+
+    # Keep only slots that present a real ranged choice (>1 distinct option).
+    axes: list[list[tuple[str, ...]]] = [c for c in choices_by_option.values() if len(c) > 1]
+
+    # Weapons that never participate in a swap are fixed on every config.
+    swap_members = {wid for axis in axes for choice in axis for wid in choice}
+    fixed = [wid for wid in base_ranged if wid not in swap_members]
+
+    # Cross-product the axes.
+    configs: list[LoadoutConfig] = []
+    combos: list[list[str]] = [list(fixed)]
+    for axis in axes:
+        combos = [combo + list(choice) for combo in combos for choice in axis]
+    for combo in combos:
+        weapons = sorted(dict.fromkeys(combo))
+        if not weapons:
+            continue
+        label = " + ".join(ds.weapons.get(w).name for w in weapons)
+        configs.append(
+            LoadoutConfig(
+                label=label,
+                lines=[LoadoutLine(weapon_id=w, count=1) for w in weapons],
+                points=(unit.raw.get("points") or [{}])[0].get("cost"),
+            )
+        )
+    # Dedupe identical configs (different axis orders → same weapon set).
+    by_label: dict[str, LoadoutConfig] = {c.label: c for c in configs}
+    return EnumeratedLoadouts(
+        configs=list(by_label.values()),
+        diagnostics=sorted(set(diagnostics)),
+    )
+
+
+def loadout_output(
+    ds: Dataset,
+    config: LoadoutConfig,
+    target: ResolvedTarget,
+    distance: float,
+    phase: Phase,
+) -> dict[str, Any]:
+    """Total one loadout against one target: sum post-FNP damage across weapon
+    lines (each fired by ``count`` models), then convert to kills *once*
+    (``min(model_count, damage / W)``). Out-of-range lines contribute nothing.
+    Returns ``{targetProfileId, targetProfileName, damage, kills}``."""
+    damage = 0.0
+    for line in config.lines:
+        weapon = ds.weapons.get(line.weapon_id)
+        if weapon is None:
+            continue
+        wprofile = weapon.raw["profiles"][line.profile_index]
+        rng = wprofile.get("range")
+        is_ranged = isinstance(rng, int) and not isinstance(rng, bool)
+        if is_ranged and rng < distance:
+            continue
+        within_half = bool(is_ranged and distance <= rng / 2)
+        damage += expected_damage(
+            ds,
+            weapon_raw=weapon.raw,
+            profile_index=line.profile_index,
+            target=target,
+            phase=phase,
+            models_firing=line.count,
+            within_half_range=within_half,
+        )
+    w = target.unit_raw["profiles"][0].get("W") or 1
+    kills = min(target.model_count, damage / w) if w > 0 else 0.0
+    return {
+        "targetProfileId": target.profile["id"],
+        "targetProfileName": target.profile["name"],
+        "damage": damage,
+        "kills": kills,
+    }
+
+
+def rank_loadouts(
+    ds: Dataset,
+    configs: list[LoadoutConfig],
+    targets: list[ResolvedTarget],
+    distance: float,
+    phase: Phase,
+    rank_target_id: str | None = None,
+) -> list[dict[str, Any]]:
+    """Rank loadout configs against targets. Each is scored by its damage
+    against ``rank_target_id`` (or summed across all targets when omitted),
+    sorted high-to-low, with ``scorePer100Points`` for points-aware ranking.
+    Returns ``[{config, results, score, scorePer100Points}]``."""
+    ranked = []
+    for config in configs:
+        results = [loadout_output(ds, config, t, distance, phase) for t in targets]
+        if rank_target_id:
+            score = next(
+                (r["damage"] for r in results if r["targetProfileId"] == rank_target_id), 0.0
+            )
+        else:
+            score = sum(r["damage"] for r in results)
+        per100 = (score / config.points) * 100 if config.points and config.points > 0 else None
+        ranked.append(
+            {"config": config, "results": results, "score": score, "scorePer100Points": per100}
+        )
+    ranked.sort(key=lambda r: r["score"], reverse=True)
+    return ranked
 
 
 def unit_vs_target(
@@ -423,6 +684,39 @@ def _sort_and_cap(
     return ordered[:top] if top else ordered
 
 
+def render_loadout_table(
+    rankings: list[dict[str, Any]],
+    targets: list[ResolvedTarget],
+    counts_known: bool,
+) -> str:
+    """Markdown table: one row per loadout config, columns per target (models
+    killed), plus a points-efficiency column. Cells ≥1.0 kills are bolded."""
+    headers = ["Loadout", "Pts", *(t.profile["name"] for t in targets), "Dmg/100pt"]
+    lines = ["| " + " | ".join(headers) + " |", "|" + "|".join(["---"] * len(headers)) + "|"]
+    for r in rankings:
+        cfg = r["config"]
+        by_target = {res["targetProfileId"]: res for res in r["results"]}
+        cells = []
+        for t in targets:
+            res = by_target.get(t.profile["id"])
+            k = res["kills"] if res else 0.0
+            text = f"{k:.2f}" if k else "—"
+            cells.append(f"**{text}**" if k >= 1.0 else text)
+        per100 = r["scorePer100Points"]
+        per100_s = f"{per100:.1f}" if per100 is not None else "—"
+        lines.append(
+            "| " + " | ".join([cfg.label, str(cfg.points or "—"), *cells, per100_s]) + " |"
+        )
+    note = (
+        ""
+        if counts_known
+        else "\n\n_Counts default to 1 per weapon — the dataset does not record per-model "
+        "weapon multiplicities, so use these for *relative* slot comparison; supply counts "
+        "for absolute totals._"
+    )
+    return "\n".join(lines) + note
+
+
 def build_arg_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog="python -m wh40kdc.compare",
@@ -462,15 +756,80 @@ def build_arg_parser() -> argparse.ArgumentParser:
     p.add_argument(
         "--format", choices=["table", "csv", "json"], default="table", help="default table"
     )
+    p.add_argument(
+        "--enumerate",
+        dest="enumerate_unit",
+        metavar="UNIT_ID",
+        help="rank this unit's enumerated shooting loadouts (needs --attacker-faction) "
+        "against the targets, instead of the attacker×target matrix",
+    )
+    p.add_argument(
+        "--rank-target",
+        help="with --enumerate, rank loadouts by damage vs this target profile "
+        "(default: summed across all selected targets)",
+    )
     return p
+
+
+def _run_enumerate(ds: Dataset, args: Any, targets: list[ResolvedTarget]) -> int:
+    if not args.attacker_faction:
+        print("error: --enumerate requires --attacker-faction", file=sys.stderr)
+        return 2
+    try:
+        en = enumerate_loadouts(ds, args.attacker_faction, args.enumerate_unit)
+    except ValueError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+    if not en.configs:
+        print("error: no shooting loadouts could be enumerated for this unit", file=sys.stderr)
+        return 2
+    rankings = rank_loadouts(
+        ds, en.configs, targets, args.range, args.phase, rank_target_id=args.rank_target
+    )
+    if args.top:
+        rankings = rankings[: args.top]
+    if args.format == "json":
+        print(
+            json.dumps(
+                {
+                    "unit": args.enumerate_unit,
+                    "counts_known": en.counts_known,
+                    "diagnostics": en.diagnostics,
+                    "rankings": [
+                        {
+                            "label": r["config"].label,
+                            "points": r["config"].points,
+                            "score": r["score"],
+                            "scorePer100Points": r["scorePer100Points"],
+                            "results": r["results"],
+                        }
+                        for r in rankings
+                    ],
+                },
+                indent=2,
+            )
+        )
+    else:
+        print(render_loadout_table(rankings, targets, en.counts_known))
+        if en.diagnostics:
+            print(f"\n_{len(en.diagnostics)} unresolved wargear ref(s) skipped._", file=sys.stderr)
+    return 0
 
 
 def main(argv: list[str] | None = None) -> int:
     args = build_arg_parser().parse_args(argv)
     ds = Dataset.embedded()
     try:
-        attackers = _select_attackers(ds, args.attacker_faction, args.attacker_units)
         targets = _select_targets(ds, args.targets)
+    except ValueError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+
+    if args.enumerate_unit:
+        return _run_enumerate(ds, args, targets)
+
+    try:
+        attackers = _select_attackers(ds, args.attacker_faction, args.attacker_units)
     except ValueError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2

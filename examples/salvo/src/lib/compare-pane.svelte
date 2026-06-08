@@ -5,7 +5,10 @@
     resolveTarget,
     cellValue,
     matrixToMarkdown,
+    enumerateLoadouts,
+    rankLoadouts,
     type ResolvedTarget,
+    type LoadoutRanking,
   } from "./compare-model.js";
   import EmptyState from "./EmptyState.svelte";
 
@@ -55,6 +58,29 @@
     );
   });
 
+  // --- Loadouts sub-mode -------------------------------------------------
+  const loadoutEnum = $derived.by(() => {
+    if (salvo.compareMode !== "loadouts" || !salvo.compareFactionId || !salvo.compareLoadoutUnitId) {
+      return null;
+    }
+    try {
+      return enumerateLoadouts(ds, salvo.compareFactionId, salvo.compareLoadoutUnitId);
+    } catch {
+      return null;
+    }
+  });
+
+  const loadoutRankings = $derived.by<LoadoutRanking[]>(() => {
+    if (!loadoutEnum || loadoutEnum.configs.length === 0 || targets.length === 0) return [];
+    return rankLoadouts(
+      ds,
+      loadoutEnum.configs,
+      targets,
+      salvo.compareDistance,
+      salvo.comparePhase,
+    );
+  });
+
   function toggleProfile(id: string): void {
     const set = new Set(salvo.compareTargetIds);
     if (set.has(id)) set.delete(id);
@@ -77,6 +103,13 @@
 
 <div class="controls">
   <div class="row">
+    <div class="phase-toggle mode-toggle">
+      <button class:active={salvo.compareMode === "matrix"} onclick={() => (salvo.compareMode = "matrix")}>Unit × target matrix</button>
+      <button class:active={salvo.compareMode === "loadouts"} onclick={() => (salvo.compareMode = "loadouts")}>Best loadout</button>
+    </div>
+  </div>
+
+  <div class="row">
     <label for="cmp-faction">Attacker faction</label>
     <select
       id="cmp-faction"
@@ -91,6 +124,24 @@
       {/each}
     </select>
   </div>
+
+  {#if salvo.compareMode === "loadouts"}
+    <div class="row">
+      <label for="cmp-unit">Unit</label>
+      <select
+        id="cmp-unit"
+        class="grow"
+        value={salvo.compareLoadoutUnitId ?? ""}
+        onchange={(e) =>
+          (salvo.compareLoadoutUnitId = (e.currentTarget as HTMLSelectElement).value || null)}
+      >
+        <option value="">— pick a unit —</option>
+        {#each attackers as u (`${u.raw.faction_id}/${u.id}`)}
+          <option value={u.id}>{u.name}</option>
+        {/each}
+      </select>
+    </div>
+  {/if}
 
   <div class="row">
     <label for="cmp-distance">Distance (")</label>
@@ -131,42 +182,80 @@
   </div>
 </div>
 
-{#if matrix.length === 0}
-  <EmptyState>Pick an attacker faction to rank its units against the target archetypes.</EmptyState>
+{#if salvo.compareMode === "matrix"}
+  {#if matrix.length === 0}
+    <EmptyState>Pick an attacker faction to rank its units against the target archetypes.</EmptyState>
+  {:else}
+    <div class="actions">
+      <span class="caption">
+        Expected models killed per model firing each unit's best {salvo.comparePhase} weapon at
+        {salvo.compareDistance}". Bold ≥ 1.0.
+      </span>
+      <button onclick={exportMarkdown}>{copied ? "Copied!" : "Export markdown"}</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="unit-col">Unit</th>
+            {#each targets as t (t.profileId)}
+              <th title={t.profileName}>{t.profileName}</th>
+            {/each}
+          </tr>
+        </thead>
+        <tbody>
+          {#each matrix as row (row.unitId)}
+            <tr>
+              <td class="unit-col">{row.unitName}</td>
+              {#each row.cells as cell (cell.targetProfileId)}
+                {@const v = cellValue(cell, "best-weapon")}
+                <td
+                  class:strong={v >= 1}
+                  class:zero={v === 0}
+                  title={cell.best
+                    ? `${cell.best.weaponName}${cell.best.withinHalfRange ? " (half range)" : ""}`
+                    : "no weapon reaches"}
+                >
+                  {v ? v.toFixed(2) : "—"}
+                </td>
+              {/each}
+            </tr>
+          {/each}
+        </tbody>
+      </table>
+    </div>
+  {/if}
+{:else if loadoutRankings.length === 0}
+  <EmptyState>Pick an attacker faction and a unit to rank its shooting loadouts.</EmptyState>
 {:else}
   <div class="actions">
     <span class="caption">
-      Expected models killed per model firing each unit's best {salvo.comparePhase} weapon at
-      {salvo.compareDistance}". Bold ≥ 1.0.
+      Models killed per loadout at {salvo.compareDistance}" (damage totalled across the loadout,
+      then capped). Counts default to 1 per weapon — the dataset doesn't store mount counts, so
+      compare slots relatively. Bold ≥ 1.0.
     </span>
-    <button onclick={exportMarkdown}>{copied ? "Copied!" : "Export markdown"}</button>
   </div>
   <div class="table-wrap">
     <table>
       <thead>
         <tr>
-          <th class="unit-col">Unit</th>
+          <th class="unit-col">Loadout</th>
           {#each targets as t (t.profileId)}
             <th title={t.profileName}>{t.profileName}</th>
           {/each}
+          <th title="summed damage per 100 points">Dmg/100pt</th>
         </tr>
       </thead>
       <tbody>
-        {#each matrix as row (row.unitId)}
+        {#each loadoutRankings as r (r.config.label)}
           <tr>
-            <td class="unit-col">{row.unitName}</td>
-            {#each row.cells as cell (cell.targetProfileId)}
-              {@const v = cellValue(cell, "best-weapon")}
-              <td
-                class:strong={v >= 1}
-                class:zero={v === 0}
-                title={cell.best
-                  ? `${cell.best.weaponName}${cell.best.withinHalfRange ? " (half range)" : ""}`
-                  : "no weapon reaches"}
-              >
-                {v ? v.toFixed(2) : "—"}
+            <td class="unit-col" title={r.config.label}>{r.config.label}</td>
+            {#each r.results as res (res.targetProfileId)}
+              <td class:strong={res.kills >= 1} class:zero={res.kills === 0}>
+                {res.kills ? res.kills.toFixed(2) : "—"}
               </td>
             {/each}
+            <td>{r.scorePer100Points !== null ? r.scorePer100Points.toFixed(1) : "—"}</td>
           </tr>
         {/each}
       </tbody>

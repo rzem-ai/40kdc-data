@@ -1,0 +1,16 @@
+{
+  "name": "Forgefiend 2x Hades autocannon vs MEQ @15\"",
+  "lines": [
+    {
+      "weaponId": "hades-autocannon",
+      "count": 2
+    }
+  ],
+  "targetProfileId": "meq-intercessors",
+  "distance": 15,
+  "phase": "shooting",
+  "expected": {
+    "damage": 6.6667,
+    "kills": 3.3333
+  }
+}

@@ -20,6 +20,7 @@ The same person *can* author both the implementation change and the second-impl 
 | `roster/<case>/` | Every `input.*` imports to the same `expected.roster.json`; every export reproduces `expected.<fmt>.{txt,json}` | byte-equal text; structural equality on JSON (re-serialized through each language's pretty-printer) |
 | `cruncher/<case>.json` | Each named stage matches the golden float | `±5e-4` per stage |
 | `compare/<case>.json` | One fleet-comparison cell (profile→unit resolution + defensive buffs + half-range + crunch) matches `{expectedKills, reaches, withinHalfRange, modelCount}` | `±5e-4` on `expectedKills`; exact on the rest |
+| `loadout/<case>.json` | One loadout totalled at the damage level (sum post-FNP across weapon lines → kills once) matches `{damage, kills}` | `±5e-4` per field |
 | `abilities-resolver/0?-*.json` | `eligibleAbilities(input, phase)` yields the expected `{kind, abilityId}` list in order | exact equality (order is part of the contract) |
 | `abilities-resolver/from-dsl.json`, `defensive-from-dsl.json` | `effectToBuffs(effect, source, ctx, perspective)` yields the expected applied / unsupported / activatable triples | structural equality |
 | `weapon-keywords/cases.json` | Each keyword maps to its catalog effect | structural equality |
@@ -73,6 +74,13 @@ These notes document what is *currently load-bearing* about each corpus area. Fu
 - Each case pins one fleet-comparison cell: an attacker `{factionId, unitId, weaponId, profileIndex}` against a `targetProfileId` at a `distance` and `phase`. The op resolves the target profile to its referenced unit (faction-scoped — shared ids like `forgefiend`/`rhino` require it), stacks the target's defensive abilities via `defensiveBuffsFor`, sets `withinHalfRange = distance <= range/2`, and runs `crunch`. The pinned cell is `{expectedKills (float, ±5e-4), reaches, withinHalfRange, modelCount}`.
 - Builds directly on the `cruncher` engine, so the reduction-order invariant above applies transitively. The only compare-specific arithmetic is the half-range predicate and the model-count override (`model_count_override ?? unit.model_count.min`).
 - **Rust is exempt** from this area: the comparison depends on `defensiveBuffsFor`, which the Rust crate does not ship — its runner answers `compare` with `UNKNOWN_OP` and the differ skips the area for rust pairings. The second-impl rule is satisfied by the **ts↔py** pairing (the differ plus `tools/test/conformance.test.ts` and `python/tests/test_compare.py`). Rust's parity for the underlying **data entity** (that target profiles load and resolve to real units) is held by `crates/wh40kdc/tests/data_api.rs` instead.
+
+### `loadout/`
+
+- Each case pins one loadout (a list of `{weaponId, count, profileIndex}` lines) against a `targetProfileId` at a `distance`/`phase`, as `{damage, kills}`. **Totaling is at the damage level:** post-FNP wounds are summed across all lines (each fired by `count` models), then converted to models-killed *once* via `min(modelCount, damage / W)`. Summing per-weapon kills instead would over-count, because each weapon's models-killed caps independently — that ordering is the load-bearing invariant of this area.
+- An out-of-range line contributes nothing (a ranged profile reaches only when `range >= distance`).
+- Same **Rust exemption** as `compare/` (it composes `defensiveBuffsFor`): the runner answers `loadout` with `UNKNOWN_OP`, ts↔py exercises it (`tools/test/conformance.test.ts`, `python/tests/conformance/test_loadout.py`).
+- **Not pinned:** loadout *enumeration* from wargear options (`enumerateLoadouts`). It is a data-derived heuristic over imperfect wargear data — the dataset records no per-model weapon counts, so it is advisory (counts default to 1), not a deterministic spec contract.
 
 ### `abilities-resolver/`
 
