@@ -1,6 +1,6 @@
 name: Deploy (Cloudflare)
 
-# Builds the landing site + the three example toollets and deploys each to its
+# Builds the landing site + every example toollet and deploys each to its
 # own *.alpacasoft.dev subdomain as a Workers static-assets site. Replaces the
 # old GitHub Pages hosting (pages.yml now only publishes redirect stubs).
 

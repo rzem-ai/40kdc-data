@@ -1,0 +1,576 @@
+/**
+ * Native list-builder logic — pure functions over the embedded dataset twin.
+ *
+ * The builder holds a `BuilderState` (a Roster-shaped working draft) entirely
+ * client-side; nothing here touches Rust. On save it lowers to a canonical
+ * `Roster` and `exportRoster(…, "roster-json")` produces the text the app
+ * imports through its normal pipeline (wh40kdc ≥ 0.5.6 round-trips roster-json).
+ *
+ * Annotation-first: points and `validateLoadout` violations are *reported*,
+ * never enforced — the caller shows them as chips and keeps Save enabled.
+ */
+
+import {
+	clampWeaponCount,
+	exportRoster,
+	maximalLoadout,
+	tryImportRoster,
+	validateLoadout,
+	weaponBounds,
+	type Detachment,
+	type Enhancement,
+	type Roster,
+	type Unit,
+	type WargearOption,
+	type WeaponBound,
+} from '@alpaca-software/40kdc-data';
+import { ds } from '$lib/data/dataset';
+import type { DatacardData } from '$lib/types/DatacardData';
+
+/** Battle-size points ceilings (advisory — overrun only highlights). */
+export const BATTLE_SIZE_LIMITS = {
+	incursion: 1000,
+	'strike-force': 2000,
+} as const;
+export type BattleSize = keyof typeof BATTLE_SIZE_LIMITS;
+
+/** One unit in the working draft. `loadout` is weapon/wargear id → count. */
+export interface BuilderUnit {
+	/** Stable per-row key (units of the same datasheet can repeat). */
+	key: string;
+	datasheetId: string;
+	modelCount: number;
+	loadout: Map<string, number>;
+	enhancementId: string | null;
+	isWarlord: boolean;
+}
+
+export interface BuilderState {
+	name: string;
+	factionId: string | null;
+	detachmentId: string | null;
+	battleSize: BattleSize;
+	disposition: string | null;
+	units: BuilderUnit[];
+}
+
+export function emptyBuilderState(): BuilderState {
+	return {
+		name: '',
+		factionId: null,
+		detachmentId: null,
+		battleSize: 'strike-force',
+		disposition: null,
+		units: [],
+	};
+}
+
+// ── Dataset lookups ──────────────────────────────────────────────────────────
+
+export function unitRaw(datasheetId: string): Unit | undefined {
+	return ds.units.get(datasheetId)?.raw;
+}
+
+/** Units in a faction, sorted by name; empty when factionId is null. */
+export function unitsForFaction(factionId: string | null): Unit[] {
+	if (!factionId) return [];
+	return ds.units
+		.byFaction(factionId)
+		.map((v) => v.raw)
+		.filter((u) => !u.is_legend)
+		.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+export function detachmentsForFaction(factionId: string | null): Detachment[] {
+	if (!factionId) return [];
+	return ds.detachments.byFaction(factionId).slice().sort((a, b) => a.name.localeCompare(b.name));
+}
+
+/**
+ * Enhancements legal for `unit` under the chosen detachment: scoped to the
+ * detachment, then filtered by the enhancement's keyword restrictions /
+ * exclusions against the unit's keywords. Characters only.
+ */
+export function eligibleEnhancements(
+	detachmentId: string | null,
+	unit: Unit | undefined,
+): Enhancement[] {
+	if (!detachmentId || !unit) return [];
+	const isCharacter = (unit.keywords ?? []).some((k) => k.toLowerCase() === 'character');
+	if (!isCharacter) return [];
+	const det = ds.detachments.get(detachmentId);
+	if (!det) return [];
+	const unitKeywords = new Set((unit.keywords ?? []).map((k) => k.toLowerCase()));
+	return (det.enhancement_ids ?? [])
+		.map((id) => ds.enhancements.get(id))
+		.filter((e): e is Enhancement => !!e)
+		.filter((e) => {
+			const restrict = e.keyword_restrictions ?? [];
+			if (restrict.length > 0 && !restrict.some((k) => unitKeywords.has(k.toLowerCase()))) {
+				return false;
+			}
+			const exclude = e.exclusion_keywords ?? [];
+			if (exclude.some((k) => unitKeywords.has(k.toLowerCase()))) return false;
+			return true;
+		})
+		.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+// ── Grouping & display (NR-style roster/picker) ───────────────────────────────
+
+/** Battlefield-role buckets, plus an `other` catch-all for unroled datasheets. */
+export type UnitRole =
+	| 'epic-hero'
+	| 'character'
+	| 'battleline'
+	| 'dedicated-transport'
+	| 'fortification'
+	| 'allied'
+	| 'other';
+
+/** Display order for role sections (matches a typical datasheet/army-list order). */
+const ROLE_ORDER: UnitRole[] = [
+	'epic-hero',
+	'character',
+	'battleline',
+	'dedicated-transport',
+	'fortification',
+	'allied',
+	'other',
+];
+
+const ROLE_LABELS: Record<UnitRole, string> = {
+	'epic-hero': 'Epic Heroes',
+	character: 'Characters',
+	battleline: 'Battleline',
+	'dedicated-transport': 'Dedicated Transports',
+	fortification: 'Fortifications',
+	allied: 'Allied',
+	other: 'Other Units',
+};
+
+export function roleLabel(role: UnitRole): string {
+	return ROLE_LABELS[role];
+}
+
+export function roleOf(unit: Unit): UnitRole {
+	return (unit.role as UnitRole | undefined) ?? 'other';
+}
+
+/**
+ * Broad unit-*type* keywords (Infantry/Vehicle/…), used both as a secondary facet
+ * in the picker and to split the un-roled `other` bucket into legible sections.
+ * These live in `Unit.keywords` alongside faction/role keywords; we surface only
+ * the movement/type family so it stays a short, stable set. Order = section order.
+ */
+const UNIT_TYPE_KEYWORDS = [
+	'Infantry',
+	'Mounted',
+	'Cavalry',
+	'Beast',
+	'Swarm',
+	'Walker',
+	'Vehicle',
+	'Monster',
+	'Aircraft',
+	'Titanic',
+] as const;
+
+/** This unit's recognised type keywords, in canonical order (may be empty). */
+export function unitTypeKeywords(unit: Unit): string[] {
+	const have = new Set((unit.keywords ?? []).map((k) => k.toLowerCase()));
+	return UNIT_TYPE_KEYWORDS.filter((k) => have.has(k.toLowerCase()));
+}
+
+/**
+ * A roster/picker section: a battlefield role, except the un-roled `other` bucket
+ * splits by unit type (Infantry/Beast/Vehicle/…) so it isn't one undifferentiated
+ * lump. `key` is the stable section id; `order` drives display order.
+ */
+export interface Section {
+	key: string;
+	label: string;
+	order: number;
+}
+
+const ROLE_INDEX: Record<UnitRole, number> = Object.fromEntries(
+	ROLE_ORDER.map((r, i) => [r, i]),
+) as Record<UnitRole, number>;
+
+/** The section a unit belongs to (its role, or its type when un-roled). */
+export function sectionOf(unit: Unit): Section {
+	const role = roleOf(unit);
+	if (role !== 'other') {
+		return { key: role, label: ROLE_LABELS[role], order: ROLE_INDEX[role] };
+	}
+	// Un-roled: split by the unit's primary type keyword.
+	const type = unitTypeKeywords(unit)[0];
+	const otherBase = ROLE_INDEX.other;
+	if (!type) {
+		return { key: 'other', label: ROLE_LABELS.other, order: otherBase + UNIT_TYPE_KEYWORDS.length };
+	}
+	const typeIdx = UNIT_TYPE_KEYWORDS.indexOf(type as (typeof UNIT_TYPE_KEYWORDS)[number]);
+	return { key: `other:${type.toLowerCase()}`, label: type, order: otherBase + typeIdx };
+}
+
+export interface UnitGroup extends Section {
+	units: Unit[];
+}
+
+/** Picker units bucketed into sections, in `order`, names sorted within. */
+export function groupUnitsByRole(units: Unit[]): UnitGroup[] {
+	const buckets = new Map<string, UnitGroup>();
+	for (const u of units) {
+		const s = sectionOf(u);
+		const bucket = buckets.get(s.key);
+		if (bucket) bucket.units.push(u);
+		else buckets.set(s.key, { ...s, units: [u] });
+	}
+	return [...buckets.values()]
+		.sort((a, b) => a.order - b.order)
+		.map((g) => ({ ...g, units: g.units.sort((a, b) => a.name.localeCompare(b.name)) }));
+}
+
+export interface DraftGroup extends Section {
+	units: BuilderUnit[];
+	points: number;
+}
+
+/**
+ * Roster units bucketed into sections with per-section points subtotals. Insertion
+ * order is preserved *within* a section (roster order is user-meaningful).
+ */
+export function groupDraftByRole(state: BuilderState): DraftGroup[] {
+	const buckets = new Map<string, { section: Section; units: BuilderUnit[] }>();
+	for (const bu of state.units) {
+		const raw = unitRaw(bu.datasheetId);
+		const s: Section = raw
+			? sectionOf(raw)
+			: { key: 'other', label: ROLE_LABELS.other, order: ROLE_INDEX.other + UNIT_TYPE_KEYWORDS.length };
+		const bucket = buckets.get(s.key);
+		if (bucket) bucket.units.push(bu);
+		else buckets.set(s.key, { section: s, units: [bu] });
+	}
+	return [...buckets.values()]
+		.sort((a, b) => a.section.order - b.section.order)
+		.map(({ section, units }) => ({
+			...section,
+			units,
+			points: units.reduce((sum, u) => sum + unitPoints(u), 0),
+		}));
+}
+
+/**
+ * Clone a configured unit: same datasheet/model-count/loadout/enhancement, fresh key,
+ * warlord dropped (exactly one warlord). The loadout Map is copied, never aliased.
+ */
+export function cloneBuilderUnit(bu: BuilderUnit, key: string): BuilderUnit {
+	return { ...bu, key, loadout: new Map(bu.loadout), isWarlord: false };
+}
+
+/**
+ * One-line summary of what a unit has *equipped* (every loadout id with count>0),
+ * for the collapsed roster row — the actual weapons, not just the optional picks.
+ */
+export function loadoutSummary(bu: BuilderUnit): string {
+	return [...bu.loadout.entries()]
+		.filter(([, count]) => count > 0)
+		.map(([id, count]) => ({ name: itemName(id), count }))
+		.sort((a, b) => a.name.localeCompare(b.name))
+		.map(({ name, count }) => (count > 1 ? `${count}× ${name}` : name))
+		.join(', ');
+}
+
+/**
+ * Repair a loadout against the unit's bounds: fixed weapons (min===max — e.g. a
+ * base weapon every model carries) are set to that required count, others are
+ * clamped into range. Used when seeding from an import, which can under-record
+ * always-on base weapons and leave them flagged "below min" with no way to fix.
+ */
+export function reconcileLoadout(
+	datasheetId: string,
+	modelCount: number,
+	loadout: Map<string, number>,
+): Map<string, number> {
+	const unit = unitRaw(datasheetId);
+	if (!unit) return new Map(loadout);
+	const bounds = weaponBounds(unit, modelCount, ds.wargearOptionsOf(unit));
+	const next = new Map(loadout);
+	for (const [id, b] of bounds) {
+		if (b.min === b.max) {
+			if (b.max > 0) next.set(id, b.max);
+			else next.delete(id);
+		} else {
+			next.set(id, clampWeaponCount(bounds, id, next.get(id) ?? 0));
+		}
+	}
+	return next;
+}
+
+/**
+ * Project a builder unit onto the `DatacardData` the shared `Datacard` component
+ * renders: the equipped weapon ids split into ranged/melee (a weapon is ranged
+ * when any profile has a numeric range — the same test `Datacard` uses). Lets the
+ * builder's right panel show the selected unit's live datacard.
+ */
+export function builderUnitToDatacardData(bu: BuilderUnit): DatacardData {
+	const unit = unitRaw(bu.datasheetId);
+	const equipped = [...bu.loadout.entries()].filter(([, c]) => c > 0).map(([id]) => id);
+	const ranged: string[] = [];
+	const melee: string[] = [];
+	for (const id of equipped) {
+		const w = ds.weapons.get(id);
+		const isRanged = !!w && w.raw.profiles.some((p) => typeof p.range === 'number');
+		(isRanged ? ranged : melee).push(id);
+	}
+	return {
+		unit_name: unit?.name ?? bu.datasheetId,
+		player: 'Attacker',
+		datasheet_id: bu.datasheetId,
+		ranged_weapon_ids: ranged,
+		melee_weapon_ids: melee,
+		loadout_raw_names: equipped.map((id) => itemName(id)),
+	};
+}
+
+// ── Points ───────────────────────────────────────────────────────────────────
+
+/**
+ * Points for a unit at `modelCount`: the cost tier whose `models` threshold the
+ * count reaches (highest tier ≤ count), plus the chosen enhancement's cost.
+ * Returns 0 for the base when no tier covers the count (caller surfaces a
+ * violation rather than guessing).
+ */
+export function unitPoints(bu: BuilderUnit): number {
+	const unit = unitRaw(bu.datasheetId);
+	if (!unit) return 0;
+	const base = baseUnitPoints(unit, bu.modelCount);
+	const enh = bu.enhancementId ? (ds.enhancements.get(bu.enhancementId)?.cost ?? 0) : 0;
+	return base + enh;
+}
+
+export function baseUnitPoints(unit: Unit, modelCount: number): number {
+	const tiers = (unit.points ?? []).slice().sort((a, b) => a.models - b.models);
+	if (tiers.length === 0) return 0;
+	let chosen = tiers[0];
+	for (const t of tiers) {
+		if (modelCount >= t.models) chosen = t;
+	}
+	return chosen.cost;
+}
+
+/** True when no points tier covers `modelCount` (an out-of-composition count). */
+export function pointsTierMissing(unit: Unit, modelCount: number): boolean {
+	const tiers = unit.points ?? [];
+	if (tiers.length === 0) return true;
+	const minModels = Math.min(...tiers.map((t) => t.models));
+	return modelCount < minModels;
+}
+
+export function totalPoints(state: BuilderState): number {
+	return state.units.reduce((sum, u) => sum + unitPoints(u), 0);
+}
+
+export function pointsLimit(state: BuilderState): number {
+	return BATTLE_SIZE_LIMITS[state.battleSize];
+}
+
+// ── Loadout ───────────────────────────────────────────────────────────────────
+
+/** Default loadout for a freshly-added unit: the maximal (take-every-swap) set. */
+export function defaultLoadout(unit: Unit, modelCount: number): Map<string, number> {
+	const options = ds.wargearOptionsOf(unit);
+	return maximalLoadout(unit, modelCount, options).counts;
+}
+
+export function wargearOptionsFor(datasheetId: string): WargearOption[] {
+	const unit = unitRaw(datasheetId);
+	return unit ? ds.wargearOptionsOf(unit) : [];
+}
+
+/** Inclusive [min,max] count range per weapon/wargear id, for stepper bounds. */
+export function loadoutBounds(bu: BuilderUnit): Map<string, WeaponBound> {
+	const unit = unitRaw(bu.datasheetId);
+	if (!unit) return new Map();
+	return weaponBounds(unit, bu.modelCount, ds.wargearOptionsOf(unit));
+}
+
+/** Clamp a requested count for one weapon id into its valid range. */
+export function clampCount(
+	bounds: Map<string, WeaponBound>,
+	id: string,
+	requested: number,
+): number {
+	return clampWeaponCount(bounds, id, requested);
+}
+
+/** Display name for a weapon/wargear id. */
+export function itemName(id: string): string {
+	return ds.weapons.get(id)?.name ?? ds.wargear.get(id)?.name ?? id;
+}
+
+/** Loadout-rule violations for a builder unit (empty = legal). */
+export function loadoutViolations(bu: BuilderUnit) {
+	const unit = unitRaw(bu.datasheetId);
+	if (!unit) return [];
+	return validateLoadout(unit, bu.modelCount, ds.wargearOptionsOf(unit), bu.loadout);
+}
+
+// ── Validation summary (advisory) ──────────────────────────────────────────────
+
+export interface BuilderViolation {
+	unitKey: string | null;
+	message: string;
+}
+
+/** Every advisory issue in the draft: points overrun, model-count, loadout. */
+export function builderViolations(state: BuilderState): BuilderViolation[] {
+	const out: BuilderViolation[] = [];
+	const total = totalPoints(state);
+	const limit = pointsLimit(state);
+	if (total > limit) {
+		out.push({ unitKey: null, message: `${total} pts over the ${limit} pt limit` });
+	}
+	for (const bu of state.units) {
+		const unit = unitRaw(bu.datasheetId);
+		if (!unit) {
+			out.push({ unitKey: bu.key, message: 'unresolved datasheet' });
+			continue;
+		}
+		const mc = unit.model_count;
+		if (mc && (bu.modelCount < mc.min || bu.modelCount > mc.max)) {
+			out.push({
+				unitKey: bu.key,
+				message: `model count ${bu.modelCount} outside ${mc.min}–${mc.max}`,
+			});
+		}
+		if (pointsTierMissing(unit, bu.modelCount)) {
+			out.push({ unitKey: bu.key, message: 'no points cost for this model count' });
+		}
+		for (const v of loadoutViolations(bu)) {
+			out.push({ unitKey: bu.key, message: v.message });
+		}
+	}
+	// At most one warlord.
+	const warlords = state.units.filter((u) => u.isWarlord).length;
+	if (warlords > 1) out.push({ unitKey: null, message: `${warlords} warlords (pick one)` });
+	return out;
+}
+
+// ── Export ─────────────────────────────────────────────────────────────────────
+
+/** Build a resolved ref from a known dataset id + display name. */
+function ref(id: string, name: string) {
+	return { id, raw_name: name, resolved: true, candidates: [] };
+}
+
+/**
+ * Lower the draft to a canonical `Roster`. ids/names come straight from the
+ * dataset (the builder only picks real entities), so every ref is resolved.
+ * `resolve` re-derives ids on re-import; emitting them here keeps the exported
+ * text self-describing.
+ */
+export function builderToRoster(state: BuilderState): Roster {
+	const factionName = state.factionId
+		? (ds.factions.get(state.factionId)?.name ?? state.factionId)
+		: null;
+	const detachmentName = state.detachmentId
+		? (ds.detachments.get(state.detachmentId)?.name ?? state.detachmentId)
+		: null;
+
+	const units = state.units.map((bu) => {
+		const unit = unitRaw(bu.datasheetId);
+		const name = unit?.name ?? bu.datasheetId;
+		const enh = bu.enhancementId ? ds.enhancements.get(bu.enhancementId) : undefined;
+		const wargear = [...bu.loadout.entries()]
+			.filter(([, count]) => count > 0)
+			.map(([id, count]) => {
+				const w = ds.weapons.get(id) ?? ds.wargear.get(id);
+				return { ref: ref(id, w?.name ?? id), count };
+			});
+		return {
+			ref: ref(bu.datasheetId, name),
+			model_count: bu.modelCount,
+			points: unit ? baseUnitPoints(unit, bu.modelCount) : null,
+			is_warlord: bu.isWarlord,
+			enhancement: enh ? ref(enh.id, enh.name) : null,
+			enhancement_points: enh?.cost ?? null,
+			wargear,
+			leader_attachment: null,
+		};
+	});
+
+	const total = totalPoints(state);
+	return {
+		name: state.name || 'Untitled',
+		source: { format: 'roster-json', generated_by: 'Shadowboxing builder' },
+		faction_id: factionName,
+		detachment_id: detachmentName,
+		battle_size: state.battleSize,
+		points: { declared_limit: pointsLimit(state), total_reported: total, total_computed: total },
+		units,
+		game_version: { edition: '11th', dataslate: 'pre-launch-provisional' },
+		diagnostics: {
+			resolved_units: units.length,
+			unresolved_units: 0,
+			resolved_weapons: 0,
+			unresolved_weapons: 0,
+			warnings: [],
+		},
+	};
+}
+
+/** The roster-json text the library import pipeline consumes. */
+export function builderToRosterJson(state: BuilderState): string {
+	return exportRoster(builderToRoster(state), 'roster-json');
+}
+
+// ── Seed from an existing list (Edit in Builder) ───────────────────────────────
+
+let seedCounter = 0;
+
+/**
+ * Build a draft from list text (roster-json or any importable format) by
+ * running it through `tryImportRoster`. `disposition` comes from the saved
+ * config (lists don't encode it). Returns null when the text can't import.
+ */
+export function rosterTextToBuilderState(
+	text: string,
+	name: string,
+	disposition: string | null,
+): BuilderState | null {
+	const result = tryImportRoster(text);
+	if (!result.ok) return null;
+	const roster = result.roster;
+
+	const battleSize: BattleSize =
+		roster.battle_size === 'incursion' ? 'incursion' : 'strike-force';
+
+	const units: BuilderUnit[] = roster.units
+		.filter((ru) => ru.ref.id != null)
+		.map((ru) => {
+			const loadout = new Map<string, number>();
+			for (const w of ru.wargear) {
+				if (w.ref.id) loadout.set(w.ref.id, w.count);
+			}
+			const datasheetId = ru.ref.id as string;
+			return {
+				key: `seed${seedCounter++}`,
+				datasheetId,
+				modelCount: ru.model_count,
+				// Imports under-record always-on base weapons — repair against bounds.
+				loadout: reconcileLoadout(datasheetId, ru.model_count, loadout),
+				enhancementId: ru.enhancement?.id ?? null,
+				isWarlord: ru.is_warlord,
+			};
+		});
+
+	return {
+		name,
+		factionId: roster.faction_id,
+		detachmentId: roster.detachment_id,
+		battleSize,
+		disposition,
+		units,
+	};
+}

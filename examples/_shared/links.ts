@@ -14,3 +14,4 @@ export const PATREON_URL = "https://www.patreon.com/c/AlpacaSoftware";
 export const SALVO_URL = "https://salvo.alpacasoft.dev";
 export const MISSION_MATRIX_URL = "https://mission-matrix.alpacasoft.dev";
 export const LAYOUT_EDITOR_URL = "https://layout-editor.alpacasoft.dev";
+export const LIST_BUILDER_URL = "https://list-builder.alpacasoft.dev";
