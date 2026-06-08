@@ -15,8 +15,8 @@ use crate::generated::{
 
 mod effect;
 pub use effect::{
-    describe_ability, describe_effect, describe_effect_inline, describe_effect_with_scope,
-    describe_scope,
+    describe_ability, describe_ability_parts, describe_applies_to, describe_effect,
+    describe_effect_inline, describe_effect_with_scope, describe_scope,
 };
 
 /// kebab-case → space-separated words (`enemy-territory` → `enemy territory`).

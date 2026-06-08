@@ -33,6 +33,7 @@ from wh40kdc.imports import (
     import_roster,
     try_import_roster,
 )
+from wh40kdc.scope import ability_applies_to_unit, unit_matches_applies_to
 from wh40kdc.scoring import score_turn, wtc_result
 from wh40kdc.terrain import BOARD_INCHES, keystone_measurements, resolve_layout
 from wh40kdc.translate import describe_ability, describe_condition, describe_scoring_card
@@ -47,6 +48,7 @@ __all__ = [
     "Dataset",
     "SchemaValidator",
     "__version__",
+    "ability_applies_to_unit",
     "attribute_stages",
     "buffs_from_keyword",
     "clamp_weapon_count",
@@ -70,6 +72,7 @@ __all__ = [
     "resolve_layout",
     "score_turn",
     "try_import_roster",
+    "unit_matches_applies_to",
     "validate_loadout",
     "weapon_bounds",
     "wtc_result",

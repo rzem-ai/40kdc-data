@@ -28,8 +28,7 @@ use wh40kdc::scoring::{
     set_primary, wtc_result, AssertedAward, ScoringMode,
 };
 use wh40kdc::{
-    describe_effect_with_scope, describe_scoring_card, normalize_name, Dataset, Phase,
-    SecondaryCard,
+    describe_ability_parts, describe_scoring_card, normalize_name, Dataset, Phase, SecondaryCard,
 };
 
 // ---------------------------------------------------------------------------
@@ -796,7 +795,41 @@ fn handle_translate_effect(args: &Value) -> Value {
         .get("scope")
         .filter(|v| !v.is_null())
         .and_then(|v| serde_json::from_value(v.clone()).ok());
-    ok_value(json!({ "text": describe_effect_with_scope(&effect, scope.as_ref()) }))
+    let applies_to: Option<wh40kdc::AbilityAppliesTo> = args
+        .get("applies_to")
+        .filter(|v| !v.is_null())
+        .and_then(|v| serde_json::from_value(v.clone()).ok());
+    ok_value(json!({
+        "text": describe_ability_parts(&effect, scope.as_ref(), applies_to.as_ref())
+    }))
+}
+
+fn handle_match_applies_to(args: &Value) -> Value {
+    let Some(units) = args.get("units").and_then(Value::as_array) else {
+        return err_value(
+            ErrorKind::InvalidInput,
+            Some(json!({ "detail": "match_applies_to.units must be an array" })),
+        );
+    };
+    let filter: Option<wh40kdc::AbilityAppliesTo> = args
+        .get("applies_to")
+        .filter(|v| !v.is_null())
+        .and_then(|v| serde_json::from_value(v.clone()).ok());
+    let mut matched_ids: Vec<String> = Vec::new();
+    for unit in units {
+        let mut owned: Vec<String> = Vec::new();
+        for key in ["keywords", "faction_keywords"] {
+            if let Some(arr) = unit.get(key).and_then(Value::as_array) {
+                owned.extend(arr.iter().filter_map(|kw| kw.as_str().map(str::to_string)));
+            }
+        }
+        if wh40kdc::unit_matches_applies_to(filter.as_ref(), owned.iter().map(String::as_str)) {
+            if let Some(id) = unit.get("id").and_then(Value::as_str) {
+                matched_ids.push(id.to_string());
+            }
+        }
+    }
+    ok_value(json!({ "matchedIds": matched_ids }))
 }
 
 // ---------------------------------------------------------------------------
@@ -1139,6 +1172,7 @@ fn dispatch(state: &mut RunnerState, op: &str, args: &Value) -> Value {
         "attribution" => handle_attribution(state, args),
         "translate_scoring" => handle_translate_scoring(state, args),
         "translate_effect" => handle_translate_effect(args),
+        "match_applies_to" => handle_match_applies_to(args),
         "score_event" => handle_score_event(state, args),
         "score_state" => handle_score_state(state, args),
         "wtc_result" => handle_wtc_result(args),

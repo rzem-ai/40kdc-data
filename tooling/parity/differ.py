@@ -402,11 +402,30 @@ def iter_effect_translation_cases(corpus: Path) -> Iterator[Case]:
         args = {"effect": entry["effect"]}
         if entry.get("scope") is not None:
             args["scope"] = entry["scope"]
+        if entry.get("applies_to") is not None:
+            args["applies_to"] = entry["applies_to"]
         yield Case(
             area="effect-translation",
             case_id=f"effect-translation/{entry['caseId']}",
             op="translate_effect",
             args=args,
+            compare_mode="struct",
+        )
+
+
+def iter_applies_to_cases(corpus: Path) -> Iterator[Case]:
+    path = corpus / "applies-to" / "cases.json"
+    cases = json.loads(path.read_text())
+    for entry in cases:
+        # The op intersects the `applies_to` keyword filter with each unit's
+        # keywords + faction_keywords and returns the matched ids in input
+        # order. `applies_to` may be null (no scope → no matches). matchedIds
+        # are order-sensitive, so compare structurally (exact, no sort).
+        yield Case(
+            area="applies-to",
+            case_id=f"applies-to/{entry['caseId']}",
+            op="match_applies_to",
+            args={"applies_to": entry["applies_to"], "units": entry["units"]},
             compare_mode="struct",
         )
 
@@ -487,6 +506,7 @@ AREA_ITERATORS: dict[str, Any] = {
     "attribution": iter_attribution_cases,
     "scoring-translation": iter_scoring_translation_cases,
     "effect-translation": iter_effect_translation_cases,
+    "applies-to": iter_applies_to_cases,
     "scoring": iter_scoring_cases,
     "terrain-resolver": iter_terrain_resolver_cases,
     "terrain-keystones": iter_terrain_keystones_cases,
@@ -619,6 +639,7 @@ def run_corpus(
         "attribution": ["attribution"],
         "scoring-translation": ["translate_scoring"],
         "effect-translation": ["translate_effect"],
+        "applies-to": ["match_applies_to"],
         # Rust doesn't ship a validator yet — its runner answers UNKNOWN_OP
         # and the area skips for rust pairings; ts↔py exercises it.
         "validator": ["validate"],

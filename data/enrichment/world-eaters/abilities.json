@@ -2805,6 +2805,9 @@
     "scope": {
       "range": "unit",
       "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": ["Possessed"]
     }
   },
   {

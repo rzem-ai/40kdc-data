@@ -49,11 +49,18 @@ export interface AbilityScope {
   range_inches?: number;
 }
 
+/** Curated keyword filter naming which units an ability benefits. */
+export interface AbilityAppliesTo {
+  required_keywords?: string[];
+  excluded_keywords?: string[];
+}
+
 /** Minimal ability view for `describeAbility`. */
 export interface AbilityLike {
   name?: string;
   effect?: Effect;
   scope?: AbilityScope;
+  applies_to?: AbilityAppliesTo | null;
 }
 
 /** JS-template stringification (numbers print without trailing `.0`). */
@@ -275,12 +282,30 @@ export function describeScope(s?: AbilityScope): string {
 }
 
 /**
- * Full generated text for an ability: the effect tree plus a trailing scope
- * line. This is the `ability.print()` consumers render when the dataset
- * carries no rules prose.
+ * `Applies to: units with Possessed.` — the roster-highlighting audience named
+ * by a curated `applies_to` filter. Empty string when the filter is absent or
+ * carries no keywords (nothing to say). `required_keywords` reads as an AND set;
+ * `excluded_keywords` render as a trailing `(excluding …)`.
+ */
+export function describeAppliesTo(a?: AbilityAppliesTo | null): string {
+  if (!a) return "";
+  const required = a.required_keywords ?? [];
+  const excluded = a.excluded_keywords ?? [];
+  if (required.length === 0 && excluded.length === 0) return "";
+  const base = required.length ? `units with ${required.join(", ")}` : "all units";
+  const exc = excluded.length ? ` (excluding ${excluded.join(", ")})` : "";
+  return `Applies to: ${base}${exc}.`;
+}
+
+/**
+ * Full generated text for an ability: the effect tree, a trailing scope line,
+ * and a trailing `Applies to:` line when the ability carries a curated
+ * `applies_to` filter. This is the `ability.print()` consumers render when the
+ * dataset carries no rules prose.
  */
 export function describeAbility(a: AbilityLike): string {
   const effect = a.effect ? describeEffect(a.effect) : "";
   const scope = describeScope(a.scope);
-  return scope ? (effect ? `${effect}\n${scope}` : scope) : effect;
+  const applies = describeAppliesTo(a.applies_to);
+  return [effect, scope, applies].filter(Boolean).join("\n");
 }

@@ -1,0 +1,94 @@
+[
+  {
+    "caseId": "required-single-keyword",
+    "applies_to": { "required_keywords": ["Possessed"] },
+    "units": [
+      { "id": "eightbound", "keywords": ["Infantry", "Chaos", "Khorne", "Daemon", "Possessed", "Eightbound"], "faction_keywords": ["World Eaters"] },
+      { "id": "khorne-berzerkers", "keywords": ["Infantry", "Battleline", "Khorne", "Berzerkers"], "faction_keywords": ["World Eaters"] },
+      { "id": "exalted-eightbound", "keywords": ["Infantry", "Chaos", "Khorne", "Daemon", "Possessed", "Eightbound"], "faction_keywords": ["World Eaters"] }
+    ],
+    "expected": { "matchedIds": ["eightbound", "exalted-eightbound"] }
+  },
+  {
+    "caseId": "required-and-of-two",
+    "applies_to": { "required_keywords": ["Infantry", "Character"] },
+    "units": [
+      { "id": "both", "keywords": ["Infantry", "Character"], "faction_keywords": [] },
+      { "id": "only-infantry", "keywords": ["Infantry"], "faction_keywords": [] },
+      { "id": "only-character", "keywords": ["Character"], "faction_keywords": [] }
+    ],
+    "expected": { "matchedIds": ["both"] }
+  },
+  {
+    "caseId": "required-matches-faction-keyword",
+    "applies_to": { "required_keywords": ["Ironclad", "Infantry"] },
+    "units": [
+      { "id": "ironclad-infantry", "keywords": ["Infantry"], "faction_keywords": ["Ironclad"] },
+      { "id": "ironclad-vehicle", "keywords": ["Vehicle"], "faction_keywords": ["Ironclad"] }
+    ],
+    "expected": { "matchedIds": ["ironclad-infantry"] }
+  },
+  {
+    "caseId": "excluded-removes-matches",
+    "applies_to": { "required_keywords": ["Infantry"], "excluded_keywords": ["Character"] },
+    "units": [
+      { "id": "grunt", "keywords": ["Infantry"], "faction_keywords": [] },
+      { "id": "captain", "keywords": ["Infantry", "Character"], "faction_keywords": [] }
+    ],
+    "expected": { "matchedIds": ["grunt"] }
+  },
+  {
+    "caseId": "excluded-only-matches-all-but-excluded",
+    "applies_to": { "excluded_keywords": ["Vehicle"] },
+    "units": [
+      { "id": "trooper", "keywords": ["Infantry"] },
+      { "id": "tank", "keywords": ["Vehicle"] }
+    ],
+    "expected": { "matchedIds": ["trooper"] }
+  },
+  {
+    "caseId": "no-required-match",
+    "applies_to": { "required_keywords": ["Fortification"] },
+    "units": [
+      { "id": "trooper", "keywords": ["Infantry"] },
+      { "id": "tank", "keywords": ["Vehicle"] }
+    ],
+    "expected": { "matchedIds": [] }
+  },
+  {
+    "caseId": "null-filter-matches-nothing",
+    "applies_to": null,
+    "units": [
+      { "id": "trooper", "keywords": ["Infantry"], "faction_keywords": ["Ironclad"] }
+    ],
+    "expected": { "matchedIds": [] }
+  },
+  {
+    "caseId": "empty-filter-matches-all",
+    "applies_to": {},
+    "units": [
+      { "id": "trooper", "keywords": ["Infantry"] },
+      { "id": "tank", "keywords": ["Vehicle"] }
+    ],
+    "expected": { "matchedIds": ["trooper", "tank"] }
+  },
+  {
+    "caseId": "case-sensitive-no-loose-match",
+    "applies_to": { "required_keywords": ["Infantry"] },
+    "units": [
+      { "id": "lowercase", "keywords": ["infantry"] },
+      { "id": "titlecase", "keywords": ["Infantry"] }
+    ],
+    "expected": { "matchedIds": ["titlecase"] }
+  },
+  {
+    "caseId": "order-preserved-across-matches",
+    "applies_to": { "required_keywords": ["Khorne"] },
+    "units": [
+      { "id": "first", "keywords": ["Khorne", "Infantry"] },
+      { "id": "skip", "keywords": ["Tzeentch"] },
+      { "id": "second", "keywords": ["Khorne", "Vehicle"] }
+    ],
+    "expected": { "matchedIds": ["first", "second"] }
+  }
+]

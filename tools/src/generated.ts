@@ -1518,6 +1518,13 @@ export interface AbilityDSLEntry {
   behavior?: "passive" | "activated" | "reactive" | "aura";
   effect: AbilityEffect1;
   scope: AbilityScope;
+  /**
+   * Static, human-curated keyword filter naming which datasheet units this ability benefits, for roster-side highlighting. A unit matches when it carries every keyword in `required_keywords` (across its `keywords` + `faction_keywords`) and none in `excluded_keywords`. This is a denormalized projection distinct from the runtime `effect` condition tree (which mixes static class, runtime-granted markers, and timing gates and must not be scraped for scope). Absent/null means no resolvable unit scope — consumers render no highlight rather than guess.
+   */
+  applies_to?: {
+    required_keywords?: KeywordList;
+    excluded_keywords?: KeywordList;
+  } | null;
   interactions?: {
     ability_ref: EntityId;
     type: "conflicts-with" | "combos-with" | "superseded-by" | "requires" | "replaces";

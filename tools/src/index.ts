@@ -65,6 +65,11 @@ export * from "./cruncher/index.js";
 // math is pinned against Python by the `conformance/compare` corpus.
 export * from "./compare.js";
 
+// Roster-highlighting scope: resolve which units an ability's curated
+// `applies_to` keyword filter benefits. Mirrors `wh40kdc::scope` (Rust) and
+// `wh40kdc.scope` (Python); pinned by the `conformance/applies-to` corpus.
+export * from "./scope.js";
+
 // Schema access + AJV validation lives behind the `./validate` subpath export
 // (`@alpaca-software/40kdc-data/validate`), NOT the root barrel: it reads
 // schema files from disk at module load (node:fs/node:url), which breaks

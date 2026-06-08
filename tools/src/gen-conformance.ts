@@ -1006,6 +1006,11 @@ function genEffectTranslation(): void {
 
   const seen = new Map<string, number>();
   const CAP = 5;
+  // Also cover the `applies_to` render path: force-include a few abilities that
+  // carry a curated filter even when their effect-node types are already
+  // exhausted, so the trailing `Applies to:` line stays pinned cross-impl.
+  const APPLIES_CAP = 3;
+  let appliesToSeen = 0;
   const cases: unknown[] = [];
   for (const a of abilities) {
     const types = new Set<string>();
@@ -1014,14 +1019,25 @@ function genEffectTranslation(): void {
     for (const t of types) {
       if ((seen.get(t) ?? 0) < CAP) fresh = true;
     }
+    const coversAppliesTo = a.raw.applies_to != null && appliesToSeen < APPLIES_CAP;
+    if (coversAppliesTo) fresh = true;
     if (!fresh) continue;
     for (const t of types) seen.set(t, (seen.get(t) ?? 0) + 1);
-    cases.push({
+    if (a.raw.applies_to != null) appliesToSeen += 1;
+    const entry: Record<string, unknown> = {
       caseId: `${a.id}#${cases.length}`,
       effect: a.raw.effect,
       scope: a.raw.scope ?? null,
-      expected: { text: describeAbility({ effect: a.raw.effect as Effect, scope: a.raw.scope }) },
-    });
+    };
+    if (a.raw.applies_to != null) entry.applies_to = a.raw.applies_to;
+    entry.expected = {
+      text: describeAbility({
+        effect: a.raw.effect as Effect,
+        scope: a.raw.scope,
+        applies_to: a.raw.applies_to,
+      }),
+    };
+    cases.push(entry);
   }
   writeJson(join(CONFORMANCE, "effect-translation", "cases.json"), cases);
   console.log(`effect-translation/cases.json: ${cases.length} cases (${seen.size} node types)`);

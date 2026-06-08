@@ -116,6 +116,31 @@ class AbilityView:
         """Units that list this ability in their ``ability_ids``."""
         return self._ds.units_with_ability(self.raw["ability_id"])
 
+    @property
+    def applies_to(self) -> dict[str, Any] | None:
+        """The curated ``applies_to`` keyword filter, or ``None`` when this
+        ability declares no resolvable unit scope. When present, it names which
+        datasheet units the ability benefits — the contract for roster-side
+        highlighting (e.g. a detachment rule that only buffs ``POSSESSED``
+        units)."""
+        return self.raw.get("applies_to")
+
+    def affects_unit(self, unit: UnitView) -> bool:
+        """Whether this ability's ``applies_to`` scope includes ``unit`` — true
+        iff the unit carries every ``required_keywords`` entry and no
+        ``excluded_keywords``, across its ``keywords`` + ``faction_keywords``.
+        Always ``False`` when the ability has no ``applies_to``. Pinned by the
+        ``conformance/applies-to`` corpus."""
+        from wh40kdc.scope import ability_applies_to_unit
+
+        return ability_applies_to_unit(self.raw.get("applies_to"), unit.raw)
+
+    def affected_units(self, candidates: list[UnitView]) -> list[UnitView]:
+        """The subset of ``candidates`` (typically a roster's units) this
+        ability's ``applies_to`` scope benefits, preserving input order. Empty
+        when the ability declares no scope."""
+        return [u for u in candidates if self.affects_unit(u)]
+
     def get_buffs(
         self,
         source: dict[str, Any],

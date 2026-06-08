@@ -288,12 +288,28 @@ def describe_scope(s: dict[str, Any] | None) -> str:
     return f"Scope: {range_}{inches}. Duration: {duration}."
 
 
+def describe_applies_to(a: dict[str, Any] | None) -> str:
+    """``Applies to: units with Possessed.`` — the roster-highlighting audience
+    named by a curated ``applies_to`` filter. Empty string when the filter is
+    absent or carries no keywords. ``required_keywords`` reads as an AND set;
+    any ``excluded_keywords`` render as a trailing ``(excluding …)``."""
+    if not a:
+        return ""
+    required = a.get("required_keywords") or []
+    excluded = a.get("excluded_keywords") or []
+    if not required and not excluded:
+        return ""
+    base = f"units with {', '.join(required)}" if required else "all units"
+    exc = f" (excluding {', '.join(excluded)})" if excluded else ""
+    return f"Applies to: {base}{exc}."
+
+
 def describe_ability(a: dict[str, Any]) -> str:
-    """Full generated text for an ability: the effect tree plus a trailing
-    scope line. This is the ``ability.print()`` consumers render when the
+    """Full generated text for an ability: the effect tree, a trailing scope
+    line, and a trailing ``Applies to:`` line when a curated ``applies_to``
+    filter is present. This is the ``ability.print()`` consumers render when the
     dataset carries no rules prose."""
     effect = describe_effect(a["effect"]) if a.get("effect") else ""
     scope = describe_scope(a.get("scope"))
-    if scope:
-        return f"{effect}\n{scope}" if effect else scope
-    return effect
+    applies = describe_applies_to(a.get("applies_to"))
+    return "\n".join(part for part in (effect, scope, applies) if part)

@@ -113,9 +113,19 @@ pub mod cruncher;
 pub mod translate;
 
 pub use translate::{
-    describe_ability, describe_award, describe_condition, describe_effect, describe_effect_inline,
-    describe_effect_with_scope, describe_scope, describe_scoring_card, describe_trigger,
+    describe_ability, describe_ability_parts, describe_applies_to, describe_award,
+    describe_condition, describe_effect, describe_effect_inline, describe_effect_with_scope,
+    describe_scope, describe_scoring_card, describe_trigger,
 };
+
+/// Roster-highlighting scope: resolve which units an ability's curated
+/// `applies_to` keyword filter benefits. Mirrors `tools/src/scope.ts` (TS) and
+/// `wh40kdc.scope` (Python); pinned by the `conformance/applies-to` corpus.
+/// Depends only on the generated types, so it stays available in a types-only
+/// build.
+pub mod scope;
+
+pub use scope::{ability_applies_to_unit, unit_matches_applies_to};
 
 /// Terrain layout geometry: resolve template-anchored layouts to absolute
 /// board-space vertices. Pure (no data deps), so available in every build.

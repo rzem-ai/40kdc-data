@@ -184,17 +184,38 @@ revealed yet, but the op works for any card present in the dataset).
 {"op":"translate_effect","args":{"effect":{"type":"feel-no-pain","target":"unit","modifier":{"threshold":5}},"scope":{"range":"unit","duration":"phase"}}}
 ```
 
-Humanizes an Ability-DSL `effect` tree (plus an optional `scope`) into the
-generated plain-English approximation — the dataset's "ability.print()". The
-`effect` is embedded in the request verbatim (no dataset lookup, so parity is
-independent of duplicate-ability-id resolution); `scope` may be omitted or
-`null`. Response value is `{"text": "<multi-line ASCII string>"}` — container
-nodes render block-style with two-space indentation and an ASCII `-> ` arrow,
-and the scope renders as a trailing `Scope: …. Duration: ….` line. Equivalent
-to TS `describeAbility({effect, scope})` / Rust
-`describe_effect_with_scope(&effect, scope.as_ref())`. The differ compares the
-value structurally (exact string equality). A non-object `effect` returns
-`error_kind: "INVALID_INPUT"`.
+Humanizes an Ability-DSL `effect` tree (plus an optional `scope` and optional
+`applies_to`) into the generated plain-English approximation — the dataset's
+"ability.print()". The `effect` is embedded in the request verbatim (no dataset
+lookup, so parity is independent of duplicate-ability-id resolution); `scope`
+and `applies_to` may each be omitted or `null`. Response value is
+`{"text": "<multi-line ASCII string>"}` — container nodes render block-style
+with two-space indentation and an ASCII `-> ` arrow, the scope renders as a
+`Scope: …. Duration: ….` line, and a present `applies_to` filter renders as a
+trailing `Applies to: units with <kw>[, …][ (excluding <kw>[, …])].` line
+(`required_keywords` is an AND set; an empty filter renders no line). Equivalent
+to TS `describeAbility({effect, scope, applies_to})` / Rust
+`describe_ability_parts(&effect, scope.as_ref(), applies_to.as_ref())`. The
+differ compares the value structurally (exact string equality). A non-object
+`effect` returns `error_kind: "INVALID_INPUT"`.
+
+### `match_applies_to`
+
+```json
+{"op":"match_applies_to","args":{"applies_to":{"required_keywords":["Possessed"]},"units":[{"id":"eightbound","keywords":["Possessed"],"faction_keywords":["World Eaters"]}]}}
+```
+
+Resolves the roster-highlighting scope of a curated `applies_to` keyword filter
+against a set of units, the data-free contract a list builder replicates to tint
+the units a detachment rule benefits. For each unit, the filter matches iff the
+unit carries every `required_keywords` entry and none of the `excluded_keywords`,
+compared against the **union of its `keywords` and `faction_keywords`**
+(exact-string, case-sensitive). `applies_to` may be `null` (no resolvable scope →
+matches nothing) or `{}` (no constraints → matches every unit). Response value is
+`{"matchedIds": [<id>, …]}`, the matching unit ids **in input order**. Equivalent
+to filtering with TS `unitMatchesAppliesTo` / Rust `unit_matches_applies_to` /
+Python `unit_matches_applies_to`. The differ compares structurally (exact, order
+preserved). A non-array `units` returns `error_kind: "INVALID_INPUT"`.
 
 ### `score_event`
 

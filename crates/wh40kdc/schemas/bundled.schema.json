@@ -2417,6 +2417,26 @@
         "scope": {
           "$ref": "#/$defs/scope"
         },
+        "applies_to": {
+          "description": "Static, human-curated keyword filter naming which datasheet units this ability benefits, for roster-side highlighting. A unit matches when it carries every keyword in `required_keywords` (across its `keywords` + `faction_keywords`) and none in `excluded_keywords`. This is a denormalized projection distinct from the runtime `effect` condition tree (which mixes static class, runtime-granted markers, and timing gates and must not be scraped for scope). Absent/null means no resolvable unit scope — consumers render no highlight rather than guess.",
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "required_keywords": {
+                  "$ref": "#/$defs/keyword-list"
+                },
+                "excluded_keywords": {
+                  "$ref": "#/$defs/keyword-list"
+                }
+              },
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "interactions": {
           "type": "array",
           "items": {

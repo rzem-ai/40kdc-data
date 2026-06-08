@@ -15,8 +15,9 @@ use serde_json::{Map, Value};
 
 use super::{dekebab, describe_condition};
 use crate::generated::{
-    Ability, DiceGatedEffect, DiceGatedEffectComparison, DiceGatedEffectThreshold,
-    DicePoolAllocationEffect, EffectNode, Scope, SingleEffect, SingleEffectType,
+    Ability, AbilityAppliesTo, DiceGatedEffect, DiceGatedEffectComparison,
+    DiceGatedEffectThreshold, DicePoolAllocationEffect, EffectNode, Scope, SingleEffect,
+    SingleEffectType,
 };
 
 /// JS-template stringification (`String(v)` semantics; numbers print without
@@ -469,9 +470,67 @@ pub fn describe_effect_with_scope(e: &EffectNode, scope: Option<&Scope>) -> Stri
     }
 }
 
-/// Full generated text for an ability: the effect tree plus a trailing scope
-/// line. This is the `ability.print()` consumers render when the dataset
+/// `Applies to: units with Possessed.` — the roster-highlighting audience named
+/// by a curated `applies_to` filter. Empty string when the filter is absent or
+/// carries no keywords. `required_keywords` reads as an AND set; any
+/// `excluded_keywords` render as a trailing `(excluding …)`. Mirrors
+/// `describeAppliesTo`.
+pub fn describe_applies_to(filter: Option<&AbilityAppliesTo>) -> String {
+    let Some(filter) = filter else {
+        return String::new();
+    };
+    let required: Vec<&str> = filter
+        .required_keywords
+        .iter()
+        .flat_map(|kl| kl.0.iter())
+        .map(|k| k.as_str())
+        .collect();
+    let excluded: Vec<&str> = filter
+        .excluded_keywords
+        .iter()
+        .flat_map(|kl| kl.0.iter())
+        .map(|k| k.as_str())
+        .collect();
+    if required.is_empty() && excluded.is_empty() {
+        return String::new();
+    }
+    let base = if required.is_empty() {
+        "all units".to_string()
+    } else {
+        format!("units with {}", required.join(", "))
+    };
+    let exc = if excluded.is_empty() {
+        String::new()
+    } else {
+        format!(" (excluding {})", excluded.join(", "))
+    };
+    format!("Applies to: {base}{exc}.")
+}
+
+/// Compose the full ability print from its parts: the effect tree, an optional
+/// scope line, and an optional `Applies to:` line. The single assembler used by
+/// both [`describe_ability`] and the runner's `translate_effect` op (which has
+/// no full [`Ability`] to hand), keeping the join order in one place.
+pub fn describe_ability_parts(
+    e: &EffectNode,
+    scope: Option<&Scope>,
+    applies_to: Option<&AbilityAppliesTo>,
+) -> String {
+    let base = describe_effect_with_scope(e, scope);
+    let applies = describe_applies_to(applies_to);
+    if applies.is_empty() {
+        base
+    } else if base.is_empty() {
+        applies
+    } else {
+        format!("{base}\n{applies}")
+    }
+}
+
+/// Full generated text for an ability: the effect tree, a trailing scope line,
+/// and a trailing `Applies to:` line when a curated `applies_to` filter is
+/// present. This is the `ability.print()` consumers render when the dataset
 /// carries no rules prose. Mirrors `describeAbility`.
 pub fn describe_ability(a: &Ability) -> String {
-    describe_effect_with_scope(&a.effect, Some(&a.scope))
+    describe_ability_parts(&a.effect, Some(&a.scope), a.applies_to.as_ref())
 }

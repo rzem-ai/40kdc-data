@@ -31,13 +31,14 @@ The same person *can* author both the implementation change and the second-impl 
 | `scoring/cases.json` | The scoring engine's VP arithmetic — `score_event` (per-card `scoreTurn`/`scoreCap`/`scoreSecondaryEvent`/`scorePrimaryEvent`), `score_state` (per-round + per-game + grand-total caps, score/discard, undo), and `wtc_result` band mapping | exact integer equality (no tolerance); `awards`/op order load-bearing |
 | `terrain-resolver/cases.json` | `resolveLayout(layout, templates)` resolves template-anchored, centroid-positioned pieces to absolute board-space vertices | per-value `±5e-4` on vertices; exact on `id`/`name`/`piece_type`/`floor`; piece emission order load-bearing |
 | `terrain-keystones/cases.json` | `keystoneMeasurements(layout, templates, board)` derives each authored keystone's printed distance (board edge → piece feature) from resolved geometry | per-value `±5e-4` on distances; exact on `piece_index`/`piece_id`/`edge`/`ref`; emission order load-bearing; display rounding unpinned |
+| `applies-to/cases.json` | `unitMatchesAppliesTo(applies_to, unit)` resolves which units an ability's curated keyword filter benefits — `match_applies_to` returns the matched ids | exact equality on `matchedIds` (input order load-bearing) |
 
 ## Implementation status
 
 | Language | Package | Status | Runner binary |
 |---|---|---|---|
 | TypeScript | [`@alpaca-software/40kdc-data`](./tools/) | Stable. Currently the corpus oracle (`npm run gen:conformance`). | `40kdc-runner` (built from `tools/src/runner.ts`) |
-| Rust | [`wh40kdc`](./crates/wh40kdc/) | Stable. Verifies the corpus in `crates/wh40kdc/tests/conformance.rs`, `cruncher_conformance.rs`, `linked_api_conformance.rs`, `attribution_conformance.rs`, `terrain_resolver_conformance.rs`, `scoring_conformance.rs`. | `wh40kdc-runner` (built from `crates/wh40kdc/src/bin/wh40kdc-runner.rs`) |
+| Rust | [`wh40kdc`](./crates/wh40kdc/) | Stable. Verifies the corpus in `crates/wh40kdc/tests/conformance.rs`, `cruncher_conformance.rs`, `linked_api_conformance.rs`, `attribution_conformance.rs`, `terrain_resolver_conformance.rs`, `scoring_conformance.rs`, `applies_to_conformance.rs`. | `wh40kdc-runner` (built from `crates/wh40kdc/src/bin/wh40kdc-runner.rs`) |
 | Python | [`wh40kdc`](./python/) (PyPI) | Stable. Verifies the full corpus in `python/tests/conformance/` (every area, including the validator and abilities-resolver, which Rust doesn't cover yet). | `python -m wh40kdc.runner` (no console script — avoids a PATH collision with the Rust binary) |
 | R | TBD | Planned. Likely an `extendr` wrapper around the Rust crate rather than a native port; see the FAQ. | Will ship with the package. |
 
@@ -155,6 +156,13 @@ These notes document what is *currently load-bearing* about each corpus area. Fu
 - **Distances are derived, never stored.** The layout resolves through the `terrain-resolver` transform contract first; near edges (`left`/`top`) read the feature's board coordinate, far edges (`right`/`bottom`) read the remaining extent (`width − x` / `height − y`). A keystone can therefore never disagree with the layout's geometry. Vertex indices follow the resolver's pinned vertex order.
 - **Emission order is load-bearing:** measurements appear in `layout.pieces` order, then per-piece keystone order. A vertex index out of range or a face whose axis disagrees with the edge is an error (`INVALID_INPUT` at the runner layer), not a skipped entry.
 - **Display rounding is deliberately NOT pinned.** The corpus compares raw 4-dp distances with the `5e-4` float tolerance (`piece_index`/`piece_id`/`edge`/`ref` exactly); how an app formats them for a card (half-inch rounding and the like) is presentation and must not be folded into this contract.
+
+### `applies-to/cases.json`
+
+- Each case is `{caseId, applies_to, units: [{id, keywords, faction_keywords?}], expected: {matchedIds}}`. The `match_applies_to` op intersects the curated `applies_to` keyword filter with each unit and returns the matching ids. Cases are self-contained (no dataset lookup), so parity is independent of dataset state; the corpus mixes fabricated keyword sets with the real `Possessed` detachment-rule scope.
+- **Matching is exact-string, case-sensitive, over the union of `keywords` + `faction_keywords`.** A unit matches iff it carries every `required_keywords` entry (an AND set) and none of the `excluded_keywords`. Faction-level keywords (e.g. `Adeptus Astartes`) live in `faction_keywords`, so the union is load-bearing — a required faction keyword must still match. No lower-casing or fuzzy matching: `infantry` ≠ `Infantry`.
+- **The two empty forms are distinct and pinned.** `applies_to: null` (or absent) is "no resolvable scope" and matches **nothing** (the app renders no highlight rather than guess); a present `applies_to: {}` constrains nothing and matches **every** unit. Changing either is a `SPEC_VERSION` bump.
+- **`matchedIds` order is load-bearing:** ids are emitted in input-unit order, not sorted. The differ compares structurally (exact, no sort), so a reordering would be caught.
 
 ## Tolerances and comparison rules
 

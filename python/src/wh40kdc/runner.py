@@ -32,6 +32,7 @@ from wh40kdc.data.loadout import maximal_loadout
 from wh40kdc.data.normalize import normalize_name
 from wh40kdc.export import EXPORT_FORMATS, export_roster
 from wh40kdc.imports import import_roster, try_import_roster
+from wh40kdc.scope import unit_matches_applies_to
 from wh40kdc.scoring import (
     add_to_hand,
     awards_of,
@@ -473,7 +474,26 @@ def _handle_translate_effect(args: Any) -> Response:
     ability: dict[str, Any] = {"effect": args["effect"]}
     if isinstance(args.get("scope"), dict):
         ability["scope"] = args["scope"]
+    if isinstance(args.get("applies_to"), dict):
+        ability["applies_to"] = args["applies_to"]
     return _ok({"text": describe_ability(ability)})
+
+
+def _handle_match_applies_to(args: Any) -> Response:
+    if not isinstance(args, dict):
+        return _err("INVALID_INPUT", {"detail": "match_applies_to args must be an object"})
+    units = args.get("units")
+    if not isinstance(units, list):
+        return _err("INVALID_INPUT", {"detail": "match_applies_to.units must be an array"})
+    applies_to = args.get("applies_to")
+    if not isinstance(applies_to, dict):
+        applies_to = None
+    matched_ids: list[str] = []
+    for unit in units:
+        owned = [*(unit.get("keywords") or []), *(unit.get("faction_keywords") or [])]
+        if unit_matches_applies_to(applies_to, owned):
+            matched_ids.append(unit["id"])
+    return _ok({"matchedIds": matched_ids})
 
 
 # -----------------------------------------------------------------------------
@@ -705,6 +725,8 @@ def dispatch(state: RunnerState, req: dict[str, Any]) -> Response:
         return _handle_translate_scoring(state, args)
     if op == "translate_effect":
         return _handle_translate_effect(args)
+    if op == "match_applies_to":
+        return _handle_match_applies_to(args)
     if op == "score_event":
         return _handle_score_event(state, args)
     if op == "score_state":

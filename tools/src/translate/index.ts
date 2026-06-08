@@ -19,8 +19,10 @@ export {
   describeEffect,
   describeEffectInline,
   describeAbility,
+  describeAppliesTo,
   describeScope,
   type Effect,
   type AbilityScope,
+  type AbilityAppliesTo,
   type AbilityLike,
 } from "./effect.js";

@@ -66,6 +66,26 @@ pub mod error {
 ///        "stratagem"
 ///      ]
 ///    },
+///    "applies_to": {
+///      "description": "Static, human-curated keyword filter naming which datasheet units this ability benefits, for roster-side highlighting. A unit matches when it carries every keyword in `required_keywords` (across its `keywords` + `faction_keywords`) and none in `excluded_keywords`. This is a denormalized projection distinct from the runtime `effect` condition tree (which mixes static class, runtime-granted markers, and timing gates and must not be scraped for scope). Absent/null means no resolvable unit scope — consumers render no highlight rather than guess.",
+///      "oneOf": [
+///        {
+///          "type": "object",
+///          "properties": {
+///            "excluded_keywords": {
+///              "$ref": "#/$defs/keyword-list"
+///            },
+///            "required_keywords": {
+///              "$ref": "#/$defs/keyword-list"
+///            }
+///          },
+///          "additionalProperties": false
+///        },
+///        {
+///          "type": "null"
+///        }
+///      ]
+///    },
 ///    "authored_by": {
 ///      "$ref": "#/$defs/contributor-ref"
 ///    },
@@ -181,6 +201,9 @@ pub struct Ability {
     pub ability_id: EntityId,
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub ability_type: ::std::option::Option<AbilityAbilityType>,
+    ///Static, human-curated keyword filter naming which datasheet units this ability benefits, for roster-side highlighting. A unit matches when it carries every keyword in `required_keywords` (across its `keywords` + `faction_keywords`) and none in `excluded_keywords`. This is a denormalized projection distinct from the runtime `effect` condition tree (which mixes static class, runtime-granted markers, and timing gates and must not be scraped for scope). Absent/null means no resolvable unit scope — consumers render no highlight rather than guess.
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub applies_to: ::std::option::Option<AbilityAppliesTo>,
     pub authored_by: ContributorRef,
     ///How this ability interacts with the game flow — not a runtime predicate
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
@@ -304,6 +327,41 @@ impl ::std::convert::TryFrom<::std::string::String> for AbilityAbilityType {
         value: ::std::string::String,
     ) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
+    }
+}
+///`AbilityAppliesTo`
+///
+/// <details><summary>JSON schema</summary>
+///
+/// ```json
+///{
+///  "type": "object",
+///  "properties": {
+///    "excluded_keywords": {
+///      "$ref": "#/$defs/keyword-list"
+///    },
+///    "required_keywords": {
+///      "$ref": "#/$defs/keyword-list"
+///    }
+///  },
+///  "additionalProperties": false
+///}
+/// ```
+/// </details>
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct AbilityAppliesTo {
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub excluded_keywords: ::std::option::Option<KeywordList>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub required_keywords: ::std::option::Option<KeywordList>,
+}
+impl ::std::default::Default for AbilityAppliesTo {
+    fn default() -> Self {
+        Self {
+            excluded_keywords: Default::default(),
+            required_keywords: Default::default(),
+        }
     }
 }
 ///How this ability interacts with the game flow — not a runtime predicate

@@ -22,7 +22,8 @@ import {
   type TranslationPerspective,
 } from "../cruncher/from-dsl.js";
 import type { Dataset } from "./dataset.js";
-import { describeAbility } from "../translate/effect.js";
+import { describeAbility, type AbilityAppliesTo } from "../translate/effect.js";
+import { unitMatchesAppliesTo } from "../scope.js";
 
 /** A unit, linked to its faction, weapons, and abilities. */
 export class UnitView {
@@ -119,6 +120,36 @@ export class AbilityView {
   /** Units that list this ability in their `ability_ids`. */
   get units(): UnitView[] {
     return this.ds.unitsWithAbility(this.raw.ability_id);
+  }
+
+  /**
+   * The curated `applies_to` keyword filter, or `undefined` when this ability
+   * declares no resolvable unit scope. When present, it names which datasheet
+   * units the ability benefits — the contract for roster-side highlighting
+   * (e.g. a detachment rule that only buffs `POSSESSED` units).
+   */
+  get appliesTo(): AbilityAppliesTo | undefined {
+    return this.raw.applies_to ?? undefined;
+  }
+
+  /**
+   * Whether this ability's `applies_to` scope includes `unit` — true iff the
+   * unit carries every `required_keywords` entry and no `excluded_keywords`,
+   * across its `keywords` + `faction_keywords`. Always `false` when the ability
+   * has no `applies_to` (no resolvable scope → no highlight). Pinned by the
+   * `conformance/applies-to` corpus.
+   */
+  affectsUnit(unit: UnitView): boolean {
+    return unitMatchesAppliesTo(this.raw.applies_to, unit.raw);
+  }
+
+  /**
+   * The subset of `candidates` (typically a roster's units) this ability's
+   * `applies_to` scope benefits, preserving input order. Empty when the ability
+   * declares no scope.
+   */
+  affectedUnits(candidates: UnitView[]): UnitView[] {
+    return candidates.filter((u) => this.affectsUnit(u));
   }
 
   /**

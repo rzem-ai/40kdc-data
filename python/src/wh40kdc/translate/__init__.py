@@ -4,6 +4,7 @@ from wh40kdc.translate.condition import Condition, dekebab, describe_condition
 from wh40kdc.translate.effect import (
     Effect,
     describe_ability,
+    describe_applies_to,
     describe_effect,
     describe_effect_inline,
     describe_scope,
@@ -15,6 +16,7 @@ __all__ = [
     "Effect",
     "dekebab",
     "describe_ability",
+    "describe_applies_to",
     "describe_award",
     "describe_condition",
     "describe_effect",

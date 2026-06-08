@@ -497,6 +497,11 @@ class Weapon(TypedDict):
     game_version: GameVersionRef
 
 
+class AppliesTo(TypedDict):
+    required_keywords: NotRequired[KeywordList]
+    excluded_keywords: NotRequired[KeywordList]
+
+
 class Interaction(TypedDict):
     ability_ref: EntityId
     type: Literal["conflicts-with", "combos-with", "superseded-by", "requires", "replaces"]
@@ -761,6 +766,7 @@ class Ability(TypedDict):
     behavior: NotRequired[Literal["passive", "activated", "reactive", "aura"]]
     effect: Effect
     scope: Scope
+    applies_to: NotRequired[AppliesTo | None]
     interactions: NotRequired[list[Interaction]]
     disputed: NotRequired[bool]
     dispute_notes: NotRequired[str]
