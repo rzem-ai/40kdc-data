@@ -1,0 +1,19 @@
+{
+  "name": "Forgefiend Hades autocannon vs GEQ @48\" (out of range)",
+  "attacker": {
+    "factionId": "world-eaters",
+    "unitId": "forgefiend",
+    "weaponId": "hades-autocannon",
+    "profileIndex": 0
+  },
+  "targetProfileId": "geq-guardsmen",
+  "distance": 48,
+  "phase": "shooting",
+  "modelsFiring": 1,
+  "expected": {
+    "expectedKills": 0.0,
+    "reaches": false,
+    "withinHalfRange": false,
+    "modelCount": 10
+  }
+}

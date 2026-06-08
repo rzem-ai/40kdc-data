@@ -86,6 +86,9 @@ class Dataset:
         )
 
         # Id-bearing collections without bespoke views (records returned as-is).
+        self.target_profiles = id_collection(
+            raw["target_profiles"], lambda p: p.get("faction_id")
+        )
         self.detachments = id_collection(raw["detachments"], lambda d: d.get("faction_id"))
         self.enhancements = id_collection(raw["enhancements"])
         self.stratagems = id_collection(raw["stratagems"])

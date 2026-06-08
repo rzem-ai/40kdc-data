@@ -296,6 +296,27 @@ def iter_cruncher_cases(corpus: Path) -> Iterator[Case]:
         )
 
 
+def iter_compare_cases(corpus: Path) -> Iterator[Case]:
+    root = corpus / "compare"
+    for case_path in sorted(root.glob("*.json")):
+        case = json.loads(case_path.read_text())
+        yield Case(
+            area="compare",
+            case_id=f"compare/{case_path.name}",
+            op="compare",
+            args={
+                "attacker": case["attacker"],
+                "targetProfileId": case["targetProfileId"],
+                "distance": case["distance"],
+                "phase": case["phase"],
+                "modelsFiring": case.get("modelsFiring", 1),
+            },
+            # expectedKills is a float; reaches/withinHalfRange/modelCount are
+            # exact. The recursive float comparison handles both.
+            compare_mode="floats",
+        )
+
+
 def iter_linked_api_cases(corpus: Path) -> Iterator[Case]:
     path = corpus / "linked-api" / "cases.json"
     cases = json.loads(path.read_text())
@@ -442,6 +463,7 @@ AREA_ITERATORS: dict[str, Any] = {
     "normalize": iter_normalize_cases,
     "roster": iter_roster_cases,
     "cruncher": iter_cruncher_cases,
+    "compare": iter_compare_cases,
     "linked-api": iter_linked_api_cases,
     "attribution": iter_attribution_cases,
     "scoring-translation": iter_scoring_translation_cases,
@@ -567,6 +589,10 @@ def run_corpus(
         "normalize": ["normalize"],
         "roster": ["import", "export"],
         "cruncher": ["crunch"],
+        # Compare relies on defensiveBuffsFor, which Rust doesn't ship — its
+        # runner answers UNKNOWN_OP and the area skips for rust pairings; ts↔py
+        # exercises it (same pattern as the validator area).
+        "compare": ["compare"],
         "linked-api": ["linked_query"],
         "attribution": ["attribution"],
         "scoring-translation": ["translate_scoring"],

@@ -944,6 +944,30 @@ export interface Stratagem {
   game_version: GameVersionReference;
 }
 /**
+ * A named target archetype for damage comparison. References a real dataset unit (faction_id + unit_id) rather than copying its stat line, so the profile stays in sync with dataset updates. Stats, keywords, and defensive abilities are resolved from the referenced unit at use time.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "target-profile".
+ */
+export interface TargetProfile {
+  id: EntityId;
+  name: string;
+  description?: string;
+  /**
+   * Kebab-case identifier
+   */
+  faction_id: string;
+  /**
+   * Kebab-case identifier
+   */
+  unit_id: string;
+  /**
+   * Optional non-default squad size for the comparison. When null/absent, the referenced unit's model_count.min is used.
+   */
+  model_count_override?: number | null;
+  game_version: GameVersionReference;
+}
+/**
  * One terrain piece placed on the board. Geometry comes from a catalog `template` or an inline `footprint` (if both are present, `footprint` is authoritative and `template` is provenance).
  *
  * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema

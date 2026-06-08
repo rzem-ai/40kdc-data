@@ -77,6 +77,8 @@ export const dataset = Dataset.embedded();
 
 /** All units, linked to their faction, weapons, and abilities. */
 export const units = dataset.units;
+/** Named target archetypes referencing real units (faction_id + unit_id). */
+export const targetProfiles = dataset.targetProfiles;
 /** All weapons, linked to the units that carry them. */
 export const weapons = dataset.weapons;
 /** Catalog of weapon keywords (Lethal Hits, Sustained Hits N, Anti-X N+, ...). */

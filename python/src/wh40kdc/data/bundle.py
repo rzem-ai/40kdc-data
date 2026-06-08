@@ -20,6 +20,7 @@ RawData = dict[str, list[Any]]
 #: Collection keys present in the bundle (and in :func:`empty_raw_data`).
 COLLECTION_KEYS = (
     "units",
+    "target_profiles",
     "weapons",
     "weapon_keywords",
     "factions",

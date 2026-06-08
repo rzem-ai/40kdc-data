@@ -1,0 +1,19 @@
+{
+  "name": "Forgefiend Hades autocannon vs C'tan @24\" (defensive abilities, outside half range)",
+  "attacker": {
+    "factionId": "world-eaters",
+    "unitId": "forgefiend",
+    "weaponId": "hades-autocannon",
+    "profileIndex": 0
+  },
+  "targetProfileId": "ctan-shard",
+  "distance": 24,
+  "phase": "shooting",
+  "modelsFiring": 1,
+  "expected": {
+    "expectedKills": 0.0278,
+    "reaches": true,
+    "withinHalfRange": false,
+    "modelCount": 1
+  }
+}

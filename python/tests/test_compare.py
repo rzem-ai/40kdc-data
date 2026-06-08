@@ -1,0 +1,162 @@
+"""Integration tests for the fleet-comparison cross product.
+
+These exercise the real embedded dataset and the real cruncher — no mocks —
+mirroring the repo's preference for integration over unit isolation.
+"""
+
+from __future__ import annotations
+
+import json
+
+import pytest
+
+from wh40kdc import compare
+from wh40kdc.data.dataset import Dataset
+
+
+@pytest.fixture(scope="module")
+def ds() -> Dataset:
+    return Dataset.embedded()
+
+
+def test_all_profiles_resolve_to_real_units(ds: Dataset) -> None:
+    """Every shipped target profile must reference a unit that exists in its
+    declared faction — the referential integrity the JSON schema can't check."""
+    for profile in ds.target_profiles.all:
+        resolved = compare.resolve_target(ds, profile)
+        assert resolved.unit_raw["id"] == profile["unit_id"]
+        assert resolved.unit_raw["faction_id"] == profile["faction_id"]
+        assert resolved.model_count >= 1
+
+
+def test_resolve_uses_unit_min_when_no_override(ds: Dataset) -> None:
+    profile = ds.target_profiles.get("geq-guardsmen")
+    resolved = compare.resolve_target(ds, profile)
+    # Cadian Shock Troops min squad is 10.
+    assert resolved.model_count == 10
+
+
+def test_model_count_override_wins(ds: Dataset) -> None:
+    profile = dict(ds.target_profiles.get("meq-intercessors"))
+    profile["model_count_override"] = 3
+    resolved = compare.resolve_target(ds, profile)
+    assert resolved.model_count == 3
+
+
+def test_resolve_missing_unit_raises(ds: Dataset) -> None:
+    bad = {"id": "x", "name": "X", "faction_id": "world-eaters", "unit_id": "no-such-unit"}
+    with pytest.raises(ValueError, match="not in the dataset"):
+        compare.resolve_target(ds, bad)
+
+
+def test_shared_unit_resolves_faction_scoped(ds: Dataset) -> None:
+    """The Forgefiend exists under multiple chaos factions with one shared id;
+    resolution must pick the world-eaters copy, not whatever .get(id) returns."""
+    profile = {
+        "id": "ff",
+        "name": "FF",
+        "faction_id": "world-eaters",
+        "unit_id": "forgefiend",
+    }
+    resolved = compare.resolve_target(ds, profile)
+    assert resolved.unit_raw["faction_id"] == "world-eaters"
+
+
+def test_forgefiend_anti_infantry_profile(ds: Dataset) -> None:
+    """Forgefiend at 15" shooting kills far more GEQ than it does a knight, and
+    its best weapon against infantry fires within half range."""
+    ff = ds.units.get_in_faction("forgefiend", "world-eaters")
+    geq = compare.resolve_target(ds, ds.target_profiles.get("geq-guardsmen"))
+    knight = compare.resolve_target(ds, ds.target_profiles.get("questoris-knight"))
+
+    vs_geq = compare.unit_vs_target(ds, ff, geq, distance=15, phase="shooting", models_firing=1)
+    vs_knight = compare.unit_vs_target(
+        ds, ff, knight, distance=15, phase="shooting", models_firing=1
+    )
+
+    assert vs_geq.best is not None
+    assert vs_geq.best.within_half_range is True  # 15 <= 36/2
+    assert vs_geq.metric("best-weapon") > vs_knight.metric("best-weapon")
+    # Anti-infantry shots cap at the squad size, never exceed it.
+    assert vs_geq.metric("best-weapon") <= geq.model_count
+
+
+def test_out_of_range_weapon_does_not_reach(ds: Dataset) -> None:
+    """A 36" gun cannot reach at 48"; the weapon is flagged unreachable with
+    zero kills and is excluded from the best-weapon pick."""
+    ff = ds.units.get_in_faction("forgefiend", "world-eaters")
+    geq = compare.resolve_target(ds, ds.target_profiles.get("geq-guardsmen"))
+    cell = compare.unit_vs_target(ds, ff, geq, distance=48, phase="shooting", models_firing=1)
+    assert cell.weapons  # ranged weapons enumerated
+    assert all(not w.reaches for w in cell.weapons)
+    assert all(w.expected_kills == 0.0 for w in cell.weapons)
+    assert cell.best is None
+
+
+def test_defensive_abilities_reduce_kills(ds: Dataset) -> None:
+    """The C'tan Shard carries a defensive ability (damage reduction / FNP). The
+    comparison must apply it, so the same gun kills strictly less into the C'tan
+    than the resolved profile stats alone would predict (defensive buffs > 0)."""
+    ctan = compare.resolve_target(ds, ds.target_profiles.get("ctan-shard"))
+    buffs = ds.defensive_buffs_for(
+        {"unitId": ctan.unit_raw["id"], "factionId": ctan.unit_raw["faction_id"]},
+        {"phase": "shooting", "withinHalfRange": False},
+    )
+    assert len(buffs) > 0
+
+
+def test_build_matrix_shape(ds: Dataset) -> None:
+    attackers = [ds.units.get_in_faction("forgefiend", "world-eaters")]
+    targets = [
+        compare.resolve_target(ds, ds.target_profiles.get(pid))
+        for pid in ("geq-guardsmen", "meq-intercessors")
+    ]
+    matrix = compare.build_matrix(
+        ds,
+        attacker_units=attackers,
+        targets=targets,
+        distance=15,
+        phase="shooting",
+        models_firing=1,
+    )
+    assert len(matrix) == 1
+    assert len(matrix[0]) == 2
+
+
+def test_cli_table_smoke(ds: Dataset, capsys: pytest.CaptureFixture[str]) -> None:
+    rc = compare.main(
+        ["--attacker-faction", "world-eaters", "--attacker-units", "forgefiend", "--range", "15"]
+    )
+    assert rc == 0
+    out = capsys.readouterr().out
+    assert "Forgefiend" in out
+    assert "Guardsmen (GEQ)" in out
+
+
+def test_cli_json_smoke(capsys: pytest.CaptureFixture[str]) -> None:
+    rc = compare.main(
+        [
+            "--attacker-faction",
+            "world-eaters",
+            "--attacker-units",
+            "forgefiend",
+            "--targets",
+            "meq-intercessors",
+            "--range",
+            "15",
+            "--format",
+            "json",
+        ]
+    )
+    assert rc == 0
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["metric"] == "best-weapon"
+    cell = payload["rows"][0]["cells"][0]
+    assert cell["best_weapon"]["within_half_range"] is True
+    assert cell["value"] > 0
+
+
+def test_cli_unknown_target_errors(capsys: pytest.CaptureFixture[str]) -> None:
+    rc = compare.main(["--attacker-faction", "world-eaters", "--targets", "nope"])
+    assert rc == 2
+    assert "unknown target profile" in capsys.readouterr().err

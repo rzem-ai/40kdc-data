@@ -28,6 +28,7 @@ const EXCLUDED_DIRS = new Set(["_example", "_port-audit"]);
 /** Map a data file's base name (sans `.json`) to its `RawData` collection key. */
 const FILE_TO_COLLECTION: Record<string, keyof RawData> = {
   units: "units",
+  "target-profiles": "targetProfiles",
   weapons: "weapons",
   "weapon-keywords": "weaponKeywords",
   factions: "factions",

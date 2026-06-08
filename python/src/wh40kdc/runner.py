@@ -24,6 +24,7 @@ from typing import Any, TypeGuard
 
 from wh40kdc._spec import SPEC_VERSION
 from wh40kdc._version import __version__ as IMPL_VERSION
+from wh40kdc.compare import compare_cell
 from wh40kdc.cruncher import attribute_stages, crunch
 from wh40kdc.data.base import encode_base
 from wh40kdc.data.dataset import Dataset
@@ -263,9 +264,7 @@ def _handle_linked_query(state: RunnerState, args: Any) -> Response:
             u = ds.units.get(unit_id)
             if u is None:
                 return _err("UNKNOWN_ENTITY", {"kind": "unit", "id": input_.get("unitId")})
-            comp = next(
-                (c for c in ds.unit_compositions if c.get("unit_id") == unit_id), None
-            )
+            comp = next((c for c in ds.unit_compositions if c.get("unit_id") == unit_id), None)
             # Ordered "modelName=encodedBase" pairs in declared model order.
             models = (comp or {}).get("models") or []
             return _ok(
@@ -356,6 +355,42 @@ def _handle_crunch(state: RunnerState, args: Any) -> Response:
         return _err("CRUNCH_ERROR", {"detail": str(e)})
 
 
+def _handle_compare(state: RunnerState, args: Any) -> Response:
+    if not isinstance(args, dict):
+        return _err("INVALID_INPUT", {"detail": "compare args must be an object"})
+    attacker = args.get("attacker") or {}
+    phase = args.get("phase")
+    if (
+        not isinstance(attacker.get("factionId"), str)
+        or not isinstance(attacker.get("unitId"), str)
+        or not isinstance(attacker.get("weaponId"), str)
+        or not _is_number(attacker.get("profileIndex"))
+        or not isinstance(args.get("targetProfileId"), str)
+        or not _is_number(args.get("distance"))
+        or phase not in ("shooting", "fight")
+    ):
+        return _err(
+            "INVALID_INPUT",
+            {"detail": "compare: malformed attacker/target/distance/phase"},
+        )
+    models_firing = args.get("modelsFiring")
+    try:
+        cell = compare_cell(
+            state.dataset(),
+            faction_id=attacker["factionId"],
+            unit_id=attacker["unitId"],
+            weapon_id=attacker["weaponId"],
+            profile_index=int(attacker["profileIndex"]),
+            target_profile_id=args["targetProfileId"],
+            distance=float(args["distance"]),
+            phase=phase,
+            models_firing=int(models_firing) if _is_number(models_firing) else 1,
+        )
+        return _ok(cell)
+    except (KeyError, ValueError, IndexError) as e:
+        return _err("UNKNOWN_ENTITY", {"detail": str(e)})
+
+
 def _handle_attribution(state: RunnerState, args: Any) -> Response:
     if not isinstance(args, dict):
         return _err("INVALID_INPUT", {"detail": "attribution args must be an object"})
@@ -433,9 +468,7 @@ def _resolve_asserted(
             return None, _err("INVALID_INPUT", {"detail": "asserted entry must be an object"})
         index = raw.get("index")
         if not _is_number(index) or index < 0 or index >= len(awards):
-            return None, _err(
-                "INVALID_INPUT", {"detail": f"asserted.index out of range: {index}"}
-            )
+            return None, _err("INVALID_INPUT", {"detail": f"asserted.index out of range: {index}"})
         entry: dict[str, Any] = {"award": awards[int(index)]}
         if raw.get("count") is not None:
             entry["count"] = raw["count"]
@@ -614,9 +647,7 @@ def dispatch(state: RunnerState, req: dict[str, Any]) -> Response:
     if op == "init":
         return _handle_init(state, args)
     if op == "version":
-        return _ok(
-            {"impl": IMPL_NAME, "spec_version": SPEC_VERSION, "impl_version": IMPL_VERSION}
-        )
+        return _ok({"impl": IMPL_NAME, "spec_version": SPEC_VERSION, "impl_version": IMPL_VERSION})
     if op == "normalize":
         return _handle_normalize(args)
     if op == "import":
@@ -631,6 +662,8 @@ def dispatch(state: RunnerState, req: dict[str, Any]) -> Response:
         return _handle_validate(state, args)
     if op == "crunch":
         return _handle_crunch(state, args)
+    if op == "compare":
+        return _handle_compare(state, args)
     if op == "attribution":
         return _handle_attribution(state, args)
     if op == "translate_scoring":

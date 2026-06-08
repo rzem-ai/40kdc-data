@@ -441,3 +441,53 @@ fn resolve_terrain_produces_board_vertices() {
         }
     }
 }
+
+// --- target profiles --------------------------------------------------------
+
+#[test]
+fn target_profiles_reference_real_units() {
+    let ds = Dataset::embedded();
+    assert!(
+        !ds.target_profiles.all().is_empty(),
+        "target profiles should be bundled"
+    );
+    // Every profile must resolve to a unit that exists in its declared faction
+    // (faction-scoped — shared ids like rhino appear under several factions).
+    for p in ds.target_profiles.all() {
+        let resolved = ds
+            .units
+            .by_faction(p.faction_id.as_str())
+            .into_iter()
+            .find(|u| u.id.as_str() == p.unit_id.as_str());
+        assert!(
+            resolved.is_some(),
+            "target profile {} references missing unit {} in faction {}",
+            p.id.as_str(),
+            p.unit_id.as_str(),
+            p.faction_id.as_str()
+        );
+    }
+}
+
+#[test]
+fn teq_profile_resolves_to_terminator_stats() {
+    let ds = Dataset::embedded();
+    let p = ds
+        .target_profiles
+        .get("teq-terminators")
+        .expect("teq-terminators profile present");
+    let unit = ds
+        .units
+        .by_faction(p.faction_id.as_str())
+        .into_iter()
+        .find(|u| u.id.as_str() == p.unit_id.as_str())
+        .expect("terminator-squad resolves in adeptus-astartes");
+    let prof = &unit.profiles[0];
+    assert_eq!(prof.t.get(), 5);
+    assert_eq!(prof.sv, 2);
+    assert_eq!(prof.invuln_sv, Some(4));
+    assert_eq!(prof.w.get(), 3);
+    // No override → the comparison would use the unit's minimum squad size.
+    assert!(p.model_count_override.is_none());
+    assert_eq!(unit.model_count.as_ref().unwrap().min.get(), 5);
+}

@@ -67,6 +67,7 @@ input:focus, select:focus, textarea:focus {
   grid-template-columns: 1fr;
   grid-template-areas:
     "header"
+    "tabs"
     "input"
     "output"
     "footer";
@@ -77,14 +78,15 @@ input:focus, select:focus, textarea:focus {
 @media (min-width: 960px) {
   .app {
     grid-template-columns: minmax(380px, 480px) 1fr;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: auto auto 1fr auto;
     grid-template-areas:
       "header header"
+      "tabs   tabs"
       "input  output"
       "footer footer";
     height: 100vh;
   }
-  .column.input, .column.output {
+  .column.input, .column.output, .column.compare {
     overflow-y: auto;
   }
 }
@@ -96,9 +98,34 @@ input:focus, select:focus, textarea:focus {
 }
 
 header.app-header { grid-area: header; }
+.view-tabs        { grid-area: tabs; }
 .column.input     { grid-area: input; }
 .column.output    { grid-area: output; }
+/* Compare is a single full-width content region spanning both columns/rows. */
+.column.compare {
+  grid-row: input-start / output-end;
+  grid-column: input-start / output-end;
+}
 footer.app-footer { grid-area: footer; }
+
+.view-tabs {
+  display: flex;
+  gap: var(--space-1, 4px);
+  padding: var(--space-2) var(--space-3) 0;
+}
+.view-tabs button {
+  padding: var(--space-1, 6px) var(--space-3, 14px);
+  background: transparent;
+  border: 1px solid var(--border, #2a2a2a);
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  color: var(--muted);
+  cursor: pointer;
+}
+.view-tabs button.active {
+  background: var(--surface, #1f1f1f);
+  color: var(--fg, #e8e8e8);
+}
 
 .column {
   display: flex;

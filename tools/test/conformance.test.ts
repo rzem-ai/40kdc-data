@@ -24,6 +24,7 @@ import { importRoster, tryImportRoster, REGISTERED_ADAPTERS } from "../src/impor
 import { selectAdapter } from "../src/import/adapter.js";
 import type { RosterFormat } from "../src/import/types.js";
 import { crunch, type Buff, type EngineContext, type Stage } from "../src/cruncher/index.js";
+import { compareCell, type ComparePhase } from "../src/compare.js";
 import { attributeStages } from "../src/cruncher/attribution.js";
 import type { Phase } from "../src/generated.js";
 import { effectToBuffs } from "../src/cruncher/from-dsl.js";
@@ -265,6 +266,56 @@ interface CruncherCase {
   buffs: Buff[];
   expected: { stages: Record<Stage["name"], number> };
 }
+
+// Compare conformance — each case names an attacker (faction/unit/weapon/
+// profile), a target profile, a distance, and a phase, with an expected cell
+// {expectedKills (float), reaches, withinHalfRange, modelCount}. Pins the full
+// compose: profile→unit resolution + defensive buffs + half-range + crunch.
+// Mirror of the Python `compare` runner op; ts↔py is enforced by the differ.
+
+interface CompareCase {
+  name: string;
+  attacker: { factionId: string; unitId: string; weaponId: string; profileIndex: number };
+  targetProfileId: string;
+  distance: number;
+  phase: ComparePhase;
+  modelsFiring?: number;
+  expected: { expectedKills: number; reaches: boolean; withinHalfRange: boolean; modelCount: number };
+}
+
+describe("compare conformance corpus", () => {
+  const ds = Dataset.embedded();
+  const dir = join(CONFORMANCE, "compare");
+  const files = readdirSync(dir).filter((n) => n.endsWith(".json")).sort();
+
+  it("the compare corpus is non-empty", () => {
+    expect(files.length).toBeGreaterThan(0);
+  });
+
+  for (const filename of files) {
+    const c = readJson(join(dir, filename)) as CompareCase;
+    it(`compare/${filename}: cell matches the golden within ${CRUNCHER_TOLERANCE}`, () => {
+      const cell = compareCell(ds, {
+        factionId: c.attacker.factionId,
+        unitId: c.attacker.unitId,
+        weaponId: c.attacker.weaponId,
+        profileIndex: c.attacker.profileIndex,
+        targetProfileId: c.targetProfileId,
+        distance: c.distance,
+        phase: c.phase,
+        modelsFiring: c.modelsFiring ?? 1,
+      });
+      expect(cell.reaches, `${filename} reaches`).toBe(c.expected.reaches);
+      expect(cell.withinHalfRange, `${filename} withinHalfRange`).toBe(c.expected.withinHalfRange);
+      expect(cell.modelCount, `${filename} modelCount`).toBe(c.expected.modelCount);
+      const delta = Math.abs(cell.expectedKills - c.expected.expectedKills);
+      expect(
+        delta < CRUNCHER_TOLERANCE,
+        `compare/${filename} expectedKills: expected ${c.expected.expectedKills}, got ${cell.expectedKills} (Δ ${delta})`,
+      ).toBe(true);
+    });
+  }
+});
 
 // Abilities-resolver conformance — each case names an EligibilityInput, a
 // phase, and the expected ability ids grouped by source kind. Comparison is

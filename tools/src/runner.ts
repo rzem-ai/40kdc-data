@@ -28,6 +28,7 @@ import { importRoster, tryImportRoster, REGISTERED_ADAPTERS } from "./import/imp
 import { selectAdapter } from "./import/adapter.js";
 import { createValidator } from "./schema-loader.js";
 import { attributeStages, crunch, type Buff, type EngineContext, type EngineInput } from "./cruncher/index.js";
+import { compareCell, type ComparePhase } from "./compare.js";
 import { describeScoringCard, describeAbility, type ScoringMode, type Effect, type AbilityScope } from "./translate/index.js";
 import {
   awardsOf,
@@ -547,6 +548,51 @@ function handleAttribution(state: RunnerState, args: unknown): RunnerResponse {
   }
 }
 
+function handleCompare(state: RunnerState, args: unknown): RunnerResponse {
+  if (typeof args !== "object" || args === null) {
+    return err("INVALID_INPUT", { detail: "compare args must be an object" });
+  }
+  const a = args as {
+    attacker?: {
+      factionId?: unknown;
+      unitId?: unknown;
+      weaponId?: unknown;
+      profileIndex?: unknown;
+    };
+    targetProfileId?: unknown;
+    distance?: unknown;
+    phase?: unknown;
+    modelsFiring?: unknown;
+  };
+  const at = a.attacker ?? {};
+  if (
+    typeof at.factionId !== "string" ||
+    typeof at.unitId !== "string" ||
+    typeof at.weaponId !== "string" ||
+    typeof at.profileIndex !== "number" ||
+    typeof a.targetProfileId !== "string" ||
+    typeof a.distance !== "number" ||
+    (a.phase !== "shooting" && a.phase !== "fight")
+  ) {
+    return err("INVALID_INPUT", { detail: "compare: malformed attacker/target/distance/phase" });
+  }
+  try {
+    const cell = compareCell(getDataset(state), {
+      factionId: at.factionId,
+      unitId: at.unitId,
+      weaponId: at.weaponId,
+      profileIndex: at.profileIndex,
+      targetProfileId: a.targetProfileId,
+      distance: a.distance,
+      phase: a.phase as ComparePhase,
+      modelsFiring: typeof a.modelsFiring === "number" ? a.modelsFiring : 1,
+    });
+    return ok(cell);
+  } catch (e) {
+    return err("UNKNOWN_ENTITY", { detail: (e as Error).message });
+  }
+}
+
 function handleTranslateScoring(state: RunnerState, args: unknown): RunnerResponse {
   if (typeof args !== "object" || args === null) {
     return err("INVALID_INPUT", { detail: "translate_scoring args must be an object" });
@@ -832,6 +878,8 @@ export function dispatch(state: RunnerState, req: { op: string; args?: unknown }
       return handleValidate(state, req.args);
     case "crunch":
       return handleCrunch(state, req.args);
+    case "compare":
+      return handleCompare(state, req.args);
     case "attribution":
       return handleAttribution(state, req.args);
     case "translate_scoring":

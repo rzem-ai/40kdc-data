@@ -60,6 +60,11 @@ export * from "./scoring/index.js";
 // `conformance/cruncher` corpus. Pure functions — universal (Node + browser).
 export * from "./cruncher/index.js";
 
+// Fleet comparison (attacker set × target-profile set → expected-kills matrix),
+// built on the cruncher. Mirrors `python/src/wh40kdc/compare.py`; the per-cell
+// math is pinned against Python by the `conformance/compare` corpus.
+export * from "./compare.js";
+
 // Schema access + AJV validation lives behind the `./validate` subpath export
 // (`@alpaca-software/40kdc-data/validate`), NOT the root barrel: it reads
 // schema files from disk at module load (node:fs/node:url), which breaks

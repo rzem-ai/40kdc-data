@@ -1,0 +1,18 @@
+[
+  {
+    "id": "test-target",
+    "name": "Test Target",
+    "faction_id": "test-faction",
+    "unit_id": "test-unit",
+    "game_version": { "edition": "10th", "dataslate": "2025-q3" }
+  },
+  {
+    "id": "test-target-override",
+    "name": "Test Target (big squad)",
+    "description": "Same unit, non-default squad size.",
+    "faction_id": "test-faction",
+    "unit_id": "test-unit",
+    "model_count_override": 20,
+    "game_version": { "edition": "10th", "dataslate": "2025-q3" }
+  }
+]

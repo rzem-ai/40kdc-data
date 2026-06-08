@@ -4,6 +4,7 @@
   import AbilitiesPane from "./lib/abilities-pane.svelte";
   import TargetPane from "./lib/target-pane.svelte";
   import OutputPane from "./lib/output-pane.svelte";
+  import ComparePane from "./lib/compare-pane.svelte";
   import Pane from "../../_shared/Pane.svelte";
   import SupportModal from "../../_shared/SupportModal.svelte";
   import AppHeader from "../../_shared/AppHeader.svelte";
@@ -33,19 +34,39 @@
 <div class="app">
   <AppHeader title="Salvo" tag="40k damage calculator" />
 
-  <section class="column input">
-    <Pane id="import" storagePrefix="salvo" title="Import roster" defaultOpen={importOpen}><ImportPane /></Pane>
-    <Pane id="attacker" storagePrefix="salvo" title="Attacker" defaultOpen={attackerOpen}><AttackerPane /></Pane>
-    <Pane id="target" storagePrefix="salvo" title="Target" defaultOpen={targetOpen}><TargetPane /></Pane>
-    <Pane id="abilities" storagePrefix="salvo" title="Abilities & buffs" defaultOpen={abilitiesOpen}><AbilitiesPane /></Pane>
-  </section>
+  <nav class="view-tabs">
+    <button
+      class:active={salvo.appView === "calculator"}
+      onclick={() => (salvo.appView = "calculator")}>Calculator</button
+    >
+    <button
+      class:active={salvo.appView === "compare"}
+      onclick={() => (salvo.appView = "compare")}>Compare</button
+    >
+  </nav>
 
-  <main class="column output">
-    <section class="pane projection">
-      <h2>Projection</h2>
-      <OutputPane />
+  {#if salvo.appView === "compare"}
+    <main class="column compare">
+      <section class="pane">
+        <h2>Fleet comparison</h2>
+        <ComparePane />
+      </section>
+    </main>
+  {:else}
+    <section class="column input">
+      <Pane id="import" storagePrefix="salvo" title="Import roster" defaultOpen={importOpen}><ImportPane /></Pane>
+      <Pane id="attacker" storagePrefix="salvo" title="Attacker" defaultOpen={attackerOpen}><AttackerPane /></Pane>
+      <Pane id="target" storagePrefix="salvo" title="Target" defaultOpen={targetOpen}><TargetPane /></Pane>
+      <Pane id="abilities" storagePrefix="salvo" title="Abilities & buffs" defaultOpen={abilitiesOpen}><AbilitiesPane /></Pane>
     </section>
-  </main>
+
+    <main class="column output">
+      <section class="pane projection">
+        <h2>Projection</h2>
+        <OutputPane />
+      </section>
+    </main>
+  {/if}
 
   <AppFooter
     links={[

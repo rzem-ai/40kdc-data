@@ -7,6 +7,10 @@
     ds.factions.all.slice().sort((a, b) => a.name.localeCompare(b.name)),
   );
 
+  const targetPresets = $derived(
+    ds.targetProfiles.all.slice().sort((a, b) => a.name.localeCompare(b.name)),
+  );
+
   const datasetUnits = $derived.by(() => {
     const all = ds.units.all
       .slice()
@@ -53,12 +57,20 @@
     if (!u) return;
     const p = u.raw.profiles[0];
     if (!p) return;
+    // A selected preset may override the squad size; otherwise use the unit's
+    // minimum. The override only applies while the preset still points at this
+    // unit (it's cleared when the user picks a unit by hand).
+    const preset = salvo.targetPresetId ? ds.targetProfiles.get(salvo.targetPresetId) : undefined;
+    const override =
+      preset && preset.unit_id === u.id && preset.faction_id === u.raw.faction_id
+        ? preset.model_count_override
+        : null;
     salvo.manualTarget = {
       T: typeof p.T === "number" ? p.T : 4,
       Sv: typeof p.Sv === "number" ? p.Sv : 3,
       invuln: typeof p.invuln_sv === "number" ? p.invuln_sv : null,
       W: typeof p.W === "number" ? p.W : 1,
-      modelCount: u.raw.model_count?.min ?? 1,
+      modelCount: override ?? u.raw.model_count?.min ?? 1,
       fnp: null,
       keywords: [
         ...((u.raw.keywords ?? []) as string[]),
@@ -103,13 +115,32 @@
 
 {#if salvo.targetMode === "dataset"}
   <div class="row">
+    <label>Preset</label>
+    <select
+      class="grow"
+      value={salvo.targetPresetId ?? ""}
+      onchange={(e) => {
+        const v = (e.currentTarget as HTMLSelectElement).value;
+        if (v) salvo.applyTargetPreset(v);
+        else salvo.targetPresetId = null;
+      }}
+    >
+      <option value="">— archetype preset —</option>
+      {#each targetPresets as p (p.id)}
+        <option value={p.id}>{p.name}</option>
+      {/each}
+    </select>
+  </div>
+  <div class="row">
     <label>Faction</label>
     <select
       class="grow"
       value={salvo.datasetTargetFactionId ?? ""}
-      onchange={(e) =>
-        (salvo.datasetTargetFactionId =
-          (e.currentTarget as HTMLSelectElement).value || null)}
+      onchange={(e) => {
+        salvo.targetPresetId = null;
+        salvo.datasetTargetFactionId =
+          (e.currentTarget as HTMLSelectElement).value || null;
+      }}
     >
       <option value="">— any —</option>
       {#each factions as f (f.id)}
@@ -122,7 +153,10 @@
     <select
       class="grow"
       value={salvo.datasetTargetUnitId ?? ""}
-      onchange={(e) => (salvo.datasetTargetUnitId = (e.currentTarget as HTMLSelectElement).value || null)}
+      onchange={(e) => {
+        salvo.targetPresetId = null;
+        salvo.datasetTargetUnitId = (e.currentTarget as HTMLSelectElement).value || null;
+      }}
     >
       <option value="">— pick a target unit —</option>
       {#each datasetUnits as u (`${u.raw.faction_id}/${u.id}`)}

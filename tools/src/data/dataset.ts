@@ -19,6 +19,7 @@ import type {
   ResourcePool,
   SecondaryCard,
   Stratagem,
+  TargetProfile,
   TerrainLayout,
   TerrainTemplate,
   TimingFlag,
@@ -88,6 +89,7 @@ export class Dataset {
   readonly abilities: Collection<RawData["abilities"][number], AbilityView>;
 
   // Id-bearing collections without bespoke views (records returned as-is).
+  readonly targetProfiles: Collection<TargetProfile, TargetProfile>;
   readonly detachments: Collection<Detachment, Detachment>;
   readonly enhancements: Collection<Enhancement, Enhancement>;
   readonly stratagems: Collection<Stratagem, Stratagem>;
@@ -158,6 +160,7 @@ export class Dataset {
       wrap: (a) => new AbilityView(a, this),
     });
 
+    this.targetProfiles = idCollection(raw.targetProfiles, (p) => p.faction_id);
     this.detachments = idCollection(raw.detachments, (d) => d.faction_id);
     this.enhancements = idCollection(raw.enhancements);
     this.stratagems = idCollection(raw.stratagems);

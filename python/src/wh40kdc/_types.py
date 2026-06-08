@@ -275,6 +275,16 @@ class Stratagem(TypedDict):
     game_version: GameVersionRef
 
 
+class TargetProfile(TypedDict):
+    id: EntityId
+    name: str
+    description: NotRequired[str]
+    faction_id: EntityId
+    unit_id: EntityId
+    model_count_override: NotRequired[int | None]
+    game_version: GameVersionRef
+
+
 class Objective(TypedDict):
     position: NotRequired[Vec2]
     control_range_inches: NotRequired[float]

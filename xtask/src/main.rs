@@ -80,6 +80,7 @@ fn codegen() -> Result<()> {
 /// here (schemas, scratch json) are not bundled.
 const FILE_TO_COLLECTION: &[(&str, &str)] = &[
     ("units", "units"),
+    ("target-profiles", "target_profiles"),
     ("weapons", "weapons"),
     ("weapon-keywords", "weapon_keywords"),
     ("factions", "factions"),

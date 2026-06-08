@@ -14,8 +14,8 @@ use std::sync::OnceLock;
 use crate::generated::{
     Ability, DeploymentPattern, Detachment, Enhancement, Faction, ForceDisposition, GameVersion,
     InteractionFlag, LeaderAttachment, Mission, MissionMatchup, Phase, PhaseMapping, ResourcePool,
-    SecondaryCard, Stratagem, TerrainLayout, TerrainTemplate, TimingFlag, Unit, UnitComposition,
-    Wargear, WargearOption, Weapon, WeaponKeyword,
+    SecondaryCard, Stratagem, TargetProfile, TerrainLayout, TerrainTemplate, TimingFlag, Unit,
+    UnitComposition, Wargear, WargearOption, Weapon, WeaponKeyword,
 };
 
 use super::collection::Collection;
@@ -32,6 +32,9 @@ use super::collection::Collection;
 pub struct RawData {
     #[serde(default)]
     pub units: Vec<Unit>,
+    /// Named target archetypes referencing real units (faction_id + unit_id).
+    #[serde(default)]
+    pub target_profiles: Vec<TargetProfile>,
     #[serde(default)]
     pub weapons: Vec<Weapon>,
     /// Catalog of weapon keywords (Lethal Hits, Sustained Hits N, Anti-X N+, ...).
@@ -122,6 +125,7 @@ pub struct Dataset {
     pub abilities: Collection<Ability>,
 
     // Id-bearing passthrough collections.
+    pub target_profiles: Collection<TargetProfile>,
     pub detachments: Collection<Detachment>,
     pub enhancements: Collection<Enhancement>,
     pub stratagems: Collection<Stratagem>,
@@ -211,6 +215,13 @@ impl Dataset {
             |a| a.ability_id.to_string(),
         );
 
+        let target_profiles = Collection::build(
+            raw.target_profiles,
+            |p| p.id.to_string(),
+            |p| Some(p.name.as_str()),
+            |p| Some(p.faction_id.as_str()),
+            |p| p.id.to_string(),
+        );
         let detachments = Collection::build(
             raw.detachments,
             |d| d.id.to_string(),
@@ -289,6 +300,7 @@ impl Dataset {
             weapon_keywords,
             factions,
             abilities,
+            target_profiles,
             detachments,
             enhancements,
             stratagems,

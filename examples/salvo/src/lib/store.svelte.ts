@@ -107,6 +107,10 @@ export const CONTEXT_FLAG_TOGGLES: { id: keyof ContextFlags; label: string }[] =
 ];
 
 class SalvoState {
+  // Top-level view: the per-unit damage calculator, or the fleet-comparison
+  // matrix (attacker set × target-profile set).
+  appView = $state<"calculator" | "compare">("calculator");
+
   // Import
   attackerRoster = $state<Roster | null>(null);
   targetRoster = $state<Roster | null>(null);
@@ -167,6 +171,31 @@ class SalvoState {
   datasetTargetFactionId = $state<string | null>("necrons");
   datasetTargetUnitId = $state<string | null>("ctan-shard-of-the-nightbringer");
   rosterTargetUnitIndex = $state<number | null>(null);
+  /**
+   * Selected target-profile preset, if any. A preset is just a named
+   * (faction, unit, model-count) bookmark, so picking one drives the existing
+   * dataset target mode — the dataset prefill effect and defensiveBuffsFor
+   * wiring then apply unchanged. Cleared when the user picks a unit/faction by
+   * hand so a stale preset's model-count override doesn't linger.
+   */
+  targetPresetId = $state<string | null>(null);
+
+  // Fleet comparison (the "Compare" view).
+  compareFactionId = $state<string | null>("world-eaters");
+  /** Selected target-profile ids; empty means "all profiles". */
+  compareTargetIds = $state<string[]>([]);
+  compareDistance = $state<number>(15);
+  comparePhase = $state<PhaseChoice>("shooting");
+
+  /** Apply a target-profile preset: point the dataset target at its unit. */
+  applyTargetPreset(profileId: string): void {
+    const profile = ds.targetProfiles.get(profileId);
+    if (!profile) return;
+    this.targetPresetId = profileId;
+    this.datasetTargetFactionId = profile.faction_id;
+    this.datasetTargetUnitId = profile.unit_id;
+    this.selectTargetMode("dataset");
+  }
 
   /** User-initiated mode change. Records the override so a later import
    *  doesn't yank the tab out from under them. */

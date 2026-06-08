@@ -1,0 +1,16 @@
+[
+  {
+    "id": "missing-unit-ref",
+    "name": "Missing unit_id",
+    "faction_id": "test-faction",
+    "game_version": { "edition": "10th", "dataslate": "2025-q3" }
+  },
+  {
+    "id": "bad-override",
+    "name": "Zero model override",
+    "faction_id": "test-faction",
+    "unit_id": "test-unit",
+    "model_count_override": 0,
+    "game_version": { "edition": "10th", "dataslate": "2025-q3" }
+  }
+]

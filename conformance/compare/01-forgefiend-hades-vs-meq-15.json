@@ -1,0 +1,19 @@
+{
+  "name": "Forgefiend Hades autocannon vs MEQ Intercessors @15\" (half range)",
+  "attacker": {
+    "factionId": "world-eaters",
+    "unitId": "forgefiend",
+    "weaponId": "hades-autocannon",
+    "profileIndex": 0
+  },
+  "targetProfileId": "meq-intercessors",
+  "distance": 15,
+  "phase": "shooting",
+  "modelsFiring": 1,
+  "expected": {
+    "expectedKills": 1.6667,
+    "reaches": true,
+    "withinHalfRange": true,
+    "modelCount": 5
+  }
+}

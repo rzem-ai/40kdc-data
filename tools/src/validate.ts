@@ -27,6 +27,7 @@ export interface ValidationResult {
 const SCHEMA_MAP: Record<string, string> = {
   factions: "https://40kdc.dev/schemas/core/faction.schema.json",
   units: "https://40kdc.dev/schemas/core/unit.schema.json",
+  "target-profiles": "https://40kdc.dev/schemas/core/target-profile.schema.json",
   weapons: "https://40kdc.dev/schemas/core/weapon.schema.json",
   "weapon-keywords": "https://40kdc.dev/schemas/core/weapon-keyword.schema.json",
   "game-versions": "https://40kdc.dev/schemas/core/game-version.schema.json",

@@ -10027,6 +10027,154 @@ impl ::std::convert::TryFrom<::std::string::String> for StratagemType {
         value.parse()
     }
 }
+///A named target archetype for damage comparison. References a real dataset unit (faction_id + unit_id) rather than copying its stat line, so the profile stays in sync with dataset updates. Stats, keywords, and defensive abilities are resolved from the referenced unit at use time.
+///
+/// <details><summary>JSON schema</summary>
+///
+/// ```json
+///{
+///  "title": "TargetProfile",
+///  "description": "A named target archetype for damage comparison. References a real dataset unit (faction_id + unit_id) rather than copying its stat line, so the profile stays in sync with dataset updates. Stats, keywords, and defensive abilities are resolved from the referenced unit at use time.",
+///  "type": "object",
+///  "required": [
+///    "faction_id",
+///    "game_version",
+///    "id",
+///    "name",
+///    "unit_id"
+///  ],
+///  "properties": {
+///    "description": {
+///      "type": "string"
+///    },
+///    "faction_id": {
+///      "description": "Scopes the unit lookup. Required because shared units (Rhino, Forgefiend, Predator) reuse one unit id across factions; resolution must be faction-scoped.",
+///      "$ref": "#/$defs/entity-id"
+///    },
+///    "game_version": {
+///      "$ref": "#/$defs/game-version-ref"
+///    },
+///    "id": {
+///      "$ref": "#/$defs/entity-id"
+///    },
+///    "model_count_override": {
+///      "description": "Optional non-default squad size for the comparison. When null/absent, the referenced unit's model_count.min is used.",
+///      "oneOf": [
+///        {
+///          "type": "integer",
+///          "minimum": 1.0
+///        },
+///        {
+///          "type": "null"
+///        }
+///      ]
+///    },
+///    "name": {
+///      "type": "string",
+///      "maxLength": 128,
+///      "minLength": 1
+///    },
+///    "unit_id": {
+///      "description": "The dataset unit this archetype stands in for, resolved within faction_id. Its profile[0] supplies T/Sv/invuln/W; its keywords and defensive abilities are read at use time.",
+///      "$ref": "#/$defs/entity-id"
+///    }
+///  },
+///  "additionalProperties": false
+///}
+/// ```
+/// </details>
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct TargetProfile {
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub description: ::std::option::Option<::std::string::String>,
+    ///Scopes the unit lookup. Required because shared units (Rhino, Forgefiend, Predator) reuse one unit id across factions; resolution must be faction-scoped.
+    pub faction_id: EntityId,
+    pub game_version: GameVersionRef,
+    pub id: EntityId,
+    ///Optional non-default squad size for the comparison. When null/absent, the referenced unit's model_count.min is used.
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub model_count_override: ::std::option::Option<::std::num::NonZeroU64>,
+    pub name: TargetProfileName,
+    ///The dataset unit this archetype stands in for, resolved within faction_id. Its profile[0] supplies T/Sv/invuln/W; its keywords and defensive abilities are read at use time.
+    pub unit_id: EntityId,
+}
+///`TargetProfileName`
+///
+/// <details><summary>JSON schema</summary>
+///
+/// ```json
+///{
+///  "type": "string",
+///  "maxLength": 128,
+///  "minLength": 1
+///}
+/// ```
+/// </details>
+#[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[serde(transparent)]
+pub struct TargetProfileName(::std::string::String);
+impl ::std::ops::Deref for TargetProfileName {
+    type Target = ::std::string::String;
+    fn deref(&self) -> &::std::string::String {
+        &self.0
+    }
+}
+impl ::std::convert::From<TargetProfileName> for ::std::string::String {
+    fn from(value: TargetProfileName) -> Self {
+        value.0
+    }
+}
+impl ::std::str::FromStr for TargetProfileName {
+    type Err = self::error::ConversionError;
+    fn from_str(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        if value.chars().count() > 128usize {
+            return Err("longer than 128 characters".into());
+        }
+        if value.chars().count() < 1usize {
+            return Err("shorter than 1 characters".into());
+        }
+        Ok(Self(value.to_string()))
+    }
+}
+impl ::std::convert::TryFrom<&str> for TargetProfileName {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<&::std::string::String> for TargetProfileName {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<::std::string::String> for TargetProfileName {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: ::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl<'de> ::serde::Deserialize<'de> for TargetProfileName {
+    fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+    where
+        D: ::serde::Deserializer<'de>,
+    {
+        ::std::string::String::deserialize(deserializer)?
+            .parse()
+            .map_err(|e: self::error::ConversionError| {
+                <D::Error as ::serde::de::Error>::custom(e.to_string())
+            })
+    }
+}
 ///An 11e terrain-area keyword. Confirmed launch set; extend as further keywords publish on dataslate.
 ///
 /// <details><summary>JSON schema</summary>

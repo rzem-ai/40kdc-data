@@ -1,0 +1,19 @@
+{
+  "name": "Forgefiend jaws vs MEQ in the fight phase",
+  "attacker": {
+    "factionId": "world-eaters",
+    "unitId": "forgefiend",
+    "weaponId": "forgefiend-jaws",
+    "profileIndex": 0
+  },
+  "targetProfileId": "meq-intercessors",
+  "distance": 0,
+  "phase": "fight",
+  "modelsFiring": 1,
+  "expected": {
+    "expectedKills": 0.7407,
+    "reaches": true,
+    "withinHalfRange": false,
+    "modelCount": 5
+  }
+}

@@ -24,6 +24,7 @@ import type {
   SecondaryCard,
   Stratagem,
   TerrainLayout,
+  TargetProfile,
   TerrainTemplate,
   TimingFlag,
   Unit,
@@ -43,6 +44,8 @@ import type {
  */
 export interface RawData {
   units: Unit[];
+  /** Named target archetypes referencing real units (faction_id + unit_id). */
+  targetProfiles: TargetProfile[];
   weapons: Weapon[];
   /** Catalog of weapon keywords (Lethal Hits, Sustained Hits N, Anti-X N+, ...). */
   weaponKeywords: WeaponKeyword[];
@@ -78,6 +81,7 @@ export interface RawData {
 export function emptyRawData(): RawData {
   return {
     units: [],
+    targetProfiles: [],
     weapons: [],
     weaponKeywords: [],
     factions: [],
