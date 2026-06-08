@@ -27,9 +27,7 @@
 use serde_json::Value;
 
 use super::adapter::{FormatAdapter, ParseError};
-use super::types::{
-    BattleSize, ParsedRoster, ParsedUnit, ParsedWargear, Roster, RosterFormat,
-};
+use super::types::{BattleSize, ParsedRoster, ParsedUnit, ParsedWargear, Roster, RosterFormat};
 
 pub struct RosterJsonAdapter;
 
@@ -54,7 +52,10 @@ impl FormatAdapter for RosterJsonAdapter {
                 .and_then(|g| g.get("edition"))
                 .map(Value::is_string)
                 .unwrap_or(false)
-            && obj.get("diagnostics").map(Value::is_object).unwrap_or(false)
+            && obj
+                .get("diagnostics")
+                .map(Value::is_object)
+                .unwrap_or(false)
             && obj.get("units").map(Value::is_array).unwrap_or(false)
     }
 

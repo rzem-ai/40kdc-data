@@ -268,7 +268,9 @@ fn roster_json_goldens_reimport_to_roster_goldens() {
             }
             ImportResult::Err {
                 reason, message, ..
-            } => panic!("roster/{case_name}: roster-json golden failed to import {reason:?}: {message}"),
+            } => panic!(
+                "roster/{case_name}: roster-json golden failed to import {reason:?}: {message}"
+            ),
         }
         total += 1;
     }

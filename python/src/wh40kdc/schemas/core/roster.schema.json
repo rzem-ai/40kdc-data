@@ -20,7 +20,8 @@
             "newrecruit-wtc-full",
             "newrecruit-simple",
             "rosterizer",
-            "gw"
+            "gw",
+            "roster-json"
           ]
         },
         "generated_by": {
