@@ -1227,5 +1227,27 @@
     ],
     "text": "Shatter the horde. Score per enemy unit with a Starting Strength of 13 or more destroyed this turn, evaluated at the end of a turn; tactical play scores more per kill but caps at 5 VP. If there are no such enemy units on the battlefield when drawn, you can discard this card and draw one new Secondary Mission card.",
     "game_version": { "edition": "11th", "dataslate": "launch" }
+  },
+  {
+    "id": "beacon",
+    "name": "Beacon",
+    "card_type": "secondary",
+    "subtype": "attacker",
+    "awards": [
+      {
+        "trigger": { "timing": "end-of-turn", "player_turn": "opponent-turn" },
+        "vp_per": 3,
+        "per": "beacon-unit-on-battlefield-not-in-own-deployment-zone",
+        "exclusive_group": "beacon-position"
+      },
+      {
+        "trigger": { "timing": "end-of-turn", "player_turn": "opponent-turn" },
+        "vp_per": 5,
+        "per": "beacon-unit-on-battlefield-not-in-own-territory",
+        "exclusive_group": "beacon-position"
+      }
+    ],
+    "text": "Send your champion into enemy-held ground. When drawn, designate one friendly unit on the battlefield (or embarked within a TRANSPORT on the battlefield) as your beacon unit. Score at the end of your opponent's turn — or the end of the fifth battle round, whichever comes first — 3 VP if the beacon unit is on the battlefield and not within your deployment zone, or 5 VP if it is on the battlefield and not within your territory; score only the better tier.",
+    "game_version": { "edition": "11th", "dataslate": "launch" }
   }
 ]
