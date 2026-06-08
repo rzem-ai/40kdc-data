@@ -115,9 +115,10 @@
         <p>
           JSON Schemas for every game entity, plus an embedded dataset shipped
           behind a linked, typed API in the <code>@alpaca-software/40kdc-data</code>
-          npm package and the <code>wh40kdc</code> Rust crate. Includes ListForge
-          and NewRecruit roster importers and exporters that mirror byte-for-byte
-          across both implementations.
+          npm package, the <code>wh40kdc</code> Rust crate, and the
+          <code>wh40kdc</code> Python package. Includes ListForge and NewRecruit
+          roster importers and exporters that mirror byte-for-byte across all
+          three implementations.
         </p>
         <p>
           The package is the load-bearing artifact; everything else on this page
@@ -144,12 +145,31 @@
             </p>
             <div class="path">docs.rs/wh40kdc</div>
           </a>
+          <a class="card" href="https://pypi.org/project/wh40kdc/" target="_blank" rel="noopener">
+            <h3>Python package</h3>
+            <p class="blurb">
+              The <code>wh40kdc</code> package on PyPI — the same embedded
+              dataset behind a linked Dataset API, all importers and exporters,
+              the cruncher, and a validator for Python.
+            </p>
+            <div class="path">pypi.org/project/wh40kdc</div>
+          </a>
         </div>
       </section>
 
       <section>
         <h2>Example toollets</h2>
         <div class="card-grid">
+          <a class="card" href="https://list-builder.alpacasoft.dev">
+            <h3>List Builder</h3>
+            <p class="blurb">
+              Build a Warhammer 40K army list: pick a faction and detachment,
+              add units with their wargear and enhancements, and track your
+              points against the limit — then export to ListForge or NewRecruit.
+              Showcases the linked dataset API and the roster exporters.
+            </p>
+            <div class="path">list-builder.alpacasoft.dev</div>
+          </a>
           <a class="card" href="https://salvo.alpacasoft.dev">
             <h3>Salvo</h3>
             <p class="blurb">
