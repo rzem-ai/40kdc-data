@@ -171,6 +171,52 @@
     }
   },
   {
+    "name": "score_event/beacon/fixed",
+    "op": "score_event",
+    "args": {
+      "cardId": "beacon",
+      "approach": "fixed",
+      "asserted": [
+        {
+          "index": 0,
+          "count": 2
+        },
+        {
+          "index": 1,
+          "count": 2
+        }
+      ]
+    },
+    "expected": {
+      "turn": 10,
+      "cap": null,
+      "banked": 10
+    }
+  },
+  {
+    "name": "score_event/beacon/tactical",
+    "op": "score_event",
+    "args": {
+      "cardId": "beacon",
+      "approach": "tactical",
+      "asserted": [
+        {
+          "index": 0,
+          "count": 2
+        },
+        {
+          "index": 1,
+          "count": 2
+        }
+      ]
+    },
+    "expected": {
+      "turn": 10,
+      "cap": 5,
+      "banked": 5
+    }
+  },
+  {
     "name": "score_event/behind-enemy-lines/fixed",
     "op": "score_event",
     "args": {
