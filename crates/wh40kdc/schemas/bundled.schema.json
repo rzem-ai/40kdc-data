@@ -1203,7 +1203,7 @@
             "epic-deed",
             "wargear"
           ],
-          "description": "GW-printed stratagem category from the card"
+          "description": "GW-printed stratagem category from the card. Optional: 11e faction packs omit it for newly introduced detachments, and the category has no in-game effect; absent when the source does not state one."
         },
         "detachment_id": {
           "oneOf": [
@@ -1276,7 +1276,6 @@
         "id",
         "name",
         "category",
-        "type",
         "cp_cost",
         "phases",
         "player_turn",

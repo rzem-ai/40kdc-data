@@ -22,8 +22,10 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 2,
+    "force_dispositions": [
+      "purge-the-foe"
+    ]
   },
   {
     "id": "champions-of-fenris",
@@ -31,24 +33,19 @@
     "faction_id": "space-wolves",
     "detachment_rule_id": null,
     "enhancement_ids": [
-      "wolves-wisdom",
-      "foes-fate",
-      "fangrune-pendant",
-      "longstrider"
+      "a-giant-amongst-giants",
+      "preyslayer"
     ],
     "stratagem_ids": [
-      "chilling-howl",
-      "stalking-wolves",
-      "onrushing-storm",
-      "preytakers-eye",
-      "armour-of-contempt",
-      "runes-of-claiming"
+      "wolf-totems",
+      "runes-of-claiming",
+      "stalk-between-worlds"
     ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
+    "detachment_points": 1,
     "force_dispositions": []
   },
   {
@@ -74,7 +71,7 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
+    "detachment_points": 2,
     "force_dispositions": []
   },
   {
@@ -84,24 +81,27 @@
     "detachment_rule_id": null,
     "enhancement_ids": [
       "grimnars-mark",
+      "howling-onslaught",
       "howlmaw",
       "chariots-of-the-storm",
       "skjalds-foretelling"
     ],
     "stratagem_ids": [
       "the-foe-foreseen",
-      "eye-of-the-pack",
-      "grimnars-command",
-      "fenrisian-ferocity",
       "unrelenting-hunters",
-      "battle-instincts"
+      "grimnars-command",
+      "eye-of-the-pack",
+      "battle-instincts",
+      "fenrisian-ferocity"
     ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 2,
+    "force_dispositions": [
+      "take-and-hold"
+    ]
   },
   {
     "id": "saga-of-the-bold",
@@ -126,7 +126,53 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
+    "detachment_points": 2,
     "force_dispositions": []
+  },
+  {
+    "id": "legends-of-saga-and-song",
+    "name": "Legends of Saga and Song",
+    "faction_id": "space-wolves",
+    "detachment_rule_id": null,
+    "enhancement_ids": [
+      "thirst-for-glory",
+      "fierce-example"
+    ],
+    "stratagem_ids": [
+      "fangs-of-the-pack",
+      "chilling-howl",
+      "wings-of-the-blizzard"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 1,
+    "force_dispositions": [
+      "take-and-hold"
+    ]
+  },
+  {
+    "id": "veterans-of-the-fang",
+    "name": "Veterans of the Fang",
+    "faction_id": "space-wolves",
+    "detachment_rule_id": null,
+    "enhancement_ids": [
+      "eye-of-the-hunter",
+      "weaver-of-sagas"
+    ],
+    "stratagem_ids": [
+      "grizzled-killers",
+      "icy-calm",
+      "blade-keen-senses"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 1,
+    "force_dispositions": [
+      "disruption"
+    ]
   }
 ]

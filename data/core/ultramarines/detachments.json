@@ -12,17 +12,19 @@
     ],
     "stratagem_ids": [
       "armour-of-contempt",
-      "courage-and-honour",
+      "ultramarian-adaptivity",
       "exemplary-vigilance",
       "tactical-foresight",
-      "ultramarian-adaptivity",
-      "practical-tactics"
+      "practical-tactics",
+      "courage-and-honour"
     ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 3,
+    "force_dispositions": [
+      "priority-assets"
+    ]
   }
 ]

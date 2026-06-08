@@ -22,33 +22,7 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
-  },
-  {
-    "id": "shadowmark-talon",
-    "name": "Shadowmark Talon",
-    "faction_id": "deathwatch",
-    "detachment_rule_id": null,
-    "enhancement_ids": [
-      "blackwing-shroud",
-      "coronal-susurrant",
-      "umbral-raptor",
-      "hunters-instincts"
-    ],
-    "stratagem_ids": [
-      "armour-of-contempt",
-      "lay-low-the-tyrants",
-      "stunning-fusillade",
-      "raptorial-vigilance",
-      "feint-and-thrust",
-      "into-darkness"
-    ],
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    },
-    "detachment_points": null,
+    "detachment_points": 3,
     "force_dispositions": []
   }
 ]

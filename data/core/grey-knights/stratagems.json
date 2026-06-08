@@ -40,102 +40,6 @@
     }
   },
   {
-    "id": "fires-of-covenant",
-    "name": "FIRES OF COVENANT",
-    "category": "detachment",
-    "type": "battle-tactic",
-    "detachment_id": "warpbane-task-force",
-    "cp_cost": 1,
-    "phases": [
-      "movement"
-    ],
-    "player_turn": "opponent-turn",
-    "timing": "once-per-phase",
-    "target_restrictions": null,
-    "ability_id": null,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    }
-  },
-  {
-    "id": "aegis-eternal",
-    "name": "AEGIS ETERNAL",
-    "category": "detachment",
-    "type": "battle-tactic",
-    "detachment_id": "warpbane-task-force",
-    "cp_cost": 1,
-    "phases": [
-      "shooting"
-    ],
-    "player_turn": "opponent-turn",
-    "timing": "once-per-phase",
-    "target_restrictions": null,
-    "ability_id": null,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    }
-  },
-  {
-    "id": "repelling-sphere",
-    "name": "REPELLING SPHERE",
-    "category": "detachment",
-    "type": "battle-tactic",
-    "detachment_id": "warpbane-task-force",
-    "cp_cost": 1,
-    "phases": [
-      "charge"
-    ],
-    "player_turn": "opponent-turn",
-    "timing": "once-per-phase",
-    "target_restrictions": null,
-    "ability_id": null,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    }
-  },
-  {
-    "id": "sanctified-kill-zone",
-    "name": "SANCTIFIED KILL ZONE",
-    "category": "detachment",
-    "type": "battle-tactic",
-    "detachment_id": "warpbane-task-force",
-    "cp_cost": 1,
-    "phases": [
-      "fight",
-      "shooting"
-    ],
-    "player_turn": "either",
-    "timing": "once-per-phase",
-    "target_restrictions": null,
-    "ability_id": null,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    }
-  },
-  {
-    "id": "hallowed-beacon",
-    "name": "HALLOWED BEACON",
-    "category": "detachment",
-    "type": "battle-tactic",
-    "detachment_id": "warpbane-task-force",
-    "cp_cost": 1,
-    "phases": [
-      "movement"
-    ],
-    "player_turn": "your-turn",
-    "timing": "once-per-phase",
-    "target_restrictions": null,
-    "ability_id": null,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    }
-  },
-  {
     "id": "purgation-pattern",
     "name": "PURGATION PATTERN",
     "category": "detachment",
@@ -451,25 +355,6 @@
     }
   },
   {
-    "id": "flames-of-sanctity",
-    "name": "FLAMES OF SANCTITY",
-    "category": "detachment",
-    "type": "strategic-ploy",
-    "detachment_id": "warpbane-task-force",
-    "cp_cost": 1,
-    "phases": [
-      "fight"
-    ],
-    "player_turn": "either",
-    "timing": "once-per-phase",
-    "target_restrictions": null,
-    "ability_id": null,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    }
-  },
-  {
     "id": "duty-unending",
     "name": "DUTY UNENDING",
     "category": "detachment",
@@ -689,6 +574,287 @@
     "cp_cost": 2,
     "phases": [
       "fight"
+    ],
+    "player_turn": "opponent-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "sanctified-kill-zone",
+    "name": "Sanctified Kill Zone",
+    "category": "detachment",
+    "type": "battle-tactic",
+    "detachment_id": "warpbane-task-force",
+    "cp_cost": 1,
+    "phases": [
+      "shooting",
+      "fight"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "fires-of-covenant",
+    "name": "Fires of Covenant",
+    "category": "detachment",
+    "type": "battle-tactic",
+    "detachment_id": "warpbane-task-force",
+    "cp_cost": 1,
+    "phases": [
+      "movement"
+    ],
+    "player_turn": "opponent-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "flames-of-sanctity",
+    "name": "Flames of Sanctity",
+    "category": "detachment",
+    "type": "strategic-ploy",
+    "detachment_id": "warpbane-task-force",
+    "cp_cost": 1,
+    "phases": [
+      "fight"
+    ],
+    "player_turn": "either",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "aegis-eternal",
+    "name": "Aegis Eternal",
+    "category": "detachment",
+    "type": "battle-tactic",
+    "detachment_id": "warpbane-task-force",
+    "cp_cost": 1,
+    "phases": [
+      "shooting"
+    ],
+    "player_turn": "opponent-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "hallowed-beacon",
+    "name": "Hallowed Beacon",
+    "category": "detachment",
+    "type": "battle-tactic",
+    "detachment_id": "warpbane-task-force",
+    "cp_cost": 1,
+    "phases": [
+      "movement"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "repelling-sphere",
+    "name": "Repelling Sphere",
+    "category": "detachment",
+    "type": "battle-tactic",
+    "detachment_id": "warpbane-task-force",
+    "cp_cost": 1,
+    "phases": [
+      "charge"
+    ],
+    "player_turn": "opponent-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "truesilver-aegis",
+    "name": "Truesilver Aegis",
+    "category": "detachment",
+    "detachment_id": "argent-assault",
+    "cp_cost": 1,
+    "phases": [
+      "command",
+      "movement",
+      "shooting",
+      "charge",
+      "fight"
+    ],
+    "player_turn": "either",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "a-threat-ended",
+    "name": "A Threat Ended",
+    "category": "detachment",
+    "detachment_id": "argent-assault",
+    "cp_cost": 1,
+    "phases": [
+      "fight"
+    ],
+    "player_turn": "either",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "aura-of-vengeance",
+    "name": "Aura of Vengeance",
+    "category": "detachment",
+    "detachment_id": "argent-assault",
+    "cp_cost": 1,
+    "phases": [
+      "fight"
+    ],
+    "player_turn": "either",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "soul-locked",
+    "name": "Soul-locked",
+    "category": "detachment",
+    "detachment_id": "fires-of-purgation",
+    "cp_cost": 1,
+    "phases": [
+      "movement"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "focused-immolation",
+    "name": "Focused Immolation",
+    "category": "detachment",
+    "detachment_id": "fires-of-purgation",
+    "cp_cost": 1,
+    "phases": [
+      "shooting"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "spiritsear",
+    "name": "Spiritsear",
+    "category": "detachment",
+    "detachment_id": "fires-of-purgation",
+    "cp_cost": 1,
+    "phases": [
+      "shooting"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "blades-from-the-beyond",
+    "name": "Blades From the Beyond",
+    "category": "detachment",
+    "detachment_id": "immaterial-interdiction",
+    "cp_cost": 1,
+    "phases": [
+      "fight"
+    ],
+    "player_turn": "either",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "by-thought-alone",
+    "name": "By Thought Alone",
+    "category": "detachment",
+    "detachment_id": "immaterial-interdiction",
+    "cp_cost": 1,
+    "phases": [
+      "shooting"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "responsive-displacement",
+    "name": "Responsive Displacement",
+    "category": "detachment",
+    "detachment_id": "immaterial-interdiction",
+    "cp_cost": 1,
+    "phases": [
+      "movement"
     ],
     "player_turn": "opponent-turn",
     "timing": "once-per-phase",

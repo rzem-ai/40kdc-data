@@ -9536,8 +9536,7 @@ impl<'de> ::serde::Deserialize<'de> for StatValueString {
 ///    "name",
 ///    "phases",
 ///    "player_turn",
-///    "timing",
-///    "type"
+///    "timing"
 ///  ],
 ///  "properties": {
 ///    "ability_id": {
@@ -9623,7 +9622,7 @@ impl<'de> ::serde::Deserialize<'de> for StatValueString {
 ///      ]
 ///    },
 ///    "type": {
-///      "description": "GW-printed stratagem category from the card",
+///      "description": "GW-printed stratagem category from the card. Optional: 11e faction packs omit it for newly introduced detachments, and the category has no in-game effect; absent when the source does not state one.",
 ///      "type": "string",
 ///      "enum": [
 ///        "battle-tactic",
@@ -9656,9 +9655,13 @@ pub struct Stratagem {
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub target_restrictions: ::std::option::Option<StratagemTargetRestrictions>,
     pub timing: StratagemTiming,
-    ///GW-printed stratagem category from the card
-    #[serde(rename = "type")]
-    pub type_: StratagemType,
+    ///GW-printed stratagem category from the card. Optional: 11e faction packs omit it for newly introduced detachments, and the category has no in-game effect; absent when the source does not state one.
+    #[serde(
+        rename = "type",
+        default,
+        skip_serializing_if = "::std::option::Option::is_none"
+    )]
+    pub type_: ::std::option::Option<StratagemType>,
 }
 ///Whether this is a universal core stratagem or tied to a specific detachment
 ///
@@ -9940,13 +9943,13 @@ impl ::std::convert::TryFrom<::std::string::String> for StratagemTiming {
         value.parse()
     }
 }
-///GW-printed stratagem category from the card
+///GW-printed stratagem category from the card. Optional: 11e faction packs omit it for newly introduced detachments, and the category has no in-game effect; absent when the source does not state one.
 ///
 /// <details><summary>JSON schema</summary>
 ///
 /// ```json
 ///{
-///  "description": "GW-printed stratagem category from the card",
+///  "description": "GW-printed stratagem category from the card. Optional: 11e faction packs omit it for newly introduced detachments, and the category has no in-game effect; absent when the source does not state one.",
 ///  "type": "string",
 ///  "enum": [
 ///    "battle-tactic",

@@ -1,16 +1,16 @@
 [
   {
     "id": "armour-of-contempt",
-    "name": "ARMOUR OF CONTEMPT",
+    "name": "Armour of Contempt",
     "category": "detachment",
     "type": "battle-tactic",
     "detachment_id": "blade-of-ultramar",
     "cp_cost": 1,
     "phases": [
-      "fight",
-      "shooting"
+      "shooting",
+      "fight"
     ],
-    "player_turn": "either",
+    "player_turn": "opponent-turn",
     "timing": "once-per-phase",
     "target_restrictions": null,
     "ability_id": null,
@@ -20,16 +20,16 @@
     }
   },
   {
-    "id": "courage-and-honour",
-    "name": "COURAGE AND HONOUR!",
+    "id": "ultramarian-adaptivity",
+    "name": "Ultramarian Adaptivity",
     "category": "detachment",
-    "type": "battle-tactic",
+    "type": "strategic-ploy",
     "detachment_id": "blade-of-ultramar",
     "cp_cost": 1,
     "phases": [
-      "fight"
+      "command"
     ],
-    "player_turn": "either",
+    "player_turn": "your-turn",
     "timing": "once-per-phase",
     "target_restrictions": null,
     "ability_id": null,
@@ -40,7 +40,7 @@
   },
   {
     "id": "exemplary-vigilance",
-    "name": "EXEMPLARY VIGILANCE",
+    "name": "Exemplary Vigilance",
     "category": "detachment",
     "type": "battle-tactic",
     "detachment_id": "blade-of-ultramar",
@@ -59,35 +59,16 @@
   },
   {
     "id": "tactical-foresight",
-    "name": "TACTICAL FORESIGHT",
+    "name": "Tactical Foresight",
     "category": "detachment",
     "type": "epic-deed",
     "detachment_id": "blade-of-ultramar",
     "cp_cost": 1,
     "phases": [
-      "fight",
-      "shooting"
+      "shooting",
+      "fight"
     ],
-    "player_turn": "either",
-    "timing": "once-per-phase",
-    "target_restrictions": null,
-    "ability_id": null,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    }
-  },
-  {
-    "id": "ultramarian-adaptivity",
-    "name": "ULTRAMARIAN ADAPTIVITY",
-    "category": "detachment",
-    "type": "strategic-ploy",
-    "detachment_id": "blade-of-ultramar",
-    "cp_cost": 1,
-    "phases": [
-      "command"
-    ],
-    "player_turn": "your-turn",
+    "player_turn": "opponent-turn",
     "timing": "once-per-phase",
     "target_restrictions": null,
     "ability_id": null,
@@ -98,7 +79,7 @@
   },
   {
     "id": "practical-tactics",
-    "name": "PRACTICAL TACTICS",
+    "name": "Practical Tactics",
     "category": "detachment",
     "type": "strategic-ploy",
     "detachment_id": "blade-of-ultramar",
@@ -107,6 +88,25 @@
       "movement"
     ],
     "player_turn": "opponent-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "courage-and-honour",
+    "name": "Courage and Honour!",
+    "category": "detachment",
+    "type": "battle-tactic",
+    "detachment_id": "blade-of-ultramar",
+    "cp_cost": 1,
+    "phases": [
+      "fight"
+    ],
+    "player_turn": "either",
     "timing": "once-per-phase",
     "target_restrictions": null,
     "ability_id": null,

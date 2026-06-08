@@ -147,7 +147,7 @@
     "id": "prescient-flash",
     "name": "Prescient Flash",
     "detachment_id": "angelic-inheritors",
-    "cost": 20,
+    "cost": 0,
     "keyword_restrictions": [
       "Blood Angels"
     ],
@@ -165,7 +165,7 @@
     "id": "troubling-visions",
     "name": "Troubling Visions",
     "detachment_id": "angelic-inheritors",
-    "cost": 15,
+    "cost": 0,
     "keyword_restrictions": [
       "Blood Angels"
     ],
@@ -183,7 +183,7 @@
     "id": "blazing-icon",
     "name": "Blazing Icon",
     "detachment_id": "angelic-inheritors",
-    "cost": 20,
+    "cost": 0,
     "keyword_restrictions": [
       "Blood Angels"
     ],
@@ -201,7 +201,7 @@
     "id": "ordained-sacrifice",
     "name": "Ordained Sacrifice",
     "detachment_id": "angelic-inheritors",
-    "cost": 25,
+    "cost": 0,
     "keyword_restrictions": [
       "Blood Angels"
     ],
@@ -219,7 +219,7 @@
     "id": "carmine-reliquary",
     "name": "Carmine Reliquary",
     "detachment_id": "rage-cursed-onslaught",
-    "cost": 30,
+    "cost": 0,
     "keyword_restrictions": [
       "Blood Angels"
     ],
@@ -237,7 +237,7 @@
     "id": "master-of-the-red-thirst",
     "name": "Master of the Red Thirst",
     "detachment_id": "rage-cursed-onslaught",
-    "cost": 25,
+    "cost": 0,
     "keyword_restrictions": [
       "Blood Angels"
     ],
@@ -253,9 +253,9 @@
   },
   {
     "id": "sanguinary-tear-aura",
-    "name": "Sanguinary Tear (Aura)",
+    "name": "Sanguinary Tear (aura)",
     "detachment_id": "rage-cursed-onslaught",
-    "cost": 35,
+    "cost": 0,
     "keyword_restrictions": [
       "Blood Angels"
     ],
@@ -273,7 +273,169 @@
     "id": "angels-fang",
     "name": "Angel’s Fang",
     "detachment_id": "rage-cursed-onslaught",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Blood Angels"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "angelic-executioner",
+    "name": "Angelic Executioner",
+    "detachment_id": "encarmine-speartip",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Blood Angels"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "shadow-of-abomination",
+    "name": "Shadow of Abomination",
+    "detachment_id": "encarmine-speartip",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Blood Angels"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "blood-boil",
+    "name": "Blood Boil",
+    "detachment_id": "legacy-of-grace",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Blood Angels"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "aureole-of-the-angel",
+    "name": "Aureole of the Angel",
+    "detachment_id": "legacy-of-grace",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Blood Angels"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "instinctive-interception",
+    "name": "Instinctive Interception",
+    "detachment_id": "wrath-of-the-doomed",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Blood Angels"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "speed-of-the-primarch",
+    "name": "Speed of the Primarch",
+    "detachment_id": "liberator-assault-group",
     "cost": 25,
+    "keyword_restrictions": [
+      "Blood Angels"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "rage-fuelled-warrior",
+    "name": "Rage-fuelled Warrior",
+    "detachment_id": "liberator-assault-group",
+    "cost": 35,
+    "keyword_restrictions": [
+      "Blood Angels"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "icon-of-the-angel",
+    "name": "Icon of the Angel",
+    "detachment_id": "liberator-assault-group",
+    "cost": 20,
+    "keyword_restrictions": [
+      "Blood Angels"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "gift-of-foresight",
+    "name": "Gift of Foresight",
+    "detachment_id": "liberator-assault-group",
+    "cost": 15,
     "keyword_restrictions": [
       "Blood Angels"
     ],

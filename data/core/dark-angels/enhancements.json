@@ -147,7 +147,7 @@
     "id": "calibanite-armaments",
     "name": "Calibanite Armaments",
     "detachment_id": "lions-blade-task-force",
-    "cost": 15,
+    "cost": 0,
     "keyword_restrictions": [
       "Dark Angels"
     ],
@@ -165,7 +165,7 @@
     "id": "lord-of-the-hunt",
     "name": "Lord of the Hunt",
     "detachment_id": "lions-blade-task-force",
-    "cost": 15,
+    "cost": 0,
     "keyword_restrictions": [
       "Dark Angels"
     ],
@@ -183,7 +183,7 @@
     "id": "stalwart-champion",
     "name": "Stalwart Champion",
     "detachment_id": "lions-blade-task-force",
-    "cost": 25,
+    "cost": 0,
     "keyword_restrictions": [
       "Dark Angels"
     ],
@@ -201,7 +201,7 @@
     "id": "fulgus-magna",
     "name": "Fulgus Magna",
     "detachment_id": "lions-blade-task-force",
-    "cost": 20,
+    "cost": 0,
     "keyword_restrictions": [
       "Dark Angels"
     ],
@@ -217,9 +217,9 @@
   },
   {
     "id": "tempered-in-battle-aura",
-    "name": "Tempered in Battle (Aura)",
+    "name": "Tempered in Battle (aura)",
     "detachment_id": "wrath-of-the-rock",
-    "cost": 10,
+    "cost": 0,
     "keyword_restrictions": [
       "Dark Angels"
     ],
@@ -237,7 +237,7 @@
     "id": "ancient-weapons",
     "name": "Ancient Weapons",
     "detachment_id": "wrath-of-the-rock",
-    "cost": 25,
+    "cost": 0,
     "keyword_restrictions": [
       "Dark Angels"
     ],
@@ -255,7 +255,7 @@
     "id": "deathwing-assault",
     "name": "Deathwing Assault",
     "detachment_id": "wrath-of-the-rock",
-    "cost": 15,
+    "cost": 0,
     "keyword_restrictions": [
       "Dark Angels"
     ],
@@ -273,7 +273,187 @@
     "id": "lord-of-the-ravenwing",
     "name": "Lord of the Ravenwing",
     "detachment_id": "wrath-of-the-rock",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Dark Angels"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "petition-of-stability",
+    "name": "Petition of Stability",
+    "detachment_id": "dark-age-arsenal",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Dark Angels"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": true,
+    "max_targets": 1
+  },
+  {
+    "id": "entreaty-of-perpetual-ardour",
+    "name": "Entreaty of Perpetual Ardour",
+    "detachment_id": "dark-age-arsenal",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Dark Angels"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": true,
+    "max_targets": 1
+  },
+  {
+    "id": "thundercowl-turbines",
+    "name": "Thundercowl Turbines",
+    "detachment_id": "darkflight-pursuit",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Dark Angels"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": true,
+    "max_targets": 1
+  },
+  {
+    "id": "nightforged-battery",
+    "name": "Nightforged Battery",
+    "detachment_id": "darkflight-pursuit",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Dark Angels"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": true,
+    "max_targets": 1
+  },
+  {
+    "id": "limitless-zeal",
+    "name": "Limitless Zeal",
+    "detachment_id": "interrogation-conclave",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Dark Angels"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "inescapable-interrogation",
+    "name": "Inescapable Interrogation",
+    "detachment_id": "interrogation-conclave",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Dark Angels"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "master-crafted-weapon",
+    "name": "Master-crafted Weapon",
+    "detachment_id": "company-of-hunters",
     "cost": 10,
+    "keyword_restrictions": [
+      "Dark Angels"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "mounted-strategist",
+    "name": "Mounted Strategist",
+    "detachment_id": "company-of-hunters",
+    "cost": 30,
+    "keyword_restrictions": [
+      "Dark Angels"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "master-of-manoeuvre",
+    "name": "Master of Manoeuvre",
+    "detachment_id": "company-of-hunters",
+    "cost": 15,
+    "keyword_restrictions": [
+      "Dark Angels"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "recon-hunter",
+    "name": "Recon Hunter",
+    "detachment_id": "company-of-hunters",
+    "cost": 20,
     "keyword_restrictions": [
       "Dark Angels"
     ],

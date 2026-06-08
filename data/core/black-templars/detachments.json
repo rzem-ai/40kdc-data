@@ -22,8 +22,10 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 2,
+    "force_dispositions": [
+      "purge-the-foe"
+    ]
   },
   {
     "id": "vindication-task-force",
@@ -48,8 +50,10 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 2,
+    "force_dispositions": [
+      "priority-assets"
+    ]
   },
   {
     "id": "wrathful-procession",
@@ -57,24 +61,90 @@
     "faction_id": "black-templars",
     "detachment_rule_id": null,
     "enhancement_ids": [
-      "pyrebrand",
-      "sacred-rage",
-      "taramonds-censer",
-      "benediction-of-fury"
+      "benediction-of-fury",
+      "adaptable-executioner"
     ],
     "stratagem_ids": [
-      "brute-fervour",
-      "fuelled-by-wrath",
-      "armour-of-contempt",
+      "fuelled-by-faith",
       "castigate-the-demagogues",
-      "relentless-momentum",
-      "voice-of-devotion"
+      "rite-of-perfervid-wrath"
     ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 1,
+    "force_dispositions": [
+      "take-and-hold"
+    ]
+  },
+  {
+    "id": "godhammer-assault-force",
+    "name": "Godhammer Assault Force",
+    "faction_id": "black-templars",
+    "detachment_rule_id": null,
+    "enhancement_ids": [
+      "paragon-of-fury",
+      "battle-psalm-precentor",
+      "augury-servo-host",
+      "herald-of-sacred-slaughter"
+    ],
+    "stratagem_ids": [
+      "condemnatory-info-screed",
+      "blessed-hull",
+      "a-ceaseless-cause",
+      "uncompromising-egress",
+      "gauntlet-of-the-god-emperor",
+      "focused-hatred"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 2,
+    "force_dispositions": [
+      "disruption"
+    ]
+  },
+  {
+    "id": "marshals-household",
+    "name": "Marshal's Household",
+    "faction_id": "black-templars",
+    "detachment_rule_id": null,
+    "enhancement_ids": [
+      "fervent-exemplars",
+      "inheritors-of-sigismund"
+    ],
+    "stratagem_ids": [
+      "blade-of-detestation",
+      "slayers-of-abominations",
+      "unsparing-execution"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 1,
+    "force_dispositions": [
+      "priority-assets"
+    ]
+  },
+  {
+    "id": "the-living-miracle",
+    "name": "The Living Miracle",
+    "faction_id": "black-templars",
+    "detachment_rule_id": null,
+    "enhancement_ids": [
+      "guiding-omens"
+    ],
+    "stratagem_ids": [],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 1,
+    "force_dispositions": [
+      "purge-the-foe"
+    ]
   }
 ]

@@ -3,9 +3,9 @@
     "id": "armour-of-antoninus",
     "name": "Armour of Antoninus",
     "detachment_id": "blade-of-ultramar",
-    "cost": 10,
+    "cost": 0,
     "keyword_restrictions": [
-      "Ultramarines"
+      "Adeptus Astartes"
     ],
     "ability_id": null,
     "is_unique": true,
@@ -21,9 +21,9 @@
     "id": "oath-of-macragge",
     "name": "Oath of Macragge",
     "detachment_id": "blade-of-ultramar",
-    "cost": 15,
+    "cost": 0,
     "keyword_restrictions": [
-      "Ultramarines"
+      "Adeptus Astartes"
     ],
     "ability_id": null,
     "is_unique": true,
@@ -39,9 +39,9 @@
     "id": "student-of-the-codex",
     "name": "Student of the Codex",
     "detachment_id": "blade-of-ultramar",
-    "cost": 20,
+    "cost": 0,
     "keyword_restrictions": [
-      "Ultramarines"
+      "Adeptus Astartes"
     ],
     "ability_id": null,
     "is_unique": true,
@@ -57,9 +57,9 @@
     "id": "veteran-of-behemoth",
     "name": "Veteran of Behemoth",
     "detachment_id": "blade-of-ultramar",
-    "cost": 25,
+    "cost": 0,
     "keyword_restrictions": [
-      "Ultramarines"
+      "Adeptus Astartes"
     ],
     "ability_id": null,
     "is_unique": true,

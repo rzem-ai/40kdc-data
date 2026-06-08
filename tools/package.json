@@ -64,6 +64,7 @@
     "translate": "tsx src/cli.ts translate",
     "audit:coverage": "tsx src/cli.ts audit-coverage --write",
     "scrub:defensive-flag": "tsx src/scrub-defensive-flag.ts",
+    "extract:faction-pack": "tsx src/extract-faction-pack.ts",
     "author:input": "tsx src/author-input.ts",
     "author:seed": "tsx src/author-seed.ts",
     "author:propose": "tsx src/author-batch.ts propose",

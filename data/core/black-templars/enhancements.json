@@ -72,78 +72,6 @@
     "max_targets": 1
   },
   {
-    "id": "pyrebrand",
-    "name": "Pyrebrand",
-    "detachment_id": "wrathful-procession",
-    "cost": 25,
-    "keyword_restrictions": [
-      "Black Templars"
-    ],
-    "ability_id": null,
-    "is_unique": true,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    },
-    "points_provisional": true,
-    "upgrade_tag": false,
-    "max_targets": 1
-  },
-  {
-    "id": "sacred-rage",
-    "name": "Sacred Rage",
-    "detachment_id": "wrathful-procession",
-    "cost": 30,
-    "keyword_restrictions": [
-      "Black Templars"
-    ],
-    "ability_id": null,
-    "is_unique": true,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    },
-    "points_provisional": true,
-    "upgrade_tag": false,
-    "max_targets": 1
-  },
-  {
-    "id": "taramonds-censer",
-    "name": "Taramond’s Censer",
-    "detachment_id": "wrathful-procession",
-    "cost": 15,
-    "keyword_restrictions": [
-      "Black Templars"
-    ],
-    "ability_id": null,
-    "is_unique": true,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    },
-    "points_provisional": true,
-    "upgrade_tag": false,
-    "max_targets": 1
-  },
-  {
-    "id": "benediction-of-fury",
-    "name": "Benediction of Fury",
-    "detachment_id": "wrathful-procession",
-    "cost": 10,
-    "keyword_restrictions": [
-      "Black Templars"
-    ],
-    "ability_id": null,
-    "is_unique": true,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    },
-    "points_provisional": true,
-    "upgrade_tag": false,
-    "max_targets": 1
-  },
-  {
     "id": "imperialis-of-the-eternal-crusade",
     "name": "Imperialis of the Eternal Crusade",
     "detachment_id": "vindication-task-force",
@@ -202,6 +130,168 @@
     "name": "Warden of Honour",
     "detachment_id": "vindication-task-force",
     "cost": 20,
+    "keyword_restrictions": [
+      "Black Templars"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "paragon-of-fury",
+    "name": "Paragon of Fury",
+    "detachment_id": "godhammer-assault-force",
+    "cost": 25,
+    "keyword_restrictions": [
+      "Adeptus Astartes"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "battle-psalm-precentor",
+    "name": "Battle-Psalm Precentor",
+    "detachment_id": "godhammer-assault-force",
+    "cost": 10,
+    "keyword_restrictions": [
+      "Adeptus Astartes"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "augury-servo-host",
+    "name": "Augury Servo-Host",
+    "detachment_id": "godhammer-assault-force",
+    "cost": 15,
+    "keyword_restrictions": [
+      "Adeptus Astartes"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "herald-of-sacred-slaughter",
+    "name": "Herald of Sacred Slaughter",
+    "detachment_id": "godhammer-assault-force",
+    "cost": 15,
+    "keyword_restrictions": [
+      "Adeptus Astartes"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "benediction-of-fury",
+    "name": "Benediction of Fury",
+    "detachment_id": "wrathful-procession",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Black Templars"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "adaptable-executioner",
+    "name": "Adaptable Executioner",
+    "detachment_id": "wrathful-procession",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Black Templars"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "fervent-exemplars",
+    "name": "Fervent Exemplars",
+    "detachment_id": "marshals-household",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Black Templars"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": true,
+    "max_targets": 1
+  },
+  {
+    "id": "inheritors-of-sigismund",
+    "name": "Inheritors of Sigismund",
+    "detachment_id": "marshals-household",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Black Templars"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": true,
+    "max_targets": 1
+  },
+  {
+    "id": "guiding-omens",
+    "name": "Guiding Omens",
+    "detachment_id": "the-living-miracle",
+    "cost": 0,
     "keyword_restrictions": [
       "Black Templars"
     ],

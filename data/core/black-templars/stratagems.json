@@ -96,87 +96,6 @@
     }
   },
   {
-    "id": "brute-fervour",
-    "name": "BRUTE FERVOUR",
-    "category": "detachment",
-    "type": "battle-tactic",
-    "detachment_id": "wrathful-procession",
-    "cp_cost": 1,
-    "phases": [
-      "fight"
-    ],
-    "player_turn": "either",
-    "timing": "once-per-phase",
-    "target_restrictions": null,
-    "ability_id": null,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    }
-  },
-  {
-    "id": "fuelled-by-wrath",
-    "name": "FUELLED BY WRATH",
-    "category": "detachment",
-    "type": "battle-tactic",
-    "detachment_id": "wrathful-procession",
-    "cp_cost": 1,
-    "phases": [
-      "command",
-      "movement",
-      "shooting",
-      "charge",
-      "fight"
-    ],
-    "player_turn": "either",
-    "timing": "once-per-phase",
-    "target_restrictions": null,
-    "ability_id": null,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    }
-  },
-  {
-    "id": "armour-of-contempt",
-    "name": "ARMOUR OF CONTEMPT",
-    "category": "detachment",
-    "type": "battle-tactic",
-    "detachment_id": "wrathful-procession",
-    "cp_cost": 1,
-    "phases": [
-      "fight",
-      "shooting"
-    ],
-    "player_turn": "either",
-    "timing": "once-per-phase",
-    "target_restrictions": null,
-    "ability_id": null,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    }
-  },
-  {
-    "id": "castigate-the-demagogues",
-    "name": "CASTIGATE THE DEMAGOGUES",
-    "category": "detachment",
-    "type": "battle-tactic",
-    "detachment_id": "wrathful-procession",
-    "cp_cost": 1,
-    "phases": [
-      "fight"
-    ],
-    "player_turn": "either",
-    "timing": "once-per-phase",
-    "target_restrictions": null,
-    "ability_id": null,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    }
-  },
-  {
     "id": "refusal-to-yield",
     "name": "REFUSAL TO YIELD",
     "category": "detachment",
@@ -296,10 +215,164 @@
     }
   },
   {
-    "id": "relentless-momentum",
-    "name": "RELENTLESS MOMENTUM",
+    "id": "perfervid-intervention",
+    "name": "PERFERVID INTERVENTION",
     "category": "detachment",
     "type": "strategic-ploy",
+    "detachment_id": "vindication-task-force",
+    "cp_cost": 2,
+    "phases": [
+      "charge"
+    ],
+    "player_turn": "opponent-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "condemnatory-info-screed",
+    "name": "CONDEMNATORY INFO-SCREED",
+    "category": "detachment",
+    "type": "battle-tactic",
+    "detachment_id": "godhammer-assault-force",
+    "cp_cost": 1,
+    "phases": [
+      "fight"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "blessed-hull",
+    "name": "BLESSED HULL",
+    "category": "detachment",
+    "type": "battle-tactic",
+    "detachment_id": "godhammer-assault-force",
+    "cp_cost": 2,
+    "phases": [
+      "shooting"
+    ],
+    "player_turn": "opponent-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "a-ceaseless-cause",
+    "name": "A CEASELESS CAUSE",
+    "category": "detachment",
+    "type": "strategic-ploy",
+    "detachment_id": "godhammer-assault-force",
+    "cp_cost": 1,
+    "phases": [
+      "fight"
+    ],
+    "player_turn": "either",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "uncompromising-egress",
+    "name": "UNCOMPROMISING EGRESS",
+    "category": "detachment",
+    "type": "strategic-ploy",
+    "detachment_id": "godhammer-assault-force",
+    "cp_cost": 1,
+    "phases": [
+      "movement"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "gauntlet-of-the-god-emperor",
+    "name": "GAUNTLET OF THE GOD-EMPEROR",
+    "category": "detachment",
+    "type": "strategic-ploy",
+    "detachment_id": "godhammer-assault-force",
+    "cp_cost": 1,
+    "phases": [
+      "movement"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "focused-hatred",
+    "name": "FOCUSED HATRED",
+    "category": "detachment",
+    "type": "strategic-ploy",
+    "detachment_id": "godhammer-assault-force",
+    "cp_cost": 1,
+    "phases": [
+      "charge"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "fuelled-by-faith",
+    "name": "Fuelled By Faith",
+    "category": "detachment",
+    "detachment_id": "wrathful-procession",
+    "cp_cost": 1,
+    "phases": [
+      "command",
+      "movement",
+      "shooting",
+      "charge",
+      "fight"
+    ],
+    "player_turn": "either",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "castigate-the-demagogues",
+    "name": "Castigate the Demagogues",
+    "category": "detachment",
     "detachment_id": "wrathful-procession",
     "cp_cost": 1,
     "phases": [
@@ -315,14 +388,31 @@
     }
   },
   {
-    "id": "voice-of-devotion",
-    "name": "VOICE OF DEVOTION",
+    "id": "rite-of-perfervid-wrath",
+    "name": "Rite of Perfervid Wrath",
     "category": "detachment",
-    "type": "strategic-ploy",
     "detachment_id": "wrathful-procession",
     "cp_cost": 1,
     "phases": [
-      "command"
+      "fight"
+    ],
+    "player_turn": "either",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "blade-of-detestation",
+    "name": "Blade of Detestation",
+    "category": "detachment",
+    "detachment_id": "marshals-household",
+    "cp_cost": 1,
+    "phases": [
+      "charge"
     ],
     "player_turn": "your-turn",
     "timing": "once-per-phase",
@@ -334,14 +424,31 @@
     }
   },
   {
-    "id": "perfervid-intervention",
-    "name": "PERFERVID INTERVENTION",
+    "id": "slayers-of-abominations",
+    "name": "Slayers of Abominations",
     "category": "detachment",
-    "type": "strategic-ploy",
-    "detachment_id": "vindication-task-force",
-    "cp_cost": 2,
+    "detachment_id": "marshals-household",
+    "cp_cost": 1,
     "phases": [
-      "charge"
+      "fight"
+    ],
+    "player_turn": "either",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "unsparing-execution",
+    "name": "Unsparing Execution",
+    "category": "detachment",
+    "detachment_id": "marshals-household",
+    "cp_cost": 1,
+    "phases": [
+      "movement"
     ],
     "player_turn": "opponent-turn",
     "timing": "once-per-phase",

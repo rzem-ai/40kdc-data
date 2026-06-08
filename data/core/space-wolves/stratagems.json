@@ -57,45 +57,6 @@
     }
   },
   {
-    "id": "the-foe-foreseen",
-    "name": "THE FOE FORESEEN",
-    "category": "detachment",
-    "type": "battle-tactic",
-    "detachment_id": "saga-of-the-great-wolf",
-    "cp_cost": 1,
-    "phases": [
-      "fight",
-      "shooting"
-    ],
-    "player_turn": "either",
-    "timing": "once-per-phase",
-    "target_restrictions": null,
-    "ability_id": null,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    }
-  },
-  {
-    "id": "eye-of-the-pack",
-    "name": "EYE OF THE PACK",
-    "category": "detachment",
-    "type": "battle-tactic",
-    "detachment_id": "saga-of-the-great-wolf",
-    "cp_cost": 1,
-    "phases": [
-      "shooting"
-    ],
-    "player_turn": "your-turn",
-    "timing": "once-per-phase",
-    "target_restrictions": null,
-    "ability_id": null,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    }
-  },
-  {
     "id": "inspiring-presence",
     "name": "INSPIRING PRESENCE",
     "category": "detachment",
@@ -307,122 +268,6 @@
     }
   },
   {
-    "id": "chilling-howl",
-    "name": "CHILLING HOWL",
-    "category": "detachment",
-    "type": "strategic-ploy",
-    "detachment_id": "champions-of-fenris",
-    "cp_cost": 1,
-    "phases": [
-      "command"
-    ],
-    "player_turn": "opponent-turn",
-    "timing": "once-per-phase",
-    "target_restrictions": null,
-    "ability_id": null,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    }
-  },
-  {
-    "id": "stalking-wolves",
-    "name": "STALKING WOLVES",
-    "category": "detachment",
-    "type": "strategic-ploy",
-    "detachment_id": "champions-of-fenris",
-    "cp_cost": 1,
-    "phases": [
-      "shooting"
-    ],
-    "player_turn": "opponent-turn",
-    "timing": "once-per-phase",
-    "target_restrictions": null,
-    "ability_id": null,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    }
-  },
-  {
-    "id": "onrushing-storm",
-    "name": "ONRUSHING STORM",
-    "category": "detachment",
-    "type": "strategic-ploy",
-    "detachment_id": "champions-of-fenris",
-    "cp_cost": 1,
-    "phases": [
-      "fight"
-    ],
-    "player_turn": "opponent-turn",
-    "timing": "once-per-phase",
-    "target_restrictions": null,
-    "ability_id": null,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    }
-  },
-  {
-    "id": "preytakers-eye",
-    "name": "PREYTAKER’S EYE",
-    "category": "detachment",
-    "type": "strategic-ploy",
-    "detachment_id": "champions-of-fenris",
-    "cp_cost": 1,
-    "phases": [
-      "fight",
-      "shooting"
-    ],
-    "player_turn": "either",
-    "timing": "once-per-phase",
-    "target_restrictions": null,
-    "ability_id": null,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    }
-  },
-  {
-    "id": "armour-of-contempt",
-    "name": "ARMOUR OF CONTEMPT",
-    "category": "detachment",
-    "type": "strategic-ploy",
-    "detachment_id": "champions-of-fenris",
-    "cp_cost": 1,
-    "phases": [
-      "fight",
-      "shooting"
-    ],
-    "player_turn": "either",
-    "timing": "once-per-phase",
-    "target_restrictions": null,
-    "ability_id": null,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    }
-  },
-  {
-    "id": "runes-of-claiming",
-    "name": "RUNES OF CLAIMING",
-    "category": "detachment",
-    "type": "strategic-ploy",
-    "detachment_id": "champions-of-fenris",
-    "cp_cost": 1,
-    "phases": [
-      "command"
-    ],
-    "player_turn": "your-turn",
-    "timing": "once-per-phase",
-    "target_restrictions": null,
-    "ability_id": null,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    }
-  },
-  {
     "id": "envelop-and-ensnare",
     "name": "ENVELOP AND ENSNARE",
     "category": "detachment",
@@ -500,10 +345,104 @@
     }
   },
   {
-    "id": "grimnars-command",
-    "name": "GRIMNAR’S COMMAND",
+    "id": "wolf-totems",
+    "name": "Wolf Totems",
     "category": "detachment",
-    "type": "strategic-ploy",
+    "detachment_id": "champions-of-fenris",
+    "cp_cost": 1,
+    "phases": [
+      "command",
+      "movement",
+      "shooting",
+      "charge",
+      "fight"
+    ],
+    "player_turn": "either",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "runes-of-claiming",
+    "name": "Runes of Claiming",
+    "category": "detachment",
+    "detachment_id": "champions-of-fenris",
+    "cp_cost": 1,
+    "phases": [
+      "movement"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "stalk-between-worlds",
+    "name": "Stalk Between Worlds",
+    "category": "detachment",
+    "detachment_id": "champions-of-fenris",
+    "cp_cost": 1,
+    "phases": [
+      "shooting"
+    ],
+    "player_turn": "opponent-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "the-foe-foreseen",
+    "name": "The Foe Foreseen",
+    "category": "detachment",
+    "detachment_id": "saga-of-the-great-wolf",
+    "cp_cost": 1,
+    "phases": [
+      "shooting",
+      "fight"
+    ],
+    "player_turn": "opponent-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "unrelenting-hunters",
+    "name": "Unrelenting Hunters",
+    "category": "detachment",
+    "detachment_id": "saga-of-the-great-wolf",
+    "cp_cost": 1,
+    "phases": [
+      "movement"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "grimnars-command",
+    "name": "Grimnar’s Command",
+    "category": "detachment",
     "detachment_id": "saga-of-the-great-wolf",
     "cp_cost": 1,
     "phases": [
@@ -519,34 +458,13 @@
     }
   },
   {
-    "id": "fenrisian-ferocity",
-    "name": "FENRISIAN FEROCITY",
+    "id": "eye-of-the-pack",
+    "name": "Eye of the Pack",
     "category": "detachment",
-    "type": "strategic-ploy",
     "detachment_id": "saga-of-the-great-wolf",
     "cp_cost": 1,
     "phases": [
-      "charge",
-      "movement"
-    ],
-    "player_turn": "your-turn",
-    "timing": "once-per-phase",
-    "target_restrictions": null,
-    "ability_id": null,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    }
-  },
-  {
-    "id": "unrelenting-hunters",
-    "name": "UNRELENTING HUNTERS",
-    "category": "detachment",
-    "type": "strategic-ploy",
-    "detachment_id": "saga-of-the-great-wolf",
-    "cp_cost": 1,
-    "phases": [
-      "movement"
+      "shooting"
     ],
     "player_turn": "your-turn",
     "timing": "once-per-phase",
@@ -559,15 +477,141 @@
   },
   {
     "id": "battle-instincts",
-    "name": "BATTLE INSTINCTS",
+    "name": "Battle Instincts",
     "category": "detachment",
-    "type": "strategic-ploy",
     "detachment_id": "saga-of-the-great-wolf",
     "cp_cost": 1,
     "phases": [
       "shooting"
     ],
     "player_turn": "opponent-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "fenrisian-ferocity",
+    "name": "Fenrisian Ferocity",
+    "category": "detachment",
+    "detachment_id": "saga-of-the-great-wolf",
+    "cp_cost": 1,
+    "phases": [
+      "movement",
+      "charge"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "fangs-of-the-pack",
+    "name": "Fangs of the Pack",
+    "category": "detachment",
+    "detachment_id": "legends-of-saga-and-song",
+    "cp_cost": 1,
+    "phases": [
+      "fight"
+    ],
+    "player_turn": "either",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "chilling-howl",
+    "name": "Chilling Howl",
+    "category": "detachment",
+    "detachment_id": "legends-of-saga-and-song",
+    "cp_cost": 1,
+    "phases": [
+      "command"
+    ],
+    "player_turn": "opponent-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "wings-of-the-blizzard",
+    "name": "Wings of the Blizzard",
+    "category": "detachment",
+    "detachment_id": "legends-of-saga-and-song",
+    "cp_cost": 1,
+    "phases": [
+      "fight"
+    ],
+    "player_turn": "opponent-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "grizzled-killers",
+    "name": "Grizzled Killers",
+    "category": "detachment",
+    "detachment_id": "veterans-of-the-fang",
+    "cp_cost": 1,
+    "phases": [
+      "fight"
+    ],
+    "player_turn": "either",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "icy-calm",
+    "name": "Icy Calm",
+    "category": "detachment",
+    "detachment_id": "veterans-of-the-fang",
+    "cp_cost": 1,
+    "phases": [
+      "movement"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": null,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "blade-keen-senses",
+    "name": "Blade-keen Senses",
+    "category": "detachment",
+    "detachment_id": "veterans-of-the-fang",
+    "cp_cost": 1,
+    "phases": [
+      "shooting"
+    ],
+    "player_turn": "your-turn",
     "timing": "once-per-phase",
     "target_restrictions": null,
     "ability_id": null,

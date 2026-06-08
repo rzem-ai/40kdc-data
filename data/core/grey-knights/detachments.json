@@ -22,7 +22,7 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
+    "detachment_points": 2,
     "force_dispositions": []
   },
   {
@@ -48,7 +48,7 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
+    "detachment_points": 2,
     "force_dispositions": []
   },
   {
@@ -63,18 +63,18 @@
       "paragon-of-sanctity"
     ],
     "stratagem_ids": [
-      "fires-of-covenant",
-      "aegis-eternal",
-      "repelling-sphere",
       "sanctified-kill-zone",
+      "fires-of-covenant",
+      "flames-of-sanctity",
+      "aegis-eternal",
       "hallowed-beacon",
-      "flames-of-sanctity"
+      "repelling-sphere"
     ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
+    "detachment_points": 3,
     "force_dispositions": []
   },
   {
@@ -100,7 +100,7 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
+    "detachment_points": 2,
     "force_dispositions": []
   },
   {
@@ -126,7 +126,7 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
+    "detachment_points": 2,
     "force_dispositions": []
   },
   {
@@ -152,7 +152,70 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
+    "detachment_points": 2,
+    "force_dispositions": []
+  },
+  {
+    "id": "argent-assault",
+    "name": "Argent Assault",
+    "faction_id": "grey-knights",
+    "detachment_rule_id": null,
+    "enhancement_ids": [
+      "psychic-celerity",
+      "vigilance-of-titan"
+    ],
+    "stratagem_ids": [
+      "truesilver-aegis",
+      "a-threat-ended",
+      "aura-of-vengeance"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 1,
+    "force_dispositions": []
+  },
+  {
+    "id": "fires-of-purgation",
+    "name": "Fires of Purgation",
+    "faction_id": "grey-knights",
+    "detachment_rule_id": null,
+    "enhancement_ids": [
+      "precognicient-volleys",
+      "boons-of-deimos"
+    ],
+    "stratagem_ids": [
+      "soul-locked",
+      "focused-immolation",
+      "spiritsear"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 1,
+    "force_dispositions": []
+  },
+  {
+    "id": "immaterial-interdiction",
+    "name": "Immaterial Interdiction",
+    "faction_id": "grey-knights",
+    "detachment_rule_id": null,
+    "enhancement_ids": [
+      "predestined-coordinates",
+      "astral-overlap"
+    ],
+    "stratagem_ids": [
+      "blades-from-the-beyond",
+      "by-thought-alone",
+      "responsive-displacement"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 1,
     "force_dispositions": []
   }
 ]

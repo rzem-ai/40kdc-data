@@ -22,7 +22,7 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
+    "detachment_points": 2,
     "force_dispositions": []
   },
   {
@@ -38,18 +38,20 @@
     ],
     "stratagem_ids": [
       "armour-of-contempt",
+      "strike-now-for-glory",
       "focused-fury",
       "in-the-shadow-of-great-wings",
-      "instant-of-grace",
-      "strike-now-for-glory",
-      "unto-the-burning-skies"
+      "unto-the-burning-skies",
+      "instant-of-grace"
     ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 3,
+    "force_dispositions": [
+      "priority-assets"
+    ]
   },
   {
     "id": "the-angelic-host",
@@ -74,7 +76,7 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
+    "detachment_points": 2,
     "force_dispositions": []
   },
   {
@@ -90,17 +92,109 @@
     ],
     "stratagem_ids": [
       "a-grim-warning",
-      "armour-of-contempt",
       "limb-from-limb",
+      "armour-of-contempt",
+      "deathless-duty",
       "insensate-rampage",
-      "red-wrath",
-      "deathless-duty"
+      "red-wrath"
     ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
+    "detachment_points": 3,
+    "force_dispositions": [
+      "purge-the-foe"
+    ]
+  },
+  {
+    "id": "encarmine-speartip",
+    "name": "Encarmine Speartip",
+    "faction_id": "blood-angels",
+    "detachment_rule_id": null,
+    "enhancement_ids": [
+      "angelic-executioner",
+      "shadow-of-abomination"
+    ],
+    "stratagem_ids": [
+      "inexorable-valour",
+      "judgement-of-the-golden-host",
+      "blinding-blurs-of-vengeance"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 1,
     "force_dispositions": []
+  },
+  {
+    "id": "legacy-of-grace",
+    "name": "Legacy of Grace",
+    "faction_id": "blood-angels",
+    "detachment_rule_id": null,
+    "enhancement_ids": [
+      "blood-boil",
+      "aureole-of-the-angel"
+    ],
+    "stratagem_ids": [
+      "martial-paragon",
+      "aura-of-the-angels-grace"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 1,
+    "force_dispositions": []
+  },
+  {
+    "id": "wrath-of-the-doomed",
+    "name": "Wrath of the Doomed",
+    "faction_id": "blood-angels",
+    "detachment_rule_id": null,
+    "enhancement_ids": [
+      "instinctive-interception"
+    ],
+    "stratagem_ids": [
+      "no-barrier-to-retribution",
+      "death-begets-vengeance"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 1,
+    "force_dispositions": [
+      "purge-the-foe"
+    ]
+  },
+  {
+    "id": "liberator-assault-group",
+    "name": "Liberator Assault Group",
+    "faction_id": "blood-angels",
+    "detachment_rule_id": null,
+    "enhancement_ids": [
+      "speed-of-the-primarch",
+      "rage-fuelled-warrior",
+      "icon-of-the-angel",
+      "gift-of-foresight"
+    ],
+    "stratagem_ids": [
+      "armour-of-contempt",
+      "savage-echoes",
+      "red-rampage",
+      "angelic-grace",
+      "aggressive-onslaught",
+      "relentless-assault"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 3,
+    "force_dispositions": [
+      "take-and-hold"
+    ]
   }
 ]

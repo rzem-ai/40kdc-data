@@ -22,8 +22,10 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 2,
+    "force_dispositions": [
+      "priority-assets"
+    ]
   },
   {
     "id": "unforgiven-task-force",
@@ -48,7 +50,7 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
+    "detachment_points": 2,
     "force_dispositions": []
   },
   {
@@ -63,19 +65,21 @@
       "fulgus-magna"
     ],
     "stratagem_ids": [
-      "armour-of-contempt",
-      "strength-in-unity",
-      "illuminating-fire",
       "overpowering-exaction",
       "knights-of-iron",
-      "inescapable-wrath"
+      "illuminating-fire",
+      "armour-of-contempt",
+      "inescapable-wrath",
+      "strength-in-unity"
     ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 2,
+    "force_dispositions": [
+      "purge-the-foe"
+    ]
   },
   {
     "id": "wrath-of-the-rock",
@@ -89,18 +93,115 @@
       "lord-of-the-ravenwing"
     ],
     "stratagem_ids": [
-      "armour-of-contempt",
-      "tactical-mastery",
       "inescapable-justice",
+      "tactical-mastery",
       "lions-will",
       "relics-of-the-dark-age",
-      "leonine-aggression"
+      "leonine-aggression",
+      "armour-of-contempt"
     ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
+    "detachment_points": 3,
+    "force_dispositions": [
+      "priority-assets"
+    ]
+  },
+  {
+    "id": "dark-age-arsenal",
+    "name": "Dark Age Arsenal",
+    "faction_id": "dark-angels",
+    "detachment_rule_id": null,
+    "enhancement_ids": [
+      "petition-of-stability",
+      "entreaty-of-perpetual-ardour"
+    ],
+    "stratagem_ids": [
+      "searing-bursts",
+      "no-sacrifice-too-great",
+      "revelation-of-guilt"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 1,
+    "force_dispositions": [
+      "priority-assets"
+    ]
+  },
+  {
+    "id": "darkflight-pursuit",
+    "name": "Darkflight Pursuit",
+    "faction_id": "dark-angels",
+    "detachment_rule_id": null,
+    "enhancement_ids": [
+      "thundercowl-turbines",
+      "nightforged-battery"
+    ],
+    "stratagem_ids": [
+      "skyborne-surveillance",
+      "wings-of-shadow",
+      "we-are-vengeance"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 1,
     "force_dispositions": []
+  },
+  {
+    "id": "interrogation-conclave",
+    "name": "Interrogation Conclave",
+    "faction_id": "dark-angels",
+    "detachment_rule_id": null,
+    "enhancement_ids": [
+      "limitless-zeal",
+      "inescapable-interrogation"
+    ],
+    "stratagem_ids": [
+      "exacting-punishment",
+      "terrifying-zeal",
+      "wages-of-cowardice"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 1,
+    "force_dispositions": [
+      "purge-the-foe"
+    ]
+  },
+  {
+    "id": "company-of-hunters",
+    "name": "Company of Hunters",
+    "faction_id": "dark-angels",
+    "detachment_rule_id": null,
+    "enhancement_ids": [
+      "master-crafted-weapon",
+      "mounted-strategist",
+      "master-of-manoeuvre",
+      "recon-hunter"
+    ],
+    "stratagem_ids": [
+      "armour-of-contempt",
+      "death-on-the-wind",
+      "high-speed-focus",
+      "rapid-reappraisal",
+      "hunters-trail",
+      "talon-strike"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 2,
+    "force_dispositions": [
+      "disruption"
+    ]
   }
 ]

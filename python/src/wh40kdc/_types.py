@@ -264,7 +264,7 @@ class Stratagem(TypedDict):
     id: EntityId
     name: str
     category: Literal["core", "detachment"]
-    type: Literal["battle-tactic", "strategic-ploy", "epic-deed", "wargear"]
+    type: NotRequired[Literal["battle-tactic", "strategic-ploy", "epic-deed", "wargear"]]
     detachment_id: NotRequired[EntityId | None]
     cp_cost: int
     phases: PhaseList

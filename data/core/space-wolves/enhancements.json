@@ -1,77 +1,5 @@
 [
   {
-    "id": "wolves-wisdom",
-    "name": "Wolves’ Wisdom",
-    "detachment_id": "champions-of-fenris",
-    "cost": 30,
-    "keyword_restrictions": [
-      "Space Wolves"
-    ],
-    "ability_id": null,
-    "is_unique": true,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    },
-    "points_provisional": true,
-    "upgrade_tag": false,
-    "max_targets": 1
-  },
-  {
-    "id": "foes-fate",
-    "name": "Foes’ Fate",
-    "detachment_id": "champions-of-fenris",
-    "cost": 15,
-    "keyword_restrictions": [
-      "Space Wolves"
-    ],
-    "ability_id": null,
-    "is_unique": true,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    },
-    "points_provisional": true,
-    "upgrade_tag": false,
-    "max_targets": 1
-  },
-  {
-    "id": "fangrune-pendant",
-    "name": "Fangrune Pendant",
-    "detachment_id": "champions-of-fenris",
-    "cost": 15,
-    "keyword_restrictions": [
-      "Space Wolves"
-    ],
-    "ability_id": null,
-    "is_unique": true,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    },
-    "points_provisional": true,
-    "upgrade_tag": false,
-    "max_targets": 1
-  },
-  {
-    "id": "longstrider",
-    "name": "Longstrider",
-    "detachment_id": "champions-of-fenris",
-    "cost": 20,
-    "keyword_restrictions": [
-      "Space Wolves"
-    ],
-    "ability_id": null,
-    "is_unique": true,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    },
-    "points_provisional": true,
-    "upgrade_tag": false,
-    "max_targets": 1
-  },
-  {
     "id": "swift-hunter",
     "name": "Swift Hunter",
     "detachment_id": "saga-of-the-hunter",
@@ -288,10 +216,64 @@
     "max_targets": 1
   },
   {
+    "id": "a-giant-amongst-giants",
+    "name": "A Giant Amongst Giants",
+    "detachment_id": "champions-of-fenris",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Space Wolves"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "preyslayer",
+    "name": "Preyslayer",
+    "detachment_id": "champions-of-fenris",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Space Wolves"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
     "id": "grimnars-mark",
     "name": "Grimnar’s Mark",
     "detachment_id": "saga-of-the-great-wolf",
-    "cost": 20,
+    "cost": 0,
+    "keyword_restrictions": [
+      "Space Wolves"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "howling-onslaught",
+    "name": "Howling Onslaught",
+    "detachment_id": "saga-of-the-great-wolf",
+    "cost": 0,
     "keyword_restrictions": [
       "Space Wolves"
     ],
@@ -309,7 +291,7 @@
     "id": "howlmaw",
     "name": "Howlmaw",
     "detachment_id": "saga-of-the-great-wolf",
-    "cost": 15,
+    "cost": 0,
     "keyword_restrictions": [
       "Space Wolves"
     ],
@@ -327,7 +309,7 @@
     "id": "chariots-of-the-storm",
     "name": "Chariots of the Storm",
     "detachment_id": "saga-of-the-great-wolf",
-    "cost": 25,
+    "cost": 0,
     "keyword_restrictions": [
       "Space Wolves"
     ],
@@ -345,7 +327,79 @@
     "id": "skjalds-foretelling",
     "name": "Skjald’s Foretelling",
     "detachment_id": "saga-of-the-great-wolf",
-    "cost": 25,
+    "cost": 0,
+    "keyword_restrictions": [
+      "Space Wolves"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "thirst-for-glory",
+    "name": "Thirst for Glory",
+    "detachment_id": "legends-of-saga-and-song",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Space Wolves"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": true,
+    "max_targets": 1
+  },
+  {
+    "id": "fierce-example",
+    "name": "Fierce Example",
+    "detachment_id": "legends-of-saga-and-song",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Space Wolves"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": true,
+    "max_targets": 1
+  },
+  {
+    "id": "eye-of-the-hunter",
+    "name": "Eye of the Hunter",
+    "detachment_id": "veterans-of-the-fang",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Space Wolves"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "weaver-of-sagas",
+    "name": "Weaver of Sagas",
+    "detachment_id": "veterans-of-the-fang",
+    "cost": 0,
     "keyword_restrictions": [
       "Space Wolves"
     ],

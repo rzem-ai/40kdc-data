@@ -144,78 +144,6 @@
     "max_targets": 1
   },
   {
-    "id": "mandulian-reliquary",
-    "name": "Mandulian Reliquary",
-    "detachment_id": "warpbane-task-force",
-    "cost": 20,
-    "keyword_restrictions": [
-      "Grey Knights"
-    ],
-    "ability_id": null,
-    "is_unique": true,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    },
-    "points_provisional": true,
-    "upgrade_tag": false,
-    "max_targets": 1
-  },
-  {
-    "id": "radiant-champion",
-    "name": "Radiant Champion",
-    "detachment_id": "warpbane-task-force",
-    "cost": 15,
-    "keyword_restrictions": [
-      "Grey Knights"
-    ],
-    "ability_id": null,
-    "is_unique": true,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    },
-    "points_provisional": true,
-    "upgrade_tag": false,
-    "max_targets": 1
-  },
-  {
-    "id": "phial-of-the-abyss",
-    "name": "Phial of the Abyss",
-    "detachment_id": "warpbane-task-force",
-    "cost": 25,
-    "keyword_restrictions": [
-      "Grey Knights"
-    ],
-    "ability_id": null,
-    "is_unique": true,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    },
-    "points_provisional": true,
-    "upgrade_tag": false,
-    "max_targets": 1
-  },
-  {
-    "id": "paragon-of-sanctity",
-    "name": "Paragon of Sanctity",
-    "detachment_id": "warpbane-task-force",
-    "cost": 10,
-    "keyword_restrictions": [
-      "Grey Knights"
-    ],
-    "ability_id": null,
-    "is_unique": true,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    },
-    "points_provisional": true,
-    "upgrade_tag": false,
-    "max_targets": 1
-  },
-  {
     "id": "eye-of-the-augurim",
     "name": "Eye of the Augurim",
     "detachment_id": "hallowed-conclave",
@@ -429,6 +357,186 @@
     },
     "points_provisional": true,
     "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "mandulian-reliquary",
+    "name": "Mandulian Reliquary",
+    "detachment_id": "warpbane-task-force",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Grey Knights"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "radiant-champion",
+    "name": "Radiant Champion",
+    "detachment_id": "warpbane-task-force",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Grey Knights"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "phial-of-the-abyss",
+    "name": "Phial of the Abyss",
+    "detachment_id": "warpbane-task-force",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Grey Knights"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "paragon-of-sanctity",
+    "name": "Paragon of Sanctity",
+    "detachment_id": "warpbane-task-force",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Grey Knights"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "psychic-celerity",
+    "name": "Psychic Celerity",
+    "detachment_id": "argent-assault",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Grey Knights"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "vigilance-of-titan",
+    "name": "Vigilance of Titan",
+    "detachment_id": "argent-assault",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Grey Knights"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "precognicient-volleys",
+    "name": "Precognicient Volleys",
+    "detachment_id": "fires-of-purgation",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Grey Knights"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": true,
+    "max_targets": 1
+  },
+  {
+    "id": "boons-of-deimos",
+    "name": "Boons of Deimos",
+    "detachment_id": "fires-of-purgation",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Grey Knights"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": true,
+    "max_targets": 1
+  },
+  {
+    "id": "predestined-coordinates",
+    "name": "Predestined Coordinates",
+    "detachment_id": "immaterial-interdiction",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Grey Knights"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": true,
+    "max_targets": 1
+  },
+  {
+    "id": "astral-overlap",
+    "name": "Astral Overlap",
+    "detachment_id": "immaterial-interdiction",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Grey Knights"
+    ],
+    "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": true,
     "max_targets": 1
   }
 ]

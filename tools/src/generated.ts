@@ -924,9 +924,9 @@ export interface Stratagem {
    */
   category: "core" | "detachment";
   /**
-   * GW-printed stratagem category from the card
+   * GW-printed stratagem category from the card. Optional: 11e faction packs omit it for newly introduced detachments, and the category has no in-game effect; absent when the source does not state one.
    */
-  type: "battle-tactic" | "strategic-ploy" | "epic-deed" | "wargear";
+  type?: "battle-tactic" | "strategic-ploy" | "epic-deed" | "wargear";
   /**
    * Null for core stratagems
    */
