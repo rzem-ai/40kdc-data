@@ -51,12 +51,14 @@ jobs:
             fi
           done
 
-      - name: Assemble landing site (index.html + /api)
+      - name: Assemble landing site (index.html + /api + static assets)
         run: |
           set -euo pipefail
           rm -rf docs-site/dist
           mkdir -p docs-site/dist/api
           cp docs-site/index.html docs-site/dist/index.html
+          cp docs-site/favicon-32x32.png docs-site/dist/favicon-32x32.png
+          cp docs-site/og-image.png docs-site/dist/og-image.png
           cp -R tools/docs/api-html/. docs-site/dist/api/
 
       - name: Deploy landing site
