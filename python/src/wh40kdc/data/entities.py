@@ -151,7 +151,10 @@ class AbilityView:
             return translated
 
         def gate(b: dict[str, Any]) -> dict[str, Any]:
-            return {**b, "applicableWhen": {**(b.get("applicableWhen") or {}), "maxRangeInches": rng}}
+            return {
+                **b,
+                "applicableWhen": {**(b.get("applicableWhen") or {}), "maxRangeInches": rng},
+            }
 
         return {
             "applied": [gate(b) for b in translated.get("applied", [])],

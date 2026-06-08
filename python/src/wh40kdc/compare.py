@@ -30,7 +30,7 @@ import io
 import json
 import sys
 from dataclasses import asdict, dataclass
-from typing import Any, Literal
+from typing import Any, Literal, cast
 
 from wh40kdc.cruncher import crunch
 from wh40kdc.data.dataset import Dataset
@@ -378,7 +378,7 @@ def enumerate_loadouts(ds: Dataset, faction_id: str, unit_id: str) -> Enumerated
         weapons = sorted(dict.fromkeys(combo))
         if not weapons:
             continue
-        label = " + ".join(ds.weapons.get(w).name for w in weapons)
+        label = " + ".join((wv.name if (wv := ds.weapons.get(w)) else w) for w in weapons)
         configs.append(
             LoadoutConfig(
                 label=label,
@@ -460,7 +460,7 @@ def rank_loadouts(
         ranked.append(
             {"config": config, "results": results, "score": score, "scorePer100Points": per100}
         )
-    ranked.sort(key=lambda r: r["score"], reverse=True)
+    ranked.sort(key=lambda r: cast(float, r["score"]), reverse=True)
     return ranked
 
 
