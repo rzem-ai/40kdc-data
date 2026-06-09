@@ -5,6 +5,8 @@ import {
   polygonCentroid,
   round,
   distance,
+  displayScale,
+  screenToUserRadius,
   isValidEntityId,
   slugify,
 } from "./geometry.js";
@@ -92,6 +94,37 @@ describe("round", () => {
 describe("distance", () => {
   it("is the Euclidean norm", () => {
     expect(distance({ x: 0, y: 0 }, { x: 3, y: 4 })).toBe(5);
+  });
+});
+
+describe("displayScale", () => {
+  it("is limited by the tighter axis (letterboxed fit)", () => {
+    // A 1000x500 image into an 800x800 box fits to width: 800/1000 = 0.8,
+    // which is tighter than height (800/500 = 1.6).
+    expect(displayScale(800, 800, 1000, 500)).toBeCloseTo(0.8);
+    // A tall image into a wide box fits to height.
+    expect(displayScale(800, 400, 500, 1000)).toBeCloseTo(0.4);
+  });
+
+  it("returns identity (1) for a degenerate viewport or image", () => {
+    expect(displayScale(0, 800, 1000, 500)).toBe(1);
+    expect(displayScale(800, 800, 0, 500)).toBe(1);
+    expect(displayScale(-10, 800, 1000, 500)).toBe(1);
+  });
+});
+
+describe("screenToUserRadius", () => {
+  it("inverts the display scale so the on-screen size is constant", () => {
+    // At 0.5x, a 5px on-screen handle needs a 10-unit radius.
+    expect(screenToUserRadius(5, 0.5)).toBe(10);
+    // At 2x (image enlarged), the same handle needs a 2.5-unit radius.
+    expect(screenToUserRadius(5, 2)).toBe(2.5);
+  });
+
+  it("falls back to the target for a non-positive scale", () => {
+    expect(screenToUserRadius(5, 0)).toBe(5);
+    expect(screenToUserRadius(5, -1)).toBe(5);
+    expect(screenToUserRadius(5, NaN)).toBe(5);
   });
 });
 

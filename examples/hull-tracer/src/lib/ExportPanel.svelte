@@ -7,14 +7,16 @@
     pixelPoints,
     closed,
     pxPerInch,
+    name = $bindable(),
+    id = $bindable(),
   }: {
     pixelPoints: Vec2[];
     closed: boolean;
     pxPerInch: number | null;
+    name: string;
+    id: string;
   } = $props();
 
-  let name = $state("");
-  let id = $state("");
   let idEdited = $state(false);
   let edition = $state(DEFAULT_GAME_VERSION.edition);
   let dataslate = $state(DEFAULT_GAME_VERSION.dataslate);

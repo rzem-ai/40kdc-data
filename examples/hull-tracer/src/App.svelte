@@ -1,15 +1,13 @@
 <script lang="ts">
   import AppHeader from "../../_shared/AppHeader.svelte";
   import AppFooter from "../../_shared/AppFooter.svelte";
-  import {
-    LIST_BUILDER_URL,
-    LAYOUT_EDITOR_URL,
-    SALVO_URL,
-  } from "../../_shared/links.js";
+  import { LIST_BUILDER_URL, LAYOUT_EDITOR_URL, SALVO_URL } from "../../_shared/links.js";
   import ImageDrop from "./lib/ImageDrop.svelte";
   import Calibrate from "./lib/Calibrate.svelte";
-  import Tracer from "./lib/Tracer.svelte";
+  import Canvas from "./lib/Canvas.svelte";
   import ExportPanel from "./lib/ExportPanel.svelte";
+  import NotesPanel from "./lib/NotesPanel.svelte";
+  import { boundsSize } from "./lib/geometry.js";
   import type { Vec2 } from "./lib/types.js";
 
   interface LoadedImage {
@@ -25,11 +23,36 @@
   let closed = $state(false);
   let selectedIndex = $state<number | null>(null);
 
+  // Canvas mode + calibration. The ruler endpoints live here so they render on
+  // the main canvas (large, grabbable) while Calibrate owns only the math.
+  let mode = $state<"scale" | "trace">("scale");
+  let method = $state<"width" | "ruler">("width");
+  let rulerA = $state<Vec2>({ x: 0, y: 0 });
+  let rulerB = $state<Vec2>({ x: 0, y: 0 });
+
+  // Hull identity, shared between the export and the notes block.
+  let name = $state("");
+  let id = $state("");
+
+  const showRuler = $derived(mode === "scale" && method === "ruler");
+
+  // Live footprint in inches, for the notes block (null until scaled / traced).
+  const liveSize = $derived.by(() => {
+    if (pxPerInch === null || pxPerInch <= 0 || points.length < 1) return null;
+    const inches = points.map((p) => ({ x: p.x / pxPerInch!, y: p.y / pxPerInch! }));
+    return boundsSize(inches);
+  });
+
+  const scaleLabel = $derived(pxPerInch ? `${pxPerInch.toFixed(0)} px/in` : "no scale");
+
   function onImage(img: LoadedImage): void {
     // Releasing the previous blob URL keeps the tab from leaking object URLs as
-    // the author swaps reference photos.
+    // the author swaps reference photos. (A no-op for a pasted http(s) URL.)
     if (image) URL.revokeObjectURL(image.url);
     image = img;
+    rulerA = { x: img.width * 0.25, y: img.height * 0.5 };
+    rulerB = { x: img.width * 0.75, y: img.height * 0.5 };
+    mode = "scale";
     resetTrace();
   }
 
@@ -83,9 +106,9 @@
             faction-agnostic: one chassis outline can be tagged onto every model that shares it.
           </p>
           <ol>
-            <li>Drop in a top-down image.</li>
-            <li>Calibrate the scale (image width, or a two-point ruler).</li>
-            <li>Click around the hull to drop vertices; click the first point to close.</li>
+            <li>Drop in a top-down image (or paste a URL).</li>
+            <li>Calibrate the scale (image width, or a two-point ruler on the canvas).</li>
+            <li>Switch to Trace, click around the hull, then click the start point to close.</li>
             <li>Name it and download the JSON.</li>
           </ol>
         </div>
@@ -93,13 +116,39 @@
     {:else}
       <section class="workspace">
         <div class="canvas">
-          <Tracer
+          <div class="canvas-bar">
+            <div class="seg" role="tablist" aria-label="Canvas mode">
+              <button
+                role="tab"
+                aria-selected={mode === "scale"}
+                class:active={mode === "scale"}
+                class="focus-ring"
+                onclick={() => (mode = "scale")}>1 · Scale</button
+              >
+              <button
+                role="tab"
+                aria-selected={mode === "trace"}
+                class:active={mode === "trace"}
+                class="focus-ring"
+                onclick={() => (mode = "trace")}>2 · Trace</button
+              >
+            </div>
+            <div class="status">
+              {points.length} pt{points.length === 1 ? "" : "s"} · {closed ? "closed" : "open"} · {scaleLabel}
+            </div>
+          </div>
+
+          <Canvas
             imageUrl={image.url}
             imageWidth={image.width}
             imageHeight={image.height}
+            {mode}
+            {showRuler}
             bind:points
             bind:closed
             bind:selectedIndex
+            bind:rulerA
+            bind:rulerB
           />
         </div>
 
@@ -115,16 +164,23 @@
           <details open>
             <summary>1 · Scale</summary>
             <Calibrate
-              imageUrl={image.url}
               imageWidth={image.width}
               imageHeight={image.height}
+              {rulerA}
+              {rulerB}
               bind:pxPerInch
+              bind:method
             />
           </details>
 
           <details open>
             <summary>2 · Export</summary>
-            <ExportPanel pixelPoints={points} {closed} {pxPerInch} />
+            <ExportPanel pixelPoints={points} {closed} {pxPerInch} bind:name bind:id />
+          </details>
+
+          <details>
+            <summary>3 · Notes <span class="opt">optional</span></summary>
+            <NotesPanel {name} {id} bounds={liveSize} />
           </details>
         </aside>
       </section>
@@ -197,6 +253,41 @@
     min-height: 0;
     padding: 12px;
     display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .canvas-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .seg {
+    display: flex;
+    gap: 4px;
+  }
+  .seg button {
+    padding: 6px 14px;
+    background: var(--color-panel-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    font-family: var(--font-heading);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    box-shadow: var(--shadow-sm);
+  }
+  .seg button.active {
+    background: var(--color-accent-dim);
+    border-color: var(--color-accent);
+    color: var(--color-text);
+  }
+  .status {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-text-dim);
+    font-variant-numeric: tabular-nums;
   }
   .rail {
     border-left: 1px solid var(--color-border);
@@ -206,6 +297,7 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    box-shadow: var(--shadow-sm);
   }
   .rail-head {
     display: flex;
@@ -236,6 +328,9 @@
     color: var(--color-accent);
   }
   details summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-family: var(--font-heading);
     text-transform: uppercase;
     letter-spacing: var(--tracking-wide);
@@ -244,6 +339,14 @@
     padding: 6px 0;
     border-bottom: 1px solid var(--color-border-subtle);
     margin-bottom: 10px;
+    cursor: pointer;
+  }
+  .opt {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--color-text-dim);
   }
   @media (max-width: 760px) {
     .intro {

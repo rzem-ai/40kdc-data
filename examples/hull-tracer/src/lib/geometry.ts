@@ -85,6 +85,37 @@ export function distance(a: Vec2, b: Vec2): number {
   return Math.hypot(a.x - b.x, a.y - b.y);
 }
 
+/**
+ * The on-screen scale of an image drawn into a viewport with
+ * `preserveAspectRatio="xMidYMid meet"` — i.e. uniformly scaled to fit, letter-
+ * boxed on the longer axis. Returns the single fit factor: one user-space unit
+ * (image pixel) maps to this many CSS pixels on screen. Guards against a
+ * zero/degenerate viewport or image (returns 1, the identity scale) so callers
+ * never divide by it and get NaN/Infinity.
+ */
+export function displayScale(
+  viewportW: number,
+  viewportH: number,
+  imageW: number,
+  imageH: number,
+): number {
+  if (viewportW <= 0 || viewportH <= 0 || imageW <= 0 || imageH <= 0) return 1;
+  return Math.min(viewportW / imageW, viewportH / imageH);
+}
+
+/**
+ * The user-space radius that renders at `targetPx` CSS pixels on screen, given
+ * the current {@link displayScale}. SVG `<circle r>` is in user space and scales
+ * with the content group (unlike `stroke-width` under `non-scaling-stroke`), so
+ * to hold a constant on-screen handle size we divide the target by the scale.
+ * A non-positive scale falls back to `targetPx` (identity) rather than blowing
+ * up to Infinity.
+ */
+export function screenToUserRadius(targetPx: number, scale: number): number {
+  if (!(scale > 0)) return targetPx;
+  return targetPx / scale;
+}
+
 /** The entity-id contract: kebab-case, 2–128 chars, no leading/trailing dash. */
 const ENTITY_ID_RE = /^[a-z0-9][a-z0-9-]*[a-z0-9]$/;
 
