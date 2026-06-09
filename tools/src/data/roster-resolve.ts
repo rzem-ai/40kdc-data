@@ -6,7 +6,7 @@
  *
  * @packageDocumentation
  */
-import type { Roster, RosterUnit, RosterWargear } from "../import/types.js";
+import type { Roster, RosterDetachment, RosterUnit, RosterWargear } from "../import/types.js";
 import type { Dataset } from "./dataset.js";
 import type { UnitView, WeaponView } from "./entities.js";
 
@@ -103,4 +103,25 @@ export function resolveAttachmentPartners(
     }
   }
   return out;
+}
+
+/**
+ * The roster's **primary detachment** — the first in source order. 11th
+ * edition rosters may field several detachments under a detachment-point cap,
+ * but single-detachment consumers (and every pre-11e list) just want "the"
+ * detachment. This names that choice so callers stop reaching into
+ * `detachments[0]` directly. Returns `undefined` only when the roster carries
+ * no detachment at all (the source declared none, or none parsed).
+ */
+export function primaryDetachment(roster: Roster): RosterDetachment | undefined {
+  return roster.detachments[0];
+}
+
+/**
+ * The resolved entity id of the {@link primaryDetachment}. `null` when the
+ * roster carries no detachment, or when the primary one failed to resolve to a
+ * known id (the raw name is still retained on the detachment's `ref`).
+ */
+export function primaryDetachmentId(roster: Roster): string | null {
+  return roster.detachments[0]?.ref.id ?? null;
 }

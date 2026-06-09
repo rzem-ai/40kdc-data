@@ -1,12 +1,19 @@
 import { describe, expect, it } from "vitest";
 import { Dataset } from "../src/data/dataset.js";
 import {
+  primaryDetachment,
+  primaryDetachmentId,
   resolveAttachedLeader,
   resolveAttachmentPartners,
   resolveRosterUnit,
   resolveRosterWargear,
 } from "../src/data/roster-resolve.js";
-import type { Roster, RosterUnit, RosterWargear } from "../src/import/types.js";
+import type {
+  Roster,
+  RosterDetachment,
+  RosterUnit,
+  RosterWargear,
+} from "../src/import/types.js";
 
 const ds = Dataset.embedded();
 
@@ -131,5 +138,39 @@ describe("resolveRosterWargear", () => {
     expect(resolved).toHaveLength(1);
     expect(resolved[0].weapon.id).toBe("bolt-rifle");
     expect(resolved[0].count).toBe(5);
+  });
+});
+
+function detachmentEntry(id: string | null, rawName = id ?? "Unknown"): RosterDetachment {
+  return {
+    ref: { id, raw_name: rawName, resolved: id !== null, candidates: [] },
+    dp_cost: id === null ? null : 1,
+  };
+}
+
+function rosterWithDetachments(detachments: RosterDetachment[]): Roster {
+  return { ...rosterOf([]), detachments };
+}
+
+describe("primaryDetachment / primaryDetachmentId", () => {
+  it("returns the first detachment in source order", () => {
+    const roster = rosterWithDetachments([
+      detachmentEntry("hallowed-martyrs"),
+      detachmentEntry("penitent-host"),
+    ]);
+    expect(primaryDetachment(roster)?.ref.id).toBe("hallowed-martyrs");
+    expect(primaryDetachmentId(roster)).toBe("hallowed-martyrs");
+  });
+
+  it("returns undefined / null when the roster carries no detachment", () => {
+    const roster = rosterWithDetachments([]);
+    expect(primaryDetachment(roster)).toBeUndefined();
+    expect(primaryDetachmentId(roster)).toBeNull();
+  });
+
+  it("returns the entry but a null id when the primary detachment is unresolved", () => {
+    const roster = rosterWithDetachments([detachmentEntry(null, "Mystery Detachment")]);
+    expect(primaryDetachment(roster)?.ref.raw_name).toBe("Mystery Detachment");
+    expect(primaryDetachmentId(roster)).toBeNull();
   });
 });

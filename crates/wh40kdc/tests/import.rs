@@ -314,6 +314,45 @@ fn attachment_partners_for_resolves_from_either_end() {
 }
 
 #[test]
+fn primary_detachment_is_the_first_in_source_order() {
+    let roster = import("gk-banishers.payload.json");
+
+    // The accessor names what the wire format keeps as a list.
+    let primary = roster
+        .primary_detachment()
+        .expect("the banishers list carries one detachment");
+    assert_eq!(primary.ref_.id.as_deref(), Some("banishers"));
+    assert_eq!(primary.ref_.id.as_deref(), roster.detachments[0].ref_.id.as_deref());
+
+    // The id shortcut matches.
+    assert_eq!(roster.primary_detachment_id(), Some("banishers"));
+}
+
+#[test]
+fn primary_detachment_is_none_when_no_detachment() {
+    let payload = serde_json::json!({
+        "name": "No Detachment",
+        "generatedBy": "List Forge",
+        "roster": {
+            "name": "No Detachment",
+            "costs": [{ "name": "pts", "value": 0 }],
+            "forces": [{
+                "id": "f1",
+                "name": "Army Roster",
+                "selections": [{
+                    "id": "u-paladins", "name": "Paladin Squad", "type": "unit", "number": 1,
+                    "categories": [{ "name": "Faction: Grey Knights" }, { "name": "Infantry", "primary": true }]
+                }]
+            }]
+        }
+    });
+    let roster = import_roster(&payload, Dataset::embedded()).unwrap();
+    assert!(roster.detachments.is_empty());
+    assert!(roster.primary_detachment().is_none());
+    assert_eq!(roster.primary_detachment_id(), None);
+}
+
+#[test]
 fn retains_unresolved_unit_with_candidates_and_warning() {
     let payload = serde_json::json!({
         "name": "Miss Test",

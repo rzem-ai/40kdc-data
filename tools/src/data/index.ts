@@ -68,6 +68,8 @@ export {
   resolveRosterWargear,
   resolveAttachedLeader,
   resolveAttachmentPartners,
+  primaryDetachment,
+  primaryDetachmentId,
 } from "./roster-resolve.js";
 
 import { Dataset } from "./dataset.js";

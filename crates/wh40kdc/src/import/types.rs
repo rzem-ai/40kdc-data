@@ -249,6 +249,28 @@ impl Roster {
         }
         out
     }
+
+    /// The roster's **primary detachment** — the first in source order.
+    ///
+    /// 11th edition rosters may field several detachments under a
+    /// detachment-point cap, but single-detachment consumers (and every
+    /// pre-11e list) just want "the" detachment. This names that choice so
+    /// callers stop reaching into `detachments.first()` directly. Returns
+    /// `None` only when the roster carries no detachment at all (the source
+    /// declared none, or none parsed).
+    pub fn primary_detachment(&self) -> Option<&RosterDetachment> {
+        self.detachments.first()
+    }
+
+    /// The resolved entity id of the
+    /// [`primary_detachment`](Self::primary_detachment).
+    ///
+    /// `None` when the roster carries no detachment, or when the primary one
+    /// failed to resolve to a known id (the raw name is still retained on the
+    /// [`RosterDetachment::ref_`]).
+    pub fn primary_detachment_id(&self) -> Option<&str> {
+        self.primary_detachment()?.ref_.id.as_deref()
+    }
 }
 
 // ---------------------------------------------------------------------------
