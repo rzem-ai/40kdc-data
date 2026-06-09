@@ -322,7 +322,10 @@ fn primary_detachment_is_the_first_in_source_order() {
         .primary_detachment()
         .expect("the banishers list carries one detachment");
     assert_eq!(primary.ref_.id.as_deref(), Some("banishers"));
-    assert_eq!(primary.ref_.id.as_deref(), roster.detachments[0].ref_.id.as_deref());
+    assert_eq!(
+        primary.ref_.id.as_deref(),
+        roster.detachments[0].ref_.id.as_deref()
+    );
 
     // The id shortcut matches.
     assert_eq!(roster.primary_detachment_id(), Some("banishers"));

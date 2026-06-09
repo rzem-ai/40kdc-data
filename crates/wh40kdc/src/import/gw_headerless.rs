@@ -524,7 +524,10 @@ Bloodletters (110 pts)
         assert_eq!(p.name, "Ding dong");
         // Faction / detachment are read from the bare preamble lines.
         assert_eq!(p.faction_raw_name.as_deref(), Some("World Eaters"));
-        assert_eq!(p.detachment_raw_names, vec!["Berzerker Warband".to_string()]);
+        assert_eq!(
+            p.detachment_raw_names,
+            vec!["Berzerker Warband".to_string()]
+        );
         assert_eq!(p.units.len(), 3);
 
         let kharn = &p.units[0];
