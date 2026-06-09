@@ -256,7 +256,7 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
+    "detachment_points": 2,
     "force_dispositions": []
   },
   {
@@ -309,6 +309,20 @@
       "dataslate": "pre-launch-provisional"
     },
     "detachment_points": null,
+    "force_dispositions": []
+  },
+  {
+    "id": "path-of-the-outcast",
+    "name": "Path of the Outcast",
+    "faction_id": "aeldari",
+    "detachment_rule_id": null,
+    "enhancement_ids": [],
+    "stratagem_ids": [],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 1,
     "force_dispositions": []
   }
 ]
