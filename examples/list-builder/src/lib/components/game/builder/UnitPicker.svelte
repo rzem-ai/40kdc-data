@@ -7,6 +7,7 @@ import {
 	unitMatchesQuery,
 	alliesForState,
 	allyPointsLimit,
+	groupAlliesByGod,
 	type BuilderState,
 } from '$lib/data/builder';
 import type { Unit } from '@alpaca-software/40kdc-data';
@@ -59,7 +60,7 @@ function toggle(key: string) {
 <div class="flex h-full flex-col">
 	<input
 		type="text"
-		class="bg-panel border-panel-border text-text mb-1.5 w-full rounded border px-2 py-1 text-xs"
+		class="bg-panel border-panel-border text-text mb-1.5 w-full rounded border px-2 py-1.5 text-sm"
 		placeholder={draft.factionId ? 'Search units or keywords…' : 'Pick a faction first'}
 		disabled={!draft.factionId}
 		bind:value={query}
@@ -70,9 +71,9 @@ function toggle(key: string) {
 		<div class="mb-1.5 flex flex-wrap gap-1">
 			{#each facets as f (f)}
 				<button
-					class="rounded border px-1.5 py-0.5 text-[10px] transition-colors {facet === f
+					class="rounded border px-2 py-0.5 text-xs transition-colors {facet === f
 						? 'border-accent bg-accent/15 text-accent'
-						: 'border-panel-border text-text-dim hover:text-text'}"
+						: 'border-panel-border text-text-muted hover:text-text'}"
 					aria-pressed={facet === f}
 					onclick={() => (facet = facet === f ? null : f)}>{f}</button
 				>
@@ -82,9 +83,9 @@ function toggle(key: string) {
 
 	<div class="min-h-0 flex-1 overflow-y-auto">
 		{#if !draft.factionId}
-			<p class="text-text-dim px-1 py-2 text-xs italic">Choose a faction to list its units.</p>
+			<p class="text-text-muted px-1 py-2 text-sm italic">Choose a faction to list its units.</p>
 		{:else if filtered.length === 0 && allyGroups.length === 0}
-			<p class="text-text-dim px-1 py-2 text-xs italic">
+			<p class="text-text-muted px-1 py-2 text-sm italic">
 				No units match{query.trim() ? ` “${query.trim()}”` : ''}{facet ? ` · ${facet}` : ''}.
 			</p>
 		{:else}
@@ -92,13 +93,13 @@ function toggle(key: string) {
 				{#each groups as group (group.key)}
 					<div>
 						<button
-							class="text-text-dim hover:text-text flex w-full items-center gap-1 px-0.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider"
+							class="text-text-muted hover:text-text flex w-full items-center gap-1 px-0.5 py-0.5 text-xs font-semibold uppercase tracking-wider"
 							onclick={() => toggle(group.key)}
 							aria-expanded={!collapsed[group.key]}
 						>
 							<span class="w-2 text-center">{collapsed[group.key] ? '▸' : '▾'}</span>
 							<span class="flex-1 text-left">{group.label}</span>
-							<span class="text-text-dim/60 tabular-nums">{group.units.length}</span>
+							<span class="text-text-muted tabular-nums">{group.units.length}</span>
 						</button>
 						{#if !collapsed[group.key]}
 							<ul class="flex flex-col gap-0.5 pl-1">
@@ -108,9 +109,9 @@ function toggle(key: string) {
 											class="hover:bg-panel-hover flex w-full items-center gap-2 rounded px-1.5 py-1 text-left"
 											onclick={() => onadd(u.id)}
 										>
-											<span class="text-text flex-1 truncate text-xs">{u.name}</span>
-											<span class="text-text-dim shrink-0 tabular-nums text-[11px]">{fromPoints(u)}+</span>
-											<span class="text-accent shrink-0 text-xs">＋</span>
+											<span class="text-text flex-1 truncate text-sm">{u.name}</span>
+											<span class="text-text-muted shrink-0 tabular-nums text-sm">{fromPoints(u)}+</span>
+											<span class="text-accent shrink-0 text-base font-semibold">＋</span>
 										</button>
 									</li>
 								{/each}
@@ -124,32 +125,41 @@ function toggle(key: string) {
 					{@const cap = allyPointsLimit(group.rule, draft.battleSize)}
 					<div class="mt-1 border-t border-dashed border-amber-500/25 pt-1">
 						<button
-							class="flex w-full items-center gap-1 px-0.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-300/80 hover:text-amber-200"
+							class="flex w-full items-center gap-1 px-0.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-amber-300 hover:text-amber-200"
 							onclick={() => toggle(`ally:${group.rule.id}`)}
 							aria-expanded={!collapsed[`ally:${group.rule.id}`]}
 						>
 							<span class="w-2 text-center">{collapsed[`ally:${group.rule.id}`] ? '▸' : '▾'}</span>
 							<span class="flex-1 text-left">Allies · {group.label}</span>
 							{#if cap != null}
-								<span class="text-amber-300/50 normal-case tabular-nums">≤{cap} pts</span>
+								<span class="text-amber-300/75 normal-case tabular-nums">≤{cap} pts</span>
 							{/if}
-							<span class="text-amber-300/50 tabular-nums">{group.units.length}</span>
+							<span class="text-amber-300/75 tabular-nums">{group.units.length}</span>
 						</button>
 						{#if !collapsed[`ally:${group.rule.id}`]}
-							<ul class="flex flex-col gap-0.5 pl-1">
-								{#each group.units as u (`${u.faction_id}:${u.id}`)}
-									<li>
-										<button
-											class="hover:bg-panel-hover flex w-full items-center gap-2 rounded px-1.5 py-1 text-left"
-											onclick={() => onadd(u.id, u.faction_id, group.rule.id)}
-										>
-											<span class="text-text flex-1 truncate text-xs">{u.name}</span>
-											<span class="text-text-dim shrink-0 tabular-nums text-[11px]">{fromPoints(u)}+</span>
-											<span class="text-accent shrink-0 text-xs">＋</span>
-										</button>
-									</li>
-								{/each}
-							</ul>
+							<!-- Daemon pools (Daemonic Pact) span all four gods; break them out
+							     by god for readability. Non-daemon pools → one null bucket, flat. -->
+							{#each groupAlliesByGod(group.units) as bucket (bucket.god ?? 'none')}
+								{#if bucket.god !== null}
+									<div class="px-1.5 pt-0.5 text-xs font-semibold uppercase tracking-wider text-amber-300/70">
+										{bucket.god}
+									</div>
+								{/if}
+								<ul class="flex flex-col gap-0.5 pl-1">
+									{#each bucket.units as u (`${u.faction_id}:${u.id}`)}
+										<li>
+											<button
+												class="hover:bg-panel-hover flex w-full items-center gap-2 rounded px-1.5 py-1 text-left"
+												onclick={() => onadd(u.id, u.faction_id, group.rule.id)}
+											>
+												<span class="text-text flex-1 truncate text-sm">{u.name}</span>
+												<span class="text-text-muted shrink-0 tabular-nums text-sm">{fromPoints(u)}+</span>
+												<span class="text-accent shrink-0 text-base font-semibold">＋</span>
+											</button>
+										</li>
+									{/each}
+								</ul>
+							{/each}
 						{/if}
 					</div>
 				{/each}

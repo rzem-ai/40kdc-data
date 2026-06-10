@@ -85,6 +85,67 @@ summary,
   box-shadow: var(--shadow-focus);
 }
 
+/* ── Solid buttons ──────────────────────────────────────────────────────────
+   Reusable filled controls so steppers, toggles, and row actions read as real
+   buttons (not bare glyphs). Built from the design tokens; ≥3:1 edges via
+   --color-border-strong, accent fills for primary/active. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8125rem; /* 13px */
+  font-weight: 500;
+  line-height: 1.1;
+  border-radius: var(--radius-md);
+  background: var(--color-panel-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border-strong);
+  transition:
+    background-color 0.12s ease,
+    border-color 0.12s ease,
+    color 0.12s ease;
+}
+.btn:hover:not(:disabled) {
+  background: var(--color-panel-hover);
+}
+.btn:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+.btn:disabled {
+  opacity: 0.4;
+}
+
+/* Square icon/stepper button (−, +, ×) with a comfortable hit area. */
+.btn-icon {
+  padding: 0;
+  min-width: 1.75rem;
+  min-height: 1.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Primary / active fill. */
+.btn-accent,
+.btn-toggle[aria-pressed="true"] {
+  background: var(--color-accent);
+  color: var(--color-accent-foreground);
+  border-color: var(--color-accent);
+}
+.btn-accent:hover:not(:disabled),
+.btn-toggle[aria-pressed="true"]:hover:not(:disabled) {
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+}
+
+/* Destructive — reveals danger colour on hover/focus. */
+.btn-danger:hover:not(:disabled) {
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
 /* Thin, dark scrollbars matching the panel chrome */
 * {
   scrollbar-width: thin;

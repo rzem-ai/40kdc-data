@@ -32,35 +32,35 @@ function setCount(id: string, requested: number) {
 </script>
 
 {#if rows.length === 0}
-	<p class="text-text-dim px-1 py-0.5 text-[11px] italic">Fixed loadout — no options.</p>
+	<p class="text-text-muted px-1 py-0.5 text-sm italic">Fixed loadout — no options.</p>
 {:else}
-	<div class="flex flex-col gap-0.5">
+	<div class="flex flex-col gap-1">
 		{#each rows as row (row.id)}
 			{@const count = unit.loadout.get(row.id) ?? 0}
 			{@const fixed = row.min === row.max}
 			<div
-				class="flex items-center gap-1.5 text-[11px] {violations.has(row.id)
+				class="flex items-center gap-1.5 text-sm {violations.has(row.id)
 					? 'text-amber-300'
-					: 'text-text-dim'}"
+					: 'text-text'}"
 			>
 				<span class="flex-1 truncate" title={row.name}>{row.name}</span>
 				{#if fixed}
-					<span class="tabular-nums">×{count}</span>
+					<span class="text-text-muted tabular-nums">×{count}</span>
 				{:else}
 					<button
-						class="text-text-dim hover:text-text disabled:opacity-30 px-1 leading-none"
+						class="btn btn-icon"
 						disabled={count <= row.min}
 						onclick={() => setCount(row.id, count - 1)}
 						aria-label="decrease {row.name}">−</button
 					>
-					<span class="w-5 text-center tabular-nums">{count}</span>
+					<span class="w-6 text-center tabular-nums">{count}</span>
 					<button
-						class="text-text-dim hover:text-text disabled:opacity-30 px-1 leading-none"
+						class="btn btn-icon"
 						disabled={count >= row.max}
 						onclick={() => setCount(row.id, count + 1)}
 						aria-label="increase {row.name}">+</button
 					>
-					<span class="text-text-dim/50 w-8 text-right">/{row.max}</span>
+					<span class="text-text-muted w-8 text-right">/{row.max}</span>
 				{/if}
 			</div>
 		{/each}

@@ -32,6 +32,11 @@ import {
 	alliesForState,
 	allyPointsLimit,
 	unitMatchesQuery,
+	groupAlliesByGod,
+	canBeWarlord,
+	isLeader,
+	attachableBodyguards,
+	effectiveKeywords,
 	type BuilderState,
 	type BuilderUnit,
 } from './builder';
@@ -430,5 +435,134 @@ describe('valid allies (soup)', () => {
 			units: [mk(0), mk(1), mk(2), mk(3)],
 		});
 		expect(issues.some((v) => /max \d+ of a datasheet/.test(v.message))).toBe(true);
+	});
+});
+
+describe('daemon allies grouped by Chaos god', () => {
+	it("splits Daemonic Pact's pool into the four gods plus Undivided, losing no units", () => {
+		const pact = alliesForState({ ...emptyBuilderState(), factionId: 'chaos-knights' }).find(
+			(g) => g.rule.id === 'daemonic-pact',
+		)!;
+		const buckets = groupAlliesByGod(pact.units);
+		const gods = buckets.map((b) => b.god);
+		expect(gods).toEqual(['Khorne', 'Tzeentch', 'Nurgle', 'Slaanesh', 'Undivided']);
+		for (const b of buckets) expect(b.units.length).toBeGreaterThan(0);
+		// Grouping is a pure partition — every unit lands in exactly one bucket.
+		const total = buckets.reduce((n, b) => n + b.units.length, 0);
+		expect(total).toBe(pact.units.length);
+	});
+
+	it('returns a single null bucket for a pool with no god dimension', () => {
+		const damned = alliesForState({
+			...emptyBuilderState(),
+			factionId: 'chaos-knights',
+			detachmentIds: ['iconoclast-fiefdom'],
+		}).find((g) => g.rule.id === 'iconoclast-fiefdom-damned')!;
+		const buckets = groupAlliesByGod(damned.units);
+		expect(buckets).toHaveLength(1);
+		expect(buckets[0].god).toBeNull();
+		expect(buckets[0].units.length).toBe(damned.units.length);
+	});
+});
+
+describe('leader attachment (11e)', () => {
+	// Pick any Space Marine leader with at least one eligible bodyguard.
+	function leaderAndBodyguard() {
+		const leader = ds.units
+			.byFaction('adeptus-astartes')
+			.find((u) => ds.bodyguardsAttachableFrom(u.id).length > 0);
+		if (!leader) throw new Error('no SM leader with a bodyguard in the dataset');
+		const bodyguardId = ds.bodyguardsAttachableFrom(leader.id)[0].id;
+		return { leaderId: leader.id, bodyguardId };
+	}
+
+	it('offers eligible bodyguards and emits + round-trips the attachment', () => {
+		const { leaderId, bodyguardId } = leaderAndBodyguard();
+		expect(isLeader(ds.units.get(leaderId)!.raw)).toBe(true);
+
+		const lead: BuilderUnit = { ...makeUnit(leaderId, 1), key: 'L' };
+		const body: BuilderUnit = { ...makeUnit(bodyguardId, ds.units.get(bodyguardId)!.raw.model_count?.min ?? 1), key: 'B' };
+		const state: BuilderState = { ...emptyBuilderState(), factionId: 'adeptus-astartes', units: [lead, body] };
+
+		// The bodyguard is offered to the leader.
+		expect(attachableBodyguards(state, lead).map((u) => u.key)).toContain('B');
+
+		// Attach, export — leader_attachment lands on the leader's row.
+		lead.attachedToKey = 'B';
+		const roster = builderToRosterJson(state);
+		const result = tryImportRoster(roster);
+		expect(result.ok).toBe(true);
+		if (!result.ok) return;
+		const leaderRow = result.roster.units.find((u) => u.ref.id === leaderId);
+		expect(leaderRow?.leader_attachment?.bodyguard_ref.id).toBe(bodyguardId);
+
+		// Re-seed a draft from the export — attachment is restored onto the leader.
+		const seeded = rosterTextToBuilderState(roster, 'x', null)!;
+		const seededLeader = seeded.units.find((u) => u.datasheetId === leaderId)!;
+		const seededBody = seeded.units.find((u) => u.datasheetId === bodyguardId)!;
+		expect(seededLeader.attachedToKey).toBe(seededBody.key);
+	});
+});
+
+describe('warlord eligibility', () => {
+	it('is false for an ally unit barred by its rule, and for non-characters', () => {
+		// A Daemon CHARACTER included via Daemonic Pact (cannot_be_warlord) is barred.
+		const daemon: BuilderUnit = {
+			key: 'd',
+			datasheetId: 'bloodmaster',
+			factionId: 'chaos-daemons',
+			allyRuleId: 'daemonic-pact',
+			modelCount: 1,
+			loadout: new Map(),
+			enhancementId: null,
+			isWarlord: false,
+		};
+		expect(canBeWarlord(daemon)).toBe(false);
+		// The same datasheet as a native daemon (no ally rule) is a character → eligible.
+		expect(canBeWarlord({ ...daemon, factionId: 'chaos-daemons', allyRuleId: undefined })).toBe(true);
+		// A non-character (War Dog) is never eligible.
+		expect(canBeWarlord(makeUnit('war-dog-karnivore', 1))).toBe(false);
+	});
+});
+
+describe('detachment-granted Battleline + reconcile-on-add', () => {
+	it('grants Battleline to War Dogs under Houndpack Lance, raising the datasheet cap to 6', () => {
+		const wd = unitRaw('war-dog-karnivore')!;
+		expect(effectiveKeywords(wd, []).has('battleline')).toBe(false);
+		expect(effectiveKeywords(wd, ['houndpack-lance']).has('battleline')).toBe(true);
+
+		const mk = (i: number): BuilderUnit => ({ ...makeUnit('war-dog-karnivore', 1), key: `k${i}` });
+		const five = [mk(0), mk(1), mk(2), mk(3), mk(4)];
+		// Without Houndpack: cap 3 → flagged.
+		expect(
+			builderViolations({ ...emptyBuilderState(), factionId: 'chaos-knights', units: five }).some((v) =>
+				/max 3 of a datasheet/.test(v.message),
+			),
+		).toBe(true);
+		// With Houndpack: Battleline → cap 6 → no datasheet-cap violation.
+		expect(
+			builderViolations({
+				...emptyBuilderState(),
+				factionId: 'chaos-knights',
+				detachmentIds: ['houndpack-lance'],
+				units: five,
+			}).some((v) => /max \d+ of a datasheet/.test(v.message)),
+		).toBe(false);
+	});
+
+	it('reconcile-on-add yields no phantom "below min" loadout violation for Cultist Mob', () => {
+		const raw = unitRaw('cultist-mob', 'chaos-space-marines')!;
+		const mc = raw.model_count?.min ?? 10;
+		const bu: BuilderUnit = {
+			key: 'c',
+			datasheetId: 'cultist-mob',
+			factionId: 'chaos-space-marines',
+			modelCount: mc,
+			loadout: reconcileLoadout('cultist-mob', mc, defaultLoadout(raw, mc), 'chaos-space-marines'),
+			enhancementId: null,
+			isWarlord: false,
+		};
+		const issues = builderViolations({ ...emptyBuilderState(), factionId: 'chaos-knights', units: [bu] });
+		expect(issues.some((v) => v.unitKey === 'c' && /below min/.test(v.message))).toBe(false);
 	});
 });

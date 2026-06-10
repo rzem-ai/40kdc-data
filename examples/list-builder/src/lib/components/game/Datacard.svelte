@@ -1,6 +1,5 @@
 <script lang="ts">
 import type { DatacardData } from '$lib/types/DatacardData';
-import AbilityTooltip from './AbilityTooltip.svelte';
 import { ds } from '$lib/data/dataset';
 
 interface Props {
@@ -65,14 +64,14 @@ const keywords = $derived([
 	<!-- Header -->
 	<div class="flex items-baseline justify-between gap-1">
 		<span class="text-text font-heading text-xs font-bold uppercase tracking-wider">{data.unit_name}</span>
-		<span class="{playerColor} text-[10px]">{data.player}</span>
+		<span class="{playerColor} text-xs">{data.player}</span>
 	</div>
 
 	{#if unit}
 		<!-- Stat lines (one per datasheet profile) -->
 		{#if unit.raw.profiles.length > 0}
 			<div class="border-panel-border mt-1 border-t pt-1">
-				<div class="text-text-dim flex gap-2 text-[10px]">
+				<div class="text-text-muted flex gap-2 text-xs">
 					<span class="w-6 text-center">M</span>
 					<span class="w-4 text-center">T</span>
 					<span class="w-5 text-center">Sv</span>
@@ -82,11 +81,11 @@ const keywords = $derived([
 					<span class="w-5 text-center">OC</span>
 				</div>
 				{#each unit.raw.profiles as p, i (i)}
-					<div class="text-text font-mono flex gap-2 text-[10px]">
+					<div class="text-text font-mono flex gap-2 text-xs">
 						<span class="w-6 text-center">{stat(p.m)}"</span>
 						<span class="w-4 text-center">{stat(p.t)}</span>
 						<span class="w-5 text-center">{stat(p.sv)}+</span>
-						<span class="text-text-dim w-5 text-center"
+						<span class="text-text-muted w-5 text-center"
 							>{p.invuln_sv != null ? `${p.invuln_sv}+` : '—'}</span
 						>
 						<span class="w-4 text-center">{stat(p.w)}</span>
@@ -94,7 +93,7 @@ const keywords = $derived([
 						<span class="w-5 text-center">{stat(p.oc)}</span>
 					</div>
 					{#if unit.raw.profiles.length > 1 && p.name}
-						<div class="text-text-dim pl-1 text-[9px]">{p.name}</div>
+						<div class="text-text-muted pl-1 text-xs">{p.name}</div>
 					{/if}
 				{/each}
 			</div>
@@ -103,13 +102,13 @@ const keywords = $derived([
 		<!-- Ranged weapons (stacked layout) -->
 		{#if rangedRows.length > 0}
 			<details class="border-panel-border mt-1 border-t pt-1" open>
-				<summary class="text-text-dim cursor-pointer text-[10px] font-bold uppercase tracking-wider">
-					<span class="expand-indicator text-[10px]">▸</span> Ranged
+				<summary class="text-text-muted cursor-pointer text-xs font-bold uppercase tracking-wider">
+					<span class="expand-indicator text-xs">▸</span> Ranged
 				</summary>
 				{#each rangedRows as w (w.name)}
 					<div class="mt-0.5">
-						<div class="text-text text-[10px] font-medium">{w.name}</div>
-						<div class="text-text-muted font-mono flex flex-wrap gap-x-2 text-[10px]">
+						<div class="text-text text-xs font-medium">{w.name}</div>
+						<div class="text-text-muted font-mono flex flex-wrap gap-x-2 text-xs">
 							{#if w.range != null}<span>{w.range}</span>{/if}
 							<span>A:{w.attacks}</span>
 							<span>BS:{w.skill}</span>
@@ -125,13 +124,13 @@ const keywords = $derived([
 		<!-- Melee weapons (stacked layout) -->
 		{#if meleeRows.length > 0}
 			<details class="border-panel-border mt-1 border-t pt-1" open>
-				<summary class="text-text-dim cursor-pointer text-[10px] font-bold uppercase tracking-wider">
-					<span class="expand-indicator text-[10px]">▸</span> Melee
+				<summary class="text-text-muted cursor-pointer text-xs font-bold uppercase tracking-wider">
+					<span class="expand-indicator text-xs">▸</span> Melee
 				</summary>
 				{#each meleeRows as w (w.name)}
 					<div class="mt-0.5">
-						<div class="text-text text-[10px] font-medium">{w.name}</div>
-						<div class="text-text-muted font-mono flex flex-wrap gap-x-2 text-[10px]">
+						<div class="text-text text-xs font-medium">{w.name}</div>
+						<div class="text-text-muted font-mono flex flex-wrap gap-x-2 text-xs">
 							<span>A:{w.attacks}</span>
 							<span>WS:{w.skill}</span>
 							<span>S:{w.strength}</span>
@@ -143,21 +142,18 @@ const keywords = $derived([
 			</details>
 		{/if}
 
-		<!-- Abilities (names + generated effect text) -->
+		<!-- Abilities — name header + generated describer text, always visible (no hover). -->
 		{#if abilities.length > 0}
 			<div class="border-panel-border mt-1 border-t pt-1">
-				<div class="text-text-dim text-[10px] font-bold uppercase tracking-wider">Abilities</div>
-				<div class="flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5">
+				<div class="text-text-muted text-xs font-bold uppercase tracking-wider">Abilities</div>
+				<div class="mt-0.5 flex flex-col gap-1">
 					{#each abilities as ability (ability.name)}
-						{#if ability.description}
-							<AbilityTooltip text={ability.description}>
-								<span
-									class="text-text-muted cursor-help text-[10px] underline decoration-dotted"
-								>{ability.name}</span>
-							</AbilityTooltip>
-						{:else}
-							<span class="text-text-muted text-[10px]">{ability.name}</span>
-						{/if}
+						<div>
+							<div class="text-text text-sm font-semibold">{ability.name}</div>
+							{#if ability.description}
+								<div class="text-text-muted text-xs leading-snug">{ability.description}</div>
+							{/if}
+						</div>
 					{/each}
 				</div>
 			</div>
@@ -166,17 +162,17 @@ const keywords = $derived([
 		<!-- Keywords -->
 		{#if keywords.length > 0}
 			<div class="border-panel-border mt-1 border-t pt-1">
-				<div class="text-text-dim text-[10px] font-bold uppercase tracking-wider">Keywords</div>
-				<div class="text-text-muted text-[10px] italic">{keywords.join(', ')}</div>
+				<div class="text-text-muted text-xs font-bold uppercase tracking-wider">Keywords</div>
+				<div class="text-text-muted text-xs italic">{keywords.join(', ')}</div>
 			</div>
 		{/if}
 	{:else}
 		<!-- Unresolved import: degrade to raw list data, never a blank card -->
 		<div class="border-panel-border mt-1 border-t pt-1">
-			<p class="text-text-dim text-[10px] italic">Unit not found in the 40kdc dataset.</p>
+			<p class="text-text-muted text-xs italic">Unit not found in the 40kdc dataset.</p>
 			{#if data.loadout_raw_names.length > 0}
-				<div class="text-text-dim mt-1 text-[10px] font-bold uppercase tracking-wider">Loadout</div>
-				<div class="text-text-muted text-[10px]">{data.loadout_raw_names.join(', ')}</div>
+				<div class="text-text-muted mt-1 text-xs font-bold uppercase tracking-wider">Loadout</div>
+				<div class="text-text-muted text-xs">{data.loadout_raw_names.join(', ')}</div>
 			{/if}
 		</div>
 	{/if}

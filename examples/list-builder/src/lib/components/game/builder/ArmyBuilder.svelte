@@ -7,6 +7,7 @@ import {
 	totalDetachmentPoints,
 	detachmentPointCap,
 	defaultLoadout,
+	reconcileLoadout,
 	totalPoints,
 	pointsLimit,
 	builderViolations,
@@ -123,7 +124,10 @@ function addUnit(datasheetId: string, factionId?: string, allyRuleId?: string) {
 		...(factionId ? { factionId } : {}),
 		...(allyRuleId ? { allyRuleId } : {}),
 		modelCount,
-		loadout: defaultLoadout(raw, modelCount),
+		// Reconcile so always-on base weapons are seeded and phantom negatives
+		// (a replacement-target weapon that's never carried) don't surface as
+		// "below min" violations on fresh adds.
+		loadout: reconcileLoadout(datasheetId, modelCount, defaultLoadout(raw, modelCount), factionId),
 		enhancementId: null,
 		isWarlord: false,
 	};
@@ -145,13 +149,18 @@ function updateUnit(next: BuilderUnit) {
 }
 
 function removeUnit(key: string) {
-	draft.units = draft.units.filter((u) => u.key !== key);
+	// Drop the row and clear any leader still attached to it.
+	draft.units = draft.units
+		.filter((u) => u.key !== key)
+		.map((u) => (u.attachedToKey === key ? { ...u, attachedToKey: undefined } : u));
 	if (selectedKey === key) selectedKey = null;
 }
 
 function setWarlord(key: string) {
-	// Exactly one warlord — selecting one clears the rest.
-	draft.units = draft.units.map((u) => ({ ...u, isWarlord: u.key === key }));
+	// Toggle: clicking the current warlord clears it (zero warlords is allowed);
+	// otherwise this unit becomes the sole warlord.
+	const turnOff = draft.units.find((u) => u.key === key)?.isWarlord ?? false;
+	draft.units = draft.units.map((u) => ({ ...u, isWarlord: turnOff ? false : u.key === key }));
 }
 
 function save() {
@@ -162,7 +171,7 @@ function save() {
 <div class="flex h-full flex-col gap-2">
 	<!-- Header: name, faction, detachment, battle size, disposition, points. -->
 	<div class="flex shrink-0 flex-wrap items-end gap-2">
-		<label class="flex flex-col text-[10px] uppercase tracking-wider text-text-dim">
+		<label class="flex flex-col text-xs uppercase tracking-wider text-text-muted">
 			Name
 			<input
 				type="text"
@@ -171,7 +180,7 @@ function save() {
 				bind:value={draft.name}
 			/>
 		</label>
-		<label class="flex flex-col text-[10px] uppercase tracking-wider text-text-dim">
+		<label class="flex flex-col text-xs uppercase tracking-wider text-text-muted">
 			Faction
 			<select
 				class="bg-panel border-panel-border text-text mt-0.5 rounded border px-1.5 py-1 text-sm"
@@ -184,8 +193,8 @@ function save() {
 				{/each}
 			</select>
 		</label>
-		<label class="flex flex-col text-[10px] uppercase tracking-wider text-text-dim">
-			Detachments <span class="normal-case {overDp ? 'text-amber-400' : 'text-text-dim/70'}">({dpSpent}/{dpCap} DP)</span>
+		<label class="flex flex-col text-xs uppercase tracking-wider text-text-muted">
+			Detachments <span class="normal-case {overDp ? 'text-amber-400' : 'text-text-muted'}">({dpSpent}/{dpCap} DP)</span>
 			<select
 				class="bg-panel border-panel-border text-text mt-0.5 rounded border px-1.5 py-1 text-sm disabled:opacity-40"
 				value=""
@@ -218,7 +227,7 @@ function save() {
 				</div>
 			{/if}
 		</label>
-		<label class="flex flex-col text-[10px] uppercase tracking-wider text-text-dim">
+		<label class="flex flex-col text-xs uppercase tracking-wider text-text-muted">
 			Battle size
 			<select
 				class="bg-panel border-panel-border text-text mt-0.5 rounded border px-1.5 py-1 text-sm"
@@ -229,7 +238,7 @@ function save() {
 				<option value="strike-force">Strike Force</option>
 			</select>
 		</label>
-		<label class="flex flex-col text-[10px] uppercase tracking-wider text-text-dim">
+		<label class="flex flex-col text-xs uppercase tracking-wider text-text-muted">
 			Disposition
 			{#if forcedDispositions.length > 1}
 				<!-- Detachment grants several — choose within the granted set. Lock stays
@@ -244,7 +253,7 @@ function save() {
 							<option value={id}>{dispositionName(id)}</option>
 						{/each}
 					</select>
-					<span class="shrink-0 text-text-dim/70" title="Set by your detachment" aria-label="Set by your detachment">🔒</span>
+					<span class="shrink-0 text-text-muted" title="Set by your detachment" aria-label="Set by your detachment">🔒</span>
 				</div>
 			{:else if forcedDispositions.length === 1}
 				<!-- Single granted disposition — locked, lock inline on the same line. -->
@@ -252,7 +261,7 @@ function save() {
 					class="bg-panel/60 border-panel-border text-text mt-0.5 flex items-center justify-between gap-1 rounded border px-1.5 py-1 text-sm normal-case"
 				>
 					<span class="truncate">{dispositionName(draft.disposition)}</span>
-					<span class="shrink-0 text-text-dim/70" title="Set by your detachment" aria-label="Set by your detachment">🔒</span>
+					<span class="shrink-0 text-text-muted" title="Set by your detachment" aria-label="Set by your detachment">🔒</span>
 				</div>
 			{:else}
 				<!-- No mapping in the data yet — manual pick (the project's spine). -->
@@ -276,14 +285,14 @@ function save() {
 			>
 				{total} / {limit}
 			</div>
-			<div class="text-text-dim text-[10px] uppercase tracking-wider">points</div>
+			<div class="text-text-muted text-xs uppercase tracking-wider">points</div>
 		</div>
 	</div>
 
 	{#if armyIssues.length > 0}
 		<div class="flex flex-wrap gap-1">
 			{#each armyIssues as issue (issue.message)}
-				<span class="rounded bg-amber-900/30 px-1.5 py-0.5 text-[11px] text-amber-300"
+				<span class="rounded bg-amber-900/40 px-1.5 py-0.5 text-xs text-amber-200"
 					>{issue.message}</span
 				>
 			{/each}
@@ -308,11 +317,11 @@ function save() {
 					{#each draftGroups as group (group.key)}
 						<div class="flex flex-col gap-1">
 							<div
-								class="text-text-dim flex items-center gap-2 border-b border-dashed border-white/10 pb-0.5 text-[10px] font-semibold uppercase tracking-wider"
+								class="text-text-muted flex items-center gap-2 border-b border-dashed border-white/10 pb-0.5 text-xs font-semibold uppercase tracking-wider"
 							>
 								<span class="flex-1">{group.label}</span>
-								<span class="text-text-dim/60 tabular-nums">{group.units.length}</span>
-								<span class="text-text-dim tabular-nums normal-case">{group.points} pts</span>
+								<span class="text-text-muted tabular-nums">{group.units.length}</span>
+								<span class="text-text-muted tabular-nums normal-case">{group.points} pts</span>
 							</div>
 							{#each group.units as u (u.key)}
 								<BuilderUnitRow

@@ -55,6 +55,13 @@ export interface BuilderUnit {
 	factionId?: string;
 	/** The allied-rule id this unit was included under, if it's an ally. */
 	allyRuleId?: string;
+	/**
+	 * For a *leader*, the row key of the bodyguard unit it is attached to (11e
+	 * attaches leaders at list-building time). Stored on the leader; a unit may
+	 * host several leaders, a leader attaches to at most one unit. Undefined when
+	 * the leader is unattached or the unit isn't a leader.
+	 */
+	attachedToKey?: string;
 	modelCount: number;
 	loadout: Map<string, number>;
 	enhancementId: string | null;
@@ -371,8 +378,9 @@ export function reconcileLoadout(
 	datasheetId: string,
 	modelCount: number,
 	loadout: Map<string, number>,
+	factionId?: string,
 ): Map<string, number> {
-	const unit = unitRaw(datasheetId);
+	const unit = unitRaw(datasheetId, factionId);
 	if (!unit) return new Map(loadout);
 	const bounds = weaponBounds(unit, modelCount, ds.wargearOptionsOf(unit));
 	const next = new Map(loadout);
@@ -533,6 +541,53 @@ function keywordSet(unit: Unit): Set<string> {
 	);
 }
 
+/** The four Chaos gods, in canonical (board-order) sequence. */
+const CHAOS_GODS = ['Khorne', 'Tzeentch', 'Nurgle', 'Slaanesh'] as const;
+
+/** A god-keyed slice of an ally pool. `god` is null for a pool with no god dimension. */
+export interface GodBucket {
+	/** The god label ('Khorne'…'Slaanesh', 'Undivided'), or null when the pool has no gods. */
+	god: string | null;
+	units: Unit[];
+}
+
+/**
+ * Split an ally pool into per-Chaos-god buckets for readability — Daemonic
+ * Pact's Legiones Daemonica pool spans all four gods, and one flat "Daemons"
+ * list is hard to scan. Units carrying a god keyword bucket under it (canonical
+ * order); god-neutral daemons (Be'lakor, Soul Grinder, Furies…) fall into
+ * "Undivided". A pool with no god keywords at all (CSM Damned, Astra Militarum,
+ * Chaos Knights, Tyranids) returns a single `{ god: null }` bucket — the caller
+ * renders that flat, with no sub-headers. Purely presentational; it never
+ * changes which units a rule grants.
+ */
+export function groupAlliesByGod(units: Unit[]): GodBucket[] {
+	const byGod = new Map<string, Unit[]>();
+	const undivided: Unit[] = [];
+	for (const u of units) {
+		const kw = keywordSet(u);
+		const god = CHAOS_GODS.find((g) => kw.has(g.toLowerCase()));
+		if (god) {
+			const bucket = byGod.get(god);
+			if (bucket) bucket.push(u);
+			else byGod.set(god, [u]);
+		} else {
+			undivided.push(u);
+		}
+	}
+	const out: GodBucket[] = [];
+	for (const g of CHAOS_GODS) {
+		const us = byGod.get(g);
+		if (us && us.length > 0) out.push({ god: g, units: us });
+	}
+	if (undivided.length > 0) {
+		// With god buckets present, the rest are "Undivided"; with none, the whole
+		// pool has no god dimension → a single null bucket the caller renders flat.
+		out.push({ god: out.length > 0 ? 'Undivided' : null, units: undivided });
+	}
+	return out;
+}
+
 /**
  * Whether a unit matches a free-text picker query: a name substring match OR an
  * exact keyword match (so typing "Khorne" surfaces every Khorne unit, the
@@ -543,6 +598,63 @@ export function unitMatchesQuery(unit: Unit, query: string): boolean {
 	if (!q) return true;
 	if (unit.name.toLowerCase().includes(q)) return true;
 	return keywordSet(unit).has(q);
+}
+
+// ── Leaders (11e list-time attachment) ───────────────────────────────────────────
+
+/** Whether a datasheet is a Leader — it can attach to at least one bodyguard unit. */
+export function isLeader(unit: Unit): boolean {
+	return ds.bodyguardsAttachableFrom(unit.id).length > 0;
+}
+
+/**
+ * Draft rows the given leader can attach to: rows whose datasheet is an eligible
+ * bodyguard for the leader, excluding the leader's own row. Drives the detail
+ * panel's "Attached to" picker.
+ */
+export function attachableBodyguards(state: BuilderState, leader: BuilderUnit): BuilderUnit[] {
+	const eligible = new Set(ds.bodyguardsAttachableFrom(leader.datasheetId).map((v) => v.id));
+	return state.units.filter((u) => u.key !== leader.key && eligible.has(u.datasheetId));
+}
+
+/** Leaders in the draft currently attached to the given bodyguard row. */
+export function attachedLeaders(state: BuilderState, bodyguard: BuilderUnit): BuilderUnit[] {
+	return state.units.filter((u) => u.attachedToKey === bodyguard.key);
+}
+
+// ── Warlord eligibility ──────────────────────────────────────────────────────────
+
+/**
+ * Whether a unit may be the army Warlord: a CHARACTER that isn't barred by the
+ * ally rule it was included under (`cannot_be_warlord`). The detail panel only
+ * shows the Warlord control when this is true.
+ */
+export function canBeWarlord(bu: BuilderUnit): boolean {
+	const raw = buRaw(bu);
+	if (!raw) return false;
+	if (!(raw.keywords ?? []).some((k) => k.toLowerCase() === 'character')) return false;
+	if (bu.allyRuleId && ds.alliedRules.get(bu.allyRuleId)?.cannot_be_warlord) return false;
+	return true;
+}
+
+// ── Effective keywords (detachment grants) ───────────────────────────────────────
+
+/**
+ * A unit's keywords plus any its selected detachments grant it (e.g. Houndpack
+ * Lance grants 'Battleline' to 'War Dog' units), lowercased. Used for the
+ * datasheet-count cap and battlefield-role checks so a granted Battleline raises
+ * the cap from 3 to 6.
+ */
+export function effectiveKeywords(unit: Unit, detachmentIds: string[]): Set<string> {
+	const have = keywordSet(unit);
+	for (const id of detachmentIds) {
+		for (const grant of ds.detachments.get(id)?.granted_keywords ?? []) {
+			if ((grant.to_keywords ?? []).some((k) => have.has(k.toLowerCase()))) {
+				have.add(grant.keyword.toLowerCase());
+			}
+		}
+	}
+	return have;
 }
 
 // ── Validation summary (advisory) ──────────────────────────────────────────────
@@ -642,7 +754,9 @@ function constructionViolations(state: BuilderState): BuilderViolation[] {
 	for (const u of state.units) {
 		const raw = buRaw(u);
 		if (!raw) continue;
-		const kw = keywordSet(raw);
+		// Effective keywords include detachment grants (e.g. Houndpack Lance makes
+		// War Dogs Battleline → cap 6 instead of 3).
+		const kw = effectiveKeywords(raw, state.detachmentIds);
 		const cap = kw.has('battleline') || raw.role === 'dedicated-transport' ? 6 : 3;
 		const e = counts.get(u.datasheetId);
 		if (e) e.count += 1;
@@ -750,6 +864,7 @@ export function builderToRoster(state: BuilderState): Roster {
 		return { ref: ref(id, det?.name ?? id), dp_cost: det?.detachment_points ?? null };
 	});
 
+	const byKey = new Map(state.units.map((u) => [u.key, u]));
 	const units = state.units.map((bu) => {
 		const unit = buRaw(bu);
 		const name = unit?.name ?? bu.datasheetId;
@@ -760,6 +875,15 @@ export function builderToRoster(state: BuilderState): Roster {
 				const w = ds.weapons.get(id) ?? ds.wargear.get(id);
 				return { ref: ref(id, w?.name ?? id), count };
 			});
+		// A leader's attachment is emitted on its own row, pointing at the bodyguard.
+		const bodyguard = bu.attachedToKey ? byKey.get(bu.attachedToKey) : undefined;
+		const bodyguardRaw = bodyguard ? buRaw(bodyguard) : undefined;
+		const leader_attachment = bodyguard
+			? {
+					bodyguard_ref: ref(bodyguard.datasheetId, bodyguardRaw?.name ?? bodyguard.datasheetId),
+					provisional: false,
+				}
+			: null;
 		return {
 			ref: ref(bu.datasheetId, name),
 			model_count: bu.modelCount,
@@ -768,7 +892,7 @@ export function builderToRoster(state: BuilderState): Roster {
 			enhancement: enh ? ref(enh.id, enh.name) : null,
 			enhancement_points: enh?.cost ?? null,
 			wargear,
-			leader_attachment: null,
+			leader_attachment,
 		};
 	});
 
@@ -823,24 +947,33 @@ export function rosterTextToBuilderState(
 	const battleSize: BattleSize =
 		roster.battle_size === 'incursion' ? 'incursion' : 'strike-force';
 
-	const units: BuilderUnit[] = roster.units
-		.filter((ru) => ru.ref.id != null)
-		.map((ru) => {
-			const loadout = new Map<string, number>();
-			for (const w of ru.wargear) {
-				if (w.ref.id) loadout.set(w.ref.id, w.count);
-			}
-			const datasheetId = ru.ref.id as string;
-			return {
-				key: `seed${seedCounter++}`,
-				datasheetId,
-				modelCount: ru.model_count,
-				// Imports under-record always-on base weapons — repair against bounds.
-				loadout: reconcileLoadout(datasheetId, ru.model_count, loadout),
-				enhancementId: ru.enhancement?.id ?? null,
-				isWarlord: ru.is_warlord,
-			};
-		});
+	const resolvable = roster.units.filter((ru) => ru.ref.id != null);
+	const units: BuilderUnit[] = resolvable.map((ru) => {
+		const loadout = new Map<string, number>();
+		for (const w of ru.wargear) {
+			if (w.ref.id) loadout.set(w.ref.id, w.count);
+		}
+		const datasheetId = ru.ref.id as string;
+		return {
+			key: `seed${seedCounter++}`,
+			datasheetId,
+			modelCount: ru.model_count,
+			// Imports under-record always-on base weapons — repair against bounds.
+			loadout: reconcileLoadout(datasheetId, ru.model_count, loadout),
+			enhancementId: ru.enhancement?.id ?? null,
+			isWarlord: ru.is_warlord,
+		};
+	});
+
+	// Restore leader→bodyguard attachments. `leader_attachment` lives on the
+	// leader's row and points at the bodyguard's datasheet; bind it to the first
+	// matching draft row (rows share the leader's index with `resolvable`).
+	resolvable.forEach((ru, i) => {
+		const bodyguardId = ru.leader_attachment?.bodyguard_ref.id;
+		if (!bodyguardId) return;
+		const bodyguard = units.find((u) => u.datasheetId === bodyguardId);
+		if (bodyguard) units[i].attachedToKey = bodyguard.key;
+	});
 
 	return {
 		name,

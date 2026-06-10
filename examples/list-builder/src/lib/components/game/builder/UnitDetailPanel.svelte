@@ -6,6 +6,9 @@ import {
 	defaultLoadout,
 	builderViolations,
 	builderUnitToDatacardData,
+	canBeWarlord,
+	isLeader,
+	attachableBodyguards,
 	type BuilderState,
 	type BuilderUnit,
 } from '$lib/data/builder';
@@ -21,10 +24,21 @@ interface Props {
 }
 let { unit, draft, onchange, onwarlord }: Props = $props();
 
-const raw = $derived(unit ? unitRaw(unit.datasheetId) : undefined);
+const raw = $derived(unit ? unitRaw(unit.datasheetId, unit.factionId) : undefined);
 const enhancements = $derived(unit ? eligibleEnhancements(draft.detachmentIds, raw) : []);
 const points = $derived(unit ? unitPoints(unit) : 0);
 const modelRange = $derived(raw?.model_count ?? null);
+const warlordEligible = $derived(unit ? canBeWarlord(unit) : false);
+const leader = $derived(!!raw && isLeader(raw));
+/** Bodyguard rows this leader can attach to, with display names. */
+const bodyguards = $derived(
+	unit && leader
+		? attachableBodyguards(draft, unit).map((b) => ({
+				key: b.key,
+				name: unitRaw(b.datasheetId, b.factionId)?.name ?? b.datasheetId,
+			}))
+		: [],
+);
 const issues = $derived(
 	unit
 		? builderViolations(draft)
@@ -37,57 +51,84 @@ function setModelCount(n: number) {
 	if (!unit || !raw) return;
 	const min = modelRange?.min ?? 1;
 	const next = Math.max(min, n);
-	// Re-derive the maximal loadout at the new count so options stay in range.
 	onchange({ ...unit, modelCount: next, loadout: defaultLoadout(raw, next) });
+}
+
+function setAttachment(key: string) {
+	if (!unit) return;
+	onchange({ ...unit, attachedToKey: key || undefined });
 }
 </script>
 
 <div class="flex h-full flex-col">
 	{#if !unit}
-		<p class="text-text-dim m-auto px-3 text-center text-xs italic">
+		<p class="text-text-muted m-auto px-3 text-center text-sm italic">
 			Select a unit to edit its models, wargear, and enhancement.
 		</p>
 	{:else}
 		<!-- Header: name + live points. -->
 		<div class="mb-2 flex items-baseline gap-2">
-			<h3 class="text-text flex-1 text-sm font-semibold">{raw?.name ?? unit.datasheetId}</h3>
-			<span class="text-text-dim shrink-0 tabular-nums text-xs">{points} pts</span>
+			<h3 class="text-text flex-1 text-base font-semibold">{raw?.name ?? unit.datasheetId}</h3>
+			<span class="text-text-muted shrink-0 tabular-nums text-sm">{points} pts</span>
 		</div>
 
-		<div class="flex flex-col gap-2 overflow-y-auto">
+		<div class="flex flex-col gap-2.5 overflow-y-auto">
 			<!-- Model count -->
-			<div class="flex items-center gap-2 text-[11px]">
-				<span class="text-text-dim uppercase tracking-wider">Models</span>
+			<div class="flex items-center gap-2 text-sm">
+				<span class="text-text-muted uppercase tracking-wider">Models</span>
 				<button
-					class="text-text-dim hover:text-text disabled:opacity-30 px-1.5 leading-none"
+					class="btn btn-icon"
 					disabled={unit.modelCount <= (modelRange?.min ?? 1)}
 					onclick={() => setModelCount(unit.modelCount - 1)}
 					aria-label="fewer models">−</button
 				>
 				<span class="w-6 text-center tabular-nums">{unit.modelCount}</span>
-				<button
-					class="text-text-dim hover:text-text px-1.5 leading-none"
-					onclick={() => setModelCount(unit.modelCount + 1)}
-					aria-label="more models">+</button
-				>
-				{#if modelRange}<span class="text-text-dim/50">({modelRange.min}–{modelRange.max})</span>{/if}
+				<button class="btn btn-icon" onclick={() => setModelCount(unit.modelCount + 1)} aria-label="more models">+</button>
+				{#if modelRange}<span class="text-text-muted">({modelRange.min}–{modelRange.max})</span>{/if}
 			</div>
 
 			{#if issues.length > 0}
 				<div class="flex flex-wrap gap-1">
 					{#each issues as msg (msg)}
-						<span class="rounded bg-amber-900/30 px-1.5 py-0.5 text-[10px] text-amber-300">{msg}</span
-						>
+						<span class="rounded bg-amber-900/40 px-1.5 py-0.5 text-xs text-amber-200">{msg}</span>
 					{/each}
 				</div>
 			{/if}
 
+			<!-- Warlord — only for units that can actually be Warlord. -->
+			{#if warlordEligible}
+				<button
+					class="btn btn-toggle self-start"
+					aria-pressed={unit.isWarlord}
+					onclick={onwarlord}
+				>
+					{unit.isWarlord ? '★ Warlord' : 'Make Warlord'}
+				</button>
+			{/if}
+
+			<!-- Leader attachment (11e attaches leaders at list-building time). -->
+			{#if leader}
+				<label class="text-text-muted flex flex-col gap-1 text-sm uppercase tracking-wider">
+					Attached to
+					<select
+						class="bg-panel border-panel-border text-text rounded border px-2 py-1.5 text-sm normal-case"
+						value={unit.attachedToKey ?? ''}
+						onchange={(e) => setAttachment((e.target as HTMLSelectElement).value)}
+					>
+						<option value="">— unattached —</option>
+						{#each bodyguards as b (b.key)}
+							<option value={b.key}>{b.name}</option>
+						{/each}
+					</select>
+				</label>
+			{/if}
+
 			<!-- Enhancement (characters under a detachment only) -->
 			{#if enhancements.length > 0}
-				<label class="text-text-dim flex flex-col gap-1 text-[11px] uppercase tracking-wider">
+				<label class="text-text-muted flex flex-col gap-1 text-sm uppercase tracking-wider">
 					Enhancement
 					<select
-						class="bg-panel border-panel-border text-text rounded border px-1.5 py-1 text-[11px] normal-case"
+						class="bg-panel border-panel-border text-text rounded border px-2 py-1.5 text-sm normal-case"
 						value={unit.enhancementId ?? ''}
 						onchange={(e) =>
 							onchange({ ...unit, enhancementId: (e.target as HTMLSelectElement).value || null })}
@@ -100,15 +141,9 @@ function setModelCount(n: number) {
 				</label>
 			{/if}
 
-			<!-- Warlord -->
-			<label class="text-text-dim flex items-center gap-1.5 text-[11px]">
-				<input type="radio" name="warlord" checked={unit.isWarlord} onchange={onwarlord} />
-				Warlord
-			</label>
-
 			<!-- Wargear / loadout -->
 			<div class="border-panel-border/50 border-t pt-2">
-				<div class="text-text-dim mb-1 text-[10px] font-semibold uppercase tracking-wider">
+				<div class="text-text-muted mb-1.5 text-xs font-semibold uppercase tracking-wider">
 					Wargear
 				</div>
 				<WargearEditor {unit} onchange={(loadout) => onchange({ ...unit, loadout })} />
