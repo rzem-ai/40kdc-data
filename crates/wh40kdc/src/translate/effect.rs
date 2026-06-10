@@ -249,7 +249,14 @@ fn describe_single(e: &SingleEffect) -> String {
         }
         T::InvulnerableSave => format!(
             "{target} gains a {}+ invulnerable save",
-            jv(m, if notnull(m, "invuln_sv") { "invuln_sv" } else { "value" })
+            jv(
+                m,
+                if notnull(m, "invuln_sv") {
+                    "invuln_sv"
+                } else {
+                    "value"
+                }
+            )
         ),
         T::KeywordGrant => {
             let kw = match m.get("keywords") {
