@@ -602,6 +602,24 @@
       ],
       "additionalProperties": false
     },
+    "unit-minimum": {
+      "type": "object",
+      "description": "A minimum number of units carrying a keyword that the detachment requires.",
+      "properties": {
+        "keyword": {
+          "$ref": "#/$defs/keyword"
+        },
+        "min": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "keyword",
+        "min"
+      ],
+      "additionalProperties": false
+    },
     "detachment": {
       "title": "Detachment",
       "description": "A detachment option within a faction, providing a detachment rule, enhancements, and stratagems.",
@@ -697,6 +715,13 @@
             "$ref": "#/$defs/granted-keyword"
           },
           "description": "Construction keywords this detachment grants to matching units while it is selected (e.g. Houndpack Lance grants 'Battleline' to 'War Dog' units). A unit carrying any keyword in a grant's `to_keywords` gains that grant's `keyword` for army-construction purposes (datasheet-count caps, battlefield role). Empty/absent when the detachment grants no construction keywords. Distinct from combat keywords, which live in the ability DSL."
+        },
+        "unit_minimums": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/unit-minimum"
+          },
+          "description": "Minimum unit counts the detachment requires while selected (e.g. Houndpack Lance: 'your army must include three or more WAR DOG units'). Each entry requires at least `min` units carrying `keyword`. Empty/absent when the detachment imposes no minimum."
         },
         "game_version": {
           "$ref": "#/$defs/game-version-ref"

@@ -424,6 +424,16 @@ export interface GrantedKeyword {
   max_selected?: number;
 }
 /**
+ * A minimum number of units carrying a keyword that the detachment requires.
+ *
+ * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
+ * via the `definition` "unit-minimum".
+ */
+export interface UnitMinimum {
+  keyword: Keyword;
+  min: number;
+}
+/**
  * A detachment option within a faction, providing a detachment rule, enhancements, and stratagems.
  *
  * This interface was referenced by `0KdcBundledSchemas`'s JSON-Schema
@@ -457,6 +467,10 @@ export interface Detachment {
    * Construction keywords this detachment grants to matching units while it is selected (e.g. Houndpack Lance grants 'Battleline' to 'War Dog' units). A unit carrying any keyword in a grant's `to_keywords` gains that grant's `keyword` for army-construction purposes (datasheet-count caps, battlefield role). Empty/absent when the detachment grants no construction keywords. Distinct from combat keywords, which live in the ability DSL.
    */
   granted_keywords?: GrantedKeyword[];
+  /**
+   * Minimum unit counts the detachment requires while selected (e.g. Houndpack Lance: 'your army must include three or more WAR DOG units'). Each entry requires at least `min` units carrying `keyword`. Empty/absent when the detachment imposes no minimum.
+   */
+  unit_minimums?: UnitMinimum[];
   game_version: GameVersionReference;
 }
 /**

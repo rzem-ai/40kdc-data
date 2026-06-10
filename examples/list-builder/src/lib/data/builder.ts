@@ -856,6 +856,24 @@ function constructionViolations(state: BuilderState): BuilderViolation[] {
 		}
 	}
 
+	// Detachment unit minimums (e.g. Houndpack Lance: 3+ WAR DOG units).
+	for (const id of state.detachmentIds) {
+		const det = ds.detachments.get(id);
+		for (const req of det?.unit_minimums ?? []) {
+			const k = req.keyword.toLowerCase();
+			const have = state.units.filter((u) => {
+				const raw = buRaw(u);
+				return raw ? effectiveKeywords(raw, state.detachmentIds, u.selectedGrants ?? []).has(k) : false;
+			}).length;
+			if (have < req.min) {
+				out.push({
+					unitKey: null,
+					message: `${det?.name ?? id}: requires ${req.min}+ ${req.keyword} units (have ${have})`,
+				});
+			}
+		}
+	}
+
 	return out;
 }
 

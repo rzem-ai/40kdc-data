@@ -2731,6 +2731,13 @@ impl<'de> ::serde::Deserialize<'de> for DeploymentPatternZonesItemName {
 ///        "type": "string"
 ///      },
 ///      "uniqueItems": true
+///    },
+///    "unit_minimums": {
+///      "description": "Minimum unit counts the detachment requires while selected (e.g. Houndpack Lance: 'your army must include three or more WAR DOG units'). Each entry requires at least `min` units carrying `keyword`. Empty/absent when the detachment imposes no minimum.",
+///      "type": "array",
+///      "items": {
+///        "$ref": "#/$defs/unit-minimum"
+///      }
 ///    }
 ///  },
 ///  "additionalProperties": false
@@ -2764,6 +2771,9 @@ pub struct Detachment {
     ///11e: detachment-type tags (e.g. 'dynasty', 'kabal'). A roster may include at most one detachment per shared tag — the 'you can only take one of X type of detachment' rule. Empty when the detachment carries no UNIQUE tag.
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub tags: ::std::option::Option<Vec<::std::string::String>>,
+    ///Minimum unit counts the detachment requires while selected (e.g. Houndpack Lance: 'your army must include three or more WAR DOG units'). Each entry requires at least `min` units carrying `keyword`. Empty/absent when the detachment imposes no minimum.
+    #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+    pub unit_minimums: ::std::vec::Vec<UnitMinimum>,
 }
 ///`DetachmentName`
 ///
@@ -12441,6 +12451,37 @@ impl<'de> ::serde::Deserialize<'de> for UnitCompositionModelsItemProfileName {
                 <D::Error as ::serde::de::Error>::custom(e.to_string())
             })
     }
+}
+///A minimum number of units carrying a keyword that the detachment requires.
+///
+/// <details><summary>JSON schema</summary>
+///
+/// ```json
+///{
+///  "description": "A minimum number of units carrying a keyword that the detachment requires.",
+///  "type": "object",
+///  "required": [
+///    "keyword",
+///    "min"
+///  ],
+///  "properties": {
+///    "keyword": {
+///      "$ref": "#/$defs/keyword"
+///    },
+///    "min": {
+///      "type": "integer",
+///      "minimum": 1.0
+///    }
+///  },
+///  "additionalProperties": false
+///}
+/// ```
+/// </details>
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct UnitMinimum {
+    pub keyword: Keyword,
+    pub min: ::std::num::NonZeroU64,
 }
 ///`UnitModelCount`
 ///

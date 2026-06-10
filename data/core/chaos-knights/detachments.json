@@ -117,6 +117,12 @@
         "to_keywords": ["War Dog"],
         "max_selected": 3
       }
+    ],
+    "unit_minimums": [
+      {
+        "keyword": "War Dog",
+        "min": 3
+      }
     ]
   },
   {

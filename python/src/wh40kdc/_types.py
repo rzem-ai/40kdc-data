@@ -169,6 +169,11 @@ class GrantedKeyword(TypedDict):
     max_selected: NotRequired[int]
 
 
+class UnitMinimum(TypedDict):
+    keyword: Keyword
+    min: int
+
+
 class Restrictions(TypedDict):
     required_keywords: NotRequired[KeywordList]
     excluded_keywords: NotRequired[KeywordList]
@@ -187,6 +192,7 @@ class Detachment(TypedDict):
     stratagem_ids: NotRequired[list[EntityId]]
     restrictions: NotRequired[Restrictions | None]
     granted_keywords: NotRequired[list[GrantedKeyword]]
+    unit_minimums: NotRequired[list[UnitMinimum]]
     game_version: GameVersionRef
 
 

@@ -616,3 +616,26 @@ describe('Houndpack Lance: select War Dogs as CHARACTER', () => {
 		).toBe(false);
 	});
 });
+
+describe('Houndpack Lance: minimum War Dog units', () => {
+	const houndpack = ['houndpack-lance'];
+	const warDog = (key: string): BuilderUnit => ({ ...makeUnit('war-dog-karnivore', 1), key });
+
+	it('flags fewer than three War Dogs, and clears at three', () => {
+		const two = builderViolations({
+			...emptyBuilderState(),
+			factionId: 'chaos-knights',
+			detachmentIds: houndpack,
+			units: [warDog('a'), warDog('b')],
+		});
+		expect(two.some((v) => /requires 3\+ War Dog units/.test(v.message))).toBe(true);
+
+		const three = builderViolations({
+			...emptyBuilderState(),
+			factionId: 'chaos-knights',
+			detachmentIds: houndpack,
+			units: [warDog('a'), warDog('b'), warDog('c')],
+		});
+		expect(three.some((v) => /requires .* War Dog units/.test(v.message))).toBe(false);
+	});
+});
