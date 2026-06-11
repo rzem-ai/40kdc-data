@@ -2049,5 +2049,743 @@
     "faction_id": "adeptus-custodes",
     "ability_type": "faction",
     "behavior": "activated"
+  },
+  {
+    "ability_id": "march-of-the-honoured-dead",
+    "name": "March of the Honoured Dead",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adeptus-custodes",
+    "detachment_id": "might-of-the-moritoi",
+    "ability_type": "detachment",
+    "behavior": "passive",
+    "effect": {
+      "type": "sequence",
+      "steps": [
+        {
+          "type": "stat-modifier",
+          "target": "all-friendly",
+          "modifier": {
+            "stat": "M",
+            "operation": "add",
+            "value": 2
+          }
+        },
+        {
+          "type": "charge-roll-modifier",
+          "target": "all-friendly",
+          "modifier": {
+            "operation": "add",
+            "value": 1
+          }
+        }
+      ]
+    },
+    "scope": {
+      "range": "any-on-battlefield",
+      "duration": "battle"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Adeptus Custodes",
+        "Walker"
+      ]
+    }
+  },
+  {
+    "ability_id": "interred-expertise",
+    "name": "Interred Expertise",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adeptus-custodes",
+    "detachment_id": "might-of-the-moritoi",
+    "ability_type": "enhancement",
+    "behavior": "passive",
+    "effect": {
+      "type": "sequence",
+      "steps": [
+        {
+          "type": "re-roll",
+          "target": "unit",
+          "modifier": {
+            "roll": "hit",
+            "subset": "ones"
+          }
+        },
+        {
+          "type": "re-roll",
+          "target": "unit",
+          "modifier": {
+            "roll": "wound",
+            "subset": "ones"
+          }
+        }
+      ]
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "permanent"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Adeptus Custodes",
+        "Walker"
+      ]
+    }
+  },
+  {
+    "ability_id": "auramite-sarcophagus",
+    "name": "Auramite Sarcophagus",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adeptus-custodes",
+    "detachment_id": "might-of-the-moritoi",
+    "ability_type": "enhancement",
+    "behavior": "passive",
+    "effect": {
+      "type": "cp-refund",
+      "target": "self",
+      "modifier": {
+        "amount": 1,
+        "applies_to_stratagem": "crushing-impact"
+      }
+    },
+    "scope": {
+      "range": "self",
+      "duration": "permanent"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Adeptus Custodes",
+        "Walker"
+      ]
+    }
+  },
+  {
+    "ability_id": "flawless-construction-moritoi",
+    "name": "Flawless Construction",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adeptus-custodes",
+    "detachment_id": "might-of-the-moritoi",
+    "ability_type": "stratagem",
+    "behavior": "reactive",
+    "effect": {
+      "type": "conditional",
+      "condition": {
+        "type": "attack-is-type",
+        "parameters": {
+          "comparison": "strength-greater-than-toughness"
+        }
+      },
+      "effect": {
+        "type": "roll-modifier",
+        "target": "attacker",
+        "modifier": {
+          "roll": "wound",
+          "operation": "subtract",
+          "value": 1
+        }
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Adeptus Custodes",
+        "Walker"
+      ]
+    }
+  },
+  {
+    "ability_id": "unstoppable-advance",
+    "name": "Unstoppable Advance",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adeptus-custodes",
+    "detachment_id": "might-of-the-moritoi",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "keyword-grant",
+      "target": "unit",
+      "modifier": {
+        "keywords": [
+          "Mobile"
+        ]
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "turn"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Adeptus Custodes",
+        "Walker"
+      ]
+    }
+  },
+  {
+    "ability_id": "prioritised-eradication-moritoi",
+    "name": "Prioritised Eradication",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adeptus-custodes",
+    "detachment_id": "might-of-the-moritoi",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "sequence",
+      "steps": [
+        {
+          "type": "keyword-grant",
+          "target": "unit",
+          "modifier": {
+            "keywords": [
+              "Rapid Fire 6"
+            ],
+            "scope": "weapon",
+            "attack_type": "ranged",
+            "weapon": "Arachnus Storm Cannon"
+          }
+        },
+        {
+          "type": "keyword-grant",
+          "target": "unit",
+          "modifier": {
+            "keywords": [
+              "Rapid Fire 2"
+            ],
+            "scope": "weapon",
+            "attack_type": "ranged",
+            "weapon": "Iliastus Accelerator Culverin"
+          }
+        }
+      ]
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Telemon Heavy Dreadnought"
+      ]
+    }
+  },
+  {
+    "ability_id": "skin-crawling-disorientation",
+    "name": "Skin-Crawling Disorientation",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adeptus-custodes",
+    "detachment_id": "silent-hunters",
+    "ability_type": "detachment",
+    "behavior": "passive",
+    "effect": {
+      "type": "ability-grant",
+      "target": "all-friendly",
+      "modifier": {
+        "grant_type": "act-after-move",
+        "moves": [
+          "advance"
+        ],
+        "acts": [
+          "action"
+        ]
+      }
+    },
+    "scope": {
+      "range": "any-on-battlefield",
+      "duration": "battle"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Anathema Psykana"
+      ]
+    }
+  },
+  {
+    "ability_id": "encircling-hunter",
+    "name": "Encircling Hunter",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adeptus-custodes",
+    "detachment_id": "silent-hunters",
+    "ability_type": "enhancement",
+    "behavior": "activated",
+    "effect": {
+      "type": "movement-modifier",
+      "target": "unit",
+      "modifier": {
+        "type": "redeploy-to-reserves",
+        "max_units": 3
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "one-use"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Anathema Psykana",
+        "Infantry"
+      ]
+    }
+  },
+  {
+    "ability_id": "psyk-out-grenades",
+    "name": "Psyk-out Grenades",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adeptus-custodes",
+    "detachment_id": "silent-hunters",
+    "ability_type": "enhancement",
+    "behavior": "passive",
+    "effect": {
+      "type": "keyword-grant",
+      "target": "unit",
+      "modifier": {
+        "keywords": [
+          "Explosives"
+        ]
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "permanent"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Anathema Psykana"
+      ]
+    }
+  },
+  {
+    "ability_id": "deathsong-scythes",
+    "name": "Deathsong Scythes",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adeptus-custodes",
+    "detachment_id": "silent-hunters",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "sequence",
+      "steps": [
+        {
+          "type": "keyword-grant",
+          "target": "unit",
+          "modifier": {
+            "keywords": [
+              "Lance"
+            ],
+            "scope": "weapon",
+            "attack_type": "melee"
+          }
+        },
+        {
+          "type": "conditional",
+          "condition": {
+            "type": "target-has-keyword",
+            "parameters": {
+              "keyword": "Psyker"
+            }
+          },
+          "effect": {
+            "type": "stat-modifier",
+            "target": "unit",
+            "modifier": {
+              "stat": "A",
+              "operation": "add",
+              "value": 1
+            }
+          }
+        }
+      ]
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Vigilators"
+      ]
+    }
+  },
+  {
+    "ability_id": "umbral-prosecution",
+    "name": "Umbral Prosecution",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adeptus-custodes",
+    "detachment_id": "silent-hunters",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "sequence",
+      "steps": [
+        {
+          "type": "keyword-grant",
+          "target": "unit",
+          "modifier": {
+            "keywords": [
+              "Rapid Fire 2"
+            ],
+            "scope": "weapon",
+            "attack_type": "ranged",
+            "weapon": "Boltgun"
+          }
+        },
+        {
+          "type": "stat-modifier",
+          "target": "unit",
+          "modifier": {
+            "stat": "AP",
+            "operation": "improve",
+            "value": 1,
+            "attack_type": "ranged",
+            "weapon": "Boltgun"
+          }
+        }
+      ]
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Prosecutors"
+      ]
+    }
+  },
+  {
+    "ability_id": "synchronised-inferno",
+    "name": "Synchronised Inferno",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adeptus-custodes",
+    "detachment_id": "silent-hunters",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "keyword-grant",
+      "target": "unit",
+      "modifier": {
+        "keywords": [
+          "Blast"
+        ],
+        "scope": "weapon",
+        "attack_type": "ranged",
+        "requires": "Torrent"
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Witchseekers"
+      ]
+    }
+  },
+  {
+    "ability_id": "the-hammer-falls",
+    "name": "The Hammer Falls",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adeptus-custodes",
+    "detachment_id": "tharanatoi-hammerblow",
+    "ability_type": "detachment",
+    "behavior": "passive",
+    "effect": {
+      "type": "conditional",
+      "condition": {
+        "type": "advanced-this-turn",
+        "parameters": {
+          "move": "ingress"
+        }
+      },
+      "effect": {
+        "type": "re-roll",
+        "target": "all-friendly",
+        "modifier": {
+          "roll": "charge",
+          "subset": "all-failures"
+        }
+      }
+    },
+    "scope": {
+      "range": "any-on-battlefield",
+      "duration": "battle"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Adeptus Custodes",
+        "Terminator"
+      ]
+    }
+  },
+  {
+    "ability_id": "mnemo-locked-shrine-cipher",
+    "name": "Mnemo-locked Shrine Cipher",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adeptus-custodes",
+    "detachment_id": "tharanatoi-hammerblow",
+    "ability_type": "enhancement",
+    "behavior": "activated",
+    "effect": {
+      "type": "ability-grant",
+      "target": "unit",
+      "modifier": {
+        "grant_type": "ingress-move"
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "one-use"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Adeptus Custodes",
+        "Terminator"
+      ]
+    }
+  },
+  {
+    "ability_id": "efficient-aggression",
+    "name": "Efficient Aggression",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adeptus-custodes",
+    "detachment_id": "tharanatoi-hammerblow",
+    "ability_type": "enhancement",
+    "behavior": "reactive",
+    "effect": {
+      "type": "conditional",
+      "condition": {
+        "type": "has-lost-wounds"
+      },
+      "effect": {
+        "type": "movement-modifier",
+        "target": "unit",
+        "modifier": {
+          "move_type": "normal",
+          "distance": "D6+1",
+          "unit": "inches"
+        }
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "one-use"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Adeptus Custodes",
+        "Terminator"
+      ]
+    }
+  },
+  {
+    "ability_id": "hardened-resolve",
+    "name": "Hardened Resolve",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adeptus-custodes",
+    "detachment_id": "tharanatoi-hammerblow",
+    "ability_type": "stratagem",
+    "behavior": "reactive",
+    "effect": {
+      "type": "stat-modifier",
+      "target": "unit",
+      "modifier": {
+        "stat": "T",
+        "operation": "add",
+        "value": 1
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Adeptus Custodes",
+        "Terminator"
+      ]
+    }
+  },
+  {
+    "ability_id": "unleash-the-lions-tharanatoi",
+    "name": "Unleash the Lions",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adeptus-custodes",
+    "detachment_id": "tharanatoi-hammerblow",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "ability-grant",
+      "target": "unit",
+      "modifier": {
+        "grant_type": "split-into-single-model-units"
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "permanent"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Allarus Custodians"
+      ]
+    }
+  },
+  {
+    "ability_id": "electroexorcist-saturation",
+    "name": "Electroexorcist Saturation",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adeptus-custodes",
+    "detachment_id": "tharanatoi-hammerblow",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "stat-modifier",
+      "target": "unit",
+      "modifier": {
+        "stat": "A",
+        "operation": "set",
+        "value": "D3+3",
+        "attack_type": "ranged",
+        "weapon": "Ballistus Grenade Launcher"
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Adeptus Custodes",
+        "Terminator"
+      ]
+    }
   }
 ]

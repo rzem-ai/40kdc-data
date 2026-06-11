@@ -358,5 +358,95 @@
     "points_provisional": true,
     "upgrade_tag": false,
     "max_targets": 1
+  },
+  {
+    "id": "clarion-of-urgency",
+    "name": "Clarion of Urgency",
+    "detachment_id": "chorus-of-condemnation",
+    "cost": 15,
+    "keyword_restrictions": [
+      "Canoness with Jump Pack"
+    ],
+    "ability_id": "clarion-of-urgency",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "symphonic-payload",
+    "name": "Symphonic Payload",
+    "detachment_id": "chorus-of-condemnation",
+    "cost": 15,
+    "keyword_restrictions": [
+      "Exorcist"
+    ],
+    "ability_id": "symphonic-payload",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": true,
+    "max_targets": 1
+  },
+  {
+    "id": "writ-of-compunction",
+    "name": "Writ of Compunction",
+    "detachment_id": "sacred-champions",
+    "cost": 15,
+    "keyword_restrictions": [
+      "Celestian Sacresants"
+    ],
+    "ability_id": "writ-of-compunction",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": true,
+    "max_targets": 1
+  },
+  {
+    "id": "perfervid-haste",
+    "name": "Perfervid Haste",
+    "detachment_id": "sacred-champions",
+    "cost": 10,
+    "keyword_restrictions": [
+      "Adepta Sororitas"
+    ],
+    "ability_id": "perfervid-haste",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "hagiomnifex",
+    "name": "Hagiomnifex",
+    "detachment_id": "sanctified-orators",
+    "cost": 20,
+    "keyword_restrictions": [
+      "Adepta Sororitas Character"
+    ],
+    "ability_id": "hagiomnifex",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": true,
+    "max_targets": 1
   }
 ]

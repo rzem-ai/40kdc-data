@@ -22,8 +22,10 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 2,
+    "force_dispositions": [
+      "take-and-hold"
+    ]
   },
   {
     "id": "hallowed-martyrs",
@@ -48,8 +50,10 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 3,
+    "force_dispositions": [
+      "priority-assets"
+    ]
   },
   {
     "id": "bringers-of-flame",
@@ -74,8 +78,10 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 3,
+    "force_dispositions": [
+      "purge-the-foe"
+    ]
   },
   {
     "id": "champions-of-faith",
@@ -100,8 +106,10 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 2,
+    "force_dispositions": [
+      "disruption"
+    ]
   },
   {
     "id": "army-of-faith",
@@ -126,7 +134,79 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 2,
+    "force_dispositions": [
+      "take-and-hold"
+    ]
+  },
+  {
+    "id": "chorus-of-condemnation",
+    "name": "Chorus of Condemnation",
+    "faction_id": "adepta-sororitas",
+    "detachment_rule_id": "angelic-judgement",
+    "enhancement_ids": [
+      "clarion-of-urgency",
+      "symphonic-payload"
+    ],
+    "stratagem_ids": [
+      "inspirational-battle-cantics",
+      "harmonised-exorcism",
+      "devastating-reprise"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 1,
+    "force_dispositions": [
+      "reconnaissance"
+    ],
+    "tags": [
+      "reverend"
+    ]
+  },
+  {
+    "id": "sacred-champions",
+    "name": "Sacred Champions",
+    "faction_id": "adepta-sororitas",
+    "detachment_rule_id": "holy-quest",
+    "enhancement_ids": [
+      "writ-of-compunction",
+      "perfervid-haste"
+    ],
+    "stratagem_ids": [
+      "sanctified-blows",
+      "faithful-fortitude",
+      "unflinching-determination-sacred-champions"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 1,
+    "force_dispositions": [
+      "take-and-hold"
+    ],
+    "tags": [
+      "reverend"
+    ]
+  },
+  {
+    "id": "sanctified-orators",
+    "name": "Sanctified Orators",
+    "faction_id": "adepta-sororitas",
+    "detachment_rule_id": "hymns-of-battle",
+    "enhancement_ids": [
+      "hagiomnifex"
+    ],
+    "stratagem_ids": [],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 1,
+    "force_dispositions": [
+      "purge-the-foe"
+    ]
   }
 ]

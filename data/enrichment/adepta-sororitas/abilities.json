@@ -2801,5 +2801,600 @@
     "ability_type": "faction",
     "behavior": "activated",
     "community_notes": "Models 1 Miracle Die per activation as a guaranteed crit hit (auto-6). Sororitas generate ~8-10 Miracle Dice per game; 1 per unit-activation is a generous upper-bound that captures the mechanic's offensive value."
+  },
+  {
+    "ability_id": "angelic-judgement",
+    "name": "Angelic Judgement",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adepta-sororitas",
+    "detachment_id": "chorus-of-condemnation",
+    "ability_type": "detachment",
+    "behavior": "passive",
+    "effect": {
+      "type": "conditional",
+      "condition": {
+        "type": "phase-is",
+        "parameters": {
+          "phase": "shooting"
+        }
+      },
+      "effect": {
+        "type": "ability-grant",
+        "target": "all-enemy",
+        "modifier": {
+          "grant_type": "detection-range-modifier",
+          "value": 3,
+          "unit": "inches",
+          "target_scope": "one-visible-enemy",
+          "range_inches": 12,
+          "tag": "condemned"
+        }
+      }
+    },
+    "scope": {
+      "range": "any-on-battlefield",
+      "duration": "battle"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Adepta Sororitas",
+        "Infantry",
+        "Fly"
+      ]
+    }
+  },
+  {
+    "ability_id": "clarion-of-urgency",
+    "name": "Clarion of Urgency",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adepta-sororitas",
+    "detachment_id": "chorus-of-condemnation",
+    "ability_type": "enhancement",
+    "behavior": "activated",
+    "effect": {
+      "type": "conditional",
+      "condition": {
+        "operator": "and",
+        "operands": [
+          {
+            "type": "phase-is",
+            "parameters": {
+              "phase": "fight"
+            }
+          },
+          {
+            "type": "player-turn-is",
+            "parameters": {
+              "turn": "opponent"
+            }
+          }
+        ]
+      },
+      "effect": {
+        "type": "movement-modifier",
+        "target": "unit",
+        "modifier": {
+          "type": "to-strategic-reserves",
+          "condition": "unengaged"
+        }
+      }
+    },
+    "scope": {
+      "range": "self",
+      "duration": "permanent"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Canoness with Jump Pack"
+      ]
+    }
+  },
+  {
+    "ability_id": "symphonic-payload",
+    "name": "Symphonic Payload",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adepta-sororitas",
+    "detachment_id": "chorus-of-condemnation",
+    "ability_type": "enhancement",
+    "behavior": "passive",
+    "effect": {
+      "type": "re-roll",
+      "target": "self",
+      "modifier": {
+        "roll": "attacks-characteristic",
+        "subset": "all-failures"
+      }
+    },
+    "scope": {
+      "range": "self",
+      "duration": "permanent"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Exorcist"
+      ]
+    },
+    "community_notes": "Re-roll the dice that determine the random Attacks characteristic of the bearer's weapon (modeled as re-roll all)."
+  },
+  {
+    "ability_id": "inspirational-battle-cantics",
+    "name": "Inspirational Battle Canticles",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adepta-sororitas",
+    "detachment_id": "chorus-of-condemnation",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "unit-tag",
+      "target": "unit",
+      "modifier": {
+        "tag": "battle-shocked",
+        "operation": "remove"
+      }
+    },
+    "scope": {
+      "range": "aura-6",
+      "duration": "permanent"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Adepta Sororitas"
+      ]
+    }
+  },
+  {
+    "ability_id": "harmonised-exorcism",
+    "name": "Harmonised Exorcism",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adepta-sororitas",
+    "detachment_id": "chorus-of-condemnation",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "roll-modifier",
+      "target": "unit",
+      "modifier": {
+        "roll": "hit",
+        "operation": "add",
+        "value": 1,
+        "attack_type": "ranged"
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Exorcist"
+      ]
+    }
+  },
+  {
+    "ability_id": "devastating-reprise",
+    "name": "Devastating Reprise",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adepta-sororitas",
+    "detachment_id": "chorus-of-condemnation",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "keyword-grant",
+      "target": "unit",
+      "modifier": {
+        "keywords": [
+          "Devastating Wounds"
+        ],
+        "scope": "weapon",
+        "attack_type": "ranged"
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Adepta Sororitas",
+        "Infantry",
+        "Fly"
+      ]
+    }
+  },
+  {
+    "ability_id": "holy-quest",
+    "name": "Holy Quest",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adepta-sororitas",
+    "detachment_id": "sacred-champions",
+    "ability_type": "detachment",
+    "behavior": "passive",
+    "effect": {
+      "type": "roll-modifier",
+      "target": "all-friendly",
+      "modifier": {
+        "roll": "hit",
+        "operation": "add",
+        "value": 1
+      }
+    },
+    "scope": {
+      "range": "any-on-battlefield",
+      "duration": "battle"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Celestian Sacresants"
+      ]
+    }
+  },
+  {
+    "ability_id": "writ-of-compunction",
+    "name": "Writ of Compunction",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adepta-sororitas",
+    "detachment_id": "sacred-champions",
+    "ability_type": "enhancement",
+    "behavior": "passive",
+    "effect": {
+      "type": "objective-control-modifier",
+      "target": "unit",
+      "modifier": {
+        "operation": "add",
+        "value": 1
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "permanent"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Celestian Sacresants"
+      ]
+    }
+  },
+  {
+    "ability_id": "perfervid-haste",
+    "name": "Perfervid Haste",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adepta-sororitas",
+    "detachment_id": "sacred-champions",
+    "ability_type": "enhancement",
+    "behavior": "passive",
+    "effect": {
+      "type": "stat-modifier",
+      "target": "unit",
+      "modifier": {
+        "stat": "M",
+        "operation": "add",
+        "value": 1
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "permanent"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Adepta Sororitas"
+      ]
+    }
+  },
+  {
+    "ability_id": "sanctified-blows",
+    "name": "Sanctified Blows",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adepta-sororitas",
+    "detachment_id": "sacred-champions",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "sequence",
+      "steps": [
+        {
+          "type": "stat-modifier",
+          "target": "unit",
+          "modifier": {
+            "stat": "A",
+            "operation": "add",
+            "value": 1,
+            "attack_type": "melee"
+          }
+        },
+        {
+          "type": "stat-modifier",
+          "target": "unit",
+          "modifier": {
+            "stat": "S",
+            "operation": "add",
+            "value": 1,
+            "attack_type": "melee"
+          }
+        }
+      ]
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Celestian Sacresants"
+      ]
+    }
+  },
+  {
+    "ability_id": "faithful-fortitude",
+    "name": "Faithful Fortitude",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adepta-sororitas",
+    "detachment_id": "sacred-champions",
+    "ability_type": "stratagem",
+    "behavior": "reactive",
+    "effect": {
+      "type": "feel-no-pain",
+      "target": "unit",
+      "modifier": {
+        "threshold": 5,
+        "scope": "mortal"
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Celestian Sacresants"
+      ]
+    }
+  },
+  {
+    "ability_id": "unflinching-determination-sacred-champions",
+    "name": "Unflinching Determination",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adepta-sororitas",
+    "detachment_id": "sacred-champions",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "sequence",
+      "steps": [
+        {
+          "type": "keyword-grant",
+          "target": "unit",
+          "modifier": {
+            "keywords": [
+              "Assault"
+            ],
+            "scope": "weapon",
+            "attack_type": "ranged"
+          }
+        },
+        {
+          "type": "ability-grant",
+          "target": "unit",
+          "modifier": {
+            "grant_type": "act-after-move",
+            "moves": [
+              "advance",
+              "fall-back"
+            ],
+            "acts": [
+              "shoot",
+              "charge"
+            ]
+          }
+        }
+      ]
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "turn"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Celestian Sacresants"
+      ]
+    }
+  },
+  {
+    "ability_id": "hymns-of-battle",
+    "name": "Hymns of Battle",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adepta-sororitas",
+    "detachment_id": "sanctified-orators",
+    "ability_type": "detachment",
+    "behavior": "passive",
+    "effect": {
+      "type": "leadership-modifier",
+      "target": "all-friendly",
+      "modifier": {
+        "operation": "improve",
+        "value": 1
+      }
+    },
+    "scope": {
+      "range": "any-on-battlefield",
+      "duration": "battle"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Adepta Sororitas",
+        "Character"
+      ]
+    },
+    "community_notes": "Models only the +1 Ld to ADEPTA SORORITAS CHARACTERs. The 'enhancements from this detachment do not count toward the army enhancement total' clause is an army-construction rule with no combat-DSL slot."
+  },
+  {
+    "ability_id": "hagiomnifex",
+    "name": "Hagiomnifex",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "adepta-sororitas",
+    "detachment_id": "sanctified-orators",
+    "ability_type": "enhancement",
+    "behavior": "activated",
+    "effect": {
+      "type": "choice",
+      "choice_label": "hagiomnifex-sermon",
+      "options": [
+        {
+          "type": "ability-grant",
+          "target": "all-enemy",
+          "modifier": {
+            "grant_type": "detection-range-modifier",
+            "value": 6,
+            "unit": "inches"
+          }
+        },
+        {
+          "type": "unit-tag",
+          "target": "unit",
+          "modifier": {
+            "tag": "battle-shock-auto-succeed"
+          }
+        },
+        {
+          "type": "stat-modifier",
+          "target": "unit",
+          "modifier": {
+            "stat": "M",
+            "operation": "add",
+            "value": 1
+          }
+        },
+        {
+          "type": "stat-modifier",
+          "target": "unit",
+          "modifier": {
+            "stat": "S",
+            "operation": "add",
+            "value": 1
+          }
+        },
+        {
+          "type": "roll-modifier",
+          "target": "attacker",
+          "modifier": {
+            "roll": "wound",
+            "operation": "subtract",
+            "value": 1,
+            "applies_when": "attacker-strength-greater-than-toughness"
+          }
+        }
+      ]
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Adepta Sororitas",
+        "Character"
+      ],
+      "excluded_keywords": [
+        "Penitent"
+      ]
+    }
   }
 ]

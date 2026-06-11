@@ -22,8 +22,10 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 2,
+    "force_dispositions": [
+      "disruption"
+    ]
   },
   {
     "id": "auric-champions",
@@ -48,8 +50,10 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 2,
+    "force_dispositions": [
+      "priority-assets"
+    ]
   },
   {
     "id": "solar-spearhead",
@@ -74,8 +78,10 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 2,
+    "force_dispositions": [
+      "take-and-hold"
+    ]
   },
   {
     "id": "shield-host",
@@ -100,8 +106,10 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 2,
+    "force_dispositions": [
+      "purge-the-foe"
+    ]
   },
   {
     "id": "null-maiden-vigil",
@@ -126,8 +134,10 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 2,
+    "force_dispositions": [
+      "reconnaissance"
+    ]
   },
   {
     "id": "talons-of-the-emperor",
@@ -152,7 +162,84 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 3,
+    "force_dispositions": [
+      "take-and-hold"
+    ]
+  },
+  {
+    "id": "might-of-the-moritoi",
+    "name": "Might of the Moritoi",
+    "faction_id": "adeptus-custodes",
+    "detachment_rule_id": "march-of-the-honoured-dead",
+    "enhancement_ids": [
+      "interred-expertise",
+      "auramite-sarcophagus"
+    ],
+    "stratagem_ids": [
+      "flawless-construction-moritoi",
+      "unstoppable-advance",
+      "prioritised-eradication-moritoi"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 1,
+    "force_dispositions": [
+      "purge-the-foe"
+    ],
+    "tags": [
+      "armoury"
+    ]
+  },
+  {
+    "id": "silent-hunters",
+    "name": "Silent Hunters",
+    "faction_id": "adeptus-custodes",
+    "detachment_rule_id": "skin-crawling-disorientation",
+    "enhancement_ids": [
+      "encircling-hunter",
+      "psyk-out-grenades"
+    ],
+    "stratagem_ids": [
+      "deathsong-scythes",
+      "umbral-prosecution",
+      "synchronised-inferno"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 1,
+    "force_dispositions": [
+      "reconnaissance"
+    ]
+  },
+  {
+    "id": "tharanatoi-hammerblow",
+    "name": "Tharanatoi Hammerblow",
+    "faction_id": "adeptus-custodes",
+    "detachment_rule_id": "the-hammer-falls",
+    "enhancement_ids": [
+      "mnemo-locked-shrine-cipher",
+      "efficient-aggression"
+    ],
+    "stratagem_ids": [
+      "hardened-resolve",
+      "unleash-the-lions-tharanatoi",
+      "electroexorcist-saturation"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 1,
+    "force_dispositions": [
+      "priority-assets"
+    ],
+    "tags": [
+      "lions"
+    ]
   }
 ]

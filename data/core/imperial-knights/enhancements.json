@@ -358,5 +358,151 @@
     "points_provisional": true,
     "upgrade_tag": false,
     "max_targets": 1
+  },
+  {
+    "id": "blessed-plate",
+    "name": "Blessed Plate",
+    "detachment_id": "dominus-foebreakers",
+    "cost": 15,
+    "keyword_restrictions": [
+      "Imperial Knights"
+    ],
+    "ability_id": "blessed-plate",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "archeotech-autoloaders",
+    "name": "Archeotech Autoloaders",
+    "detachment_id": "dominus-foebreakers",
+    "cost": 20,
+    "keyword_restrictions": [
+      "Imperial Knights"
+    ],
+    "ability_id": "archeotech-autoloaders",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "gyro-optimised-actuators",
+    "name": "Gyro-optimised Actuators",
+    "detachment_id": "throne-bonded-outriders",
+    "cost": 10,
+    "keyword_restrictions": [
+      "Imperial Knights",
+      "Armiger"
+    ],
+    "ability_id": "gyro-optimised-actuators",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": true,
+    "max_targets": 1
+  },
+  {
+    "id": "ancestral-overbleed",
+    "name": "Ancestral Overbleed",
+    "detachment_id": "throne-bonded-outriders",
+    "cost": 10,
+    "keyword_restrictions": [
+      "Imperial Knights",
+      "Armiger"
+    ],
+    "ability_id": "ancestral-overbleed",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": true,
+    "max_targets": 1
+  },
+  {
+    "id": "mysterious-guardian",
+    "name": "Mysterious Guardian",
+    "detachment_id": "freeblade-company",
+    "cost": 25,
+    "keyword_restrictions": [
+      "Imperial Knights"
+    ],
+    "ability_id": "mysterious-guardian",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "sanctuary",
+    "name": "Sanctuary",
+    "detachment_id": "freeblade-company",
+    "cost": 20,
+    "keyword_restrictions": [
+      "Imperial Knights"
+    ],
+    "ability_id": "sanctuary",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "bringer-of-justice",
+    "name": "Bringer of Justice",
+    "detachment_id": "freeblade-company",
+    "cost": 25,
+    "keyword_restrictions": [
+      "Imperial Knights"
+    ],
+    "ability_id": "bringer-of-justice",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "hunters-eye",
+    "name": "Hunter’s Eye",
+    "detachment_id": "freeblade-company",
+    "cost": 15,
+    "keyword_restrictions": [
+      "Imperial Knights"
+    ],
+    "ability_id": "hunters-eye",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
   }
 ]

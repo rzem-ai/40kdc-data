@@ -22,8 +22,13 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 3,
+    "force_dispositions": [
+      "reconnaissance"
+    ],
+    "tags": [
+      "recon"
+    ]
   },
   {
     "id": "hammer-of-the-emperor",
@@ -48,8 +53,10 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 2,
+    "force_dispositions": [
+      "purge-the-foe"
+    ]
   },
   {
     "id": "combined-arms",
@@ -74,8 +81,10 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 3,
+    "force_dispositions": [
+      "take-and-hold"
+    ]
   },
   {
     "id": "grizzled-company",
@@ -100,34 +109,33 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 3,
+    "force_dispositions": [
+      "priority-assets"
+    ]
   },
   {
     "id": "bridgehead-strike",
     "name": "Bridgehead Strike",
     "faction_id": "astra-militarum",
-    "detachment_rule_id": null,
+    "detachment_rule_id": "fire-zone-purge",
     "enhancement_ids": [
       "bombast-class-vox-array",
-      "priority-drop-beacon",
-      "shroud-projector",
-      "advance-augury"
+      "priority-drop-beacon"
     ],
     "stratagem_ids": [
-      "bellicosa-drop",
-      "firing-hot",
-      "aerial-extraction",
       "on-my-position",
-      "servo-designators",
-      "fire-and-relocate"
+      "firing-hot",
+      "servo-designators"
     ],
     "game_version": {
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 1,
+    "force_dispositions": [
+      "priority-assets"
+    ]
   },
   {
     "id": "mechanised-assault",
@@ -152,8 +160,10 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 2,
+    "force_dispositions": [
+      "purge-the-foe"
+    ]
   },
   {
     "id": "siege-regiment",
@@ -178,7 +188,125 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 2,
+    "force_dispositions": [
+      "disruption"
+    ]
+  },
+  {
+    "id": "abhuman-auxiliaries",
+    "name": "Abhuman Auxiliaries",
+    "faction_id": "astra-militarum",
+    "detachment_rule_id": "absolutist-principles",
+    "enhancement_ids": [
+      "sharp-eyes-light-fingers",
+      "exemplar-of-duty"
+    ],
+    "stratagem_ids": [
+      "thick-skulled-obdurance",
+      "low-profile",
+      "stirred-to-action"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 1,
+    "force_dispositions": [
+      "take-and-hold"
+    ],
+    "tags": [
+      "abhuman"
+    ]
+  },
+  {
+    "id": "designation-force",
+    "name": "Designation Force",
+    "faction_id": "astra-militarum",
+    "detachment_rule_id": "designated-targets",
+    "enhancement_ids": [
+      "long-range-scout",
+      "recon-star"
+    ],
+    "stratagem_ids": [
+      "close-range-detection",
+      "triggered-alerts",
+      "sump-smog-screen"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 1,
+    "force_dispositions": [
+      "reconnaissance"
+    ],
+    "tags": [
+      "recon"
+    ]
+  },
+  {
+    "id": "steel-hammer",
+    "name": "Steel Hammer",
+    "faction_id": "astra-militarum",
+    "detachment_rule_id": "ceaseless-cannonade",
+    "enhancement_ids": [
+      "battalion-commander",
+      "titan-killer-steel-hammer",
+      "engine-speaker",
+      "assault-hatches"
+    ],
+    "stratagem_ids": [
+      "engine-of-wrath",
+      "shattering-salvo",
+      "imposing-arrival",
+      "withering-firepower",
+      "adamantine-behemoth",
+      "accuracy-under-pressure"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 2,
+    "force_dispositions": [
+      "purge-the-foe"
+    ]
+  },
+  {
+    "id": "armoured-infantry",
+    "name": "Armoured Infantry",
+    "faction_id": "astra-militarum",
+    "detachment_rule_id": "squadron-command",
+    "enhancement_ids": [
+      "exemplary-officer",
+      "master-manoeuvrist",
+      "omnissian-unguents",
+      "grand-strategist-armoured-infantry"
+    ],
+    "stratagem_ids": [
+      "order-the-advance",
+      "supporting-ordnance",
+      "mobile-firebase",
+      "combined-fire",
+      "burst-of-speed",
+      "opening-salvo"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 2,
+    "force_dispositions": [
+      "take-and-hold"
+    ],
+    "granted_keywords": [
+      {
+        "keyword": "Armoured Skirmisher",
+        "to_keywords": [
+          "Astra Militarum Squadron"
+        ]
+      }
+    ]
   }
 ]

@@ -22,8 +22,10 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 3,
+    "force_dispositions": [
+      "purge-the-foe"
+    ]
   },
   {
     "id": "cohort-cybernetica",
@@ -48,8 +50,10 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 2,
+    "force_dispositions": [
+      "take-and-hold"
+    ]
   },
   {
     "id": "skitarii-hunter-cohort",
@@ -74,8 +78,10 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 2,
+    "force_dispositions": [
+      "reconnaissance"
+    ]
   },
   {
     "id": "data-psalm-conclave",
@@ -100,8 +106,13 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 2,
+    "force_dispositions": [
+      "disruption"
+    ],
+    "tags": [
+      "data-psalm"
+    ]
   },
   {
     "id": "explorator-maniple",
@@ -126,8 +137,10 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 2,
+    "force_dispositions": [
+      "priority-assets"
+    ]
   },
   {
     "id": "rad-zone-corps",
@@ -152,7 +165,112 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     },
-    "detachment_points": null,
-    "force_dispositions": []
+    "detachment_points": 2,
+    "force_dispositions": [
+      "take-and-hold"
+    ]
+  },
+  {
+    "id": "cohort-acquisitus",
+    "name": "Cohort Acquisitus",
+    "faction_id": "adeptus-mechanicus",
+    "detachment_rule_id": "noospheric-recon",
+    "enhancement_ids": [
+      "explorator-dispensation",
+      "stealth-screened-cybercanids"
+    ],
+    "stratagem_ids": [
+      "defect-scrutiny",
+      "repolarised-augurs",
+      "clandestine-reposition"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 1,
+    "force_dispositions": [
+      "reconnaissance"
+    ]
+  },
+  {
+    "id": "lords-of-the-forge",
+    "name": "Lords of the Forge",
+    "faction_id": "adeptus-mechanicus",
+    "detachment_rule_id": "war-form-mantles",
+    "enhancement_ids": [
+      "vinghs-wafers-of-dynamism",
+      "tl-409"
+    ],
+    "stratagem_ids": [
+      "scriptural-prognosis",
+      "overloaded-safeguards",
+      "holy-avarice"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 1,
+    "force_dispositions": [
+      "priority-assets"
+    ],
+    "tags": [
+      "data-psalm"
+    ]
+  },
+  {
+    "id": "luminen-auto-choir",
+    "name": "Luminen Auto-choir",
+    "faction_id": "adeptus-mechanicus",
+    "detachment_rule_id": "cyber-static-canticles",
+    "enhancement_ids": [
+      "voltagheist-reliquary",
+      "electromiasmic-brazier"
+    ],
+    "stratagem_ids": [
+      "echoes-of-the-conduit-wars",
+      "chant-of-electrotraction",
+      "momentum-feedback"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 1,
+    "force_dispositions": [
+      "disruption"
+    ],
+    "tags": [
+      "data-psalm"
+    ]
+  },
+  {
+    "id": "eradication-cohort",
+    "name": "Eradication Cohort",
+    "faction_id": "adeptus-mechanicus",
+    "detachment_rule_id": "murderous-imperative",
+    "enhancement_ids": [
+      "omnicogitator",
+      "martial-signatum-amplificator",
+      "belicosa-class-capacitor-vanes",
+      "omnissiahs-fury"
+    ],
+    "stratagem_ids": [
+      "servo-driven-charge",
+      "threat-cogitation-targeters",
+      "unrelenting-aggression",
+      "precision-onslaught",
+      "unshackled-wrath",
+      "analytic-reprisals"
+    ],
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "detachment_points": 3,
+    "force_dispositions": [
+      "purge-the-foe"
+    ]
   }
 ]

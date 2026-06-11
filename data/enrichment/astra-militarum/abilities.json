@@ -5077,5 +5077,1531 @@
     "ability_type": "unit",
     "behavior": "reactive",
     "community_notes": "community-authored from 10e source (provisional 11e); see #21"
+  },
+  {
+    "ability_id": "absolutist-principles",
+    "name": "Absolutist Principles",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "abhuman-auxiliaries",
+    "ability_type": "detachment",
+    "behavior": "passive",
+    "effect": {
+      "type": "sequence",
+      "steps": [
+        {
+          "type": "keyword-grant",
+          "target": "all-friendly",
+          "modifier": {
+            "keywords": [
+              "Abhuman"
+            ],
+            "applies_to_keywords": [
+              "Bullgryn Squad",
+              "Ogryn Squad",
+              "Ratlings"
+            ]
+          }
+        },
+        {
+          "type": "ability-grant",
+          "target": "all-friendly",
+          "modifier": {
+            "grant_type": "issue-extra-order-to-abhuman-unit",
+            "applies_to_keywords": [
+              "Commissar"
+            ]
+          }
+        }
+      ]
+    },
+    "scope": {
+      "range": "any-on-battlefield",
+      "duration": "battle"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum"
+      ]
+    }
+  },
+  {
+    "ability_id": "sharp-eyes-light-fingers",
+    "name": "Sharp Eyes, Light Fingers",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "abhuman-auxiliaries",
+    "ability_type": "enhancement",
+    "behavior": "passive",
+    "effect": {
+      "type": "conditional",
+      "condition": {
+        "type": "phase-is",
+        "parameters": {
+          "phase": "shooting"
+        }
+      },
+      "effect": {
+        "type": "ability-grant",
+        "target": "all-enemy",
+        "modifier": {
+          "grant_type": "detection-range-modifier",
+          "value": 6,
+          "unit": "inches"
+        }
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Ratlings"
+      ]
+    }
+  },
+  {
+    "ability_id": "exemplar-of-duty",
+    "name": "Exemplar of Duty",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "abhuman-auxiliaries",
+    "ability_type": "enhancement",
+    "behavior": "passive",
+    "effect": {
+      "type": "feel-no-pain",
+      "target": "unit",
+      "modifier": {
+        "threshold": 4
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "permanent"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Commissar"
+      ]
+    }
+  },
+  {
+    "ability_id": "thick-skulled-obdurance",
+    "name": "Thick-skulled Obdurance",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "abhuman-auxiliaries",
+    "ability_type": "stratagem",
+    "behavior": "reactive",
+    "effect": {
+      "type": "stat-modifier",
+      "target": "unit",
+      "modifier": {
+        "stat": "AP",
+        "operation": "worsen",
+        "value": 1,
+        "incoming": true
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum"
+      ]
+    }
+  },
+  {
+    "ability_id": "low-profile",
+    "name": "Low Profile",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "abhuman-auxiliaries",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "ability-grant",
+      "target": "unit",
+      "modifier": {
+        "grant_type": "remain-hidden-after-shooting"
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Ratlings"
+      ]
+    }
+  },
+  {
+    "ability_id": "stirred-to-action",
+    "name": "Stirred to Action",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "abhuman-auxiliaries",
+    "ability_type": "stratagem",
+    "behavior": "reactive",
+    "effect": {
+      "type": "movement-modifier",
+      "target": "unit",
+      "modifier": {
+        "type": "surge-move",
+        "distance": "D6",
+        "unit": "inches"
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum"
+      ]
+    }
+  },
+  {
+    "ability_id": "designated-targets",
+    "name": "Designated Targets",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "designation-force",
+    "ability_type": "detachment",
+    "behavior": "passive",
+    "effect": {
+      "type": "ability-grant",
+      "target": "all-friendly",
+      "modifier": {
+        "grant_type": "designate-enemy-detection-range-modifier",
+        "value": 3,
+        "unit": "inches",
+        "target_scope": "one-visible-enemy",
+        "range_inches": 12,
+        "applies_to_keywords": [
+          "Scout Sentinel",
+          "Astra Militarum Infantry"
+        ]
+      }
+    },
+    "scope": {
+      "range": "any-on-battlefield",
+      "duration": "battle"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum"
+      ]
+    }
+  },
+  {
+    "ability_id": "long-range-scout",
+    "name": "Long-range Scout",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "designation-force",
+    "ability_type": "enhancement",
+    "behavior": "passive",
+    "effect": {
+      "type": "movement-modifier",
+      "target": "unit",
+      "modifier": {
+        "type": "infiltrate"
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "one-use"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Scout Sentinel"
+      ]
+    }
+  },
+  {
+    "ability_id": "recon-star",
+    "name": "Recon Star",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "designation-force",
+    "ability_type": "enhancement",
+    "behavior": "passive",
+    "effect": {
+      "type": "ability-grant",
+      "target": "self",
+      "modifier": {
+        "grant_type": "ingress-move",
+        "timing": "first-movement-phase"
+      }
+    },
+    "scope": {
+      "range": "self",
+      "duration": "one-use"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum Infantry Platoon"
+      ]
+    }
+  },
+  {
+    "ability_id": "close-range-detection",
+    "name": "Close-range Detection",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "designation-force",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "ability-grant",
+      "target": "unit",
+      "modifier": {
+        "grant_type": "detection-range-modifier",
+        "value": 3,
+        "unit": "inches",
+        "range_inches": 6
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum Infantry"
+      ]
+    }
+  },
+  {
+    "ability_id": "triggered-alerts",
+    "name": "Triggered Alerts",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "designation-force",
+    "ability_type": "stratagem",
+    "behavior": "reactive",
+    "effect": {
+      "type": "movement-modifier",
+      "target": "unit",
+      "modifier": {
+        "type": "normal-move",
+        "distance": "D3+3",
+        "unit": "inches"
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum Infantry"
+      ]
+    }
+  },
+  {
+    "ability_id": "sump-smog-screen",
+    "name": "Sump-smog Screen",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "designation-force",
+    "ability_type": "stratagem",
+    "behavior": "reactive",
+    "effect": {
+      "type": "ability-grant",
+      "target": "unit",
+      "modifier": {
+        "ability_id": "benefit-of-cover"
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum Infantry"
+      ]
+    }
+  },
+  {
+    "ability_id": "ceaseless-cannonade",
+    "name": "Ceaseless Cannonade",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "steel-hammer",
+    "ability_type": "detachment",
+    "behavior": "passive",
+    "effect": {
+      "type": "roll-modifier",
+      "target": "all-friendly",
+      "modifier": {
+        "roll": "hit",
+        "operation": "ignore-engagement-penalty",
+        "context": "shooting",
+        "applies_to_keywords": [
+          "Astra Militarum Titanic",
+          "Astra Militarum Squadron"
+        ]
+      }
+    },
+    "scope": {
+      "range": "any-on-battlefield",
+      "duration": "battle"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum"
+      ]
+    }
+  },
+  {
+    "ability_id": "battalion-commander",
+    "name": "Battalion Commander",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "steel-hammer",
+    "ability_type": "enhancement",
+    "behavior": "passive",
+    "effect": {
+      "type": "ability-grant",
+      "target": "self",
+      "modifier": {
+        "grant_type": "issue-orders",
+        "max_orders": 2,
+        "applies_to_keywords": [
+          "Astra Militarum Titanic",
+          "Astra Militarum Squadron"
+        ]
+      }
+    },
+    "scope": {
+      "range": "self",
+      "duration": "battle"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum",
+        "Titanic",
+        "Character"
+      ]
+    }
+  },
+  {
+    "ability_id": "titan-killer-steel-hammer",
+    "name": "Titan Killer",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "steel-hammer",
+    "ability_type": "enhancement",
+    "behavior": "activated",
+    "effect": {
+      "type": "re-roll",
+      "target": "self",
+      "modifier": {
+        "roll": "damage",
+        "subset": "all-failures"
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "permanent"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum",
+        "Titanic",
+        "Character"
+      ]
+    }
+  },
+  {
+    "ability_id": "engine-speaker",
+    "name": "Engine Speaker",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "steel-hammer",
+    "ability_type": "enhancement",
+    "behavior": "passive",
+    "effect": {
+      "type": "stat-modifier",
+      "target": "unit",
+      "modifier": {
+        "stat": "M",
+        "operation": "add",
+        "value": 3,
+        "unit": "inches"
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "until-next-command-phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum",
+        "Tech-Priest Enginseer"
+      ]
+    }
+  },
+  {
+    "ability_id": "assault-hatches",
+    "name": "Assault Hatches",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "steel-hammer",
+    "ability_type": "enhancement",
+    "behavior": "passive",
+    "effect": {
+      "type": "ability-grant",
+      "target": "unit",
+      "modifier": {
+        "grant_type": "charge-after-disembark"
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "turn"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum",
+        "Titanic",
+        "Character",
+        "Transport"
+      ]
+    }
+  },
+  {
+    "ability_id": "engine-of-wrath",
+    "name": "Engine of Wrath",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "steel-hammer",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "sequence",
+      "steps": [
+        {
+          "type": "stat-modifier",
+          "target": "unit",
+          "modifier": {
+            "stat": "A",
+            "operation": "add",
+            "value": 6,
+            "scope": "weapon",
+            "attack_type": "melee"
+          }
+        },
+        {
+          "type": "stat-modifier",
+          "target": "unit",
+          "modifier": {
+            "stat": "AP",
+            "operation": "improve",
+            "value": 2,
+            "scope": "weapon",
+            "attack_type": "melee"
+          }
+        }
+      ]
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum",
+        "Titanic"
+      ]
+    }
+  },
+  {
+    "ability_id": "shattering-salvo",
+    "name": "Shattering Salvo",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "steel-hammer",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "ability-grant",
+      "target": "all-enemy",
+      "modifier": {
+        "grant_type": "deny-benefit-of-cover"
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum",
+        "Titanic"
+      ]
+    }
+  },
+  {
+    "ability_id": "imposing-arrival",
+    "name": "Imposing Arrival",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "steel-hammer",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "ability-grant",
+      "target": "unit",
+      "modifier": {
+        "grant_type": "ingress-move",
+        "from": "reserves",
+        "min_distance_from_enemy": 6
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum",
+        "Titanic"
+      ]
+    }
+  },
+  {
+    "ability_id": "withering-firepower",
+    "name": "Withering Firepower",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "steel-hammer",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "leadership-modifier",
+      "target": "all-enemy",
+      "modifier": {
+        "test": "battle-shock",
+        "operation": "subtract",
+        "value": 1
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum",
+        "Vehicle"
+      ]
+    }
+  },
+  {
+    "ability_id": "adamantine-behemoth",
+    "name": "Adamantine Behemoth",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "steel-hammer",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "movement-modifier",
+      "target": "unit",
+      "modifier": {
+        "type": "move-through-terrain"
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum",
+        "Vehicle"
+      ]
+    }
+  },
+  {
+    "ability_id": "accuracy-under-pressure",
+    "name": "Accuracy Under Pressure",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "steel-hammer",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "re-roll",
+      "target": "unit",
+      "modifier": {
+        "roll": "hit",
+        "subset": "all-failures"
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum"
+      ]
+    }
+  },
+  {
+    "ability_id": "squadron-command",
+    "name": "Squadron Command",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "armoured-infantry",
+    "ability_type": "detachment",
+    "behavior": "passive",
+    "effect": {
+      "type": "ability-grant",
+      "target": "all-friendly",
+      "modifier": {
+        "grant_type": "add-order",
+        "order": "on-my-signal",
+        "applies_to_keywords": [
+          "Astra Militarum Officer"
+        ]
+      }
+    },
+    "scope": {
+      "range": "any-on-battlefield",
+      "duration": "battle"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum"
+      ]
+    }
+  },
+  {
+    "ability_id": "exemplary-officer",
+    "name": "Exemplary Officer",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "armoured-infantry",
+    "ability_type": "enhancement",
+    "behavior": "passive",
+    "effect": {
+      "type": "ability-grant",
+      "target": "self",
+      "modifier": {
+        "grant_type": "issue-order-to-extra-platoon-units",
+        "max_extra": 2,
+        "range_inches": 3
+      }
+    },
+    "scope": {
+      "range": "self",
+      "duration": "battle"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum",
+        "Officer",
+        "Infantry"
+      ]
+    }
+  },
+  {
+    "ability_id": "master-manoeuvrist",
+    "name": "Master Manoeuvrist",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "armoured-infantry",
+    "ability_type": "enhancement",
+    "behavior": "reactive",
+    "effect": {
+      "type": "ability-grant",
+      "target": "self",
+      "modifier": {
+        "grant_type": "embark-after-fight",
+        "timing": "end-of-opponent-fight-phase"
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "turn"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum",
+        "Officer",
+        "Infantry"
+      ]
+    }
+  },
+  {
+    "ability_id": "omnissian-unguents",
+    "name": "Omnissian Unguents",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "armoured-infantry",
+    "ability_type": "enhancement",
+    "behavior": "aura",
+    "effect": {
+      "type": "feel-no-pain",
+      "target": "friendly-within-aura",
+      "modifier": {
+        "threshold": 5,
+        "applies_to_keywords": [
+          "Armoured Skirmisher"
+        ]
+      }
+    },
+    "scope": {
+      "range": "aura-custom",
+      "duration": "permanent",
+      "range_inches": 3
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum",
+        "Tech-Priest Enginseer"
+      ]
+    }
+  },
+  {
+    "ability_id": "grand-strategist-armoured-infantry",
+    "name": "Grand Strategist",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "armoured-infantry",
+    "ability_type": "enhancement",
+    "behavior": "passive",
+    "effect": {
+      "type": "ability-grant",
+      "target": "self",
+      "modifier": {
+        "grant_type": "pregame-redeploy-up-to-two-regiment-or-squadron-units-may-enter-strategic-reserves"
+      }
+    },
+    "scope": {
+      "range": "self",
+      "duration": "battle"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum",
+        "Officer"
+      ]
+    }
+  },
+  {
+    "ability_id": "order-the-advance",
+    "name": "Order the Advance",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "armoured-infantry",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "re-roll",
+      "target": "friendly-within-aura",
+      "modifier": {
+        "roll": "advance",
+        "subset": "all-failures"
+      }
+    },
+    "scope": {
+      "range": "aura-custom",
+      "duration": "phase",
+      "range_inches": 6
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum"
+      ]
+    }
+  },
+  {
+    "ability_id": "supporting-ordnance",
+    "name": "Supporting Ordnance",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "armoured-infantry",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "conditional",
+      "condition": {
+        "operator": "or",
+        "operands": [
+          {
+            "type": "target-has-keyword",
+            "parameters": {
+              "keyword": "Monster"
+            }
+          },
+          {
+            "type": "target-has-keyword",
+            "parameters": {
+              "keyword": "Vehicle"
+            }
+          }
+        ]
+      },
+      "effect": {
+        "type": "re-roll",
+        "target": "unit",
+        "modifier": {
+          "roll": "hit",
+          "subset": "all-failures"
+        }
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Armoured Skirmisher"
+      ]
+    }
+  },
+  {
+    "ability_id": "mobile-firebase",
+    "name": "Mobile Firebase",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "armoured-infantry",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "ability-grant",
+      "target": "unit",
+      "modifier": {
+        "grant_type": "act-after-move",
+        "moves": [
+          "advance",
+          "fall-back"
+        ],
+        "acts": [
+          "shoot"
+        ]
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "turn"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Armoured Skirmisher"
+      ]
+    }
+  },
+  {
+    "ability_id": "combined-fire",
+    "name": "Combined Fire",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "armoured-infantry",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "sequence",
+      "steps": [
+        {
+          "type": "ability-grant",
+          "target": "all-enemy",
+          "modifier": {
+            "grant_type": "deny-benefit-of-cover"
+          }
+        },
+        {
+          "type": "stat-modifier",
+          "target": "all-friendly",
+          "modifier": {
+            "stat": "S",
+            "operation": "add",
+            "value": 2,
+            "applies_to_keywords": [
+              "Armoured Skirmisher"
+            ]
+          }
+        }
+      ]
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Armoured Skirmisher"
+      ]
+    }
+  },
+  {
+    "ability_id": "burst-of-speed",
+    "name": "Burst of Speed",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "armoured-infantry",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "movement-modifier",
+      "target": "unit",
+      "modifier": {
+        "type": "normal-move",
+        "distance": "D6",
+        "unit": "inches"
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum"
+      ]
+    }
+  },
+  {
+    "ability_id": "opening-salvo",
+    "name": "Opening Salvo",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "armoured-infantry",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "roll-modifier",
+      "target": "unit",
+      "modifier": {
+        "roll": "wound",
+        "operation": "add",
+        "value": 1
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum"
+      ]
+    }
+  },
+  {
+    "ability_id": "fire-zone-purge",
+    "name": "Fire Zone Purge",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "bridgehead-strike",
+    "ability_type": "detachment",
+    "behavior": "passive",
+    "effect": {
+      "type": "conditional",
+      "condition": {
+        "type": "timing-is",
+        "parameters": {
+          "timing": "set-up-this-turn"
+        }
+      },
+      "effect": {
+        "type": "roll-modifier",
+        "target": "all-friendly",
+        "modifier": {
+          "roll": "hit",
+          "operation": "add",
+          "value": 1,
+          "scope": "weapon",
+          "attack_type": "ranged",
+          "applies_to_keywords": [
+            "Militarum Tempestus"
+          ]
+        }
+      }
+    },
+    "scope": {
+      "range": "any-on-battlefield",
+      "duration": "battle"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum"
+      ]
+    }
+  },
+  {
+    "ability_id": "bombast-class-vox-array",
+    "name": "Bombast-class Vox-array",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "bridgehead-strike",
+    "ability_type": "enhancement",
+    "behavior": "passive",
+    "effect": {
+      "type": "ability-grant",
+      "target": "self",
+      "modifier": {
+        "grant_type": "issue-order-to-multiple-units",
+        "max_targets": 3,
+        "requires": "master-vox"
+      }
+    },
+    "scope": {
+      "range": "self",
+      "duration": "battle"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum",
+        "Militarum Tempestus",
+        "Officer"
+      ]
+    }
+  },
+  {
+    "ability_id": "priority-drop-beacon",
+    "name": "Priority-drop Beacon",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "bridgehead-strike",
+    "ability_type": "enhancement",
+    "behavior": "passive",
+    "effect": {
+      "type": "ability-grant",
+      "target": "self",
+      "modifier": {
+        "grant_type": "ingress-move",
+        "timing": "first-movement-phase"
+      }
+    },
+    "scope": {
+      "range": "self",
+      "duration": "one-use"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum",
+        "Militarum Tempestus",
+        "Officer"
+      ]
+    }
+  },
+  {
+    "ability_id": "on-my-position",
+    "name": "On My Position",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "bridgehead-strike",
+    "ability_type": "stratagem",
+    "behavior": "reactive",
+    "effect": {
+      "type": "sequence",
+      "steps": [
+        {
+          "type": "dice-gated",
+          "dice": "D6",
+          "threshold": 2,
+          "comparison": "gte",
+          "on_success": {
+            "type": "mortal-wounds",
+            "target": "all-enemy",
+            "modifier": {
+              "count": "D6",
+              "scope": "each-engaged-enemy-unit"
+            }
+          },
+          "on_fail": null
+        },
+        {
+          "type": "mortal-wounds",
+          "target": "self",
+          "modifier": {
+            "count": "3D3"
+          }
+        }
+      ]
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum",
+        "Regiment"
+      ]
+    }
+  },
+  {
+    "ability_id": "firing-hot",
+    "name": "Firing Hot",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "bridgehead-strike",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "sequence",
+      "steps": [
+        {
+          "type": "stat-modifier",
+          "target": "unit",
+          "modifier": {
+            "stat": "S",
+            "operation": "add",
+            "value": 1,
+            "scope": "weapon",
+            "attack_type": "ranged"
+          }
+        },
+        {
+          "type": "stat-modifier",
+          "target": "unit",
+          "modifier": {
+            "stat": "AP",
+            "operation": "improve",
+            "value": 1,
+            "scope": "weapon",
+            "attack_type": "ranged"
+          }
+        }
+      ]
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum"
+      ]
+    }
+  },
+  {
+    "ability_id": "servo-designators",
+    "name": "Servo-designators",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "astra-militarum",
+    "detachment_id": "bridgehead-strike",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "keyword-grant",
+      "target": "all-friendly",
+      "modifier": {
+        "keywords": [
+          "Ignores Cover"
+        ],
+        "scope": "weapon",
+        "attack_type": "ranged",
+        "applies_to_keywords": [
+          "Militarum Tempestus"
+        ],
+        "vs_target": "one-enemy-hit-this-phase"
+      }
+    },
+    "scope": {
+      "range": "any-on-battlefield",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Astra Militarum",
+        "Militarum Tempestus"
+      ]
+    }
   }
 ]

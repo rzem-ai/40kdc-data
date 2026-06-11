@@ -579,5 +579,232 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     }
+  },
+  {
+    "id": "ground-shaking-strides",
+    "name": "GROUND-SHAKING STRIDES",
+    "category": "detachment",
+    "detachment_id": "dominus-foebreakers",
+    "cp_cost": 1,
+    "phases": [
+      "movement"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "ground-shaking-strides",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "foebreaker-firestorm",
+    "name": "FOEBREAKER FIRESTORM",
+    "category": "detachment",
+    "detachment_id": "dominus-foebreakers",
+    "cp_cost": 1,
+    "phases": [
+      "shooting"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "foebreaker-firestorm",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "fire-shocked",
+    "name": "FIRE SHOCKED",
+    "category": "detachment",
+    "detachment_id": "dominus-foebreakers",
+    "cp_cost": 1,
+    "phases": [
+      "shooting"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "fire-shocked",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "neural-lash",
+    "name": "NEURAL LASH",
+    "category": "detachment",
+    "detachment_id": "throne-bonded-outriders",
+    "cp_cost": 1,
+    "phases": [
+      "command"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "neural-lash",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "helm-conditioning",
+    "name": "HELM CONDITIONING",
+    "category": "detachment",
+    "detachment_id": "throne-bonded-outriders",
+    "cp_cost": 1,
+    "phases": [
+      "command"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "helm-conditioning",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "honoured-to-serve",
+    "name": "HONOURED TO SERVE",
+    "category": "detachment",
+    "detachment_id": "throne-bonded-outriders",
+    "cp_cost": 1,
+    "phases": [
+      "shooting"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "honoured-to-serve",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "noble-sacrifice",
+    "name": "NOBLE SACRIFICE",
+    "category": "detachment",
+    "type": "epic-deed",
+    "detachment_id": "freeblade-company",
+    "cp_cost": 1,
+    "phases": [
+      "command",
+      "movement",
+      "shooting",
+      "charge",
+      "fight"
+    ],
+    "player_turn": "either",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "noble-sacrifice",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "point-blank-barrage-freeblade",
+    "name": "POINT-BLANK BARRAGE",
+    "category": "detachment",
+    "type": "strategic-ploy",
+    "detachment_id": "freeblade-company",
+    "cp_cost": 1,
+    "phases": [
+      "shooting"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "point-blank-barrage-freeblade",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "strength-from-exile",
+    "name": "STRENGTH FROM EXILE",
+    "category": "detachment",
+    "type": "battle-tactic",
+    "detachment_id": "freeblade-company",
+    "cp_cost": 1,
+    "phases": [
+      "shooting",
+      "fight"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "strength-from-exile",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "survivor-of-strife",
+    "name": "SURVIVOR OF STRIFE",
+    "category": "detachment",
+    "type": "epic-deed",
+    "detachment_id": "freeblade-company",
+    "cp_cost": 1,
+    "phases": [
+      "shooting"
+    ],
+    "player_turn": "opponent-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "survivor-of-strife",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "full-tilt-freeblade",
+    "name": "FULL TILT",
+    "category": "detachment",
+    "type": "wargear",
+    "detachment_id": "freeblade-company",
+    "cp_cost": 1,
+    "phases": [
+      "movement"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "full-tilt-freeblade",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "flanking-manoeuvres",
+    "name": "FLANKING MANOEUVRES",
+    "category": "detachment",
+    "type": "strategic-ploy",
+    "detachment_id": "freeblade-company",
+    "cp_cost": 1,
+    "phases": [
+      "fight"
+    ],
+    "player_turn": "opponent-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "flanking-manoeuvres",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
   }
 ]

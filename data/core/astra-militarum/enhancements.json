@@ -25,7 +25,7 @@
     "keyword_restrictions": [
       "Astra Militarum"
     ],
-    "ability_id": null,
+    "ability_id": "bombast-class-vox-array",
     "is_unique": true,
     "game_version": {
       "edition": "11th",
@@ -61,25 +61,7 @@
     "keyword_restrictions": [
       "Astra Militarum"
     ],
-    "ability_id": null,
-    "is_unique": true,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    },
-    "points_provisional": true,
-    "upgrade_tag": false,
-    "max_targets": 1
-  },
-  {
-    "id": "shroud-projector",
-    "name": "Shroud Projector",
-    "detachment_id": "bridgehead-strike",
-    "cost": 15,
-    "keyword_restrictions": [
-      "Astra Militarum"
-    ],
-    "ability_id": null,
+    "ability_id": "priority-drop-beacon",
     "is_unique": true,
     "game_version": {
       "edition": "11th",
@@ -93,24 +75,6 @@
     "id": "grand-strategist",
     "name": "Grand Strategist",
     "detachment_id": "combined-arms",
-    "cost": 15,
-    "keyword_restrictions": [
-      "Astra Militarum"
-    ],
-    "ability_id": null,
-    "is_unique": true,
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    },
-    "points_provisional": true,
-    "upgrade_tag": false,
-    "max_targets": 1
-  },
-  {
-    "id": "advance-augury",
-    "name": "Advance Augury",
-    "detachment_id": "bridgehead-strike",
     "cost": 15,
     "keyword_restrictions": [
       "Astra Militarum"
@@ -494,6 +458,222 @@
       "Astra Militarum"
     ],
     "ability_id": null,
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "sharp-eyes-light-fingers",
+    "name": "Sharp Eyes, Light Fingers",
+    "detachment_id": "abhuman-auxiliaries",
+    "cost": 10,
+    "keyword_restrictions": [
+      "Astra Militarum"
+    ],
+    "ability_id": "sharp-eyes-light-fingers",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": true,
+    "max_targets": 1
+  },
+  {
+    "id": "exemplar-of-duty",
+    "name": "Exemplar of Duty",
+    "detachment_id": "abhuman-auxiliaries",
+    "cost": 10,
+    "keyword_restrictions": [
+      "Astra Militarum"
+    ],
+    "ability_id": "exemplar-of-duty",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": true,
+    "max_targets": 1
+  },
+  {
+    "id": "long-range-scout",
+    "name": "Long-range Scout",
+    "detachment_id": "designation-force",
+    "cost": 10,
+    "keyword_restrictions": [
+      "Astra Militarum"
+    ],
+    "ability_id": "long-range-scout",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": true,
+    "max_targets": 1
+  },
+  {
+    "id": "recon-star",
+    "name": "Recon Star",
+    "detachment_id": "designation-force",
+    "cost": 10,
+    "keyword_restrictions": [
+      "Astra Militarum"
+    ],
+    "ability_id": "recon-star",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": true,
+    "max_targets": 1
+  },
+  {
+    "id": "battalion-commander",
+    "name": "Battalion Commander",
+    "detachment_id": "steel-hammer",
+    "cost": 15,
+    "keyword_restrictions": [
+      "Astra Militarum"
+    ],
+    "ability_id": "battalion-commander",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "titan-killer-steel-hammer",
+    "name": "Titan Killer",
+    "detachment_id": "steel-hammer",
+    "cost": 15,
+    "keyword_restrictions": [
+      "Astra Militarum"
+    ],
+    "ability_id": "titan-killer-steel-hammer",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "engine-speaker",
+    "name": "Engine Speaker",
+    "detachment_id": "steel-hammer",
+    "cost": 10,
+    "keyword_restrictions": [
+      "Astra Militarum"
+    ],
+    "ability_id": "engine-speaker",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "assault-hatches",
+    "name": "Assault Hatches",
+    "detachment_id": "steel-hammer",
+    "cost": 10,
+    "keyword_restrictions": [
+      "Astra Militarum"
+    ],
+    "ability_id": "assault-hatches",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "exemplary-officer",
+    "name": "Exemplary Officer",
+    "detachment_id": "armoured-infantry",
+    "cost": 15,
+    "keyword_restrictions": [
+      "Astra Militarum"
+    ],
+    "ability_id": "exemplary-officer",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "master-manoeuvrist",
+    "name": "Master Manoeuvrist",
+    "detachment_id": "armoured-infantry",
+    "cost": 15,
+    "keyword_restrictions": [
+      "Astra Militarum"
+    ],
+    "ability_id": "master-manoeuvrist",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "omnissian-unguents",
+    "name": "Omnissian Unguents",
+    "detachment_id": "armoured-infantry",
+    "cost": 10,
+    "keyword_restrictions": [
+      "Astra Militarum"
+    ],
+    "ability_id": "omnissian-unguents",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "grand-strategist-armoured-infantry",
+    "name": "Grand Strategist",
+    "detachment_id": "armoured-infantry",
+    "cost": 15,
+    "keyword_restrictions": [
+      "Astra Militarum"
+    ],
+    "ability_id": "grand-strategist-armoured-infantry",
     "is_unique": true,
     "game_version": {
       "edition": "11th",

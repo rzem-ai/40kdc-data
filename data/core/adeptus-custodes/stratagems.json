@@ -706,5 +706,169 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     }
+  },
+  {
+    "id": "flawless-construction-moritoi",
+    "name": "FLAWLESS CONSTRUCTION",
+    "category": "detachment",
+    "detachment_id": "might-of-the-moritoi",
+    "cp_cost": 1,
+    "phases": [
+      "shooting",
+      "fight"
+    ],
+    "player_turn": "opponent-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "flawless-construction-moritoi",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "unstoppable-advance",
+    "name": "UNSTOPPABLE ADVANCE",
+    "category": "detachment",
+    "detachment_id": "might-of-the-moritoi",
+    "cp_cost": 1,
+    "phases": [
+      "movement"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "unstoppable-advance",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "prioritised-eradication-moritoi",
+    "name": "PRIORITISED ERADICATION",
+    "category": "detachment",
+    "detachment_id": "might-of-the-moritoi",
+    "cp_cost": 1,
+    "phases": [
+      "shooting"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "prioritised-eradication-moritoi",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "deathsong-scythes",
+    "name": "DEATHSONG SCYTHES",
+    "category": "detachment",
+    "detachment_id": "silent-hunters",
+    "cp_cost": 1,
+    "phases": [
+      "fight"
+    ],
+    "player_turn": "either",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "deathsong-scythes",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "umbral-prosecution",
+    "name": "UMBRAL PROSECUTION",
+    "category": "detachment",
+    "detachment_id": "silent-hunters",
+    "cp_cost": 1,
+    "phases": [
+      "shooting"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "umbral-prosecution",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "synchronised-inferno",
+    "name": "SYNCHRONISED INFERNO",
+    "category": "detachment",
+    "detachment_id": "silent-hunters",
+    "cp_cost": 1,
+    "phases": [
+      "shooting"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "synchronised-inferno",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "hardened-resolve",
+    "name": "HARDENED RESOLVE",
+    "category": "detachment",
+    "detachment_id": "tharanatoi-hammerblow",
+    "cp_cost": 1,
+    "phases": [
+      "shooting",
+      "fight"
+    ],
+    "player_turn": "opponent-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "hardened-resolve",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "unleash-the-lions-tharanatoi",
+    "name": "UNLEASH THE LIONS",
+    "category": "detachment",
+    "detachment_id": "tharanatoi-hammerblow",
+    "cp_cost": 1,
+    "phases": [
+      "command"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-turn",
+    "target_restrictions": null,
+    "ability_id": "unleash-the-lions-tharanatoi",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "electroexorcist-saturation",
+    "name": "ELECTROEXORCIST SATURATION",
+    "category": "detachment",
+    "detachment_id": "tharanatoi-hammerblow",
+    "cp_cost": 1,
+    "phases": [
+      "shooting"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "electroexorcist-saturation",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
   }
 ]

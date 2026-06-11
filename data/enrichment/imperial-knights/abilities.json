@@ -1510,5 +1510,838 @@
     "faction_id": "imperial-knights",
     "ability_type": "faction",
     "behavior": "passive"
+  },
+  {
+    "ability_id": "rain-of-devastation",
+    "name": "Rain of Devastation",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "imperial-knights",
+    "detachment_id": "dominus-foebreakers",
+    "ability_type": "detachment",
+    "behavior": "passive",
+    "effect": {
+      "type": "conditional",
+      "condition": {
+        "type": "phase-is",
+        "parameters": {
+          "phase": "shooting"
+        }
+      },
+      "effect": {
+        "type": "roll-modifier",
+        "target": "unit",
+        "modifier": {
+          "roll": "hit",
+          "operation": "add",
+          "value": 1
+        }
+      }
+    },
+    "scope": {
+      "range": "any-on-battlefield",
+      "duration": "battle"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Imperial Knights",
+        "Dominus"
+      ]
+    },
+    "community_notes": "terrain-area target qualifier carried as prose; no target-in-terrain condition node, gated on shooting phase"
+  },
+  {
+    "ability_id": "blessed-plate",
+    "name": "Blessed Plate",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "imperial-knights",
+    "detachment_id": "dominus-foebreakers",
+    "ability_type": "enhancement",
+    "behavior": "passive",
+    "effect": {
+      "type": "stat-modifier",
+      "target": "bearer",
+      "modifier": {
+        "stat": "T",
+        "operation": "add",
+        "value": 1
+      }
+    },
+    "scope": {
+      "range": "self",
+      "duration": "permanent"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Imperial Knights",
+        "Dominus"
+      ]
+    }
+  },
+  {
+    "ability_id": "archeotech-autoloaders",
+    "name": "Archeotech Autoloaders",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "imperial-knights",
+    "detachment_id": "dominus-foebreakers",
+    "ability_type": "enhancement",
+    "behavior": "passive",
+    "effect": {
+      "type": "re-roll",
+      "target": "bearer",
+      "modifier": {
+        "roll": "weapon-attacks",
+        "subset": "all-failures"
+      }
+    },
+    "scope": {
+      "range": "self",
+      "duration": "permanent"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Imperial Knights",
+        "Dominus"
+      ]
+    },
+    "community_notes": "re-roll the dice that determine weapon Attacks characteristic (random A); encoded as re-roll all-failures over a weapon-attacks roll"
+  },
+  {
+    "ability_id": "ground-shaking-strides",
+    "name": "Ground-shaking Strides",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "imperial-knights",
+    "detachment_id": "dominus-foebreakers",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "stat-modifier",
+      "target": "unit",
+      "modifier": {
+        "stat": "M",
+        "operation": "add",
+        "value": 2
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Imperial Knights",
+        "Dominus"
+      ]
+    }
+  },
+  {
+    "ability_id": "foebreaker-firestorm",
+    "name": "Foebreaker Firestorm",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "imperial-knights",
+    "detachment_id": "dominus-foebreakers",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "stat-modifier",
+      "target": "unit",
+      "modifier": {
+        "stat": "A",
+        "operation": "add",
+        "value": 1
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Imperial Knights",
+        "Dominus"
+      ]
+    },
+    "community_notes": "BLAST removal from the unit's [BLAST] ranged attacks carried as prose; modeled buff is +1 A"
+  },
+  {
+    "ability_id": "fire-shocked",
+    "name": "Fire Shocked",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "imperial-knights",
+    "detachment_id": "dominus-foebreakers",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "leadership-modifier",
+      "target": "enemy-within-aura",
+      "modifier": {
+        "test": "battle-shock",
+        "operation": "subtract",
+        "value": 1
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    }
+  },
+  {
+    "ability_id": "driven-from-their-lairs",
+    "name": "Driven from Their Lairs",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "imperial-knights",
+    "detachment_id": "throne-bonded-outriders",
+    "ability_type": "detachment",
+    "behavior": "passive",
+    "effect": {
+      "type": "keyword-grant",
+      "target": "unit",
+      "modifier": {
+        "keywords": [
+          "Ignores Cover"
+        ],
+        "scope": "weapon",
+        "attack_type": "ranged"
+      }
+    },
+    "scope": {
+      "range": "any-on-battlefield",
+      "duration": "battle"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Imperial Knights",
+        "Armiger"
+      ]
+    },
+    "community_notes": "applies while the ARMIGER unit is affected by a Bondsman ability; bondsman gating carried as prose"
+  },
+  {
+    "ability_id": "gyro-optimised-actuators",
+    "name": "Gyro-optimised Actuators",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "imperial-knights",
+    "detachment_id": "throne-bonded-outriders",
+    "ability_type": "enhancement",
+    "behavior": "passive",
+    "effect": {
+      "type": "keyword-grant",
+      "target": "bearer",
+      "modifier": {
+        "keywords": [
+          "Mobile"
+        ]
+      }
+    },
+    "scope": {
+      "range": "self",
+      "duration": "permanent"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Imperial Knights",
+        "Armiger"
+      ]
+    }
+  },
+  {
+    "ability_id": "ancestral-overbleed",
+    "name": "Ancestral Overbleed",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "imperial-knights",
+    "detachment_id": "throne-bonded-outriders",
+    "ability_type": "enhancement",
+    "behavior": "passive",
+    "effect": {
+      "type": "cp-refund",
+      "target": "bearer",
+      "modifier": {
+        "stratagem": "fire-overwatch-or-heroic"
+      }
+    },
+    "scope": {
+      "range": "self",
+      "duration": "permanent"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Imperial Knights",
+        "Armiger"
+      ]
+    },
+    "community_notes": "-1 CP when targeting bearer with Fire Overwatch/Heroic Intervention stratagem"
+  },
+  {
+    "ability_id": "neural-lash",
+    "name": "Neural Lash",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "imperial-knights",
+    "detachment_id": "throne-bonded-outriders",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "ability-grant",
+      "target": "unit",
+      "modifier": {
+        "grant_type": "remove-battle-shock"
+      }
+    },
+    "scope": {
+      "range": "aura-12",
+      "duration": "one-use"
+    }
+  },
+  {
+    "ability_id": "helm-conditioning",
+    "name": "Helm Conditioning",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "imperial-knights",
+    "detachment_id": "throne-bonded-outriders",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "ability-grant",
+      "target": "unit",
+      "modifier": {
+        "grant_type": "extend-bondsman-range",
+        "range": 18
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Imperial Knights"
+      ]
+    }
+  },
+  {
+    "ability_id": "honoured-to-serve",
+    "name": "Honoured to Serve",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "imperial-knights",
+    "detachment_id": "throne-bonded-outriders",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "ability-grant",
+      "target": "unit",
+      "modifier": {
+        "grant_type": "act-after-move",
+        "moves": [
+          "shoot"
+        ],
+        "acts": [
+          "action"
+        ]
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Imperial Knights",
+        "Armiger"
+      ]
+    },
+    "community_notes": "shooting does not prevent the ARMIGER unit from being eligible to start an action"
+  },
+  {
+    "ability_id": "knights-of-legend",
+    "name": "Knights of Legend",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "imperial-knights",
+    "detachment_id": "freeblade-company",
+    "ability_type": "detachment",
+    "behavior": "passive",
+    "effect": {
+      "type": "sequence",
+      "steps": [
+        {
+          "type": "feel-no-pain",
+          "target": "all-friendly",
+          "modifier": {
+            "threshold": 6
+          }
+        },
+        {
+          "type": "ability-grant",
+          "target": "all-friendly",
+          "modifier": {
+            "grant_type": "heal-wounds",
+            "amount": 1
+          }
+        }
+      ]
+    },
+    "scope": {
+      "range": "any-on-battlefield",
+      "duration": "battle"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Imperial Knights"
+      ]
+    }
+  },
+  {
+    "ability_id": "mysterious-guardian",
+    "name": "Mysterious Guardian",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "imperial-knights",
+    "detachment_id": "freeblade-company",
+    "ability_type": "enhancement",
+    "behavior": "passive",
+    "effect": {
+      "type": "deep-strike",
+      "target": "bearer",
+      "modifier": {}
+    },
+    "scope": {
+      "range": "self",
+      "duration": "permanent"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Imperial Knights"
+      ]
+    },
+    "community_notes": "grants Deep Strike; once-per-battle redeploy (remove and set up >9\" away) carried as prose"
+  },
+  {
+    "ability_id": "sanctuary",
+    "name": "Sanctuary",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "imperial-knights",
+    "detachment_id": "freeblade-company",
+    "ability_type": "enhancement",
+    "behavior": "passive",
+    "effect": {
+      "type": "invulnerable-save",
+      "target": "bearer",
+      "modifier": {
+        "invuln_sv": 5
+      }
+    },
+    "scope": {
+      "range": "self",
+      "duration": "permanent"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Imperial Knights"
+      ]
+    }
+  },
+  {
+    "ability_id": "bringer-of-justice",
+    "name": "Bringer of Justice",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "imperial-knights",
+    "detachment_id": "freeblade-company",
+    "ability_type": "enhancement",
+    "behavior": "passive",
+    "effect": {
+      "type": "sequence",
+      "steps": [
+        {
+          "type": "stat-modifier",
+          "target": "bearer",
+          "modifier": {
+            "stat": "A",
+            "operation": "add",
+            "value": 2,
+            "scope": "weapon",
+            "attack_type": "melee"
+          }
+        },
+        {
+          "type": "roll-modifier",
+          "target": "bearer",
+          "modifier": {
+            "roll": "hit",
+            "operation": "add",
+            "value": 1,
+            "attack_type": "melee"
+          }
+        }
+      ]
+    },
+    "scope": {
+      "range": "self",
+      "duration": "permanent"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Imperial Knights"
+      ]
+    }
+  },
+  {
+    "ability_id": "hunters-eye",
+    "name": "Hunter’s Eye",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "imperial-knights",
+    "detachment_id": "freeblade-company",
+    "ability_type": "enhancement",
+    "behavior": "passive",
+    "effect": {
+      "type": "keyword-grant",
+      "target": "bearer",
+      "modifier": {
+        "keywords": [
+          "Ignores Cover"
+        ],
+        "scope": "weapon",
+        "attack_type": "ranged"
+      }
+    },
+    "scope": {
+      "range": "self",
+      "duration": "permanent"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Imperial Knights"
+      ]
+    }
+  },
+  {
+    "ability_id": "noble-sacrifice",
+    "name": "Noble Sacrifice",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "imperial-knights",
+    "detachment_id": "freeblade-company",
+    "ability_type": "stratagem",
+    "behavior": "reactive",
+    "effect": {
+      "type": "ability-grant",
+      "target": "unit",
+      "modifier": {
+        "grant_type": "deadly-demise-threshold",
+        "threshold": 4
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "one-use"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Imperial Knights"
+      ]
+    },
+    "community_notes": "Deadly Demise triggers on 4+ (Armiger adds 1 to the result) instead of only 6; threshold lowered to 4"
+  },
+  {
+    "ability_id": "point-blank-barrage-freeblade",
+    "name": "Point-blank Barrage",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "imperial-knights",
+    "detachment_id": "freeblade-company",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "attack-restriction",
+      "target": "unit",
+      "modifier": {
+        "restriction": "may-target-into-engagement-with-blast"
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Imperial Knights"
+      ]
+    },
+    "community_notes": "Blast weapons may target units in Engagement Range and ignore the engaged hit penalty; self-inflicted MW on unmodified 1 carried as prose"
+  },
+  {
+    "ability_id": "strength-from-exile",
+    "name": "Strength from Exile",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "imperial-knights",
+    "detachment_id": "freeblade-company",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "sequence",
+      "steps": [
+        {
+          "type": "re-roll",
+          "target": "unit",
+          "modifier": {
+            "roll": "hit",
+            "subset": "ones"
+          }
+        },
+        {
+          "type": "re-roll",
+          "target": "unit",
+          "modifier": {
+            "roll": "wound",
+            "subset": "ones"
+          }
+        }
+      ]
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Imperial Knights"
+      ]
+    },
+    "community_notes": "applies only if no other friendly units are within 9\"; isolation condition carried as prose"
+  },
+  {
+    "ability_id": "survivor-of-strife",
+    "name": "Survivor of Strife",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "imperial-knights",
+    "detachment_id": "freeblade-company",
+    "ability_type": "stratagem",
+    "behavior": "reactive",
+    "effect": {
+      "type": "roll-modifier",
+      "target": "attacker",
+      "modifier": {
+        "roll": "wound",
+        "operation": "subtract",
+        "value": 1
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Imperial Knights"
+      ]
+    },
+    "community_notes": "-1 to Wound only when attack Strength exceeds the unit's Toughness; S>T gate carried as prose"
+  },
+  {
+    "ability_id": "full-tilt-freeblade",
+    "name": "Full Tilt",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "imperial-knights",
+    "detachment_id": "freeblade-company",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "movement-modifier",
+      "target": "unit",
+      "modifier": {
+        "move_type": "advance-bonus",
+        "value": 6
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "phase"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Imperial Knights"
+      ]
+    },
+    "community_notes": "on Advance, no Advance roll; +6\" M (or +9\" if Armiger/Destrier). Armiger variant carried as prose"
+  },
+  {
+    "ability_id": "flanking-manoeuvres",
+    "name": "Flanking Manoeuvres",
+    "authored_by": "40kdc-community",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "version": "2025-q3",
+    "supersedes": null,
+    "unit_ids": [],
+    "faction_id": "imperial-knights",
+    "detachment_id": "freeblade-company",
+    "ability_type": "stratagem",
+    "behavior": "activated",
+    "effect": {
+      "type": "ability-grant",
+      "target": "unit",
+      "modifier": {
+        "grant_type": "into-strategic-reserves"
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "one-use"
+    },
+    "applies_to": {
+      "required_keywords": [
+        "Imperial Knights",
+        "Armiger"
+      ]
+    }
   }
 ]

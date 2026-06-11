@@ -430,5 +430,117 @@
     "points_provisional": true,
     "upgrade_tag": false,
     "max_targets": 1
+  },
+  {
+    "id": "interred-expertise",
+    "name": "Interred Expertise",
+    "detachment_id": "might-of-the-moritoi",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Adeptus Custodes",
+      "Walker"
+    ],
+    "ability_id": "interred-expertise",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": true,
+    "max_targets": 1
+  },
+  {
+    "id": "auramite-sarcophagus",
+    "name": "Auramite Sarcophagus",
+    "detachment_id": "might-of-the-moritoi",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Adeptus Custodes",
+      "Walker"
+    ],
+    "ability_id": "auramite-sarcophagus",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": true,
+    "max_targets": 1
+  },
+  {
+    "id": "encircling-hunter",
+    "name": "Encircling Hunter",
+    "detachment_id": "silent-hunters",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Anathema Psykana"
+    ],
+    "ability_id": "encircling-hunter",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "psyk-out-grenades",
+    "name": "Psyk-out Grenades",
+    "detachment_id": "silent-hunters",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Anathema Psykana"
+    ],
+    "ability_id": "psyk-out-grenades",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": true,
+    "max_targets": 1
+  },
+  {
+    "id": "mnemo-locked-shrine-cipher",
+    "name": "Mnemo-locked Shrine Cipher",
+    "detachment_id": "tharanatoi-hammerblow",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Adeptus Custodes",
+      "Terminator"
+    ],
+    "ability_id": "mnemo-locked-shrine-cipher",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "efficient-aggression",
+    "name": "Efficient Aggression",
+    "detachment_id": "tharanatoi-hammerblow",
+    "cost": 0,
+    "keyword_restrictions": [
+      "Adeptus Custodes",
+      "Terminator"
+    ],
+    "ability_id": "efficient-aggression",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
   }
 ]

@@ -430,5 +430,185 @@
     "points_provisional": true,
     "upgrade_tag": false,
     "max_targets": 1
+  },
+  {
+    "id": "explorator-dispensation",
+    "name": "Explorator Dispensation",
+    "detachment_id": "cohort-acquisitus",
+    "cost": 15,
+    "keyword_restrictions": [
+      "Skitarii Marshal"
+    ],
+    "ability_id": "explorator-dispensation",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "stealth-screened-cybercanids",
+    "name": "Stealth-screened Cybercanids",
+    "detachment_id": "cohort-acquisitus",
+    "cost": 10,
+    "keyword_restrictions": [
+      "Serberys Raiders"
+    ],
+    "ability_id": "stealth-screened-cybercanids",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": true,
+    "max_targets": 1
+  },
+  {
+    "id": "vinghs-wafers-of-dynamism",
+    "name": "Vingh’s Wafers of Dynamism",
+    "detachment_id": "lords-of-the-forge",
+    "cost": 15,
+    "keyword_restrictions": [
+      "Cybernetica Datasmith"
+    ],
+    "ability_id": "vinghs-wafers-of-dynamism",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "tl-409",
+    "name": "TL-4Ø9",
+    "detachment_id": "lords-of-the-forge",
+    "cost": 20,
+    "keyword_restrictions": [
+      "Tech-Priest"
+    ],
+    "ability_id": "tl-409",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "voltagheist-reliquary",
+    "name": "Voltagheist Reliquary",
+    "detachment_id": "luminen-auto-choir",
+    "cost": 15,
+    "keyword_restrictions": [
+      "Tech-Priest"
+    ],
+    "ability_id": "voltagheist-reliquary",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "electromiasmic-brazier",
+    "name": "Electromiasmic Brazier",
+    "detachment_id": "luminen-auto-choir",
+    "cost": 10,
+    "keyword_restrictions": [
+      "Tech-Priest"
+    ],
+    "ability_id": "electromiasmic-brazier",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "omnicogitator",
+    "name": "Omnicogitator",
+    "detachment_id": "eradication-cohort",
+    "cost": 15,
+    "keyword_restrictions": [
+      "Skitarii Marshal"
+    ],
+    "ability_id": "omnicogitator",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "martial-signatum-amplificator",
+    "name": "Martial Signatum Amplificator",
+    "detachment_id": "eradication-cohort",
+    "cost": 10,
+    "keyword_restrictions": [
+      "Tech-Priest"
+    ],
+    "ability_id": "martial-signatum-amplificator",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "belicosa-class-capacitor-vanes",
+    "name": "Belicosa-class Capacitor Vanes",
+    "detachment_id": "eradication-cohort",
+    "cost": 20,
+    "keyword_restrictions": [
+      "Adeptus Mechanicus"
+    ],
+    "ability_id": "belicosa-class-capacitor-vanes",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
+  },
+  {
+    "id": "omnissiahs-fury",
+    "name": "Omnissiah’s Fury",
+    "detachment_id": "eradication-cohort",
+    "cost": 25,
+    "keyword_restrictions": [
+      "Skitarii Marshal"
+    ],
+    "ability_id": "omnissiahs-fury",
+    "is_unique": true,
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    },
+    "points_provisional": true,
+    "upgrade_tag": false,
+    "max_targets": 1
   }
 ]

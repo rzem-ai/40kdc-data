@@ -13,10 +13,10 @@
     },
     {
       "faction": "adepta-sororitas",
-      "total": 80,
-      "offensive": 22,
-      "defensive": 8,
-      "inert": 52,
+      "total": 94,
+      "offensive": 28,
+      "defensive": 10,
+      "inert": 59,
       "stub": 9,
       "stubStructural": 2,
       "gwTextLeak": 0,
@@ -35,10 +35,10 @@
     },
     {
       "faction": "adeptus-custodes",
-      "total": 65,
-      "offensive": 13,
-      "defensive": 11,
-      "inert": 45,
+      "total": 83,
+      "offensive": 20,
+      "defensive": 12,
+      "inert": 55,
       "stub": 3,
       "stubStructural": 0,
       "gwTextLeak": 0,
@@ -46,10 +46,10 @@
     },
     {
       "faction": "adeptus-mechanicus",
-      "total": 71,
-      "offensive": 13,
-      "defensive": 10,
-      "inert": 51,
+      "total": 100,
+      "offensive": 24,
+      "defensive": 11,
+      "inert": 68,
       "stub": 1,
       "stubStructural": 1,
       "gwTextLeak": 0,
@@ -79,10 +79,10 @@
     },
     {
       "faction": "astra-militarum",
-      "total": 151,
-      "offensive": 36,
-      "defensive": 14,
-      "inert": 104,
+      "total": 191,
+      "offensive": 46,
+      "defensive": 16,
+      "inert": 132,
       "stub": 3,
       "stubStructural": 0,
       "gwTextLeak": 0,
@@ -178,10 +178,10 @@
     },
     {
       "faction": "imperial-knights",
-      "total": 44,
-      "offensive": 21,
-      "defensive": 3,
-      "inert": 22,
+      "total": 67,
+      "offensive": 29,
+      "defensive": 7,
+      "inert": 34,
       "stub": 5,
       "stubStructural": 1,
       "gwTextLeak": 0,
@@ -266,10 +266,10 @@
     }
   ],
   "totals": {
-    "total": 2743,
-    "offensive": 662,
-    "defensive": 246,
-    "inert": 1919,
+    "total": 2867,
+    "offensive": 704,
+    "defensive": 256,
+    "inert": 1993,
     "stub": 154,
     "stubStructural": 188,
     "gwTextLeak": 0,
@@ -278,7 +278,7 @@
   "unsupportedReasons": [
     {
       "reason": "effect type \"ability-grant\" is not modelled by the buff layer",
-      "count": 426
+      "count": 465
     },
     {
       "reason": "stat-modifier: operation \"undefined\" not supported",
@@ -286,23 +286,23 @@
     },
     {
       "reason": "effect type \"movement-modifier\" is not modelled by the buff layer",
-      "count": 159
+      "count": 168
     },
     {
       "reason": "effect type \"mortal-wounds\" is not modelled by the buff layer",
-      "count": 127
+      "count": 129
     },
     {
       "reason": "effect type \"attack-restriction\" is not modelled by the buff layer",
-      "count": 89
+      "count": 91
     },
     {
       "reason": "dice-gated effect: stochastic; not expressible as a buff",
-      "count": 88
+      "count": 89
     },
     {
       "reason": "effect type \"leadership-modifier\" is not modelled by the buff layer",
-      "count": 73
+      "count": 76
     },
     {
       "reason": "effect type \"resurrection\" is not modelled by the buff layer",
@@ -310,23 +310,23 @@
     },
     {
       "reason": "effect type \"cp-refund\" is not modelled by the buff layer",
-      "count": 47
+      "count": 49
     },
     {
       "reason": "conditional: cannot evaluate condition \"undefined\" against current context",
-      "count": 47
+      "count": 48
     },
     {
       "reason": "effect type \"objective-control-modifier\" is not modelled by the buff layer",
-      "count": 43
+      "count": 44
     },
     {
       "reason": "stat-modifier: operation \"set\" not supported",
-      "count": 39
+      "count": 41
     },
     {
       "reason": "effect type \"deep-strike\" is not modelled by the buff layer",
-      "count": 36
+      "count": 37
     },
     {
       "reason": "re-roll on \"charge\" (subset …) is outside the damage path",
@@ -349,11 +349,11 @@
       "count": 22
     },
     {
-      "reason": "roll-modifier: operation \"set\" not supported",
-      "count": 18
+      "reason": "stat-modifier on \"M\" is outside the damage path",
+      "count": 22
     },
     {
-      "reason": "stat-modifier on \"M\" is outside the damage path",
+      "reason": "roll-modifier: operation \"set\" not supported",
       "count": 18
     },
     {
@@ -366,7 +366,7 @@
     },
     {
       "reason": "stat-modifier on \"D\" is outside the damage path",
-      "count": 10
+      "count": 11
     },
     {
       "reason": "conditional: cannot evaluate condition \"unit-below-starting-strength\" against current context",
@@ -377,31 +377,43 @@
       "count": 9
     },
     {
+      "reason": "stat-modifier T: defender-side stat; applies when the buffed unit is the target",
+      "count": 8
+    },
+    {
       "reason": "roll-modifier: operation \"crit-on\" not supported",
       "count": 7
     },
     {
-      "reason": "stat-modifier T: defender-side stat; applies when the buffed unit is the target",
-      "count": 6
+      "reason": "effect type \"unit-tag\" is not modelled by the buff layer",
+      "count": 5
     },
     {
       "reason": "stat-modifier AP on the attacker: defender-side AP reduction is not modelled by the buff layer",
       "count": 5
     },
     {
+      "reason": "conditional: cannot evaluate condition \"advanced-this-turn\" against current context",
+      "count": 5
+    },
+    {
+      "reason": "re-roll on \"advance\" (subset …) is outside the damage path",
+      "count": 5
+    },
+    {
+      "reason": "roll-modifier: operation \"ignore-engagement-penalty\" not supported",
+      "count": 4
+    },
+    {
       "reason": "stat-modifier on \"W\" is outside the damage path",
       "count": 4
     },
     {
-      "reason": "re-roll on \"advance\" (subset …) is outside the damage path",
+      "reason": "effect type \"charge-roll-modifier\" is not modelled by the buff layer",
       "count": 4
     },
     {
       "reason": "stat-modifier on \"Ld\" is outside the damage path",
-      "count": 4
-    },
-    {
-      "reason": "conditional: cannot evaluate condition \"advanced-this-turn\" against current context",
       "count": 4
     },
     {
@@ -421,7 +433,7 @@
       "count": 3
     },
     {
-      "reason": "roll-modifier: operation \"ignore-engagement-penalty\" not supported",
+      "reason": "conditional: cannot evaluate condition \"attack-is-type\" against current context",
       "count": 3
     },
     {
@@ -429,15 +441,15 @@
       "count": 3
     },
     {
-      "reason": "effect type \"charge-roll-modifier\" is not modelled by the buff layer",
-      "count": 3
+      "reason": "re-roll on \"attacks-characteristic\" (subset …) is outside the damage path",
+      "count": 2
     },
     {
       "reason": "stat-modifier on \"aura-range\" is outside the damage path",
       "count": 2
     },
     {
-      "reason": "conditional: cannot evaluate condition \"attack-is-type\" against current context",
+      "reason": "stat-modifier on \"Range\" is outside the damage path",
       "count": 2
     },
     {
@@ -481,19 +493,19 @@
       "count": 1
     },
     {
+      "reason": "conditional: cannot evaluate condition \"has-lost-wounds\" against current context",
+      "count": 1
+    },
+    {
+      "reason": "conditional: cannot evaluate condition \"unit-has-tag\" against current context",
+      "count": 1
+    },
+    {
       "reason": "stat-modifier: narrows by \"weapon_filter\" which the cruncher can't resolve here",
       "count": 1
     },
     {
       "reason": "stat-modifier on \"OC\" is outside the damage path",
-      "count": 1
-    },
-    {
-      "reason": "re-roll on \"attacks-characteristic\" (subset …) is outside the damage path",
-      "count": 1
-    },
-    {
-      "reason": "stat-modifier on \"Range\" is outside the damage path",
       "count": 1
     },
     {
@@ -505,11 +517,11 @@
       "count": 1
     },
     {
-      "reason": "effect type \"unit-tag\" is not modelled by the buff layer",
+      "reason": "conditional: cannot evaluate condition \"units-destroyed\" against current context",
       "count": 1
     },
     {
-      "reason": "conditional: cannot evaluate condition \"units-destroyed\" against current context",
+      "reason": "re-roll on \"weapon-attacks\" (subset …) is outside the damage path",
       "count": 1
     },
     {
@@ -1351,6 +1363,146 @@
       "offensive": false,
       "defensive": false,
       "gap": "roll-modifier: operation \"guarantee-crit\" not supported"
+    },
+    {
+      "faction": "adepta-sororitas",
+      "ability_id": "angelic-judgement",
+      "name": "Angelic Judgement",
+      "shape": "conditional",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "adepta-sororitas",
+      "ability_id": "clarion-of-urgency",
+      "name": "Clarion of Urgency",
+      "shape": "conditional",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "conditional: cannot evaluate condition \"undefined\" against current context"
+    },
+    {
+      "faction": "adepta-sororitas",
+      "ability_id": "symphonic-payload",
+      "name": "Symphonic Payload",
+      "shape": "re-roll",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "re-roll on \"attacks-characteristic\" (subset …) is outside the damage path"
+    },
+    {
+      "faction": "adepta-sororitas",
+      "ability_id": "inspirational-battle-cantics",
+      "name": "Inspirational Battle Canticles",
+      "shape": "unit-tag",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"unit-tag\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "adepta-sororitas",
+      "ability_id": "harmonised-exorcism",
+      "name": "Harmonised Exorcism",
+      "shape": "roll-modifier",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "adepta-sororitas",
+      "ability_id": "devastating-reprise",
+      "name": "Devastating Reprise",
+      "shape": "keyword-grant",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "adepta-sororitas",
+      "ability_id": "holy-quest",
+      "name": "Holy Quest",
+      "shape": "roll-modifier",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "adepta-sororitas",
+      "ability_id": "writ-of-compunction",
+      "name": "Writ of Compunction",
+      "shape": "objective-control-modifier",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"objective-control-modifier\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "adepta-sororitas",
+      "ability_id": "perfervid-haste",
+      "name": "Perfervid Haste",
+      "shape": "stat-modifier",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier on \"M\" is outside the damage path"
+    },
+    {
+      "faction": "adepta-sororitas",
+      "ability_id": "sanctified-blows",
+      "name": "Sanctified Blows",
+      "shape": "sequence",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "adepta-sororitas",
+      "ability_id": "faithful-fortitude",
+      "name": "Faithful Fortitude",
+      "shape": "feel-no-pain",
+      "stub": false,
+      "offensive": false,
+      "defensive": true,
+      "gap": null
+    },
+    {
+      "faction": "adepta-sororitas",
+      "ability_id": "unflinching-determination-sacred-champions",
+      "name": "Unflinching Determination",
+      "shape": "sequence",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "adepta-sororitas",
+      "ability_id": "hymns-of-battle",
+      "name": "Hymns of Battle",
+      "shape": "leadership-modifier",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"leadership-modifier\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "adepta-sororitas",
+      "ability_id": "hagiomnifex",
+      "name": "Hagiomnifex",
+      "shape": "choice",
+      "stub": false,
+      "offensive": true,
+      "defensive": true,
+      "gap": null
     },
     {
       "faction": "adeptus-astartes",
@@ -5483,6 +5635,186 @@
       "gap": null
     },
     {
+      "faction": "adeptus-custodes",
+      "ability_id": "march-of-the-honoured-dead",
+      "name": "March of the Honoured Dead",
+      "shape": "sequence",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier on \"M\" is outside the damage path"
+    },
+    {
+      "faction": "adeptus-custodes",
+      "ability_id": "interred-expertise",
+      "name": "Interred Expertise",
+      "shape": "sequence",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "adeptus-custodes",
+      "ability_id": "auramite-sarcophagus",
+      "name": "Auramite Sarcophagus",
+      "shape": "cp-refund",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"cp-refund\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "adeptus-custodes",
+      "ability_id": "flawless-construction-moritoi",
+      "name": "Flawless Construction",
+      "shape": "conditional",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "conditional: cannot evaluate condition \"attack-is-type\" against current context"
+    },
+    {
+      "faction": "adeptus-custodes",
+      "ability_id": "unstoppable-advance",
+      "name": "Unstoppable Advance",
+      "shape": "keyword-grant",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "adeptus-custodes",
+      "ability_id": "prioritised-eradication-moritoi",
+      "name": "Prioritised Eradication",
+      "shape": "sequence",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "adeptus-custodes",
+      "ability_id": "skin-crawling-disorientation",
+      "name": "Skin-Crawling Disorientation",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "adeptus-custodes",
+      "ability_id": "encircling-hunter",
+      "name": "Encircling Hunter",
+      "shape": "movement-modifier",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"movement-modifier\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "adeptus-custodes",
+      "ability_id": "psyk-out-grenades",
+      "name": "Psyk-out Grenades",
+      "shape": "keyword-grant",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "adeptus-custodes",
+      "ability_id": "deathsong-scythes",
+      "name": "Deathsong Scythes",
+      "shape": "sequence",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "adeptus-custodes",
+      "ability_id": "umbral-prosecution",
+      "name": "Umbral Prosecution",
+      "shape": "sequence",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "adeptus-custodes",
+      "ability_id": "synchronised-inferno",
+      "name": "Synchronised Inferno",
+      "shape": "keyword-grant",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "adeptus-custodes",
+      "ability_id": "the-hammer-falls",
+      "name": "The Hammer Falls",
+      "shape": "conditional",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "conditional: cannot evaluate condition \"advanced-this-turn\" against current context"
+    },
+    {
+      "faction": "adeptus-custodes",
+      "ability_id": "mnemo-locked-shrine-cipher",
+      "name": "Mnemo-locked Shrine Cipher",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "adeptus-custodes",
+      "ability_id": "efficient-aggression",
+      "name": "Efficient Aggression",
+      "shape": "conditional",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "conditional: cannot evaluate condition \"has-lost-wounds\" against current context"
+    },
+    {
+      "faction": "adeptus-custodes",
+      "ability_id": "hardened-resolve",
+      "name": "Hardened Resolve",
+      "shape": "stat-modifier",
+      "stub": false,
+      "offensive": false,
+      "defensive": true,
+      "gap": "stat-modifier T: defender-side stat; applies when the buffed unit is the target"
+    },
+    {
+      "faction": "adeptus-custodes",
+      "ability_id": "unleash-the-lions-tharanatoi",
+      "name": "Unleash the Lions",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "adeptus-custodes",
+      "ability_id": "electroexorcist-saturation",
+      "name": "Electroexorcist Saturation",
+      "shape": "stat-modifier",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"set\" not supported"
+    },
+    {
       "faction": "adeptus-mechanicus",
       "ability_id": "deadly-demise-d3",
       "name": "Deadly Demise D3",
@@ -6191,6 +6523,296 @@
       "offensive": true,
       "defensive": false,
       "gap": null
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "noospheric-recon",
+      "name": "Noospheric Recon",
+      "shape": "sequence",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": "effect type \"unit-tag\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "explorator-dispensation",
+      "name": "Explorator Dispensation",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "stealth-screened-cybercanids",
+      "name": "Stealth-screened Cybercanids",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "defect-scrutiny",
+      "name": "Defect Scrutiny",
+      "shape": "keyword-grant",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "repolarised-augurs",
+      "name": "Repolarised Augurs",
+      "shape": "unit-tag",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"unit-tag\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "clandestine-reposition",
+      "name": "Clandestine Reposition",
+      "shape": "movement-modifier",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"movement-modifier\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "war-form-mantles",
+      "name": "War-form Mantles",
+      "shape": "sequence",
+      "stub": false,
+      "offensive": false,
+      "defensive": true,
+      "gap": "stat-modifier: operation \"set\" not supported"
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "vinghs-wafers-of-dynamism",
+      "name": "Vingh’s Wafers of Dynamism",
+      "shape": "conditional",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "tl-409",
+      "name": "TL-4Ø9",
+      "shape": "keyword-grant",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "scriptural-prognosis",
+      "name": "Scriptural Prognosis",
+      "shape": "stat-modifier",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "overloaded-safeguards",
+      "name": "Overloaded Safeguards",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "holy-avarice",
+      "name": "Holy Avarice",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "cyber-static-canticles",
+      "name": "Cyber-static Canticles",
+      "shape": "sequence",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "voltagheist-reliquary",
+      "name": "Voltagheist Reliquary",
+      "shape": "attack-restriction",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"attack-restriction\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "electromiasmic-brazier",
+      "name": "Electromiasmic Brazier",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "echoes-of-the-conduit-wars",
+      "name": "Echoes of the Conduit Wars",
+      "shape": "sequence",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "chant-of-electrotraction",
+      "name": "Chant of Electrotraction",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "momentum-feedback",
+      "name": "Momentum Feedback",
+      "shape": "movement-modifier",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"movement-modifier\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "murderous-imperative",
+      "name": "Murderous Imperative",
+      "shape": "sequence",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "conditional: cannot evaluate condition \"unit-has-tag\" against current context"
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "omnicogitator",
+      "name": "Omnicogitator",
+      "shape": "sequence",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"unit-tag\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "martial-signatum-amplificator",
+      "name": "Martial Signatum Amplificator",
+      "shape": "keyword-grant",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "belicosa-class-capacitor-vanes",
+      "name": "Belicosa-class Capacitor Vanes",
+      "shape": "sequence",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": "stat-modifier on \"Range\" is outside the damage path"
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "omnissiahs-fury",
+      "name": "Omnissiah’s Fury",
+      "shape": "sequence",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": "stat-modifier on \"D\" is outside the damage path"
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "servo-driven-charge",
+      "name": "Servo-driven Charge",
+      "shape": "keyword-grant",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "threat-cogitation-targeters",
+      "name": "Threat-cogitation Targeters",
+      "shape": "re-roll",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "unrelenting-aggression",
+      "name": "Unrelenting Aggression",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "precision-onslaught",
+      "name": "Precision Onslaught",
+      "shape": "mortal-wounds",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"mortal-wounds\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "unshackled-wrath",
+      "name": "Unshackled Wrath",
+      "shape": "choice",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "adeptus-mechanicus",
+      "ability_id": "analytic-reprisals",
+      "name": "Analytic Reprisals",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
     },
     {
       "faction": "aeldari",
@@ -10299,6 +10921,406 @@
       "shape": "conditional",
       "stub": false,
       "offensive": false,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "absolutist-principles",
+      "name": "Absolutist Principles",
+      "shape": "sequence",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "sharp-eyes-light-fingers",
+      "name": "Sharp Eyes, Light Fingers",
+      "shape": "conditional",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "exemplar-of-duty",
+      "name": "Exemplar of Duty",
+      "shape": "feel-no-pain",
+      "stub": false,
+      "offensive": false,
+      "defensive": true,
+      "gap": null
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "thick-skulled-obdurance",
+      "name": "Thick-skulled Obdurance",
+      "shape": "stat-modifier",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "low-profile",
+      "name": "Low Profile",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "stirred-to-action",
+      "name": "Stirred to Action",
+      "shape": "movement-modifier",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"movement-modifier\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "designated-targets",
+      "name": "Designated Targets",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "long-range-scout",
+      "name": "Long-range Scout",
+      "shape": "movement-modifier",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"movement-modifier\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "recon-star",
+      "name": "Recon Star",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "close-range-detection",
+      "name": "Close-range Detection",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "triggered-alerts",
+      "name": "Triggered Alerts",
+      "shape": "movement-modifier",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"movement-modifier\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "sump-smog-screen",
+      "name": "Sump-smog Screen",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "ceaseless-cannonade",
+      "name": "Ceaseless Cannonade",
+      "shape": "roll-modifier",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "roll-modifier: operation \"ignore-engagement-penalty\" not supported"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "battalion-commander",
+      "name": "Battalion Commander",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "titan-killer-steel-hammer",
+      "name": "Titan Killer",
+      "shape": "re-roll",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "engine-speaker",
+      "name": "Engine Speaker",
+      "shape": "stat-modifier",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier on \"M\" is outside the damage path"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "assault-hatches",
+      "name": "Assault Hatches",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "engine-of-wrath",
+      "name": "Engine of Wrath",
+      "shape": "sequence",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "shattering-salvo",
+      "name": "Shattering Salvo",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "imposing-arrival",
+      "name": "Imposing Arrival",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "withering-firepower",
+      "name": "Withering Firepower",
+      "shape": "leadership-modifier",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"leadership-modifier\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "adamantine-behemoth",
+      "name": "Adamantine Behemoth",
+      "shape": "movement-modifier",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"movement-modifier\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "accuracy-under-pressure",
+      "name": "Accuracy Under Pressure",
+      "shape": "re-roll",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "squadron-command",
+      "name": "Squadron Command",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "exemplary-officer",
+      "name": "Exemplary Officer",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "master-manoeuvrist",
+      "name": "Master Manoeuvrist",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "omnissian-unguents",
+      "name": "Omnissian Unguents",
+      "shape": "feel-no-pain",
+      "stub": false,
+      "offensive": false,
+      "defensive": true,
+      "gap": null
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "grand-strategist-armoured-infantry",
+      "name": "Grand Strategist",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "order-the-advance",
+      "name": "Order the Advance",
+      "shape": "re-roll",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "re-roll on \"advance\" (subset …) is outside the damage path"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "supporting-ordnance",
+      "name": "Supporting Ordnance",
+      "shape": "conditional",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "mobile-firebase",
+      "name": "Mobile Firebase",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "combined-fire",
+      "name": "Combined Fire",
+      "shape": "sequence",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "burst-of-speed",
+      "name": "Burst of Speed",
+      "shape": "movement-modifier",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"movement-modifier\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "opening-salvo",
+      "name": "Opening Salvo",
+      "shape": "roll-modifier",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "fire-zone-purge",
+      "name": "Fire Zone Purge",
+      "shape": "conditional",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "bombast-class-vox-array",
+      "name": "Bombast-class Vox-array",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "priority-drop-beacon",
+      "name": "Priority-drop Beacon",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "on-my-position",
+      "name": "On My Position",
+      "shape": "sequence",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "dice-gated effect: stochastic; not expressible as a buff"
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "firing-hot",
+      "name": "Firing Hot",
+      "shape": "sequence",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "astra-militarum",
+      "ability_id": "servo-designators",
+      "name": "Servo-designators",
+      "shape": "keyword-grant",
+      "stub": false,
+      "offensive": true,
       "defensive": false,
       "gap": null
     },
@@ -19706,6 +20728,236 @@
       "faction": "imperial-knights",
       "ability_id": "dreadblades",
       "name": "Dreadblades",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "imperial-knights",
+      "ability_id": "rain-of-devastation",
+      "name": "Rain of Devastation",
+      "shape": "conditional",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "imperial-knights",
+      "ability_id": "blessed-plate",
+      "name": "Blessed Plate",
+      "shape": "stat-modifier",
+      "stub": false,
+      "offensive": false,
+      "defensive": true,
+      "gap": "stat-modifier T: defender-side stat; applies when the buffed unit is the target"
+    },
+    {
+      "faction": "imperial-knights",
+      "ability_id": "archeotech-autoloaders",
+      "name": "Archeotech Autoloaders",
+      "shape": "re-roll",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "re-roll on \"weapon-attacks\" (subset …) is outside the damage path"
+    },
+    {
+      "faction": "imperial-knights",
+      "ability_id": "ground-shaking-strides",
+      "name": "Ground-shaking Strides",
+      "shape": "stat-modifier",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier on \"M\" is outside the damage path"
+    },
+    {
+      "faction": "imperial-knights",
+      "ability_id": "foebreaker-firestorm",
+      "name": "Foebreaker Firestorm",
+      "shape": "stat-modifier",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "imperial-knights",
+      "ability_id": "fire-shocked",
+      "name": "Fire Shocked",
+      "shape": "leadership-modifier",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"leadership-modifier\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "imperial-knights",
+      "ability_id": "driven-from-their-lairs",
+      "name": "Driven from Their Lairs",
+      "shape": "keyword-grant",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "imperial-knights",
+      "ability_id": "gyro-optimised-actuators",
+      "name": "Gyro-optimised Actuators",
+      "shape": "keyword-grant",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "imperial-knights",
+      "ability_id": "ancestral-overbleed",
+      "name": "Ancestral Overbleed",
+      "shape": "cp-refund",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"cp-refund\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "imperial-knights",
+      "ability_id": "neural-lash",
+      "name": "Neural Lash",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "imperial-knights",
+      "ability_id": "helm-conditioning",
+      "name": "Helm Conditioning",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "imperial-knights",
+      "ability_id": "honoured-to-serve",
+      "name": "Honoured to Serve",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "imperial-knights",
+      "ability_id": "knights-of-legend",
+      "name": "Knights of Legend",
+      "shape": "sequence",
+      "stub": false,
+      "offensive": false,
+      "defensive": true,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "imperial-knights",
+      "ability_id": "mysterious-guardian",
+      "name": "Mysterious Guardian",
+      "shape": "deep-strike",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"deep-strike\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "imperial-knights",
+      "ability_id": "sanctuary",
+      "name": "Sanctuary",
+      "shape": "invulnerable-save",
+      "stub": false,
+      "offensive": false,
+      "defensive": true,
+      "gap": null
+    },
+    {
+      "faction": "imperial-knights",
+      "ability_id": "bringer-of-justice",
+      "name": "Bringer of Justice",
+      "shape": "sequence",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "imperial-knights",
+      "ability_id": "hunters-eye",
+      "name": "Hunter’s Eye",
+      "shape": "keyword-grant",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "imperial-knights",
+      "ability_id": "noble-sacrifice",
+      "name": "Noble Sacrifice",
+      "shape": "ability-grant",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "imperial-knights",
+      "ability_id": "point-blank-barrage-freeblade",
+      "name": "Point-blank Barrage",
+      "shape": "attack-restriction",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"attack-restriction\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "imperial-knights",
+      "ability_id": "strength-from-exile",
+      "name": "Strength from Exile",
+      "shape": "sequence",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "imperial-knights",
+      "ability_id": "survivor-of-strife",
+      "name": "Survivor of Strife",
+      "shape": "roll-modifier",
+      "stub": false,
+      "offensive": true,
+      "defensive": true,
+      "gap": null
+    },
+    {
+      "faction": "imperial-knights",
+      "ability_id": "full-tilt-freeblade",
+      "name": "Full Tilt",
+      "shape": "movement-modifier",
+      "stub": false,
+      "offensive": false,
+      "defensive": false,
+      "gap": "effect type \"movement-modifier\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "imperial-knights",
+      "ability_id": "flanking-manoeuvres",
+      "name": "Flanking Manoeuvres",
       "shape": "ability-grant",
       "stub": false,
       "offensive": false,

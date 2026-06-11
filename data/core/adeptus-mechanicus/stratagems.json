@@ -694,5 +694,280 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     }
+  },
+  {
+    "id": "defect-scrutiny",
+    "name": "DEFECT SCRUTINY",
+    "category": "detachment",
+    "detachment_id": "cohort-acquisitus",
+    "cp_cost": 1,
+    "phases": [
+      "shooting"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "defect-scrutiny",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "repolarised-augurs",
+    "name": "REPOLARISED AUGURS",
+    "category": "detachment",
+    "detachment_id": "cohort-acquisitus",
+    "cp_cost": 1,
+    "phases": [
+      "movement"
+    ],
+    "player_turn": "opponent-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "repolarised-augurs",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "clandestine-reposition",
+    "name": "CLANDESTINE REPOSITION",
+    "category": "detachment",
+    "detachment_id": "cohort-acquisitus",
+    "cp_cost": 1,
+    "phases": [
+      "fight"
+    ],
+    "player_turn": "opponent-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "clandestine-reposition",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "scriptural-prognosis",
+    "name": "SCRIPTURAL PROGNOSIS",
+    "category": "detachment",
+    "detachment_id": "lords-of-the-forge",
+    "cp_cost": 1,
+    "phases": [
+      "shooting",
+      "fight"
+    ],
+    "player_turn": "opponent-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "scriptural-prognosis",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "overloaded-safeguards",
+    "name": "OVERLOADED SAFEGUARDS",
+    "category": "detachment",
+    "detachment_id": "lords-of-the-forge",
+    "cp_cost": 1,
+    "phases": [
+      "movement"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "overloaded-safeguards",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "holy-avarice",
+    "name": "HOLY AVARICE",
+    "category": "detachment",
+    "detachment_id": "lords-of-the-forge",
+    "cp_cost": 1,
+    "phases": [
+      "shooting"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "holy-avarice",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "echoes-of-the-conduit-wars",
+    "name": "ECHOES OF THE CONDUIT WARS",
+    "category": "detachment",
+    "detachment_id": "luminen-auto-choir",
+    "cp_cost": 1,
+    "phases": [
+      "shooting",
+      "fight"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "echoes-of-the-conduit-wars",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "chant-of-electrotraction",
+    "name": "CHANT OF ELECTROTRACTION",
+    "category": "detachment",
+    "detachment_id": "luminen-auto-choir",
+    "cp_cost": 1,
+    "phases": [
+      "movement"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "chant-of-electrotraction",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "momentum-feedback",
+    "name": "MOMENTUM FEEDBACK",
+    "category": "detachment",
+    "detachment_id": "luminen-auto-choir",
+    "cp_cost": 1,
+    "phases": [
+      "shooting"
+    ],
+    "player_turn": "opponent-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "momentum-feedback",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "servo-driven-charge",
+    "name": "SERVO-DRIVEN CHARGE",
+    "category": "detachment",
+    "detachment_id": "eradication-cohort",
+    "cp_cost": 1,
+    "phases": [
+      "fight"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "servo-driven-charge",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "threat-cogitation-targeters",
+    "name": "THREAT-COGITATION TARGETERS",
+    "category": "detachment",
+    "detachment_id": "eradication-cohort",
+    "cp_cost": 1,
+    "phases": [
+      "shooting"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "threat-cogitation-targeters",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "unrelenting-aggression",
+    "name": "UNRELENTING AGGRESSION",
+    "category": "detachment",
+    "type": "strategic-ploy",
+    "detachment_id": "eradication-cohort",
+    "cp_cost": 1,
+    "phases": [
+      "movement"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "unrelenting-aggression",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "precision-onslaught",
+    "name": "PRECISION ONSLAUGHT",
+    "category": "detachment",
+    "type": "battle-tactic",
+    "detachment_id": "eradication-cohort",
+    "cp_cost": 1,
+    "phases": [
+      "charge"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "precision-onslaught",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "unshackled-wrath",
+    "name": "UNSHACKLED WRATH",
+    "category": "detachment",
+    "detachment_id": "eradication-cohort",
+    "cp_cost": 1,
+    "phases": [
+      "shooting"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "unshackled-wrath",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "analytic-reprisals",
+    "name": "ANALYTIC REPRISALS",
+    "category": "detachment",
+    "type": "strategic-ploy",
+    "detachment_id": "eradication-cohort",
+    "cp_cost": 1,
+    "phases": [
+      "shooting"
+    ],
+    "player_turn": "opponent-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "analytic-reprisals",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
   }
 ]

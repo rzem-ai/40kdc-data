@@ -593,5 +593,117 @@
       "edition": "11th",
       "dataslate": "pre-launch-provisional"
     }
+  },
+  {
+    "id": "inspirational-battle-cantics",
+    "name": "INSPIRATIONAL BATTLE CANTICLES",
+    "category": "detachment",
+    "detachment_id": "chorus-of-condemnation",
+    "cp_cost": 1,
+    "phases": [
+      "command"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "inspirational-battle-cantics",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "harmonised-exorcism",
+    "name": "HARMONISED EXORCISM",
+    "category": "detachment",
+    "detachment_id": "chorus-of-condemnation",
+    "cp_cost": 1,
+    "phases": [
+      "shooting"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "harmonised-exorcism",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "devastating-reprise",
+    "name": "DEVASTATING REPRISE",
+    "category": "detachment",
+    "detachment_id": "chorus-of-condemnation",
+    "cp_cost": 1,
+    "phases": [
+      "shooting"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "devastating-reprise",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "sanctified-blows",
+    "name": "SANCTIFIED BLOWS",
+    "category": "detachment",
+    "detachment_id": "sacred-champions",
+    "cp_cost": 1,
+    "phases": [
+      "fight"
+    ],
+    "player_turn": "either",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "sanctified-blows",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "faithful-fortitude",
+    "name": "FAITHFUL FORTITUDE",
+    "category": "detachment",
+    "detachment_id": "sacred-champions",
+    "cp_cost": 1,
+    "phases": [
+      "command",
+      "movement",
+      "shooting",
+      "charge",
+      "fight"
+    ],
+    "player_turn": "either",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "faithful-fortitude",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
+  },
+  {
+    "id": "unflinching-determination-sacred-champions",
+    "name": "UNFLINCHING DETERMINATION",
+    "category": "detachment",
+    "detachment_id": "sacred-champions",
+    "cp_cost": 1,
+    "phases": [
+      "movement"
+    ],
+    "player_turn": "your-turn",
+    "timing": "once-per-phase",
+    "target_restrictions": null,
+    "ability_id": "unflinching-determination-sacred-champions",
+    "game_version": {
+      "edition": "11th",
+      "dataslate": "pre-launch-provisional"
+    }
   }
 ]
