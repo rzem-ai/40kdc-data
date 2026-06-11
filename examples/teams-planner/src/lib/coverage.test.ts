@@ -3,6 +3,7 @@ import {
   candidateDetachments,
   factionOptions,
   playerCoverage,
+  reorderDetachmentIds,
   teamCoverage,
   type Player,
   type TeamPlan,
@@ -145,6 +146,35 @@ describe("teamCoverage intent rollup", () => {
     const r = teamCoverage(plan).intentByDisposition;
     expect(r["take-and-hold"].prefer.map((p) => p.id)).toEqual(["a"]);
     expect(r["reconnaissance"].prefer).toEqual([]);
+  });
+});
+
+describe("reorderDetachmentIds", () => {
+  const ids = ["a", "b", "c", "d"];
+
+  it("moves an id down to occupy a later slot, shifting the rest up", () => {
+    expect(reorderDetachmentIds(ids, "a", "c")).toEqual(["b", "c", "a", "d"]);
+  });
+
+  it("moves an id up to occupy an earlier slot, shifting the rest down", () => {
+    expect(reorderDetachmentIds(ids, "d", "b")).toEqual(["a", "d", "b", "c"]);
+  });
+
+  it("treats an adjacent move as a swap (matches the ↑/↓ steppers)", () => {
+    expect(reorderDetachmentIds(ids, "b", "a")).toEqual(["b", "a", "c", "d"]);
+    expect(reorderDetachmentIds(ids, "b", "c")).toEqual(["a", "c", "b", "d"]);
+  });
+
+  it("returns the input unchanged when the ids are equal or absent", () => {
+    expect(reorderDetachmentIds(ids, "b", "b")).toBe(ids);
+    expect(reorderDetachmentIds(ids, "z", "a")).toBe(ids);
+    expect(reorderDetachmentIds(ids, "a", "z")).toBe(ids);
+  });
+
+  it("does not mutate the input array", () => {
+    const input = ["a", "b", "c"];
+    reorderDetachmentIds(input, "a", "c");
+    expect(input).toEqual(["a", "b", "c"]);
   });
 });
 

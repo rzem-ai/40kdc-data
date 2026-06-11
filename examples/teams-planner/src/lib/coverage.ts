@@ -81,6 +81,22 @@ export function candidateDetachments(p: Player): Detachment[] {
     .filter((d): d is Detachment => d != null);
 }
 
+/**
+ * Move `fromId` to occupy `toId`'s slot, shifting the rest; the relative order of
+ * every other id is preserved. Returns the input unchanged when either id is
+ * absent or they're already the same — so callers can assign the result blindly.
+ * The single reorder primitive behind both drag-to-rank and the ↑/↓ steppers.
+ */
+export function reorderDetachmentIds(ids: string[], fromId: string, toId: string): string[] {
+  const from = ids.indexOf(fromId);
+  const to = ids.indexOf(toId);
+  if (from < 0 || to < 0 || from === to) return ids;
+  const next = [...ids];
+  next.splice(from, 1);
+  next.splice(to, 0, fromId);
+  return next;
+}
+
 /** Union of force dispositions a player can field. */
 export function playerCoverage(p: Player): Set<ForceDispositionId> {
   const out = new Set<ForceDispositionId>();

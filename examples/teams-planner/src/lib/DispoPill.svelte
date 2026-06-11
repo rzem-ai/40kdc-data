@@ -16,6 +16,7 @@
     disposition,
     tier = "can",
     interactive = false,
+    size = "sm",
     onclick,
     label,
     title,
@@ -23,6 +24,8 @@
     disposition: ForceDispositionId;
     tier?: PillTier;
     interactive?: boolean;
+    /** `md` enlarges the hit area for tap targets (intent row); `sm` stays compact. */
+    size?: "sm" | "md";
     onclick?: () => void;
     label?: string;
     title?: string;
@@ -33,11 +36,13 @@
   const style = $derived(pillStyle(disposition, tier));
 
   // Hue lives in inline `style`; classes carry only layout + the neutral
-  // (hue-free) tiers so Tailwind keeps them at build time.
+  // (hue-free) tiers so Tailwind keeps them at build time. Size is opt-in so the
+  // matrix/coverage pills stay small while the tap targets grow.
+  const sizeCls = $derived(size === "md" ? "px-2.5 py-1 text-sm" : "px-1.5 py-0.5 text-[10px]");
   const cls = $derived(
     tier === "tag"
-      ? "text-[10px] font-medium uppercase tracking-wide"
-      : "rounded px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide " +
+      ? "text-[11px] font-medium uppercase tracking-wide"
+      : `rounded ${sizeCls} font-medium uppercase tracking-wide ` +
           (tier === "uncovered"
             ? "bg-panel text-text-dim line-through"
             : tier === "prefer"
