@@ -176,8 +176,8 @@ fn describe_simple(s: &SimpleCondition) -> String {
     use SimpleConditionType as T;
     match s.type_ {
         // ── Ability-DSL conditions ──────────────────────────────────────────
-        T::PhaseIs => format!("{negate}during the {} phase", ps(p, "phase").unwrap_or("")),
-        T::TimingIs => format!("{negate}at {}", dekebab(ps(p, "timing").unwrap_or(""))),
+        T::PhaseIs => format!("{negate}during the {} phase", pj(p, "phase")),
+        T::TimingIs => format!("{negate}at {}", dekebab(&pj(p, "timing"))),
         T::PlayerTurnIs => {
             let turn = match ps(p, "turn") {
                 Some("your-turn") => "your",
@@ -193,12 +193,12 @@ fn describe_simple(s: &SimpleCondition) -> String {
         T::UnitBelowHalfStrength => format!("{negate}the unit is below half strength"),
         T::UnitHasKeyword => format!(
             "{negate}the unit has \"{}\"",
-            ps(p, "keyword").unwrap_or("")
+            pj(p, "keyword")
         ),
         T::TargetHasKeyword => {
             format!(
                 "{negate}the target has \"{}\"",
-                ps(p, "keyword").unwrap_or("")
+                pj(p, "keyword")
             )
         }
         T::ModelIsLeader => format!("{negate}the model is leading a unit"),
@@ -209,7 +209,7 @@ fn describe_simple(s: &SimpleCondition) -> String {
             };
             format!("{negate}attached to a {kw}unit")
         }
-        T::AttackIsType => format!("{negate}for {} attacks", ps(p, "attack_type").unwrap_or("")),
+        T::AttackIsType => format!("{negate}for {} attacks", pj(p, "attack_type")),
         T::IsBattleShocked => format!("{negate}the unit is battle-shocked"),
         T::HasLostWounds => format!("{negate}the model has lost wounds"),
         T::WasHitByAttack => {
@@ -259,7 +259,7 @@ fn describe_simple(s: &SimpleCondition) -> String {
         T::DestroyedByAttackType => {
             format!(
                 "{negate}destroyed by a {} attack",
-                ps(p, "attack_type").unwrap_or("")
+                pj(p, "attack_type")
             )
         }
 
@@ -410,7 +410,7 @@ fn describe_simple(s: &SimpleCondition) -> String {
             let mut out = format!(
                 "{negate}{} tagged {}",
                 count(pu(p, "count_min", 1), "objective"),
-                dekebab(ps(p, "tag").unwrap_or(""))
+                dekebab(&pj(p, "tag"))
             );
             if let Some(cm) = p.get("count_max").and_then(Value::as_u64) {
                 out.push_str(&format!(" (at most {cm})"));
@@ -431,9 +431,9 @@ fn describe_simple(s: &SimpleCondition) -> String {
                 "{negate}{} tagged {}",
                 count(
                     pu(p, "count_min", 1),
-                    &format!("{} unit", ps(p, "side").unwrap_or(""))
+                    &format!("{} unit", pj(p, "side"))
                 ),
-                dekebab(ps(p, "tag").unwrap_or(""))
+                dekebab(&pj(p, "tag"))
             );
             if let Some(w) = ps(p, "window") {
                 out.push_str(&format!(" ({})", dekebab(w)));
@@ -443,7 +443,7 @@ fn describe_simple(s: &SimpleCondition) -> String {
         T::TerrainHasTag => {
             let mut out = format!(
                 "{negate}terrain tagged {}",
-                dekebab(ps(p, "tag").unwrap_or(""))
+                dekebab(&pj(p, "tag"))
             );
             if let Some(fm) = p.get("friendly_units_min").and_then(Value::as_u64) {
                 out.push_str(&format!(" with {fm}+ friendly units"));
