@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { decodePlan, encodePlan, sanitizePlan } from "./share-plan";
+import { detachmentFaction } from "./coverage";
 import type { Placement, TeamPlan } from "./coverage";
 
 const plan: TeamPlan = {
@@ -10,7 +11,7 @@ const plan: TeamPlan = {
       id: "a",
       name: "Will",
       factionIds: ["world-eaters"],
-      armies: [{ id: "hil", name: "Houndpack + Infernal Lance", detachmentIds: ["khorne-daemonkin", "goretrack-onslaught"] }],
+      armies: [{ id: "hil", name: "Daemonkin + Goretrack", factionId: "world-eaters", detachmentIds: ["khorne-daemonkin", "goretrack-onslaught"] }],
       preferences: [
         { armyId: "hil", disposition: "reconnaissance", tier: "want" },
         { armyId: "hil", disposition: "take-and-hold", tier: "pref" },
@@ -21,7 +22,7 @@ const plan: TeamPlan = {
       id: "b",
       name: "Matt",
       factionIds: ["world-eaters"],
-      armies: [{ id: "w", name: "Warband", detachmentIds: ["berzerker-warband"] }],
+      armies: [{ id: "w", name: "Warband", factionId: "world-eaters", detachmentIds: ["berzerker-warband"] }],
       preferences: [{ armyId: "w", disposition: "purge-the-foe", tier: "could" }],
       locked: {},
     },
@@ -69,7 +70,8 @@ describe("defensive decode", () => {
   });
 
   it("drops army detachments that don't resolve, then prunes empty armies", () => {
-    const stale: TeamPlan = {
+    // Armies intentionally lack factionId (older v2) to exercise derivation.
+    const stale = {
       teamName: "T",
       size: 5,
       players: [
@@ -86,9 +88,10 @@ describe("defensive decode", () => {
         },
       ],
     };
-    const result = decodePlan(encodePlan(stale))!;
+    const result = decodePlan(encodePlan(stale as unknown as TeamPlan))!;
+    // factionId is derived from the surviving detachment for an army that lacked one.
     expect(result.plan.players[0].armies).toEqual([
-      { id: "a1", name: "Mix", detachmentIds: ["goretrack-onslaught"] },
+      { id: "a1", name: "Mix", factionId: "world-eaters", detachmentIds: ["goretrack-onslaught"] },
     ]);
     expect(result.dropped).toEqual(expect.arrayContaining(["made-up-detachment", "also-fake"]));
   });
@@ -170,7 +173,8 @@ describe("legacy migration (pre-army v1 plans)", () => {
     const result = sanitizePlan(legacy)!;
     const p = result.plan.players[0];
     expect(p.armies).toHaveLength(1);
-    expect(p.armies[0].name).toBe("Army 1");
+    expect(p.armies[0].factionId).toBe("world-eaters");
+    expect(p.armies[0].name).toBe(""); // auto-fills from detachments in the UI
     // World Eaters span all five dispositions, so the migrated army does too.
     const dispos = new Set(p.preferences.map((pl) => pl.disposition));
     expect(dispos.size).toBe(5);
@@ -196,5 +200,21 @@ describe("legacy migration (pre-army v1 plans)", () => {
     expect(byDispo["take-and-hold"]).toBe("pref");
     expect(p.armies[0].detachmentIds).toEqual(["khorne-daemonkin", "goretrack-onslaught"]);
     expect(p.locked).toEqual({});
+  });
+
+  it("splits a multi-faction legacy player into one army per faction", () => {
+    const legacy = {
+      teamName: "Old",
+      size: 5,
+      players: [{ id: "a", name: "P", factionIds: ["world-eaters", "chaos-daemons"], detachmentIds: null, intent: {} }],
+    };
+    const p = sanitizePlan(legacy)!.plan.players[0];
+    // One army per faction (in the player's faction order), each holding only
+    // that faction's detachments.
+    expect(p.armies.map((a) => a.factionId)).toEqual(["world-eaters", "chaos-daemons"]);
+    for (const a of p.armies) {
+      expect(a.detachmentIds.length).toBeGreaterThan(0);
+      expect(a.detachmentIds.every((d) => detachmentFaction(d) === a.factionId)).toBe(true);
+    }
   });
 });

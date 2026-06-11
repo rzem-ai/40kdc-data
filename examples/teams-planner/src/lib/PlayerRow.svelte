@@ -40,9 +40,6 @@
   const addable = $derived(allFactions.filter((f) => !player.factionIds.includes(f.id)));
   const factionName = (id: string) => allFactions.find((f) => f.id === id)?.name ?? id;
 
-  // Every detachment available across the player's factions (name-sorted).
-  const pool = $derived(detachmentsForFactions(player.factionIds));
-
   const DP_CAP = 3;
 
   /**
@@ -81,19 +78,19 @@
 
   function removeFaction(id: string) {
     const factionIds = player.factionIds.filter((f) => f !== id);
-    // Drop army detachments that no longer resolve within the surviving factions.
-    const valid = new Set(detachmentsForFactions(factionIds).map((d) => d.id));
-    const armies = player.armies
-      .map((a) => ({ ...a, detachmentIds: a.detachmentIds.filter((d) => valid.has(d)) }))
-      .filter((a) => a.detachmentIds.length > 0);
+    // An army belongs to one faction; drop any army built from the removed one.
+    const armies = player.armies.filter((a) => factionIds.includes(a.factionId));
     patch({ factionIds, armies });
   }
 
   // ── Armies ────────────────────────────────────────────────────────────────
-  // Armies start unnamed; the name auto-fills from the detachment combo (see
-  // `setDetachments`) and the player can append notes after it.
+  // An army is built from a single faction. It starts on the player's first
+  // faction (changeable) and unnamed — the name auto-fills from the detachment
+  // combo (see `setDetachments`) and the player can append notes after it.
   function addArmy() {
-    const army: Army = { id: uid("army"), name: "", detachmentIds: [] };
+    const factionId = player.factionIds[0];
+    if (!factionId) return;
+    const army: Army = { id: uid("army"), name: "", factionId, detachmentIds: [] };
     patch({ armies: [...player.armies, army] });
   }
 
@@ -103,6 +100,25 @@
 
   function removeArmy(id: string) {
     patch({ armies: player.armies.filter((a) => a.id !== id) });
+  }
+
+  /** Detachments of a single faction, name-sorted (the army's selectable pool). */
+  function factionPool(factionId: string) {
+    return detachmentsForFactions(factionId ? [factionId] : []);
+  }
+
+  /** Switch an army's faction, dropping detachments not in it (name re-synced). */
+  function changeArmyFaction(armyId: string, e: Event) {
+    const factionId = (e.currentTarget as HTMLSelectElement).value;
+    const army = findArmy(player, armyId);
+    if (!army || army.factionId === factionId) return;
+    const valid = new Set(factionPool(factionId).map((d) => d.id));
+    const detachmentIds = army.detachmentIds.filter((d) => valid.has(d));
+    updateArmy(armyId, {
+      factionId,
+      detachmentIds,
+      name: reconcileArmyName(army.name, army.detachmentIds, detachmentIds),
+    });
   }
 
   /** Set an army's detachment combo, auto-syncing its name (notes preserved). */
@@ -131,9 +147,9 @@
     setDetachments(armyId, army.detachmentIds.filter((d) => d !== detId));
   }
 
-  /** Detachments not yet in this army, for its "+ detachment" picker. */
+  /** Detachments of the army's faction not yet in it, for its "+" picker. */
   function addableDetachments(army: Army) {
-    return pool.filter((d) => !army.detachmentIds.includes(d.id));
+    return factionPool(army.factionId).filter((d) => !army.detachmentIds.includes(d.id));
   }
 
   // ── Preferences (three bands) ───────────────────────────────────────────────
@@ -159,7 +175,14 @@
 
   function onBandDrop(tier: PrefTier) {
     if (dragKey == null) return;
-    patch({ preferences: setPlacementTier(player.preferences, dragKey, tier, null) });
+    // `onChipEnter` already reorders live while dragging, so if the chip is
+    // already in this band keep that position — appending to the end here would
+    // clobber a within-band reorder. Only act when it landed in a *new* band's
+    // whitespace (no chip to drop onto).
+    const cur = player.preferences.find((pl) => placementKey(pl) === dragKey);
+    if (cur && cur.tier !== tier) {
+      patch({ preferences: setPlacementTier(player.preferences, dragKey, tier, null) });
+    }
     dragKey = null;
   }
 
@@ -167,6 +190,24 @@
   let collapsed = $state(false);
   const coveredCount = $derived(coverage.size);
   const effTier = (d: ForceDispositionId): PrefTier | null => effectivePlacement(player, d)?.tier ?? null;
+
+  // The player's three most-wanted armies, ranked by each army's best placement
+  // (tier first, then its rank within the preference list). Shown collapsed.
+  const TIER_SCORE: Record<PrefTier, number> = { want: 3, pref: 2, could: 1 };
+  const topArmies = $derived.by(() => {
+    const best = new Map<string, { score: number; idx: number }>();
+    player.preferences.forEach((pl, idx) => {
+      const score = TIER_SCORE[pl.tier];
+      const cur = best.get(pl.armyId);
+      if (!cur || score > cur.score || (score === cur.score && idx < cur.idx)) {
+        best.set(pl.armyId, { score, idx });
+      }
+    });
+    return [...best.entries()]
+      .sort((a, b) => b[1].score - a[1].score || a[1].idx - b[1].idx)
+      .slice(0, 3)
+      .map(([id]) => armyName(id));
+  });
 </script>
 
 <div class="rounded-md border border-panel-border bg-panel-surface p-3 shadow-sm">
@@ -209,6 +250,15 @@
       {/each}
       <span class="ml-1 text-xs text-text-dim">{coveredCount}/{DISPOSITIONS.length} covered</span>
     </div>
+    {#if topArmies.length > 0}
+      <!-- Top three most-wanted armies, for a roster-level glance. -->
+      <div class="mt-1 flex flex-wrap items-center gap-1">
+        <span class="font-heading text-[10px] font-bold uppercase tracking-wider text-text-dim">Top armies</span>
+        {#each topArmies as name, i (i)}
+          <span class="rounded bg-panel px-1.5 py-0.5 text-xs text-text-muted">{i + 1}. {name}</span>
+        {/each}
+      </div>
+    {/if}
   {:else}
     <!-- Factions -->
     <div class="mt-2 flex flex-wrap items-center gap-1.5">
@@ -251,6 +301,17 @@
             {@const over = dp > DP_CAP}
             <div class="rounded border border-border-strong bg-panel p-2">
               <div class="flex items-center gap-2">
+                <select
+                  class="focus-ring max-w-[8rem] shrink-0 rounded border border-border-strong bg-panel-surface px-1.5 py-1 text-xs text-text-muted"
+                  value={army.factionId}
+                  onchange={(e) => changeArmyFaction(army.id, e)}
+                  aria-label="Army faction"
+                  title="Faction this army is built from"
+                >
+                  {#each player.factionIds as fid (fid)}
+                    <option value={fid}>{factionName(fid)}</option>
+                  {/each}
+                </select>
                 <input
                   class="focus-ring min-w-0 flex-1 rounded border border-border-strong bg-panel-surface px-2 py-1 text-sm text-text placeholder:text-text-dim"
                   placeholder="Army name (auto-fills from detachments)"

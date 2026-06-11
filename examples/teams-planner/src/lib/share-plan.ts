@@ -14,6 +14,7 @@ import type { ForceDispositionId } from "@alpaca-software/40kdc-data";
 import type { Army, Placement, Player, PrefTier, TeamPlan } from "./coverage";
 import {
   armyDispositions,
+  detachmentFaction,
   detachmentsForFactions,
   isKnownDetachment,
   isKnownFaction,
@@ -89,6 +90,7 @@ function sanitizeArmies(
   factionIds: string[],
   dropped: string[],
 ): Army[] {
+  const factionSet = new Set(factionIds);
   const valid = new Set(detachmentsForFactions(factionIds).map((d) => d.id));
   const keepIds = (ids: unknown): string[] =>
     (Array.isArray(ids) ? ids : [])
@@ -103,23 +105,41 @@ function sanitizeArmies(
     return raw.armies
       .map((entry, i) => {
         const a = (entry ?? {}) as Record<string, unknown>;
+        const ids = keepIds(a.detachmentIds);
+        // Faction: trust a valid stored one; otherwise (older armies, or a
+        // faction since removed) derive it from the first detachment, falling
+        // back to the player's first faction.
+        const stored = asString(a.factionId);
+        const factionId =
+          factionSet.has(stored)
+            ? stored
+            : (ids.map(detachmentFaction).find((f) => f && factionSet.has(f)) ?? factionIds[0] ?? "");
+        // An army is single-faction; keep only its faction's detachments.
+        const detachmentIds = ids.filter((d) => detachmentFaction(d) === factionId);
         return {
           id: asString(a.id) || synthId(`a${i}`),
           name: asString(a.name) || `Army ${i + 1}`,
-          detachmentIds: keepIds(a.detachmentIds),
+          factionId,
+          detachmentIds,
         };
       })
-      .filter((a) => a.detachmentIds.length > 0);
+      .filter((a) => a.factionId !== "" && a.detachmentIds.length > 0);
   }
 
   // Legacy: `detachmentIds` array = the old narrowed selection; null/absent =
-  // "covered all faction detachments", which we materialize explicitly.
+  // "covered all faction detachments". A legacy player could span factions, but
+  // an army is single-faction, so group the resolved ids by faction → one army
+  // each, in the player's faction order.
   if ("detachmentIds" in raw || "intent" in raw) {
-    const ids = Array.isArray(raw.detachmentIds)
-      ? keepIds(raw.detachmentIds)
-      : [...valid];
-    if (ids.length === 0) return [];
-    return [{ id: synthId("legacy"), name: "Army 1", detachmentIds: ids }];
+    const ids = Array.isArray(raw.detachmentIds) ? keepIds(raw.detachmentIds) : [...valid];
+    return factionIds
+      .map((factionId, i) => ({
+        id: synthId(`legacy${i}`),
+        name: "",
+        factionId,
+        detachmentIds: ids.filter((d) => detachmentFaction(d) === factionId),
+      }))
+      .filter((a) => a.detachmentIds.length > 0);
   }
 
   return [];

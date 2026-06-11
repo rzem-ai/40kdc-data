@@ -34,7 +34,9 @@ const TIER_RANK: Record<PrefTier, number> = { want: 3, pref: 2, could: 1 };
 export interface Army {
   id: string;
   name: string;
-  /** The detachments in the combo. DP is soft-capped at 3 (warned, not blocked). */
+  /** The single faction this army is built from (one of the player's factions). */
+  factionId: string;
+  /** The detachments in the combo, all from `factionId`. DP soft-capped at 3. */
   detachmentIds: string[];
 }
 
@@ -334,6 +336,11 @@ export function detachmentName(id: string): string {
 /** The force dispositions a single detachment grants. */
 export function detachmentDispositions(id: string): ForceDispositionId[] {
   return (ds.detachments.get(id)?.force_dispositions ?? []) as ForceDispositionId[];
+}
+
+/** The faction a detachment belongs to (null when the id is unknown). */
+export function detachmentFaction(id: string): string | null {
+  return ds.detachments.get(id)?.faction_id ?? null;
 }
 
 /** The auto name for a combo: its detachment names joined with " / ". */

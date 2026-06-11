@@ -119,7 +119,7 @@
     homeUrl="https://40kdc.alpacasoft.dev"
   />
 
-  <main class="mx-auto w-full max-w-3xl flex-1 px-3 py-4">
+  <main class="mx-auto w-full max-w-6xl flex-1 px-3 py-4">
     <!-- Team controls -->
     <div class="mb-4 flex flex-wrap items-end gap-3">
       <label class="flex flex-col gap-1">

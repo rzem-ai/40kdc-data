@@ -32,7 +32,7 @@ import {
 //   brazen-engines      → purge-the-foe      (1 DP)
 
 function army(over: Partial<Army>): Army {
-  return { id: "a1", name: "Army 1", detachmentIds: [], ...over };
+  return { id: "a1", name: "Army 1", factionId: "world-eaters", detachmentIds: [], ...over };
 }
 
 function player(over: Partial<Player>): Player {
@@ -128,14 +128,14 @@ describe("syncPreferences", () => {
 });
 
 describe("effectivePlacement", () => {
-  // The user's worked example: two armies, both can field reconnaissance and
-  // take-and-hold among them; Houndpack/IL-style "vastly prefer recon".
-  const houndpackIL = army({ id: "hil", name: "Houndpack + Infernal Lance", detachmentIds: ["khorne-daemonkin", "goretrack-onslaught"] }); // recon + t&h
-  const kdkBrazen = army({ id: "kb", name: "KdK + Brazen", detachmentIds: ["khorne-daemonkin", "brazen-engines"] }); // recon + purge
+  // The user's worked example transposed onto World Eaters: two armies, between
+  // them fielding reconnaissance and take-and-hold; "vastly prefer recon".
+  const reconTah = army({ id: "hil", name: "Daemonkin + Goretrack", detachmentIds: ["khorne-daemonkin", "goretrack-onslaught"] }); // recon + t&h
+  const reconPurge = army({ id: "kb", name: "Daemonkin + Brazen", detachmentIds: ["khorne-daemonkin", "brazen-engines"] }); // recon + purge
 
   it("returns the highest-banded copy, so the example reads recon=want, t&h=pref", () => {
     const p = player({
-      armies: [houndpackIL, kdkBrazen],
+      armies: [reconTah, reconPurge],
       preferences: [
         { armyId: "hil", disposition: "reconnaissance", tier: "want" },
         { armyId: "hil", disposition: "take-and-hold", tier: "pref" },
@@ -151,7 +151,7 @@ describe("effectivePlacement", () => {
 
   it("breaks tier ties by rank (earliest placement wins)", () => {
     const p = player({
-      armies: [houndpackIL, kdkBrazen],
+      armies: [reconTah, reconPurge],
       preferences: [
         { armyId: "kb", disposition: "reconnaissance", tier: "want" },
         { armyId: "hil", disposition: "reconnaissance", tier: "want" },
