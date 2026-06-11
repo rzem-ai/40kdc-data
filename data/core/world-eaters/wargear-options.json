@@ -646,10 +646,12 @@
       "dataslate": "2025-q3"
     },
     "replaces": [
-      "hades-autocannons"
+      "hades-autocannon",
+      "hades-autocannon"
     ],
     "replacement": [
-      "ectoplasma-cannons"
+      "ectoplasma-cannon",
+      "ectoplasma-cannon"
     ]
   },
   {
@@ -666,22 +668,6 @@
     "replacement": [
       "ectoplasma-cannon",
       "armoured-limbs"
-    ]
-  },
-  {
-    "id": "forgefiend-swap-2",
-    "unit_id": "forgefiend",
-    "is_free": true,
-    "game_version": {
-      "edition": "10th",
-      "dataslate": "2025-q3"
-    },
-    "replaces": [
-      "forgefiend-jaws"
-    ],
-    "replacement": [
-      "ectoplasma-cannon",
-      "forgefiend-claws"
     ]
   },
   {

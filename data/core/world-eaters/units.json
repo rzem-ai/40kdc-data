@@ -27,12 +27,10 @@
       "Chaos",
       "Daemon",
       "Forgefiend",
-      "Tzeentch",
       "Khorne"
     ],
     "faction_keywords": [
       "Heretic Astartes",
-      "Thousand Sons",
       "World Eaters"
     ],
     "base_size_mm": {
@@ -45,14 +43,13 @@
       "max": 1
     },
     "weapon_ids": [
+      "armoured-limbs",
       "ectoplasma-cannon",
-      "forgefiend-claws",
       "forgefiend-jaws",
+      "hades-autocannon",
       "hades-autocannon"
     ],
     "ability_ids": [
-      "blazing-salvoes",
-      "daemonic-ordnance",
       "deadly-demise-d3",
       "furious-onslaught"
     ],
@@ -459,17 +456,12 @@
       "Smoke",
       "Chaos",
       "Land Raider",
-      "Nurgle",
-      "Slaanesh",
-      "Tzeentch",
       "Khorne",
       "Frame"
     ],
     "faction_keywords": [
       "Heretic Astartes",
-      "Death Guard",
       "Emperor’s Children",
-      "Thousand Sons",
       "World Eaters"
     ],
     "base_size_mm": {
@@ -530,14 +522,11 @@
       "Chaos",
       "Daemon",
       "Maulerfiend",
-      "Slaanesh",
-      "Tzeentch",
       "Khorne"
     ],
     "faction_keywords": [
       "Heretic Astartes",
       "Emperor’s Children",
-      "Thousand Sons",
       "World Eaters"
     ],
     "base_size_mm": {
@@ -556,10 +545,7 @@
     ],
     "ability_ids": [
       "deadly-demise-d3",
-      "glutton-for-punishment",
       "savage-exaltation",
-      "siege-crawler",
-      "snarling-protector",
       "the-scent-of-blood"
     ],
     "game_version": {
@@ -662,14 +648,11 @@
       "Chaos",
       "Daemon",
       "Heldrake",
-      "Slaanesh",
-      "Tzeentch",
       "Khorne"
     ],
     "faction_keywords": [
       "Heretic Astartes",
       "Emperor’s Children",
-      "Thousand Sons",
       "World Eaters"
     ],
     "base_size_mm": {
@@ -689,7 +672,6 @@
     "ability_ids": [
       "airborne-predator",
       "deadly-demise-d3",
-      "flame-wreathed",
       "hover"
     ],
     "game_version": {
@@ -1030,17 +1012,12 @@
       "Smoke",
       "Chaos",
       "Rhino",
-      "Nurgle",
-      "Slaanesh",
-      "Tzeentch",
       "Khorne",
       "Frame"
     ],
     "faction_keywords": [
       "Heretic Astartes",
-      "Death Guard",
       "Emperor’s Children",
-      "Thousand Sons",
       "World Eaters"
     ],
     "base_size_mm": {
@@ -1103,14 +1080,10 @@
       "Walker",
       "Chaos",
       "Helbrute",
-      "Nurgle",
-      "Tzeentch",
       "Khorne"
     ],
     "faction_keywords": [
       "Heretic Astartes",
-      "Death Guard",
-      "Thousand Sons",
       "World Eaters"
     ],
     "base_size_mm": {
@@ -1136,13 +1109,9 @@
       "twin-lascannon"
     ],
     "ability_ids": [
-      "dark-ascension-aura",
       "deadly-demise-1",
       "devoted-to-destruction",
-      "diseased-malice",
-      "frenzy",
-      "froth-spattered-frenzy",
-      "terrifying-assault"
+      "frenzy"
     ],
     "game_version": {
       "edition": "11th",
@@ -1178,15 +1147,11 @@
       "Smoke",
       "Chaos",
       "Predator Destructor",
-      "Nurgle",
-      "Tzeentch",
       "Khorne",
       "Frame"
     ],
     "faction_keywords": [
       "Heretic Astartes",
-      "Death Guard",
-      "Thousand Sons",
       "World Eaters"
     ],
     "base_size_mm": {
@@ -1309,15 +1274,11 @@
       "Smoke",
       "Chaos",
       "Predator Annihilator",
-      "Nurgle",
-      "Tzeentch",
       "Khorne",
       "Frame"
     ],
     "faction_keywords": [
       "Heretic Astartes",
-      "Death Guard",
-      "Thousand Sons",
       "World Eaters"
     ],
     "base_size_mm": {
@@ -1376,7 +1337,6 @@
     "keywords": [
       "Infantry",
       "Chaos",
-      "Slaanesh",
       "Terminator",
       "Terminator Squad",
       "Khorne"
@@ -1507,18 +1467,13 @@
       "Beast",
       "Chaos",
       "Chaos Spawn",
-      "Nurgle",
       "Spawn",
-      "Slaanesh",
-      "Tzeentch",
       "Mutant",
       "Khorne"
     ],
     "faction_keywords": [
       "Heretic Astartes",
-      "Death Guard",
       "Emperor’s Children",
-      "Thousand Sons",
       "World Eaters"
     ],
     "base_size_mm": {
