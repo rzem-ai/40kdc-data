@@ -80,6 +80,29 @@ npm run validate   # validate all data files against schemas
 
 CI runs on every push and PR via `.github/workflows/validate.yml`.
 
+`npm test`/`npm run validate` are **not** sufficient before pushing — CI also
+diff-checks committed generated artifacts and Rust formatting, which those
+commands don't touch. Regenerate after the matching kind of change:
+
+- **Changed anything under `data/`** → regenerate the embedded bundles, or the
+  `Validate Data` job's "artifacts up to date" steps fail:
+  ```bash
+  cd tools && npm run bundle:schemas
+  cargo run -p xtask -- codegen        # crates/.../generated.rs (only drifts if schemas/ changed)
+  cargo run -p xtask -- bundle-data    # crates/.../data/bundle.generated.json
+  python3 python/codegen/sync_bundle.py  # python/.../_bundle.json
+  ```
+  (`npm run build`/`test` regenerate the TS bundle via `codegen:data`, but
+  **not** the Rust/Python ones.)
+- **Edited any Rust** → run `cargo fmt --all` (CI runs `cargo fmt --all -- --check`).
+- **Changed `schemas/`** → also `npm run codegen:types` (TS `generated.ts`) and
+  the Python `gen_typeddicts.py`; CI diff-checks both.
+
+Referential integrity beyond JSON Schema (unit `ability_id`s must resolve in the
+same faction's enrichment; `faction_keywords` must match the faction's home
+keyword) is enforced by `tools/src/integrity.ts`, run as part of
+`npm run validate`.
+
 ## Cross-language parity
 
 This repo holds the TypeScript, Rust, and Python implementations in parity through the `conformance/` corpus, and the same mechanism extends to the upcoming R port. Full strategy: [`CONFORMANCE.md`](CONFORMANCE.md). Contributor workflow: [`CONTRIBUTING.md`](CONTRIBUTING.md). Runner wire format: [`conformance/RUNNER_PROTOCOL.md`](conformance/RUNNER_PROTOCOL.md).
