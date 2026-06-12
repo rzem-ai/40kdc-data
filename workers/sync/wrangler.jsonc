@@ -11,8 +11,7 @@
     {
       "binding": "DB",
       "database_name": "40kdc_sync",
-      // Filled after `wrangler d1 create 40kdc_sync` (CI applies migrations).
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "5f59d1fc-3119-4a7c-9a4b-1aa3f05788d3",
       "migrations_dir": "migrations"
     }
   ],
@@ -27,8 +26,8 @@
   // PUBLIC key below. Patron-gated routes 501 until it is set.
   "vars": {
     // Raw Ed25519 public key(s) from keys.alpacasoft.dev (base64url, comma-
-    // separated for rotation). Fill from `GET keys.alpacasoft.dev/auth/public-key`.
-    "ENTITLEMENT_PUBLIC_KEYS": "",
+    // separated for rotation), per `GET keys.alpacasoft.dev/auth/public-key`.
+    "ENTITLEMENT_PUBLIC_KEYS": "hH3klVi_OrYNSfbEToeSFKkNs04jQCZwFTEu0ugXKzY",
     // Cost/abuse levers.
     "MAX_DOCS_PER_OWNER": "100",
     "MAX_LINKS_PER_OWNER": "200",
