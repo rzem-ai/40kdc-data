@@ -63,13 +63,62 @@ export const TERRAIN_SETS: TerrainSetDef[] = [
       { template: "corner-short", position: { x: 2.05, y: 0.6 }, rotation: 180 },
     ],
   },
+  // Large-ruin variants, mined from the committed layouts: an `area-large` slab
+  // wears different corner-piece pairings on real boards, so each recurring
+  // arrangement (present in ≥2 layouts) is its own stamp. Feature placements are
+  // taken verbatim from a representative committed instance, so a stamped set
+  // reproduces a real ruin; rotate the area after stamping to face it any way.
   {
-    id: "ruin-large",
-    name: "Large ruin",
+    id: "ruin-large-left-short",
+    name: "Large ruin — left + short",
     area: { template: "area-large" },
     features: [
       { template: "corner-ruin-left", position: { x: -2.9, y: 2.31 }, rotation: 270 },
-      { template: "corner-short", position: { x: 4.77, y: -1.97 }, rotation: 0 },
+      { template: "corner-short", position: { x: 4.77, y: -1.97 }, rotation: 0, mirror: "horizontal" },
+    ],
+  },
+  {
+    id: "ruin-large-bal-right-short",
+    name: "Large ruin — balanced-right + short",
+    area: { template: "area-large" },
+    features: [
+      { template: "corner-ruin-balanced-right", position: { x: -3.83, y: 1.87 }, rotation: 180 },
+      { template: "corner-short", position: { x: 4.77, y: -2.02 }, rotation: 0, mirror: "horizontal" },
+    ],
+  },
+  {
+    id: "ruin-large-bal-right-right",
+    name: "Large ruin — balanced-right + right",
+    area: { template: "area-large" },
+    features: [
+      { template: "corner-ruin-balanced-right", position: { x: -4.07, y: -1.52 }, rotation: 270 },
+      { template: "corner-ruin-right", position: { x: 2.83, y: 2.32 }, rotation: 90 },
+    ],
+  },
+  {
+    id: "ruin-large-bal-left-right",
+    name: "Large ruin — balanced-left + right",
+    area: { template: "area-large" },
+    features: [
+      { template: "corner-ruin-right", position: { x: -2.91, y: -2.39 }, rotation: 270 },
+      { template: "corner-ruin-balanced-left", position: { x: 3.62, y: 1.68 }, rotation: 180 },
+    ],
+  },
+  {
+    id: "ruin-large-left-right",
+    name: "Large ruin — left + right",
+    area: { template: "area-large" },
+    features: [
+      { template: "corner-ruin-left", position: { x: 4.67, y: 0.89 }, rotation: 180 },
+      { template: "corner-ruin-right", position: { x: -2.88, y: -2.36 }, rotation: 270 },
+    ],
+  },
+  {
+    id: "ruin-large-single",
+    name: "Large ruin — single corner",
+    area: { template: "area-large" },
+    features: [
+      { template: "corner-ruin-left", position: { x: -2.98, y: 2.43 }, rotation: 270 },
     ],
   },
 ];
