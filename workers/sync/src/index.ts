@@ -121,6 +121,17 @@ type DocRow = {
   updated_at: number;
 };
 
+/** Which share role (if any) a presented link token grants on a doc. */
+function shareRole(
+  row: { editor_token: string | null; viewer_token: string | null },
+  token: string,
+): "editor" | "viewer" | null {
+  if (!token) return null;
+  if (row.editor_token && token === row.editor_token) return "editor";
+  if (row.viewer_token && token === row.viewer_token) return "viewer";
+  return null;
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
@@ -147,6 +158,36 @@ export default {
       // Fire-and-forget popularity counter; never blocks the resolve.
       void env.DB.prepare("UPDATE shortlinks SET hits = hits + 1 WHERE code = ?").bind(code).run();
       return json({ kind: row.kind, payload: JSON.parse(row.payload), created_at: row.created_at });
+    }
+
+    // GET /docs/:id/shared?token= → anonymous at-rest read for share-link
+    // holders (either role token). This is the read-only fallback when the
+    // live room is full, and the non-WebSocket path for view links.
+    const sharedMatch = url.pathname.match(/^\/docs\/([^/]+)\/shared$/);
+    if (request.method === "GET" && sharedMatch) {
+      const id = decodeURIComponent(sharedMatch[1]);
+      const row = await env.DB.prepare(
+        "SELECT kind, name, payload, updated_at, editor_token, viewer_token FROM documents WHERE id = ?",
+      )
+        .bind(id)
+        .first<{
+          kind: string;
+          name: string;
+          payload: string;
+          updated_at: number;
+          editor_token: string | null;
+          viewer_token: string | null;
+        }>();
+      if (!row) return json({ error: "not_found" }, 404);
+      const role = shareRole(row, url.searchParams.get("token") ?? "");
+      if (!role) return json({ error: "bad_token" }, 403);
+      return json({
+        kind: row.kind,
+        name: row.name,
+        payload: JSON.parse(row.payload),
+        updated_at: row.updated_at,
+        role,
+      });
     }
 
     // GET /session/:code/ws → WebSocket upgrade. No entitlement check — the
@@ -224,15 +265,18 @@ export default {
     if (request.method === "GET" && url.pathname === "/docs") {
       const kind = url.searchParams.get("kind");
       if (kind !== null && !isDocKind(kind)) return json({ error: "bad_kind" }, 400);
+      const cols =
+        "id, kind, name, length(payload) AS bytes, created_at, updated_at, editor_token IS NOT NULL AS shared";
       const stmt = kind
         ? env.DB.prepare(
-            "SELECT id, kind, name, length(payload) AS bytes, created_at, updated_at FROM documents WHERE owner = ? AND kind = ? ORDER BY updated_at DESC",
+            `SELECT ${cols} FROM documents WHERE owner = ? AND kind = ? ORDER BY updated_at DESC`,
           ).bind(owner, kind)
         : env.DB.prepare(
-            "SELECT id, kind, name, length(payload) AS bytes, created_at, updated_at FROM documents WHERE owner = ? ORDER BY updated_at DESC",
+            `SELECT ${cols} FROM documents WHERE owner = ? ORDER BY updated_at DESC`,
           ).bind(owner);
       const { results } = await stmt.all();
-      return json({ docs: results });
+      // D1 returns the IS NOT NULL expression as 0/1 — make it a real boolean.
+      return json({ docs: results.map((d) => ({ ...d, shared: Boolean(d.shared) })) });
     }
 
     // POST /docs → create.
@@ -260,6 +304,34 @@ export default {
       return json({ id, updated_at: now });
     }
 
+    // POST /docs/:id/share → mint (or rotate) the durable share tokens that
+    // make a doc's live link work. Idempotent: re-sharing returns the same
+    // tokens; {regenerate: true} rotates both so old links stop admitting
+    // new joins.
+    const shareMatch = url.pathname.match(/^\/docs\/([^/]+)\/share$/);
+    if (request.method === "POST" && shareMatch) {
+      const id = decodeURIComponent(shareMatch[1]);
+      const body = await readJson(request);
+      const row = await env.DB.prepare(
+        "SELECT editor_token, viewer_token FROM documents WHERE id = ? AND owner = ?",
+      )
+        .bind(id, owner)
+        .first<{ editor_token: string | null; viewer_token: string | null }>();
+      if (!row) return json({ error: "not_found" }, 404);
+
+      if (row.editor_token && row.viewer_token && body.regenerate !== true) {
+        return json({ id, editorToken: row.editor_token, viewerToken: row.viewer_token });
+      }
+      const editorToken = crypto.randomUUID();
+      const viewerToken = crypto.randomUUID();
+      await env.DB.prepare(
+        "UPDATE documents SET editor_token = ?, viewer_token = ? WHERE id = ? AND owner = ?",
+      )
+        .bind(editorToken, viewerToken, id, owner)
+        .run();
+      return json({ id, editorToken, viewerToken });
+    }
+
     // /docs/:id → fetch / update / delete (owner-scoped: the WHERE clause
     // carries owner, so another patron's id 404s rather than leaks).
     const docMatch = url.pathname.match(/^\/docs\/([^/]+)$/);
@@ -267,7 +339,10 @@ export default {
       const id = decodeURIComponent(docMatch[1]);
 
       if (request.method === "GET") {
-        const row = await env.DB.prepare("SELECT * FROM documents WHERE id = ? AND owner = ?")
+        // Explicit columns: the share tokens must never ride along on a read.
+        const row = await env.DB.prepare(
+          "SELECT id, owner, kind, name, payload, created_at, updated_at FROM documents WHERE id = ? AND owner = ?",
+        )
           .bind(id, owner)
           .first<DocRow>();
         if (!row) return json({ error: "not_found" }, 404);
