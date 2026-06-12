@@ -92,6 +92,21 @@ function indexOf(ds: Dataset): MatchupIndex {
 }
 
 /**
+ * The matchup as read from `own`'s Force Disposition card against an opponent
+ * fielding `opp` — the *ordered* lookup. Missions are asymmetric: each player
+ * finds their own primary mission by looking the opponent's disposition up on
+ * their own card, so `matchupFor(ds, a, b)` and `matchupFor(ds, b, a)` are
+ * different records (all 25 ordered ids exist in the data).
+ */
+export function matchupFor(
+  ds: Dataset,
+  own: ForceDispositionId,
+  opp: ForceDispositionId,
+): MissionMatchup | undefined {
+  return indexOf(ds).byOrderedPair.get(`${own}|${opp}`);
+}
+
+/**
  * The canonical ordered matchup id for an unordered disposition pair: the
  * form with the lower-index disposition first (layout cards are tagged with
  * the canonical one).
