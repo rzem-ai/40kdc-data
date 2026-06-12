@@ -9,22 +9,29 @@
   import PwaInstallPrompt from "../../_shared/PwaInstallPrompt.svelte";
   import EntitlementGate from "../../_shared/EntitlementGate.svelte";
   import CloudSavesPane from "../../_shared/CloudSavesPane.svelte";
-  import SessionBar from "../../_shared/SessionBar.svelte";
+  import AccountChip from "../../_shared/AccountChip.svelte";
+  import LiveSessionWidget from "../../_shared/LiveSessionWidget.svelte";
+  import ShareLinksModal from "../../_shared/ShareLinksModal.svelte";
+  import Modal from "../../_shared/Modal.svelte";
   import { maybeCaptureEntitlement } from "../../_shared/entitlement.svelte";
-  import { resolveLink } from "../../_shared/sync-api";
+  import { parseDocInvite, resolveLink, type DocMeta } from "../../_shared/sync-api";
   import {
-    createDocSession,
     docSession,
+    goLive,
     joinDocSession,
     parseSessionInvite,
     registerDocSession,
+    requestDocJoin,
     sendOps,
   } from "../../_shared/doc-session.svelte";
   import { applyDocOps } from "../../_shared/doc-protocol";
   import {
     diffSessionDocs,
+    fromCloudPayload,
+    isSessionShaped,
     planToSessionDoc,
     sessionDocToPlan,
+    toSnapshotPayload,
     type SessionDoc,
   } from "./lib/session-doc";
   import {
@@ -62,6 +69,13 @@
   let toast = $state<string | null>(null);
   let pwaPromptOpen = $state<boolean>(false);
   let gateOpen = $state<boolean>(false);
+  /** Header-chip cloud-saves modal. */
+  let cloudOpen = $state<boolean>(false);
+  /** Per-doc share dialog (live + snapshot links). */
+  let shareTarget = $state<DocMeta | null>(null);
+  let shareOpen = $state<boolean>(false);
+  /** The cloud doc "Go live" reuses across clicks (created on first use). */
+  let liveDocId = $state<string | null>(null);
 
   /** What the cloud pane can upload: the current plan, under its team name. */
   const cloudItems = $derived([
@@ -69,9 +83,11 @@
   ]);
 
   /** Every inbound payload — cloud load, shortlink, session welcome — passes
-   *  through sanitizePlan, the same defensive gate the #t= path uses. */
+   *  through sanitizePlan, the same defensive gate the #t= path uses.
+   *  fromCloudPayload first bridges session-shaped docs (live-edited saves
+   *  are stored id-keyed) back to the plan shape. */
   function adoptPlan(payload: unknown, source: string): void {
-    const result = sanitizePlan(payload);
+    const result = sanitizePlan(fromCloudPayload(payload));
     if (result) {
       plan = result.plan;
       flash(`Opened ${source}.`);
@@ -90,7 +106,20 @@
 
   registerDocSession({
     onDoc(doc) {
-      lastSessionDoc = doc as SessionDoc;
+      if (isSessionShaped(doc)) {
+        lastSessionDoc = doc;
+      } else {
+        // A storage-shaped doc (uploaded snapshot opened live): bridge it to
+        // the id-keyed session shape. An editor replaces the room's doc so
+        // the session proper runs id-keyed; the conversion is deterministic,
+        // so two editors racing the replace is benign. Viewers (and the
+        // read-only snapshot fallback) just convert locally.
+        const sanitized = sanitizePlan(doc);
+        lastSessionDoc = planToSessionDoc(sanitized ? sanitized.plan : emptyPlan());
+        if (docSession.role === "editor") {
+          sendOps([{ o: "set", p: [], v: lastSessionDoc }]);
+        }
+      }
       const result = sanitizePlan(sessionDocToPlan(lastSessionDoc));
       if (result) plan = result.plan;
     },
@@ -126,8 +155,18 @@
     if (docSession.entitlementRequired) gateOpen = true;
   });
 
-  function startSession(): void {
-    void createDocSession("team-plan", planToSessionDoc(plan), "captain");
+  /** Make the plan a live shared cloud doc (Google-docs style) and join it.
+   *  Seeds the doc with the session shape so the welcome needs no bridge. */
+  async function startLive(): Promise<void> {
+    const name = plan.teamName.trim() || "Team plan";
+    const id = await goLive("team-plan", name, planToSessionDoc(plan), { docId: liveDocId });
+    if (id) liveDocId = id;
+  }
+
+  /** ShareLinksModal's "Open live": join the doc's room as editor. */
+  function openLive(docId: string, editorToken: string): void {
+    liveDocId = docId;
+    requestDocJoin(docId, editorToken);
   }
 
   const coverage = $derived(teamCoverage(plan));
@@ -166,10 +205,17 @@
       history.replaceState(null, "", location.pathname + location.search);
     }
 
-    // Join a live session from an invite link (?session=CODE&token=…). The
-    // params stay in the URL so a refresh rejoins.
+    // Join a live cloud doc from a durable link (?d=<docId>&token=…). The
+    // params stay in the URL so a refresh rejoins; the widget prompts for a
+    // nickname when none is remembered.
+    const docInvite = parseDocInvite(location.search);
+    if (docInvite) {
+      requestDocJoin(docInvite.docId, docInvite.token);
+    }
+
+    // Legacy ephemeral invite links (?session=CODE&token=…) keep working.
     const invite = parseSessionInvite(location.search);
-    if (invite) {
+    if (invite && !docInvite) {
       joinDocSession(invite.code, invite.token, "guest");
     }
 
@@ -235,7 +281,11 @@
     title="Teams Planner"
     tag="Force Disposition coverage"
     homeUrl="https://40kdc.alpacasoft.dev"
-  />
+  >
+    {#snippet nav()}
+      <AccountChip onSignIn={() => (gateOpen = true)} onOpenCloud={() => (cloudOpen = true)} />
+    {/snippet}
+  </AppHeader>
 
   <main class="mx-auto w-full max-w-6xl flex-1 px-3 py-4">
     <!-- Team controls -->
@@ -265,6 +315,16 @@
         </select>
       </label>
       <div class="ml-auto flex gap-2">
+        {#if docSession.status === "idle"}
+          <button
+            type="button"
+            class="focus-ring rounded bg-accent px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-accent-foreground hover:bg-accent-hover"
+            onclick={startLive}
+            title="Share a live link — everyone edits this plan together and changes save to the cloud"
+          >
+            ⦿ Go live
+          </button>
+        {/if}
         <button
           type="button"
           class="focus-ring rounded border border-border-strong px-3 py-1.5 text-xs uppercase tracking-wide text-text-muted hover:border-accent hover:text-accent"
@@ -280,22 +340,6 @@
           Reset
         </button>
       </div>
-    </div>
-
-    <!-- Live shared session: group-edit this plan on a call -->
-    <div class="mb-4">
-      <SessionBar onStart={startSession} onFlash={flash} />
-    </div>
-
-    <!-- Cloud sync + short links (patron feature; opening links is free) -->
-    <div class="mb-4">
-      <CloudSavesPane
-        kind="team-plan"
-        localItems={cloudItems}
-        onOpen={(_name, payload) => adoptPlan(payload, "cloud plan")}
-        onFlash={flash}
-        onNeedEntitlement={() => (gateOpen = true)}
-      />
     </div>
 
     <!-- Coverage summary -->
@@ -348,5 +392,34 @@
     bind:open={pwaPromptOpen}
   />
 
-  <EntitlementGate bind:open={gateOpen} feature="cloud sync and short links" />
+  <!-- Cloud saves live behind the header chip (patron feature; opening links is free). -->
+  <Modal bind:open={cloudOpen} title="Cloud saves">
+    <CloudSavesPane
+      kind="team-plan"
+      localItems={cloudItems}
+      onOpen={(_name, payload) => {
+        cloudOpen = false;
+        adoptPlan(payload, "cloud plan");
+      }}
+      onShare={(doc) => {
+        shareTarget = doc;
+        shareOpen = true;
+      }}
+      onFlash={flash}
+      onNeedEntitlement={() => (gateOpen = true)}
+    />
+  </Modal>
+
+  <ShareLinksModal
+    bind:open={shareOpen}
+    doc={shareTarget}
+    exportPayload={toSnapshotPayload}
+    onOpenLive={openLive}
+    onFlash={flash}
+  />
+
+  <!-- Floating live-session presence: roster, nickname, links, snapshot fallback. -->
+  <LiveSessionWidget onFlash={flash} />
+
+  <EntitlementGate bind:open={gateOpen} feature="cloud sync and live sharing" />
 </div>

@@ -48,6 +48,30 @@ export function sessionDocToPlan(doc: SessionDoc): TeamPlan {
   return { teamName: doc.teamName ?? "", size: doc.size ?? 5, players };
 }
 
+/** Does this cloud payload carry the id-keyed session shape? (A doc that has
+ *  been live-edited is stored session-shaped; uploads are storage-shaped.) */
+export function isSessionShaped(payload: unknown): payload is SessionDoc {
+  return (
+    typeof payload === "object" &&
+    payload !== null &&
+    "playersById" in payload &&
+    typeof (payload as { playersById: unknown }).playersById === "object"
+  );
+}
+
+/** Normalize any cloud payload (storage- or session-shaped) toward the
+ *  TeamPlan storage shape. Callers still run the result through
+ *  sanitizePlan — this only bridges the shape divide. */
+export function fromCloudPayload(payload: unknown): unknown {
+  return isSessionShaped(payload) ? sessionDocToPlan(payload) : payload;
+}
+
+/** The storage/interop shape for snapshot shortlinks (which must stay
+ *  pasteable across apps even after the doc was live-edited). */
+export function toSnapshotPayload(payload: unknown): unknown {
+  return fromCloudPayload(payload);
+}
+
 /** Minimal op batch turning `prev` into `next`: per-player set/del on
  *  disjoint id paths, whole-value sets for the scalars and the order. */
 export function diffSessionDocs(prev: SessionDoc, next: SessionDoc): DocOp[] {
