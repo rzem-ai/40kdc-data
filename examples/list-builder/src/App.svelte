@@ -14,22 +14,29 @@ import AppHeader from "../../_shared/AppHeader.svelte";
 import AppFooter from "../../_shared/AppFooter.svelte";
 import EntitlementGate from "../../_shared/EntitlementGate.svelte";
 import CloudSavesPane from "../../_shared/CloudSavesPane.svelte";
-import SessionBar from "../../_shared/SessionBar.svelte";
+import AccountChip from "../../_shared/AccountChip.svelte";
+import LiveSessionWidget from "../../_shared/LiveSessionWidget.svelte";
+import ShareLinksModal from "../../_shared/ShareLinksModal.svelte";
+import Modal from "../../_shared/Modal.svelte";
 import { maybeCaptureEntitlement } from "../../_shared/entitlement.svelte";
-import { resolveLink } from "../../_shared/sync-api";
+import { parseDocInvite, resolveLink, type DocMeta } from "../../_shared/sync-api";
 import {
-	createDocSession,
 	docSession,
+	goLive,
 	joinDocSession,
 	parseSessionInvite,
 	registerDocSession,
+	requestDocJoin,
 	sendOps,
 } from "../../_shared/doc-session.svelte";
 import { applyDocOps } from "../../_shared/doc-protocol";
 import {
 	builderToSessionDoc,
 	diffListDocs,
+	fromCloudPayload,
+	isSessionShaped,
 	sessionDocToBuilder,
+	toSnapshotPayload,
 	type ListSessionDoc,
 } from "$lib/session-doc";
 import {
@@ -94,6 +101,13 @@ let importText = $state("");
 let importError = $state<string | null>(null);
 let toast = $state<string | null>(null);
 let gateOpen = $state(false);
+/** Header-chip cloud-saves modal. */
+let cloudOpen = $state(false);
+/** Per-doc share dialog (live + snapshot links). */
+let shareTarget = $state<DocMeta | null>(null);
+let shareOpen = $state(false);
+/** The cloud doc "Go live" reuses across clicks (created on first use). */
+let liveDocId = $state<string | null>(null);
 
 const sorted = $derived(entries.slice().sort((a, b) => b.modified - a.modified));
 
@@ -109,9 +123,11 @@ const cloudItems = $derived(
 	}),
 );
 
-/** Open a canonical roster payload (cloud doc or shortlink) in the builder. */
+/** Open a roster payload (cloud doc or shortlink) in the builder.
+ *  fromCloudPayload first lowers session-shaped docs (live-edited saves)
+ *  back to canonical roster-json. */
 function openRosterPayload(payload: unknown, name: string): void {
-	const state = rosterTextToBuilderState(JSON.stringify(payload), name, null);
+	const state = rosterTextToBuilderState(JSON.stringify(fromCloudPayload(payload)), name, null);
 	if (!state) {
 		flash("That roster couldn't be opened.");
 		return;
@@ -132,7 +148,20 @@ let lastSessionDoc: ListSessionDoc | null = null;
 
 registerDocSession({
 	onDoc(doc) {
-		lastSessionDoc = doc as ListSessionDoc;
+		if (isSessionShaped(doc)) {
+			lastSessionDoc = doc;
+		} else {
+			// A roster-json doc (uploaded snapshot opened live): bridge it to
+			// the key-keyed session shape. An editor replaces the room's doc so
+			// the session proper runs key-keyed; the conversion is
+			// deterministic, so two editors racing the replace is benign.
+			// Viewers (and the snapshot fallback) just convert locally.
+			const state = rosterTextToBuilderState(JSON.stringify(doc), "Shared list", null);
+			lastSessionDoc = builderToSessionDoc(state ?? emptyBuilderState());
+			if (docSession.role === "editor") {
+				sendOps([{ o: "set", p: [], v: lastSessionDoc }]);
+			}
+		}
 		const state = sessionDocToBuilder(lastSessionDoc);
 		if (view === "build" && builderRef) {
 			builderRef.replaceDraft(state);
@@ -173,9 +202,19 @@ function handleBuilderDraft(draft: BuilderState): void {
 	handleDraftChange(draft);
 }
 
-function startSession(): void {
+/** Make the draft a live shared cloud doc (Google-docs style) and join it.
+ *  Seeds the doc with the session shape so the welcome needs no bridge. */
+async function startLive(): Promise<void> {
 	const current = liveStartDraft ?? seed ?? emptyBuilderState();
-	void createDocSession("list", builderToSessionDoc(current), "host");
+	const name = current.name.trim() || "Untitled list";
+	const id = await goLive("list", name, builderToSessionDoc(current), { docId: liveDocId });
+	if (id) liveDocId = id;
+}
+
+/** ShareLinksModal's "Open live": join the doc's room as editor. */
+function openLive(docId: string, editorToken: string): void {
+	liveDocId = docId;
+	requestDocJoin(docId, editorToken);
 }
 
 // A refused create (no/lapsed entitlement) opens the gate.
@@ -192,11 +231,18 @@ onMount(() => {
 	// fragment — capture it before any gated UI reads the stored state.
 	maybeCaptureEntitlement();
 
-	// Join a live session from an invite link (?session=CODE&token=…). The
+	// Join a live cloud doc from a durable link (?d=<docId>&token=…). The
 	// params stay in the URL so a refresh rejoins; the welcome doc opens the
-	// builder via registerDocSession.onDoc.
+	// builder via registerDocSession.onDoc, and the widget prompts for a
+	// nickname when none is remembered.
+	const docInvite = parseDocInvite(location.search);
+	if (docInvite) {
+		requestDocJoin(docInvite.docId, docInvite.token);
+	}
+
+	// Legacy ephemeral invite links (?session=CODE&token=…) keep working.
 	const invite = parseSessionInvite(location.search);
-	if (invite) {
+	if (invite && !docInvite) {
 		joinDocSession(invite.code, invite.token, "guest");
 	}
 
@@ -360,12 +406,28 @@ function copyEntry(entry: SavedEntry) {
 </script>
 
 <div class="flex h-screen flex-col">
-	<AppHeader title="List Builder" tag="40kdc army list builder" onBrand={handleCancel} />
+	<AppHeader title="List Builder" tag="40kdc army list builder" onBrand={handleCancel}>
+		{#snippet nav()}
+			<AccountChip onSignIn={() => (gateOpen = true)} onOpenCloud={() => (cloudOpen = true)} />
+		{/snippet}
+	</AppHeader>
 
 	<main class="min-h-0 flex-1 overflow-hidden p-3">
 		{#if view === "build"}
 			<div class="flex h-full flex-col gap-2">
-				<SessionBar onStart={startSession} onFlash={flash} />
+				{#if docSession.status === "idle"}
+					<div class="flex items-center gap-2">
+						<button
+							type="button"
+							class="bg-accent text-accent-foreground hover:bg-accent-hover rounded px-3 py-1 text-xs font-semibold uppercase tracking-wide"
+							onclick={startLive}
+							title="Share a live link — everyone edits this list together and changes save to the cloud"
+						>
+							⦿ Go live
+						</button>
+						<span class="text-text-dim text-[11px]">edit together in real time</span>
+					</div>
+				{/if}
 				<div class="min-h-0 flex-1">
 					<ArmyBuilder
 						bind:this={builderRef}
@@ -425,15 +487,6 @@ function copyEntry(entry: SavedEntry) {
 					</ul>
 				{/if}
 
-				<!-- Cloud sync + short links (patron feature; opening links is free). -->
-				<CloudSavesPane
-					kind="list"
-					localItems={cloudItems}
-					onOpen={(name, payload) => openRosterPayload(payload, name)}
-					onFlash={flash}
-					onNeedEntitlement={() => (gateOpen = true)}
-				/>
-
 				<!-- Import an existing roster (roster-json or any supported format). -->
 				<div class="border-panel-border/50 mt-2 flex flex-col gap-2 border-t pt-4">
 					<label class="text-text-dim text-[10px] font-semibold uppercase tracking-wider" for="import-box">
@@ -479,5 +532,34 @@ function copyEntry(entry: SavedEntry) {
 		build={__BUILD_SHA__}
 	/>
 
-	<EntitlementGate bind:open={gateOpen} feature="cloud sync and short links" />
+	<!-- Cloud saves live behind the header chip (patron feature; opening links is free). -->
+	<Modal bind:open={cloudOpen} title="Cloud saves">
+		<CloudSavesPane
+			kind="list"
+			localItems={cloudItems}
+			onOpen={(name, payload) => {
+				cloudOpen = false;
+				openRosterPayload(payload, name);
+			}}
+			onShare={(doc) => {
+				shareTarget = doc;
+				shareOpen = true;
+			}}
+			onFlash={flash}
+			onNeedEntitlement={() => (gateOpen = true)}
+		/>
+	</Modal>
+
+	<ShareLinksModal
+		bind:open={shareOpen}
+		doc={shareTarget}
+		exportPayload={toSnapshotPayload}
+		onOpenLive={openLive}
+		onFlash={flash}
+	/>
+
+	<!-- Floating live-session presence: roster, nickname, links, snapshot fallback. -->
+	<LiveSessionWidget onFlash={flash} />
+
+	<EntitlementGate bind:open={gateOpen} feature="cloud sync and live sharing" />
 </div>

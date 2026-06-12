@@ -5,7 +5,10 @@ import { applyDocOps } from "../../../_shared/doc-protocol";
 import {
 	builderToSessionDoc,
 	diffListDocs,
+	fromCloudPayload,
+	isSessionShaped,
 	sessionDocToBuilder,
+	toSnapshotPayload,
 	type ListSessionDoc,
 } from "./session-doc";
 import type { BuilderState, BuilderUnit } from "./data/builder";
@@ -101,5 +104,31 @@ describe("diffListDocs", () => {
 		expect(ab).toEqual(ba);
 		expect(ab.unitsByKey["u0-aaaa"].loadout).toEqual([["chainblade", 10]]);
 		expect(ab.unitsByKey["u1-aaaa"].modelCount).toBe(6);
+	});
+});
+
+describe("cloud payload shape bridge", () => {
+	it("detects session-shaped payloads", () => {
+		expect(isSessionShaped(builderToSessionDoc(state))).toBe(true);
+		expect(isSessionShaped({ faction_id: "world-eaters", units: [] })).toBe(false);
+		expect(isSessionShaped(null)).toBe(false);
+		expect(isSessionShaped("junk")).toBe(false);
+	});
+
+	it("passes roster-json and garbage payloads through untouched", () => {
+		const roster = { faction_id: "world-eaters", detachments: [], units: [] };
+		expect(fromCloudPayload(roster)).toBe(roster);
+		expect(fromCloudPayload(null)).toBe(null);
+		expect(fromCloudPayload("junk")).toBe("junk");
+	});
+
+	it("lowers a session doc to canonical roster-json for snapshots", () => {
+		const out = toSnapshotPayload(builderToSessionDoc(state)) as Record<string, unknown>;
+		// The interop shape a shortlink consumer (or shadowboxing paste) eats —
+		// never the id-keyed session shape.
+		expect(isSessionShaped(out)).toBe(false);
+		expect(Array.isArray(out.units)).toBe(true);
+		expect((out.units as unknown[]).length).toBe(2);
+		expect(Array.isArray(out.detachments)).toBe(true);
 	});
 });

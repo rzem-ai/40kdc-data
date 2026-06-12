@@ -22,6 +22,23 @@ secrets. Resolving a shortlink or joining a live session is anonymous.
   `examples/_shared/doc-protocol.ts`), and always welcomes with the full doc.
   `SyncRegistry` (singleton) caps concurrent rooms — the hard spend ceiling.
   Idle rooms expire via alarm and release their slot.
+- **Live doc links (doc-bound rooms)**: a cloud doc carries durable
+  editor/viewer share tokens (`POST /docs/:id/share`); opening
+  `?d=<docId>&token=` joins a `DocRoom` keyed `doc:<id>` that hydrates from
+  the D1 row and persists edits back (debounced, on last-leave, and at idle
+  eviction) — the Google-docs model. While a room is live, snapshot `PUT`s
+  409 (`doc_live`); `DELETE` always wins and tears the room down. When the
+  room can't be joined (capacity), `GET /docs/:id/shared?token=` serves the
+  at-rest doc read-only.
+
+> **Payload shapes**: the worker is shape-agnostic, but the example apps
+> store uploads in their *storage* shape (`TeamPlan` / roster-json) while
+> live sessions replicate an *id-keyed session* shape. A doc that has been
+> live-edited is therefore stored session-shaped; the apps normalize on every
+> payload ingest (`fromCloudPayload`) and convert back to the storage shape
+> before minting snapshot shortlinks, so `?s=` links stay interoperable
+> across apps. Anything else reading `team-plan`/`list` doc payloads
+> directly needs the same normalizer.
 
 ## Routes
 
@@ -29,12 +46,15 @@ secrets. Resolving a shortlink or joining a live session is anonymous.
 |---|---|---|---|
 | GET | `/health` | — | liveness |
 | GET | `/links/:code` | — | resolve a shortlink → `{kind, payload}` |
-| GET | `/session/:code/ws?token=` | link token | WebSocket → DocRoom |
+| GET | `/session/:code/ws?token=` | link token | WebSocket → DocRoom (ephemeral) |
+| GET | `/docs/:id/ws?token=` | share token | WebSocket → doc-bound DocRoom (live doc link) |
+| GET | `/docs/:id/shared?token=` | share token | anonymous at-rest read → `{kind, name, payload, updated_at, role}` |
 | POST | `/links` | Bearer | mint an 8-char shortlink |
 | POST | `/session` | Bearer | create a live room seeded with `{kind, payload}` → `{code, editorToken, viewerToken}` |
-| GET | `/docs?kind=` | Bearer | owner's docs (metadata only) |
+| GET | `/docs?kind=` | Bearer | owner's docs (metadata only, + `shared` flag) |
 | POST | `/docs` | Bearer | create `{kind, name, payload}` |
-| GET/PUT/DELETE | `/docs/:id` | Bearer (owner) | fetch / update (`ifUpdatedAt` → 409 conflict) / delete |
+| GET/PUT/DELETE | `/docs/:id` | Bearer (owner) | fetch / update (`ifUpdatedAt` → 409 conflict; 409 `doc_live` while a room is live) / delete |
+| POST | `/docs/:id/share` | Bearer (owner) | mint durable share tokens (idempotent; `{regenerate: true}` rotates) |
 
 Document kinds: `list` (canonical roster-json), `team-plan`, `sb-save`.
 Shortlink URLs are `?s=CODE` on any app origin — shadowboxing's importer
@@ -44,7 +64,8 @@ resolves a pasted list-builder link the same way.
 
 `MAX_DOCS_PER_OWNER=100`, `MAX_LINKS_PER_OWNER=200`,
 `MAX_PAYLOAD_BYTES=262144`, `MAX_DOC_SESSIONS=20`,
-`DOC_SESSION_TTL_MINUTES=120`, `MAX_EDITORS=10`, `MAX_VIEWERS=20`.
+`DOC_SESSION_TTL_MINUTES=120`, `MAX_EDITORS=10`, `MAX_VIEWERS=20`,
+`DOC_PERSIST_SECONDS=15`.
 
 ## Develop
 

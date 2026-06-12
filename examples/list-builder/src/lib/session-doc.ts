@@ -9,6 +9,7 @@
  * through a JSON twin with entry pairs.
  */
 import {
+	builderToRosterJson,
 	emptyBuilderState,
 	type BattleSize,
 	type BuilderState,
@@ -75,6 +76,37 @@ export function sessionDocToBuilder(doc: ListSessionDoc): BuilderState {
 		disposition: doc.disposition ?? null,
 		units,
 	};
+}
+
+/** Does this cloud payload carry the key-keyed session shape? (A doc that
+ *  has been live-edited is stored session-shaped; uploads are roster-json.) */
+export function isSessionShaped(payload: unknown): payload is ListSessionDoc {
+	return (
+		typeof payload === "object" &&
+		payload !== null &&
+		"unitsByKey" in payload &&
+		typeof (payload as { unitsByKey: unknown }).unitsByKey === "object"
+	);
+}
+
+/** Normalize any cloud payload toward the canonical roster-json object the
+ *  importers (and cross-app shortlink consumers) eat. A session-shaped doc
+ *  lowers through the same builder→roster path the Save button uses; on any
+ *  lowering failure the payload passes through for the importer to refuse
+ *  with its own friendly error. */
+export function fromCloudPayload(payload: unknown): unknown {
+	if (!isSessionShaped(payload)) return payload;
+	try {
+		return JSON.parse(builderToRosterJson(sessionDocToBuilder(payload)));
+	} catch {
+		return payload;
+	}
+}
+
+/** The storage/interop shape for snapshot shortlinks (which must stay
+ *  pasteable into shadowboxing even after the doc was live-edited). */
+export function toSnapshotPayload(payload: unknown): unknown {
+	return fromCloudPayload(payload);
 }
 
 /** Minimal op batch turning `prev` into `next` (unit-key-disjoint paths). */
