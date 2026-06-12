@@ -3,6 +3,7 @@ import { onMount } from "svelte";
 import { ds } from "$lib/data/dataset";
 import ArmyBuilder from "$lib/components/game/builder/ArmyBuilder.svelte";
 import {
+	emptyBuilderState,
 	rosterTextToBuilderState,
 	shareListToBuilderState,
 	type BuilderState,
@@ -13,8 +14,24 @@ import AppHeader from "../../_shared/AppHeader.svelte";
 import AppFooter from "../../_shared/AppFooter.svelte";
 import EntitlementGate from "../../_shared/EntitlementGate.svelte";
 import CloudSavesPane from "../../_shared/CloudSavesPane.svelte";
+import SessionBar from "../../_shared/SessionBar.svelte";
 import { maybeCaptureEntitlement } from "../../_shared/entitlement.svelte";
 import { resolveLink } from "../../_shared/sync-api";
+import {
+	createDocSession,
+	docSession,
+	joinDocSession,
+	parseSessionInvite,
+	registerDocSession,
+	sendOps,
+} from "../../_shared/doc-session.svelte";
+import { applyDocOps } from "../../_shared/doc-protocol";
+import {
+	builderToSessionDoc,
+	diffListDocs,
+	sessionDocToBuilder,
+	type ListSessionDoc,
+} from "$lib/session-doc";
 import {
 	SALVO_URL,
 	MISSION_MATRIX_URL,
@@ -104,6 +121,68 @@ function openRosterPayload(payload: unknown, name: string): void {
 	view = "build";
 }
 
+// ── Live shared session (patron-created, free to join) ───────────────────────
+// The draft replicates as a unit-key-keyed ListSessionDoc; `lastSessionDoc`
+// is the last state this client knows the server has. ArmyBuilder reports
+// local mutations via ondraftchange (diffed → ops); remote ops/welcomes go
+// back in through replaceDraft. After adopting remote state the diff is
+// empty, so nothing echoes.
+let builderRef = $state<{ replaceDraft: (s: BuilderState) => void } | null>(null);
+let lastSessionDoc: ListSessionDoc | null = null;
+
+registerDocSession({
+	onDoc(doc) {
+		lastSessionDoc = doc as ListSessionDoc;
+		const state = sessionDocToBuilder(lastSessionDoc);
+		if (view === "build" && builderRef) {
+			builderRef.replaceDraft(state);
+		} else {
+			seed = state;
+			editingId = null;
+			view = "build";
+		}
+	},
+	onRemoteOps(ops) {
+		if (!lastSessionDoc) return;
+		try {
+			lastSessionDoc = applyDocOps(lastSessionDoc, ops) as ListSessionDoc;
+		} catch {
+			// Divergence — the next reconnect's welcome restores exact state.
+			return;
+		}
+		builderRef?.replaceDraft(sessionDocToBuilder(lastSessionDoc));
+	},
+});
+
+/** ArmyBuilder's per-mutation tap: while live (as editor), diff and send. */
+function handleDraftChange(draft: BuilderState): void {
+	if (docSession.status !== "connected" || docSession.role !== "editor" || !lastSessionDoc) {
+		return;
+	}
+	const next = builderToSessionDoc(draft);
+	const ops = diffListDocs(lastSessionDoc, next);
+	if (ops.length > 0) {
+		lastSessionDoc = next;
+		sendOps(ops);
+	}
+}
+
+let liveStartDraft = $state<BuilderState | null>(null);
+function handleBuilderDraft(draft: BuilderState): void {
+	liveStartDraft = draft;
+	handleDraftChange(draft);
+}
+
+function startSession(): void {
+	const current = liveStartDraft ?? seed ?? emptyBuilderState();
+	void createDocSession("list", builderToSessionDoc(current), "host");
+}
+
+// A refused create (no/lapsed entitlement) opens the gate.
+$effect(() => {
+	if (docSession.entitlementRequired) gateOpen = true;
+});
+
 // Open a shared list from the URL. The current format is `#l=<share-v1 token>`
 // (compact, registry-indexed); `#list=<gzip roster-json>` is the legacy form,
 // still honoured so old links keep working. Decoded client-side (no backend),
@@ -112,6 +191,14 @@ onMount(() => {
 	// The OAuth callback may have delivered an entitlement token in the
 	// fragment — capture it before any gated UI reads the stored state.
 	maybeCaptureEntitlement();
+
+	// Join a live session from an invite link (?session=CODE&token=…). The
+	// params stay in the URL so a refresh rejoins; the welcome doc opens the
+	// builder via registerDocSession.onDoc.
+	const invite = parseSessionInvite(location.search);
+	if (invite) {
+		joinDocSession(invite.code, invite.token, "guest");
+	}
 
 	// Open a `?s=CODE` shortlink (server-resolved; opening is free).
 	const code = new URLSearchParams(location.search).get("s");
@@ -277,7 +364,18 @@ function copyEntry(entry: SavedEntry) {
 
 	<main class="min-h-0 flex-1 overflow-hidden p-3">
 		{#if view === "build"}
-			<ArmyBuilder initial={seed} onsave={handleSave} oncancel={handleCancel} />
+			<div class="flex h-full flex-col gap-2">
+				<SessionBar onStart={startSession} onFlash={flash} />
+				<div class="min-h-0 flex-1">
+					<ArmyBuilder
+						bind:this={builderRef}
+						initial={seed}
+						onsave={handleSave}
+						oncancel={handleCancel}
+						ondraftchange={handleBuilderDraft}
+					/>
+				</div>
+			</div>
 		{:else}
 			<div class="mx-auto flex h-full max-w-3xl flex-col gap-4 overflow-y-auto">
 				<div class="flex items-center justify-between">

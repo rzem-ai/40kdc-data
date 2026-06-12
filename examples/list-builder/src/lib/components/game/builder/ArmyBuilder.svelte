@@ -31,8 +31,15 @@ interface Props {
 	/** Persist: roster-json text + display name + disposition id. */
 	onsave: (text: string, name: string, disposition: string | null) => void;
 	oncancel: () => void;
+	/**
+	 * Live-session tap: fires after every draft mutation with the current
+	 * state. The host diffs against its last-known session doc, so the
+	 * callback being called for remote-originated changes is harmless (the
+	 * diff is empty).
+	 */
+	ondraftchange?: (draft: BuilderState) => void;
 }
-let { initial, onsave, oncancel }: Props = $props();
+let { initial, onsave, oncancel, ondraftchange }: Props = $props();
 
 // Deep-copy the seed without structuredClone — `initial` is a Svelte $state
 // proxy (uncloneable by structuredClone), and the per-unit loadout is a Map
@@ -47,9 +54,34 @@ let draft = $state<BuilderState>(initial ? cloneSeed(initial) : emptyBuilderStat
 /** Roster row driving the right-hand detail panel; seeds to the first unit. */
 let selectedKey = $state<string | null>(initial?.units[0]?.key ?? null);
 
+// Key space is suffixed with a per-instance nonce so two builders editing
+// the SAME list in a live session can never mint colliding row keys (both
+// would otherwise start at "u0"). Solo behavior is unchanged — keys are
+// opaque strings that only need uniqueness within a draft.
+const instanceNonce = Math.random().toString(36).slice(2, 6);
 let keyCounter = 0;
 function nextKey(): string {
-	return `u${keyCounter++}`;
+	return `u${keyCounter++}-${instanceNonce}`;
+}
+
+// Live-session tap (no-op without the prop; reads draft deeply so any
+// mutation — scalar, unit row, loadout Map replacement — schedules it).
+$effect(() => {
+	if (!ondraftchange) return;
+	const snapshot = cloneSeed(draft);
+	ondraftchange(snapshot);
+});
+
+/**
+ * Replace the whole draft from a live session (welcome or remote ops).
+ * Exported for the host via `bind:this`. Keeps the detail-panel selection
+ * when the selected row still exists.
+ */
+export function replaceDraft(next: BuilderState): void {
+	draft = cloneSeed(next);
+	if (selectedKey && !next.units.some((u) => u.key === selectedKey)) {
+		selectedKey = next.units[0]?.key ?? null;
+	}
 }
 
 const factions = $derived(ds.factions.all.slice().sort((a, b) => a.name.localeCompare(b.name)));
