@@ -27,7 +27,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "re-roll hit rolls (all failures) for unit\nre-roll wound rolls (all failures) for unit\nScope: unit. Duration: permanent."
+      "text": "You can re-roll the Hit roll.\nYou can re-roll the Wound roll."
     }
   },
   {
@@ -42,7 +42,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "modify stats for unit\nScope: unit. Duration: permanent."
+      "text": "Modify the unit's characteristics."
     }
   },
   {
@@ -61,7 +61,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "unit gains extended consolidation 6\"\nScope: unit. Duration: permanent."
+      "text": "The unit has the Extended Consolidation 6\" ability."
     }
   },
   {
@@ -79,7 +79,7 @@
       "duration": "until-next-command-phase"
     },
     "expected": {
-      "text": "unit gains an ability\nScope: unit. Duration: until next command phase."
+      "text": "Until your next Command phase, the unit gains an ability."
     }
   },
   {
@@ -96,7 +96,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "modify OC of unit by ?\nScope: unit. Duration: permanent."
+      "text": "The unit retains control of objective markers even after no models remain in range, until the enemy retakes them (sticky objectives)."
     }
   },
   {
@@ -135,7 +135,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "If the target has \"Monster\" or the target has \"Vehicle\":\n  -> +1 to wound rolls for unit\nScope: unit. Duration: phase."
+      "text": "Against Monster targets or against Vehicle targets, until the end of the phase, the unit gets +1 to Wound rolls."
     }
   },
   {
@@ -186,7 +186,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If during the fight phase and the target has \"CHARACTER\":\n  -> re-roll hit rolls (all failures) for unit\n  -> re-roll wound rolls (all failures) for unit\nScope: unit. Duration: permanent."
+      "text": "During the Fight phase, against CHARACTER targets:\n  -> You can re-roll the Hit roll.\n  -> You can re-roll the Wound roll."
     }
   },
   {
@@ -204,7 +204,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "gain 1 to blood-tithe-pool\nScope: unit. Duration: phase."
+      "text": "Until the end of the phase, you gain 1 Blood Tithe Pool."
     }
   },
   {
@@ -241,7 +241,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If attached to a unit:\n  -> re-roll hit rolls (all failures) for unit\n  -> re-roll wound rolls (all failures) for unit\nScope: unit. Duration: permanent."
+      "text": "After being attached to a unit:\n  -> You can re-roll the Hit roll.\n  -> You can re-roll the Wound roll."
     }
   },
   {
@@ -258,7 +258,7 @@
       "duration": "one-use"
     },
     "expected": {
-      "text": "reduce incoming damage to self by ?\nScope: unit. Duration: one use."
+      "text": "Once per battle, each time an attack targets this model, reduce the Damage of that attack to 0."
     }
   },
   {
@@ -275,7 +275,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "unit gains Feel No Pain 2+\nScope: unit. Duration: permanent."
+      "text": "The unit has the Feel No Pain 2+ ability."
     }
   },
   {
@@ -298,7 +298,7 @@
       ]
     },
     "expected": {
-      "text": "unit gains remain hidden after shooting\nScope: unit. Duration: phase.\nApplies to: units with Emperor's Children, Battleline."
+      "text": "Until the end of the phase, the unit gains the Remain Hidden After Shooting ability.\nApplies to: units with Emperor's Children, Battleline."
     }
   },
   {
@@ -342,7 +342,7 @@
       ]
     },
     "expected": {
-      "text": "all friendly's weapons gain Abhuman\nall friendly gains issue extra order to abhuman unit\nScope: any on battlefield. Duration: battle.\nApplies to: units with Astra Militarum."
+      "text": "For the rest of the battle:\nAll friendly units' weapons gain [ABHUMAN].\nAll friendly units gain the Issue Extra Order to Abhuman Unit ability.\nApplies to: units with Astra Militarum."
     }
   },
   {
@@ -357,7 +357,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "modify stats for unit\nScope: unit. Duration: permanent."
+      "text": "Modify the unit's characteristics."
     }
   },
   {
@@ -380,7 +380,7 @@
       ]
     },
     "expected": {
-      "text": "re-roll hit rolls (all failures) for unit\nScope: unit. Duration: phase.\nApplies to: units with Astra Militarum."
+      "text": "Until the end of the phase, you can re-roll the Hit roll.\nApplies to: units with Astra Militarum."
     }
   },
   {
@@ -406,7 +406,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If during the fight phase:\n  -> force a battle shock test on enemy within aura\nScope: unit. Duration: permanent."
+      "text": "During the Fight phase, enemy units nearby must take a Battle-shock test."
     }
   },
   {
@@ -433,7 +433,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If the target has \"INFANTRY\":\n  -> re-roll wound rolls (all failures) for unit\nScope: unit. Duration: permanent."
+      "text": "Against INFANTRY targets, you can re-roll the Wound roll."
     }
   },
   {
@@ -450,7 +450,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "unit gains charge after advance\nScope: unit. Duration: permanent."
+      "text": "The unit gains the Charge After Advance ability."
     }
   },
   {
@@ -474,7 +474,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If during the fight phase:\n  -> unit can fall back and act\nScope: aura 6. Duration: permanent."
+      "text": "During the Fight phase, the unit is eligible to shoot and declare a charge in a turn in which it Fell Back."
     }
   },
   {
@@ -491,7 +491,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "unit gains charge after advance\nScope: unit. Duration: permanent."
+      "text": "The unit gains the Charge After Advance ability."
     }
   },
   {
@@ -510,7 +510,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "-1 to hit rolls for attacker\nScope: unit. Duration: permanent."
+      "text": "The attacking unit gets -1 to Hit rolls."
     }
   },
   {
@@ -525,7 +525,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "modify stats for unit\nScope: unit. Duration: permanent."
+      "text": "Modify the unit's characteristics."
     }
   },
   {
@@ -544,7 +544,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "-1 to hit rolls for unit\nScope: any on battlefield. Duration: phase."
+      "text": "Until the end of the phase, the unit gets -1 to Hit rolls."
     }
   },
   {
@@ -567,7 +567,7 @@
       ]
     },
     "expected": {
-      "text": "unit gains move through terrain\nScope: unit. Duration: phase.\nApplies to: units with Astra Militarum, Vehicle."
+      "text": "Until the end of the phase, the unit has the Move Through Terrain ability.\nApplies to: units with Astra Militarum, Vehicle."
     }
   },
   {
@@ -582,7 +582,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "unit can fall back and act\nScope: unit. Duration: permanent."
+      "text": "The unit is eligible to shoot and declare a charge in a turn in which it Fell Back."
     }
   },
   {
@@ -609,7 +609,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "If during the fight phase:\n  -> re-roll hit rolls (ones) for unit\nScope: unit. Duration: phase."
+      "text": "During the Fight phase, until the end of the phase, you can re-roll a Hit roll of 1."
     }
   },
   {
@@ -624,7 +624,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "unit can fall back and act\nScope: unit. Duration: permanent."
+      "text": "The unit is eligible to shoot and declare a charge in a turn in which it Fell Back."
     }
   },
   {
@@ -641,7 +641,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "unit gains Feel No Pain 4+\nScope: unit. Duration: permanent."
+      "text": "The unit has the Feel No Pain 4+ ability."
     }
   },
   {
@@ -660,7 +660,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "unit's weapons gain Lethal Hits\nScope: unit. Duration: permanent."
+      "text": "The unit's weapons gain [LETHAL HITS]."
     }
   },
   {
@@ -688,7 +688,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If during the shooting phase:\n  -> -1 to wound rolls for unit\nScope: unit. Duration: permanent."
+      "text": "During the Shooting phase, the unit gets -1 to Wound rolls."
     }
   },
   {
@@ -707,7 +707,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "-1 to wound rolls for attacker\nScope: unit. Duration: permanent."
+      "text": "The attacking unit gets -1 to Wound rolls."
     }
   },
   {
@@ -734,7 +734,7 @@
       "duration": "turn"
     },
     "expected": {
-      "text": "If during the shooting phase:\n  -> re-roll hit rolls (all failures) for unit\nScope: unit. Duration: turn."
+      "text": "During the Shooting phase, until the end of the turn, you can re-roll the Hit roll."
     }
   },
   {
@@ -751,7 +751,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "unit can deep strike\nScope: unit. Duration: permanent."
+      "text": "The unit has the Deep Strike ability."
     }
   },
   {
@@ -777,7 +777,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If during the fight phase:\n  -> self: army composition rule\nScope: aura 6. Duration: permanent."
+      "text": "During the Fight phase, this model: army composition rule."
     }
   },
   {
@@ -796,7 +796,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "+6 M for unit\nScope: unit. Duration: phase."
+      "text": "Until the end of the phase, add 6 to the unit's Move characteristic."
     }
   },
   {
@@ -853,7 +853,7 @@
       "duration": "turn"
     },
     "expected": {
-      "text": "If during the movement phase and at reinforcements:\n  -> self can deep strike\n  -> self's Dark Blessing gains Sustained Hits D3\n  -> self: charge\nScope: self. Duration: turn."
+      "text": "During the Movement phase, when it arrives as Reinforcements, until the end of the turn:\n  -> This model has the Deep Strike ability.\n  -> This model's Dark Blessing gains [SUSTAINED HITS D3].\n  -> This model: charge."
     }
   },
   {
@@ -880,7 +880,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If the target has \"A\":\n  -> gain 1 CP\nScope: aura 12. Duration: permanent."
+      "text": "Against A targets, you gain 1CP."
     }
   },
   {
@@ -919,7 +919,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If the model is leading a unit:\n  -> set M to 10 for unit\n  -> unit gains move through terrain 0\"\nScope: unit. Duration: permanent."
+      "text": "While this model leads a unit:\n  -> Modify the unit's Move characteristic to 10.\n  -> The unit has the Move Through Terrain ability."
     }
   },
   {
@@ -983,7 +983,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "If during the shooting phase and in either player's turn and destroyed by a ranged attack and not (the unit is battle-shocked) and not (engagement state):\n  -> unit gains surge move D6\"\nScope: unit. Duration: phase."
+      "text": "During the Shooting phase, in either player's turn, when destroyed by a ranged attack, unless while the unit is Battle-shocked, unless engagement state, until the end of the phase, the unit has the Surge Move D6\" ability."
     }
   },
   {
@@ -998,7 +998,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "unit can fall back and act\nScope: unit. Duration: permanent."
+      "text": "The unit is eligible to shoot and declare a charge in a turn in which it Fell Back."
     }
   },
   {
@@ -1026,7 +1026,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If at stratagem targeting:\n  -> spend ? from ?\nScope: self. Duration: permanent."
+      "text": "At stratagem targeting, spend 3 CP."
     }
   },
   {
@@ -1043,7 +1043,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "unit gains redeploy to reserves\nScope: unit. Duration: permanent."
+      "text": "The unit has the Redeploy to Reserves ability."
     }
   },
   {
@@ -1071,7 +1071,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If the target has \"A\":\n  -> +1 to hit rolls for unit\nScope: unit. Duration: permanent."
+      "text": "Against A targets, the unit gets +1 to Hit rolls."
     }
   },
   {
@@ -1098,7 +1098,7 @@
       ]
     },
     "expected": {
-      "text": "bearer can deep strike\nScope: unit. Duration: battle.\nApplies to: units with Heretic Astartes."
+      "text": "For the rest of the battle, this model has the Deep Strike ability.\nApplies to: units with Heretic Astartes."
     }
   },
   {
@@ -1126,7 +1126,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "If the target has \"INFANTRY\":\n  -> +1 to wound rolls for unit\nScope: unit. Duration: phase."
+      "text": "Against INFANTRY targets, until the end of the phase, the unit gets +1 to Wound rolls."
     }
   },
   {
@@ -1143,7 +1143,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "unit gains Feel No Pain 6+\nScope: unit. Duration: permanent."
+      "text": "The unit has the Feel No Pain 6+ ability."
     }
   },
   {
@@ -1193,7 +1193,7 @@
       ]
     },
     "expected": {
-      "text": "all friendly's weapons gain Battleline\nIf during the shooting phase:\n  -> all enemy gains detection range modifier\nScope: any on battlefield. Duration: battle.\nApplies to: units with Thousand Sons."
+      "text": "For the rest of the battle:\nAll friendly units' weapons gain [BATTLELINE].\nDuring the Shooting phase, all enemy units gain the Detection Range Modifier ability.\nApplies to: units with Thousand Sons."
     }
   },
   {
@@ -1212,7 +1212,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "unit's weapons gain Sustained Hits 1\nScope: unit. Duration: permanent."
+      "text": "The unit's weapons gain [SUSTAINED HITS 1]."
     }
   },
   {
@@ -1236,7 +1236,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If attached to a unit:\n  -> re-roll hit rolls (all failures) for unit\nScope: unit. Duration: permanent."
+      "text": "After being attached to a unit, you can re-roll the Hit roll."
     }
   },
   {
@@ -1261,7 +1261,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If attached to a unit:\n  -> unit's weapons gain Sustained Hits 1\nScope: unit. Duration: permanent."
+      "text": "After being attached to a unit, the unit's weapons gain [SUSTAINED HITS 1]."
     }
   },
   {
@@ -1284,7 +1284,7 @@
       ]
     },
     "expected": {
-      "text": "refund ? CP\nScope: self. Duration: permanent.\nApplies to: units with Imperial Knights, Armiger."
+      "text": "You can use the Fire Overwatch or Heroic Stratagem on this model for 0CP.\nApplies to: units with Imperial Knights, Armiger."
     }
   },
   {
@@ -1307,7 +1307,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If attached to a unit:\n  -> modify OC of unit by ?\nScope: unit. Duration: permanent."
+      "text": "After being attached to a unit, the unit retains control of objective markers even after no models remain in range, until the enemy retakes them (sticky objectives)."
     }
   },
   {
@@ -1325,7 +1325,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "+1 OC for unit\nScope: unit. Duration: permanent."
+      "text": "The unit gets +1 to its Objective Control characteristic."
     }
   },
   {
@@ -1342,7 +1342,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "gain 1 CP\nScope: unit. Duration: permanent."
+      "text": "You gain 1CP."
     }
   },
   {
@@ -1367,7 +1367,7 @@
       "duration": "turn"
     },
     "expected": {
-      "text": "If attached to a unit:\n  -> +1 S for unit\nScope: unit. Duration: turn."
+      "text": "After being attached to a unit, until the end of the turn, add 1 to the unit's Strength characteristic."
     }
   },
   {
@@ -1391,7 +1391,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If during the fight phase:\n  -> self fights on death\nScope: unit. Duration: permanent."
+      "text": "During the Fight phase, each time this model is destroyed, it can fight before being removed from play."
     }
   },
   {
@@ -1417,7 +1417,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "Choose one (rage-attack):\n  1. unit shoots on death\n  2. unit fights on death\nScope: unit. Duration: phase."
+      "text": "Until the end of the phase:\nSelect one of the following (Rage Attack):\n  - Each time a model in the unit is destroyed, it can shoot before being removed from play.\n  - Each time a model in the unit is destroyed, it can fight before being removed from play."
     }
   },
   {
@@ -1450,7 +1450,7 @@
       ]
     },
     "expected": {
-      "text": "If the unit is battle-shocked:\n  -> +1 to hit rolls for unit\nScope: any on battlefield. Duration: permanent.\nApplies to: units with Knight Tyrant."
+      "text": "While the unit is Battle-shocked, the unit gets +1 to Hit rolls.\nApplies to: units with Knight Tyrant."
     }
   },
   {
@@ -1482,7 +1482,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If during the fight phase and attached to a unit:\n  -> self fights on death\nScope: unit. Duration: permanent."
+      "text": "During the Fight phase, after being attached to a unit, each time this model is destroyed, it can fight before being removed from play."
     }
   },
   {
@@ -1510,7 +1510,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If the target has \"A\":\n  -> +1 to hit rolls for unit\nScope: unit. Duration: permanent."
+      "text": "Against A targets, the unit gets +1 to Hit rolls."
     }
   },
   {
@@ -1527,7 +1527,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "return 1 model(s) to unit with full wounds\nScope: unit. Duration: permanent."
+      "text": "Return 1 destroyed model to the unit with full wounds."
     }
   },
   {
@@ -1551,7 +1551,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If the unit is below starting strength:\n  -> return d3 model(s) to unit with full wounds\nScope: unit. Duration: permanent."
+      "text": "While the unit is below its starting strength, return D3 destroyed models to the unit with full wounds."
     }
   },
   {
@@ -1574,7 +1574,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If attached to a unit:\n  -> self gains a 4+ invulnerable save\nScope: unit. Duration: permanent."
+      "text": "After being attached to a unit, this model has a 4+ invulnerable save."
     }
   },
   {
@@ -1597,7 +1597,7 @@
       ]
     },
     "expected": {
-      "text": "tag the objective as secured\nScope: unit. Duration: phase.\nApplies to: units with Sekhetar Robots."
+      "text": "Until the end of the phase, the objective is marked as secured.\nApplies to: units with Sekhetar Robots."
     }
   },
   {
@@ -1615,7 +1615,7 @@
       "duration": "battle"
     },
     "expected": {
-      "text": "+1 Leadership for self\nScope: self. Duration: battle."
+      "text": "For the rest of the battle, add 1 to the Leadership characteristic of this model."
     }
   },
   {
@@ -1632,7 +1632,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "self gains a 5+ invulnerable save\nScope: unit. Duration: permanent."
+      "text": "This model has a 5+ invulnerable save."
     }
   },
   {
@@ -1650,7 +1650,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "deal ? mortal wounds to enemy within aura\nScope: unit. Duration: permanent."
+      "text": "When this model is destroyed, enemy units nearby suffer mortal wounds (Deadly Demise)."
     }
   },
   {
@@ -1673,7 +1673,7 @@
       ]
     },
     "expected": {
-      "text": "reduce incoming damage to unit by 1\nScope: unit. Duration: turn.\nApplies to: units with Heretic Astartes."
+      "text": "Until the end of the turn, each time an attack targets the unit, reduce the Damage of that attack by 1.\nApplies to: units with Heretic Astartes."
     }
   },
   {
@@ -1691,7 +1691,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "return 1 model(s) to self with full wounds\nScope: unit. Duration: permanent."
+      "text": "Return 1 destroyed model to this model with full wounds."
     }
   },
   {
@@ -1708,7 +1708,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "reduce incoming damage to unit by ?\nScope: unit. Duration: permanent."
+      "text": "Each time an attack targets the unit, reduce the Damage of that attack by 1."
     }
   },
   {
@@ -1725,7 +1725,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "reduce incoming damage to unit by ?\nScope: unit. Duration: permanent."
+      "text": "Each time an attack targets the unit, reduce the Damage of that attack by 1."
     }
   },
   {
@@ -1746,7 +1746,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If attached to a unit:\n  -> unit fights first\nScope: unit. Duration: permanent."
+      "text": "After being attached to a unit, the unit has the Fights First ability."
     }
   },
   {
@@ -1764,7 +1764,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "+1 OC for unit\nScope: unit. Duration: permanent."
+      "text": "The unit gets +1 to its Objective Control characteristic."
     }
   },
   {
@@ -1781,7 +1781,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "self gains a 4+ invulnerable save\nScope: unit. Duration: permanent."
+      "text": "This model has a 4+ invulnerable save."
     }
   },
   {
@@ -1819,7 +1819,7 @@
       "duration": "battle"
     },
     "expected": {
-      "text": "If the unit has \"ADEPTUS ASTARTES\":\n  -> friendly within aura gains battle shock test re roll\n  -> friendly within aura gains leadership test re roll\nScope: aura 6. Duration: battle."
+      "text": "If the unit has the ADEPTUS ASTARTES keyword, for the rest of the battle:\n  -> Friendly units nearby gain the Battle Shock Test Re Roll ability.\n  -> Friendly units nearby gain the Leadership Test Re Roll ability."
     }
   },
   {
@@ -1843,7 +1843,7 @@
       ]
     },
     "expected": {
-      "text": "refund 1 CP\nScope: self. Duration: permanent.\nApplies to: units with Adeptus Custodes, Walker."
+      "text": "You can use one Stratagem on this model for 0CP.\nApplies to: units with Adeptus Custodes, Walker."
     }
   },
   {
@@ -1860,7 +1860,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "enemy within aura: anti fallback\nScope: unit. Duration: permanent."
+      "text": "Enemy units nearby: anti fallback."
     }
   },
   {
@@ -1878,7 +1878,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "enemy within aura: reinforcement denial (within 12\")\nScope: aura 12. Duration: permanent."
+      "text": "Enemy units cannot be set up from Reserves within 12\" of enemy units nearby."
     }
   },
   {
@@ -1895,7 +1895,7 @@
       "duration": "one-use"
     },
     "expected": {
-      "text": "refund 1 CP\nScope: unit. Duration: one use."
+      "text": "Once per battle, you can use one Stratagem on this model for 0CP."
     }
   },
   {
@@ -1910,7 +1910,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "unit can fall back and act\nScope: unit. Duration: permanent."
+      "text": "The unit is eligible to shoot and declare a charge in a turn in which it Fell Back."
     }
   },
   {
@@ -1977,7 +1977,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If for melee attacks and not the target has \"Monster\" and not the target has \"Vehicle\":\n  -> +1 to hit rolls for friendly within aura\n  If the unit is below half strength:\n    -> +1 to wound rolls for friendly within aura\nScope: aura 6. Duration: permanent."
+      "text": "With melee attacks, if not the target has \"Monster\", if not the target has \"Vehicle\":\n  -> Friendly units nearby get +1 to Hit rolls.\n  -> While the unit is below half strength, friendly units nearby get +1 to Wound rolls."
     }
   },
   {
@@ -2001,7 +2001,7 @@
       ]
     },
     "expected": {
-      "text": "bearer: cannot be targeted\nScope: unit. Duration: permanent.\nApplies to: units with Emperor's Children, Flawless Blades."
+      "text": "This model: cannot be targeted.\nApplies to: units with Emperor's Children, Flawless Blades."
     }
   },
   {
@@ -2019,7 +2019,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "-1 BS for attacker\nScope: unit. Duration: phase."
+      "text": "Until the end of the phase, the attacking unit gets -1 to Ballistic Skill."
     }
   },
   {
@@ -2055,7 +2055,7 @@
       "duration": "one-use"
     },
     "expected": {
-      "text": "If at on destroyed:\n  -> Roll D6: on 2+, return 1 model(s) to self with 3 wounds\nScope: self. Duration: one use."
+      "text": "Once per battle, each time this unit is destroyed:\n  -> Roll one D6: on a 2+, return 1 destroyed model to this model with 3 wounds."
     }
   },
   {
@@ -2102,7 +2102,7 @@
       "duration": "battle"
     },
     "expected": {
-      "text": "If at game start in reserves:\n  -> self gains reinforcements first three movement phases\nIf at in reserves:\n  -> self gains treat battle round one higher for reserves\nScope: self. Duration: battle."
+      "text": "For the rest of the battle:\nIf it begins the battle in Reserves, this model gains the Reinforcements First Three Movement Phases ability.\nWhile it is in Reserves, this model gains the Treat Battle Round One Higher for Reserves ability."
     }
   },
   {
@@ -2119,7 +2119,7 @@
       "duration": "one-use"
     },
     "expected": {
-      "text": "deal 1 mortal wounds to defender\nScope: unit. Duration: one use."
+      "text": "Once per battle, your unit suffers 1 mortal wound."
     }
   },
   {
@@ -2145,7 +2145,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If during the shooting phase:\n  -> deal d3 mortal wounds to defender\nScope: aura 6. Duration: permanent."
+      "text": "During the Shooting phase, your unit suffers d3 mortal wounds."
     }
   },
   {
@@ -2178,7 +2178,7 @@
       ]
     },
     "expected": {
-      "text": "deal ? mortal wounds to enemy within aura (within 8\")\nScope: aura custom (8\"). Duration: phase.\nApplies to: units with Legiones Daemonica, Character, Nurgle (excluding Monster)."
+      "text": "Until the end of the phase, each enemy unit within 8\" suffers 7D6 mortal wounds.\nApplies to: units with Legiones Daemonica, Character, Nurgle (excluding Monster)."
     }
   },
   {
@@ -2195,7 +2195,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "deal 1 mortal wounds to defender\nScope: unit. Duration: permanent."
+      "text": "Your unit suffers 1 mortal wound."
     }
   },
   {
@@ -2212,7 +2212,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "refund ? CP\nScope: unit. Duration: permanent."
+      "text": "You can use the Fire Overwatch or Heroic Stratagem on this model for 0CP."
     }
   },
   {
@@ -2242,7 +2242,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "unit's ranged weapons gain Assault\nunit fights first\nScope: unit. Duration: permanent."
+      "text": "The unit's ranged weapons gain [ASSAULT].\nThe unit has the Fights First ability."
     }
   },
   {
@@ -2296,7 +2296,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "+1 A (melee) for self\n+1 S (melee) for self\n+1 D (melee) for self\ngain 1 to blood-tithe-pool\nScope: self. Duration: permanent."
+      "text": "Add 1 to this model's Attacks characteristic (melee).\nAdd 1 to this model's Strength characteristic (melee).\nAdd 1 to this model's Damage characteristic (melee).\nYou gain 1 Blood Tithe Pool."
     }
   },
   {
@@ -2313,7 +2313,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "self gains a 4+ invulnerable save\nScope: unit. Duration: permanent."
+      "text": "This model has a 4+ invulnerable save."
     }
   },
   {
@@ -2336,7 +2336,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If attached to a unit:\n  -> self gains a 4+ invulnerable save\nScope: unit. Duration: permanent."
+      "text": "After being attached to a unit, this model has a 4+ invulnerable save."
     }
   },
   {
@@ -2353,7 +2353,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "unit gains Feel No Pain 4+\nScope: unit. Duration: phase."
+      "text": "Until the end of the phase, the unit has the Feel No Pain 4+ ability."
     }
   },
   {
@@ -2513,7 +2513,7 @@
       "duration": "battle-round"
     },
     "expected": {
-      "text": "If at start of phase:\n  -> Roll 8D6 (max 2 activations):\n    - Unbridled Bloodlust: need pair of 1+ -> +1 to charge rolls for all friendly\n    - Rage-Fuelled Invigoration: need pair of 2+ -> all friendly gains pile in consolidation 6\"\n    - Total Carnage: need pair of 3+ -> if destroyed by a melee attack and not has fought this phase: roll D6: on 4+, self fights on death\n    - Martial Excellence: need pair of 4+ -> all friendly's melee weapons gain Sustained Hits 1\n    - Warp Blades: need pair of 5+ -> all friendly's melee weapons gain Lethal Hits\n    - Decapitating Strikes: need triple of 6+ -> if the target has \"Infantry\" and for melee attacks: all friendly's weapons gain Devastating Wounds\nScope: any on battlefield. Duration: battle round."
+      "text": "At the start of the phase, until the end of the battle round:\n  -> Roll 8D6 (max 2 activations):\n    - Unbridled Bloodlust: need pair of 1+ -> all friendly units get +1 to Charge rolls\n    - Rage-Fuelled Invigoration: need pair of 2+ -> all friendly units have the Pile in Consolidation 6\" ability\n    - Total Carnage: need pair of 3+ -> when destroyed by a melee attack, if not has fought this phase, roll one D6: on a 4+, each time this model is destroyed, it can fight before being removed from play\n    - Martial Excellence: need pair of 4+ -> all friendly units' melee weapons gain [SUSTAINED HITS 1]\n    - Warp Blades: need pair of 5+ -> all friendly units' melee weapons gain [LETHAL HITS]\n    - Decapitating Strikes: need triple of 6+ -> against Infantry targets, with melee attacks, all friendly units' weapons gain [DEVASTATING WOUNDS]"
     }
   },
   {
@@ -2537,7 +2537,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "If during the fight phase:\n  -> unit fights first\nScope: unit. Duration: phase."
+      "text": "During the Fight phase, until the end of the phase, the unit has the Fights First ability."
     }
   },
   {
@@ -2578,7 +2578,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "set Sv to 2 for self\nIf at on unit destroyed:\n  -> gain 1 to blood-tithe-pool\nScope: self. Duration: permanent."
+      "text": "Modify this model's Save characteristic to 2.\nEach time this unit is destroyed, you gain 1 Blood Tithe Pool."
     }
   },
   {
@@ -2612,7 +2612,7 @@
       "duration": "battle"
     },
     "expected": {
-      "text": "If at on unit destroyed:\n  -> Roll D6: on 3+, gain 1 to blood-tithe-pool\nScope: any on battlefield. Duration: battle."
+      "text": "Each time this unit is destroyed, for the rest of the battle:\n  -> Roll one D6: on a 3+, you gain 1 Blood Tithe Pool."
     }
   },
   {
@@ -2639,7 +2639,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "If at start of phase:\n  -> -? Leadership for enemy within aura\nScope: engagement range. Duration: phase."
+      "text": "At the start of the phase, until the end of the phase, modify enemy units nearby's Leadership characteristic."
     }
   },
   {
@@ -2663,7 +2663,7 @@
       ]
     },
     "expected": {
-      "text": "tag unit as afflicted\nScope: any visible. Duration: phase.\nApplies to: units with Contagion Engine."
+      "text": "Until the end of the phase, the unit is marked as afflicted.\nApplies to: units with Contagion Engine."
     }
   },
   {
@@ -2684,7 +2684,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If attached to a unit:\n  -> unit fights first\nScope: unit. Duration: permanent."
+      "text": "After being attached to a unit, the unit has the Fights First ability."
     }
   },
   {
@@ -2707,7 +2707,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If attached to a unit:\n  -> unit gains Feel No Pain 4+\nScope: unit. Duration: permanent."
+      "text": "After being attached to a unit, the unit has the Feel No Pain 4+ ability."
     }
   },
   {
@@ -2732,7 +2732,7 @@
       "duration": "turn"
     },
     "expected": {
-      "text": "If the unit charged this turn:\n  -> unit's weapons gain lance\nScope: unit. Duration: turn."
+      "text": "If the unit charged this turn, until the end of the turn, the unit's weapons gain [LANCE]."
     }
   },
   {
@@ -2749,7 +2749,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "gain 1 CP\nScope: unit. Duration: permanent."
+      "text": "You gain 1CP."
     }
   },
   {
@@ -2764,7 +2764,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "self shoots on death\nScope: unit. Duration: permanent."
+      "text": "Each time this model is destroyed, it can shoot before being removed from play."
     }
   },
   {
@@ -2787,7 +2787,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If attached to a unit:\n  -> refund ? CP\nScope: unit. Duration: permanent."
+      "text": "After being attached to a unit, you can use the Fire Overwatch or Heroic Stratagem on this model for 0CP."
     }
   },
   {
@@ -2824,7 +2824,7 @@
       ]
     },
     "expected": {
-      "text": "bearer can deep strike\nbearer's weapons gain Ignores Cover\nScope: self. Duration: permanent.\nApplies to: units with Emperor's Children, Lord Kakophonist."
+      "text": "This model has the Deep Strike ability.\nThis model's weapons gain [IGNORES COVER].\nApplies to: units with Emperor's Children, Lord Kakophonist."
     }
   },
   {
@@ -2860,7 +2860,7 @@
       ]
     },
     "expected": {
-      "text": "If the unit charged this turn:\n  -> +1 A (melee) for unit\nScope: unit. Duration: phase.\nApplies to: units with Legiones Daemonica, Character, Khorne (excluding Monster)."
+      "text": "If the unit charged this turn, until the end of the phase, add 1 to the unit's Attacks characteristic (melee).\nApplies to: units with Legiones Daemonica, Character, Khorne (excluding Monster)."
     }
   },
   {
@@ -2896,7 +2896,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If during the command phase:\n  If the unit has \"CANOPTEK SCARAB SWARM\":\n    -> return 1 model(s) to friendly within aura with full wounds\nScope: aura 6. Duration: permanent."
+      "text": "During the Command phase, if the unit has the CANOPTEK SCARAB SWARM keyword, return 1 destroyed model to friendly units nearby with full wounds."
     }
   },
   {
@@ -2923,7 +2923,7 @@
       ]
     },
     "expected": {
-      "text": "unit fights first\nScope: unit. Duration: phase.\nApplies to: units with Legiones Daemonica, Character, Slaanesh (excluding Monster)."
+      "text": "Until the end of the phase, the unit has the Fights First ability.\nApplies to: units with Legiones Daemonica, Character, Slaanesh (excluding Monster)."
     }
   },
   {
@@ -2941,7 +2941,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "+1 OC for unit\nScope: aura 6. Duration: permanent."
+      "text": "The unit gets +1 to its Objective Control characteristic."
     }
   },
   {
@@ -2958,7 +2958,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "reduce incoming damage to self by ?\nScope: unit. Duration: permanent."
+      "text": "Each time an attack targets this model, reduce the Damage of that attack to 0."
     }
   },
   {
@@ -2985,7 +2985,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "If at dark pacts leadership test:\n  -> re roll dark pacts tests for unit\nScope: unit. Duration: phase."
+      "text": "At dark pacts leadership test, until the end of the phase, the unit can re-roll Dark Pacts tests."
     }
   },
   {
@@ -3002,7 +3002,7 @@
       "duration": "one-use"
     },
     "expected": {
-      "text": "gain ? CP\nScope: unit. Duration: one use."
+      "text": "Once per battle, you gain 1CP."
     }
   },
   {
@@ -3050,7 +3050,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If engagement state:\n  -> +-1 OC for enemy within aura\nIf within 6\" of friendly-cryptek:\n  -> -1 OC for self\nScope: aura 6. Duration: permanent."
+      "text": "If engagement state, enemy units nearby get -1 to their Objective Control characteristic.\nIf within 6\" of friendly cryptek, this model gets -1 to its Objective Control characteristic."
     }
   },
   {
@@ -3073,7 +3073,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If the unit is below starting strength:\n  -> return 1 model(s) to unit with full wounds\nScope: unit. Duration: permanent."
+      "text": "While the unit is below its starting strength, return 1 destroyed model to the unit with full wounds."
     }
   },
   {
@@ -3090,7 +3090,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "gain 1 CP\nScope: unit. Duration: permanent."
+      "text": "You gain 1CP."
     }
   },
   {
@@ -3114,7 +3114,7 @@
       "duration": "turn"
     },
     "expected": {
-      "text": "If the model is leading a unit:\n  -> unit gains multiple orders\nScope: unit. Duration: turn."
+      "text": "While this model leads a unit, until the end of the turn, the unit gains the Multiple Orders ability."
     }
   },
   {
@@ -3166,7 +3166,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "If during the command phase and within range of an objective and you control 1+ objectives:\n  -> Choose one (spend-or-gain-yp):\n    1. spend 1 from yp-pool\n    2. gain 1 to yp-pool\nScope: self. Duration: phase."
+      "text": "During the Command phase, if within range of an objective, if you control 1+ objectives, until the end of the phase:\n  Select one of the following (Spend or Gain Yp):\n    - Spend 1 Yp Pool.\n    - You gain 1 Yp Pool."
     }
   },
   {
@@ -3183,7 +3183,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "force a battle shock test on enemy within aura\nScope: aura 6. Duration: permanent."
+      "text": "Enemy units nearby must take a Battle-shock test."
     }
   },
   {
@@ -3227,7 +3227,7 @@
       "duration": "turn"
     },
     "expected": {
-      "text": "If at end of turn and in either player's turn and not (engagement state):\n  -> unit can deep strike\nScope: self. Duration: turn."
+      "text": "At the end of the turn, in either player's turn, unless engagement state, until the end of the turn, the unit has the Deep Strike ability."
     }
   },
   {
@@ -3256,7 +3256,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If at model destroyed:\n  -> destroy all non-leader model(s) from unit\nScope: unit. Duration: permanent."
+      "text": "Each time a model in this unit is destroyed, destroy all models in the unit."
     }
   },
   {
@@ -3291,7 +3291,7 @@
       "duration": "turn"
     },
     "expected": {
-      "text": "If at setup:\n  If for ranged attacks:\n    -> self gains unmodified hit critical\nScope: self. Duration: turn."
+      "text": "At setup, until the end of the turn, with ranged attacks, this model gains the Unmodified Hit Critical ability."
     }
   },
   {
@@ -3315,7 +3315,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If during the fight phase:\n  -> self fights on death\nScope: unit. Duration: permanent."
+      "text": "During the Fight phase, each time this model is destroyed, it can fight before being removed from play."
     }
   },
   {
@@ -3377,7 +3377,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "unit's weapons gain Critical Wounds 3+\nIf during the fight phase and at end of phase and not (1+ enemy units destroyed phase):\n  -> destroy ? non-leader model(s) from unit\nScope: unit. Duration: phase."
+      "text": "Until the end of the phase:\nThe unit's weapons gain [CRITICAL WOUNDS 3+].\nDuring the Fight phase, at the end of the phase, unless 1+ enemy units destroyed phase, destroy 1 model in the unit."
     }
   },
   {
@@ -3406,7 +3406,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "If for melee attacks:\n  -> +2 S (melee) for unit\nScope: unit. Duration: phase."
+      "text": "With melee attacks, until the end of the phase, add 2 to the unit's Strength characteristic (melee)."
     }
   },
   {
@@ -3437,7 +3437,7 @@
       "duration": "battle"
     },
     "expected": {
-      "text": "If within 3\" of friendly:\n  -> self gains lone operative\nScope: self. Duration: battle."
+      "text": "If within 3\" of a friendly unit, for the rest of the battle, this model gains the Lone Operative ability."
     }
   },
   {
@@ -3471,7 +3471,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "Choose one (Dark Pact ability):\n  1. unit's weapons gain Lethal Hits\n  2. unit's weapons gain Sustained Hits 1\nScope: unit. Duration: phase."
+      "text": "Until the end of the phase:\nSelect one of the following (Dark Pact Ability):\n  - The unit's weapons gain [LETHAL HITS].\n  - The unit's weapons gain [SUSTAINED HITS 1]."
     }
   },
   {
@@ -3497,7 +3497,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "If for ranged attacks:\n  -> self gains ignores lone operative\nScope: self. Duration: phase."
+      "text": "With ranged attacks, until the end of the phase, this model gains the Ignores Lone Operative ability."
     }
   },
   {
@@ -3522,7 +3522,7 @@
       "duration": "one-use"
     },
     "expected": {
-      "text": "Roll D6: on 6+, deal 1 mortal wounds to enemy within aura (within 6\")\nScope: aura 6. Duration: one use."
+      "text": "Once per battle:\nRoll one D6: on a 6+, each enemy unit within 6\" suffers 1 mortal wound."
     }
   },
   {
@@ -3547,7 +3547,7 @@
       "duration": "one-use"
     },
     "expected": {
-      "text": "Roll D6: on 6+, deal 2D6 mortal wounds to enemy within aura (within 6\")\nScope: aura 6. Duration: one use."
+      "text": "Once per battle:\nRoll one D6: on a 6+, each enemy unit within 6\" suffers 2D6 mortal wounds."
     }
   },
   {
@@ -3568,7 +3568,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "Roll D6: on 2+, self shoots on death\nScope: self. Duration: phase."
+      "text": "Until the end of the phase:\nRoll one D6: on a 2+, each time this model is destroyed, it can shoot before being removed from play."
     }
   },
   {
@@ -3592,7 +3592,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If the unit is below starting strength:\n  -> return d3 model(s) to unit with full wounds\nScope: unit. Duration: permanent."
+      "text": "While the unit is below its starting strength, return D3 destroyed models to the unit with full wounds."
     }
   },
   {
@@ -3642,7 +3642,7 @@
       "duration": "battle"
     },
     "expected": {
-      "text": "If during the shooting phase and at first this battle:\n  -> Choose one (target-action):\n    1. self gains designate target marker\n    2. self gains adjust target marker\nScope: self. Duration: battle."
+      "text": "During the Shooting phase, the first time this battle, for the rest of the battle:\n  Select one of the following (Target Action):\n    - This model gains the Designate Target Marker ability.\n    - This model gains the Adjust Target Marker ability."
     }
   },
   {
@@ -3667,7 +3667,7 @@
       "duration": "turn"
     },
     "expected": {
-      "text": "If the unit charged this turn:\n  -> self's hellforged weapons gains Devastating Wounds\nScope: self. Duration: turn."
+      "text": "If the unit charged this turn, until the end of the turn, this model's hellforged weapons gains [DEVASTATING WOUNDS]."
     }
   },
   {
@@ -3696,7 +3696,7 @@
       "duration": "battle-round"
     },
     "expected": {
-      "text": "If within 12\" of friendly (World Eaters):\n  -> refund 1 CP\nScope: aura 12. Duration: battle round."
+      "text": "If within 12\" of a friendly unit, until the end of the battle round, you can use one Stratagem on this model for 0CP."
     }
   },
   {
@@ -3734,7 +3734,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "unit gains Feel No Pain 6+\nIf the unit is battle-shocked:\n  -> unit gains Feel No Pain 5+\nScope: unit. Duration: phase."
+      "text": "Until the end of the phase:\nThe unit has the Feel No Pain 6+ ability.\nWhile the unit is Battle-shocked, the unit has the Feel No Pain 5+ ability."
     }
   },
   {
@@ -3776,7 +3776,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If the unit has \"WAR DOG\":\n  -> +1 Ld for friendly within aura\n  -> +1 OC for friendly within aura\nScope: aura 9. Duration: permanent."
+      "text": "If the unit has the WAR DOG keyword:\n  -> Add 1 to friendly units nearby's Leadership characteristic.\n  -> Add 1 to friendly units nearby's Objective Control characteristic."
     }
   },
   {
@@ -3799,7 +3799,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If the unit charged this turn:\n  -> deal d3 mortal wounds to defender\nScope: unit. Duration: permanent."
+      "text": "If the unit charged this turn, your unit suffers d3 mortal wounds."
     }
   },
   {
@@ -3836,7 +3836,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If the unit is below half strength:\n  -> re-roll hit rolls (all failures) for unit\n  -> re-roll wound rolls (all failures) for unit\nScope: unit. Duration: permanent."
+      "text": "While the unit is below half strength:\n  -> You can re-roll the Hit roll.\n  -> You can re-roll the Wound roll."
     }
   },
   {
@@ -3869,7 +3869,7 @@
       ]
     },
     "expected": {
-      "text": "If at unit set up:\n  -> +1 to charge rolls for unit\nScope: any on battlefield. Duration: turn.\nApplies to: units with Emperor's Children, Terminator."
+      "text": "At unit set up, until the end of the turn, the unit gets +1 to Charge rolls.\nApplies to: units with Emperor's Children, Terminator."
     }
   },
   {
@@ -3933,7 +3933,7 @@
       "duration": "turn"
     },
     "expected": {
-      "text": "If during the shooting phase and the target has \"INFANTRY\" and for ranged attacks:\n  -> defender gains shaken status\n  -> defender gains move -2\"\n  -> -2 to charge rolls for defender\nScope: self. Duration: turn."
+      "text": "During the Shooting phase, against INFANTRY targets, with ranged attacks, until the end of the turn:\n  -> Your unit gains the Shaken Status ability.\n  -> Your unit has the Move -2\" ability.\n  -> Your unit gets -2 to Charge rolls."
     }
   },
   {
@@ -3964,7 +3964,7 @@
       ]
     },
     "expected": {
-      "text": "If the model has lost wounds:\n  -> unit gains normal D6+1\"\nScope: unit. Duration: one use.\nApplies to: units with Adeptus Custodes, Terminator."
+      "text": "Once per battle, while the model has lost wounds, the unit has the Normal D6+1\" ability.\nApplies to: units with Adeptus Custodes, Terminator."
     }
   },
   {
@@ -4003,7 +4003,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "If the unit charged this turn:\n  -> unit's weapons gain Lethal Hits\n  -> unit's weapons gain Sustained Hits 1\nScope: unit. Duration: phase."
+      "text": "If the unit charged this turn, until the end of the phase:\n  -> The unit's weapons gain [LETHAL HITS].\n  -> The unit's weapons gain [SUSTAINED HITS 1]."
     }
   },
   {
@@ -4035,7 +4035,7 @@
       "duration": "turn"
     },
     "expected": {
-      "text": "If the model is leading a unit:\n  If at flickerjump used this turn:\n    -> unit gains charge after movement\nScope: unit. Duration: turn."
+      "text": "While this model leads a unit, until the end of the turn, at flickerjump used this turn, the unit gains the Charge After Movement ability."
     }
   },
   {
@@ -4060,7 +4060,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If the unit is below half strength:\n  -> -1 to hit rolls for attacker\nScope: aura 6. Duration: permanent."
+      "text": "While the unit is below half strength, the attacking unit gets -1 to Hit rolls."
     }
   },
   {
@@ -4128,7 +4128,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If not (the target has \"MONSTER\") and not (the target has \"VEHICLE\"):\n  -> enemy within aura gains forced desperate escape on fall back\n  If the unit is battle-shocked:\n    -> subtract desperate escape tests for enemy within aura\nScope: aura 6. Duration: permanent."
+      "text": "Unless against MONSTER targets, unless against VEHICLE targets:\n  -> Enemy units nearby gain the Forced Desperate Escape on Fall Back ability.\n  -> While the unit is Battle-shocked, subtract 1 from the Desperate Escape test of enemy units nearby."
     }
   },
   {
@@ -4151,7 +4151,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If the model is leading a unit:\n  -> attached unit gains enhanced foul spores aura 9\nScope: aura 9. Duration: permanent."
+      "text": "While this model leads a unit, the unit this model leads gains the Enhanced Foul Spores Aura 9 ability."
     }
   },
   {
@@ -4211,7 +4211,7 @@
       "duration": "turn"
     },
     "expected": {
-      "text": "If during the movement phase and the unit has \"Deep Strike\":\n  -> Choose one (etheric-emergence):\n    1. self can deep strike; self gains charge ineligible\n    2. self can deep strike\nScope: self. Duration: turn."
+      "text": "During the Movement phase, if the unit has the Deep Strike keyword, until the end of the turn:\n  Select one of the following (Etheric Emergence):\n    - This model has the Deep Strike ability; this model gains the Charge Ineligible ability.\n    - This model has the Deep Strike ability."
     }
   },
   {
@@ -4312,7 +4312,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "If during the fight phase:\n  -> spend 1 from pain-token-pool\n  -> Choose one (empower-melee-attacks):\n    1. if not (the unit has \"CHARACTER\"): set A to 3 for unit\n    2. if not (the unit has \"CHARACTER\"): set A to 4 for unit; unit's melee weapons gain Hazardous\nScope: self. Duration: phase."
+      "text": "During the Fight phase, until the end of the phase:\n  -> Spend 1 Pain Token Pool.\n  Select one of the following (Empower Melee Attacks):\n    - Unless the unit has the CHARACTER keyword, modify the unit's Attacks characteristic to 3.\n    - Unless the unit has the CHARACTER keyword, modify the unit's Attacks characteristic to 4; the unit's melee weapons gain [HAZARDOUS]."
     }
   },
   {
@@ -4398,7 +4398,7 @@
       "duration": "turn"
     },
     "expected": {
-      "text": "If during the shooting phase:\n  If destroyed by a ranged attack:\n    If the target has \"AFFLICTED\":\n      -> Roll D6: on 4+, enemy within aura's weapons gain Afflicted\n    If not (the target has \"AFFLICTED\"):\n      -> Roll D6: on 5+, enemy within aura's weapons gain Afflicted\nScope: aura 6. Duration: turn."
+      "text": "During the Shooting phase, until the end of the turn, when destroyed by a ranged attack, against AFFLICTED targets, roll one D6: on a 4+, enemy units nearby's weapons gain [AFFLICTED]; unless against AFFLICTED targets, roll one D6: on a 5+, enemy units nearby's weapons gain [AFFLICTED]."
     }
   },
   {
@@ -4465,7 +4465,7 @@
       "duration": "turn"
     },
     "expected": {
-      "text": "If at end of phase and during the fight phase and in either player's turn and not (engagement state):\n  -> spend 1 from pain-token-pool\n  -> self gains into strategic reserves\nScope: self. Duration: turn."
+      "text": "At the end of the phase, during the Fight phase, in either player's turn, unless engagement state, until the end of the turn:\n  -> Spend 1 Pain Token Pool.\n  -> This model has the Into Strategic Reserves ability."
     }
   },
   {
@@ -4508,7 +4508,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "re-roll hit rolls (ones) (melee) for unit\nIf within 6\" of friendly-monster:\n  -> re-roll wound rolls (ones) (melee) for unit\nScope: unit. Duration: phase."
+      "text": "Until the end of the phase:\nYou can re-roll a Hit roll of 1.\nIf within 6\" of friendly monster, you can re-roll a Wound roll of 1."
     }
   },
   {
@@ -4531,7 +4531,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If the unit is below starting strength:\n  -> force a battle shock test on enemy within aura\nScope: aura 6. Duration: permanent."
+      "text": "While the unit is below its starting strength, enemy units nearby must take a Battle-shock test."
     }
   },
   {
@@ -4554,7 +4554,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If the unit is below starting strength:\n  -> force a battle shock test on enemy within aura\nScope: aura 6. Duration: permanent."
+      "text": "While the unit is below its starting strength, enemy units nearby must take a Battle-shock test."
     }
   },
   {
@@ -4577,7 +4577,7 @@
       "duration": "battle"
     },
     "expected": {
-      "text": "If the model is leading a unit:\n  -> -? Leadership for unit\nScope: unit. Duration: battle."
+      "text": "While this model leads a unit, for the rest of the battle, modify the unit's Leadership characteristic."
     }
   },
   {
@@ -4592,7 +4592,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "self shoots on death\nScope: unit. Duration: permanent."
+      "text": "Each time this model is destroyed, it can shoot before being removed from play."
     }
   },
   {
@@ -4626,7 +4626,7 @@
       ]
     },
     "expected": {
-      "text": "If for ? attacks:\n  -> -1 to wound rolls for attacker\nScope: unit. Duration: phase.\nApplies to: units with Adeptus Custodes, Walker."
+      "text": "When this attack's Strength is greater than the target's Toughness, until the end of the phase, the attacking unit gets -1 to Wound rolls.\nApplies to: units with Adeptus Custodes, Walker."
     }
   },
   {
@@ -4641,7 +4641,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "unit can move through engagement range\nScope: unit. Duration: phase."
+      "text": "Until the end of the phase, the unit can move through enemy models."
     }
   },
   {
@@ -4656,7 +4656,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "self shoots on death\nScope: unit. Duration: permanent."
+      "text": "Each time this model is destroyed, it can shoot before being removed from play."
     }
   },
   {
@@ -4693,7 +4693,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "force battle shock tests for attacker\nIf the unit is battle-shocked:\n  -> attacker: cannot target bearer\nScope: self. Duration: phase."
+      "text": "Until the end of the phase:\nModify the attacking unit's Leadership characteristic.\nWhile the unit is Battle-shocked, the attacking unit: cannot target bearer."
     }
   },
   {
@@ -4727,7 +4727,7 @@
       ]
     },
     "expected": {
-      "text": "If the unit advanced this turn:\n  -> +1 S for all friendly\nScope: any on battlefield. Duration: turn.\nApplies to: units with Emperor's Children, Battleline."
+      "text": "If the unit Advanced this turn, until the end of the turn, add 1 to all friendly units' Strength characteristic.\nApplies to: units with Emperor's Children, Battleline."
     }
   },
   {
@@ -4751,7 +4751,7 @@
       "duration": "turn"
     },
     "expected": {
-      "text": "If the unit advanced this turn:\n  -> self gains action eligibility\nScope: self. Duration: turn."
+      "text": "If the unit Advanced this turn, until the end of the turn, this model gains the Action Eligibility ability."
     }
   },
   {
@@ -4781,7 +4781,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "self's weapons gain Mobile\n+1 to charge rolls for self\nScope: self. Duration: permanent."
+      "text": "This model's weapons gain [MOBILE].\nThis model gets +1 to Charge rolls."
     }
   },
   {
@@ -4819,7 +4819,7 @@
       "duration": "battle"
     },
     "expected": {
-      "text": "If the unit has \"OFFICER\":\n  -> unit gains stratagem targetable while battle shocked\n  -> unit gains orders persist during battle shock\nScope: unit. Duration: battle."
+      "text": "If the unit has the OFFICER keyword, for the rest of the battle:\n  -> The unit gains the Stratagem Targetable While Battle Shocked ability.\n  -> The unit gains the Orders Persist During Battle Shock ability."
     }
   },
   {
@@ -4888,7 +4888,7 @@
       ]
     },
     "expected": {
-      "text": "Choose one (hagiomnifex-sermon):\n  1. all enemy gains detection range modifier\n  2. tag unit as battle shock auto succeed\n  3. +1 M for unit\n  4. +1 S for unit\n  5. -1 to wound rolls for attacker\nScope: unit. Duration: phase.\nApplies to: units with Adepta Sororitas, Character (excluding Penitent)."
+      "text": "Until the end of the phase:\nSelect one of the following (Hagiomnifex Sermon):\n  - All enemy units gain the Detection Range Modifier ability.\n  - The unit is marked as battle shock auto succeed.\n  - Add 1 to the unit's Move characteristic.\n  - Add 1 to the unit's Strength characteristic.\n  - The attacking unit gets -1 to Wound rolls.\nApplies to: units with Adepta Sororitas, Character (excluding Penitent)."
     }
   },
   {
@@ -4976,7 +4976,7 @@
       "duration": "battle"
     },
     "expected": {
-      "text": "-1 Ld for enemy within aura\nChoose one (dread-ability):\n  1. -1 Ld for enemy within aura\n  2. if the unit is battle-shocked: +1 to wound rolls for unit\n  3. self gains Stealth\n  4. force a battle shock test on enemy within aura\n  5. deal D3 mortal wounds to enemy within aura (within 9\")\n  6. +3 aura-range for self\nScope: aura 9. Duration: battle."
+      "text": "For the rest of the battle:\nSubtract 1 from enemy units nearby's Leadership characteristic.\nSelect one of the following (Dread Ability):\n  - Subtract 1 from enemy units nearby's Leadership characteristic.\n  - While the unit is Battle-shocked, the unit gets +1 to Wound rolls.\n  - This model gains the Stealth ability.\n  - Enemy units nearby must take a Battle-shock test.\n  - Each enemy unit within 9\" suffers D3 mortal wounds.\n  - Add 3 to this model's Aura Range characteristic."
     }
   },
   {
@@ -5064,7 +5064,7 @@
       "duration": "turn"
     },
     "expected": {
-      "text": "If at command phase and the unit has \"CELESTINE\" and the unit is below starting strength:\n  -> Choose one (resurrect-allies):\n    1. if the unit has \"GEMINAE SUPERIA\": return 1 model(s) to unit with full wounds\n    2. if the unit has \"BODYGUARD\" and not (the unit has \"GEMINAE SUPERIA\"): return D3 model(s) to unit with full wounds\nScope: unit. Duration: turn."
+      "text": "In the Command phase, if the unit has the CELESTINE keyword, while the unit is below its starting strength, until the end of the turn:\n  Select one of the following (Resurrect Allies):\n    - If the unit has the GEMINAE SUPERIA keyword, return 1 destroyed model to the unit with full wounds.\n    - If the unit has the BODYGUARD keyword, unless the unit has the GEMINAE SUPERIA keyword, return D3 destroyed models to the unit with full wounds."
     }
   },
   {
@@ -5092,7 +5092,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If within 6\" of friendly (Blood Legions):\n  -> friendly within aura gains blessings of khorne\nScope: aura 6. Duration: permanent."
+      "text": "If within 6\" of a friendly unit, friendly units nearby gain the Blessings of Khorne ability."
     }
   },
   {
@@ -5107,7 +5107,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "unit can move through engagement range\nScope: unit. Duration: phase."
+      "text": "Until the end of the phase, the unit can move through enemy models."
     }
   },
   {
@@ -5171,7 +5171,7 @@
       "duration": "turn"
     },
     "expected": {
-      "text": "If in either player's turn and engagement state and at once per opponent turn and 1+ friendly units destroyed this turn:\n  -> destroy ? non-leader model(s) from self\n  -> self can deep strike\nScope: self. Duration: turn."
+      "text": "In either player's turn, if engagement state, once per opponent's turn, if 1+ friendly units destroyed this turn, until the end of the turn:\n  -> Destroy 1 model in this model.\n  -> This model has the Deep Strike ability."
     }
   },
   {
@@ -5194,7 +5194,7 @@
       ]
     },
     "expected": {
-      "text": "tag unit as battle shocked\nScope: aura 6. Duration: permanent.\nApplies to: units with Adepta Sororitas."
+      "text": "The unit is marked as battle shocked.\nApplies to: units with Adepta Sororitas."
     }
   },
   {
@@ -5232,7 +5232,7 @@
       ]
     },
     "expected": {
-      "text": "+2 M for all friendly\n+1 to charge rolls for all friendly\nScope: any on battlefield. Duration: battle.\nApplies to: units with Adeptus Custodes, Walker."
+      "text": "For the rest of the battle:\nAdd 2 to all friendly units' Move characteristic.\nAll friendly units get +1 to Charge rolls.\nApplies to: units with Adeptus Custodes, Walker."
     }
   },
   {
@@ -5286,7 +5286,7 @@
       ]
     },
     "expected": {
-      "text": "If 1+ ? units tagged protector imperative active:\n  -> re-roll hit rolls (ones) for all friendly\nIf 1+ ? units tagged conqueror imperative active:\n  -> re-roll wound rolls (ones) for all friendly\nScope: any on battlefield. Duration: battle.\nApplies to: units with Skitarii."
+      "text": "For the rest of the battle:\nIf the unit is tagged protector imperative active, you can re-roll a Hit roll of 1.\nIf the unit is tagged conqueror imperative active, you can re-roll a Wound roll of 1.\nApplies to: units with Skitarii."
     }
   },
   {
@@ -5331,7 +5331,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "If an enemy unit is within 6\":\n  If within ?\" of friendly-keyword (ADEPTUS MECHANICUS BATTLELINE):\n    -> -2 Leadership for enemy within aura\nScope: aura 6. Duration: phase."
+      "text": "While an enemy unit is within 6\", until the end of the phase, if within ?\" of a friendly ADEPTUS MECHANICUS BATTLELINE unit, subtract 2 from the Leadership characteristic of enemy units nearby."
     }
   },
   {
@@ -5386,7 +5386,7 @@
       ]
     },
     "expected": {
-      "text": "all friendly's weapons gain Recon Augury\nIf during the shooting phase:\n  -> tag enemy within aura as analysed\nScope: any on battlefield. Duration: battle.\nApplies to: units with Adeptus Mechanicus."
+      "text": "For the rest of the battle:\nAll friendly units' weapons gain [RECON AUGURY].\nDuring the Shooting phase, enemy units nearby are marked as analysed.\nApplies to: units with Adeptus Mechanicus."
     }
   },
   {
@@ -5420,7 +5420,7 @@
       ]
     },
     "expected": {
-      "text": "tag bearer as conqueror imperative active\ntag bearer as protector imperative active\nScope: unit. Duration: permanent.\nApplies to: units with Skitarii Marshal."
+      "text": "This model is marked as conqueror imperative active.\nThis model is marked as protector imperative active.\nApplies to: units with Skitarii Marshal."
     }
   },
   {
@@ -5472,7 +5472,7 @@
       "duration": "battle"
     },
     "expected": {
-      "text": "If at cult ambush redeployment and within 0\" of cult-ambush-marker:\n  -> self gains redeploy within distance 9\"\n  -> spend 1 from ?\nScope: self. Duration: battle."
+      "text": "At cult ambush redeployment, if within 0\" of cult ambush marker, for the rest of the battle:\n  -> This model has the Redeploy Within Distance 9\" ability.\n  -> Spend 1 Cult Ambush Marker."
     }
   },
   {
@@ -5519,7 +5519,7 @@
       ]
     },
     "expected": {
-      "text": "re-roll leadership rolls (all failures) for unit\nIf destroyed by a ranged attack:\n  -> unit gains heal wounds\nScope: unit. Duration: permanent.\nApplies to: units with Warpsmith."
+      "text": "You can re-roll the Leadership roll.\nWhen destroyed by a ranged attack, the unit gains the Heal Wounds ability.\nApplies to: units with Warpsmith."
     }
   },
   {
@@ -5581,7 +5581,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "If at after attacks and the target has \"INFANTRY\" and destroyed by a melee attack and for melee attacks:\n  -> return D3 model(s) to unit with full wounds\n  -> unit can move through engagement range\nScope: self. Duration: phase."
+      "text": "After attacks, against INFANTRY targets, when destroyed by a melee attack, with melee attacks, until the end of the phase:\n  -> Return D3 destroyed models to the unit with full wounds.\n  -> The unit can move through enemy models."
     }
   },
   {
@@ -5611,7 +5611,7 @@
       ]
     },
     "expected": {
-      "text": "If has fought this phase:\n  -> bearer gains heal wounds\nScope: unit. Duration: permanent.\nApplies to: units with Contagion Engine."
+      "text": "If has fought this phase, this model gains the Heal Wounds ability.\nApplies to: units with Contagion Engine."
     }
   },
   {
@@ -5636,7 +5636,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If the unit remained stationary:\n  -> unit's weapons gain Sustained Hits 1\nScope: unit. Duration: permanent."
+      "text": "If the unit Remained Stationary, the unit's weapons gain [SUSTAINED HITS 1]."
     }
   },
   {
@@ -5685,7 +5685,7 @@
       "duration": "battle"
     },
     "expected": {
-      "text": "If during the movement phase and in either player's turn and at end and within ?\" of area-terrain:\n  -> tag the terrain area as shadow of chaos\nScope: self. Duration: battle."
+      "text": "During the Movement phase, in either player's turn, at the end of the turn, if within an area terrain feature, for the rest of the battle, the terrain area is marked as shadow of chaos."
     }
   },
   {
@@ -5735,7 +5735,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "tag the terrain area as shadow of chaos\nIf the unit has \"KHORNE\" and the unit has \"LEGIONES DAEMONICA\":\n  -> re roll battle shock tests for friendly within aura\nScope: aura 6. Duration: permanent."
+      "text": "The terrain area is marked as shadow of chaos.\nIf the unit has the KHORNE keyword, if the unit has the LEGIONES DAEMONICA keyword, friendly units nearby can re-roll Battle-shock tests."
     }
   },
   {
@@ -5789,7 +5789,7 @@
       ]
     },
     "expected": {
-      "text": "If the unit advanced this turn:\n  -> all friendly's weapons gain Assault\n  -> all friendly gains act after move\nScope: any on battlefield. Duration: turn.\nApplies to: units with Legiones Daemonica, Battleline."
+      "text": "If the unit Advanced this turn, until the end of the turn:\n  -> All friendly units' weapons gain [ASSAULT].\n  -> All friendly units gain the Act After Move ability.\nApplies to: units with Legiones Daemonica, Battleline."
     }
   },
   {
@@ -5862,7 +5862,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "If during the movement phase:\n  -> self gains through non titanic models\n  -> self gains through terrain 4 or less\n  -> self can move through engagement range\n  -> self gains through terrain over 4 inches\n  If at after moving through tall terrain:\n    -> Roll D6: on exactly 1, apply battle shock tests for self\nScope: self. Duration: phase."
+      "text": "During the Movement phase, until the end of the phase:\n  -> This model has the Through Non Titanic Models ability.\n  -> This model has the Through Terrain 4 or Less ability.\n  -> This model can move through enemy models.\n  -> This model has the Through Terrain Over 4 Inches ability.\n  After moving through tall terrain:\n    -> Roll one D6: on exactly 1, modify this model's Leadership characteristic."
     }
   },
   {
@@ -5918,7 +5918,7 @@
       "duration": "turn"
     },
     "expected": {
-      "text": "If during the movement phase:\n  -> spend 1 from pain-token-pool\n  -> unit gains deep strike min distance 6\"\n  If an enemy unit is within 9\":\n    -> unit: no charge\nScope: unit. Duration: turn."
+      "text": "During the Movement phase, until the end of the turn:\n  -> Spend 1 Pain Token Pool.\n  -> The unit has the Deep Strike Min Distance 6\" ability.\n  -> While an enemy unit is within 9\", the unit cannot charge."
     }
   },
   {
@@ -5985,7 +5985,7 @@
       "duration": "phase"
     },
     "expected": {
-      "text": "If during the charge phase and at end of phase and in your turn:\n  If the model is leading a unit:\n    If not an enemy unit is within engagement range:\n      -> Roll 2D6: on leadership+, nothing, otherwise destroy 1 non-leader model(s) from unit\nScope: unit. Duration: phase."
+      "text": "During the Charge phase, at the end of the phase, in your turn, until the end of the phase, while this model leads a unit, if not an enemy unit is within engagement range, roll one 2D6: on a leadership+, nothing happens; otherwise, destroy 1 model in the unit."
     }
   },
   {
@@ -6002,7 +6002,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "tag the terrain area as shadow of chaos\nScope: aura 6. Duration: permanent."
+      "text": "The terrain area is marked as shadow of chaos."
     }
   },
   {
@@ -6035,7 +6035,7 @@
       ]
     },
     "expected": {
-      "text": "If the unit advanced this turn:\n  -> re-roll charge rolls (all failures) for all friendly\nScope: any on battlefield. Duration: battle.\nApplies to: units with Adeptus Custodes, Terminator."
+      "text": "If the unit Advanced this turn, for the rest of the battle, you can re-roll the Charge roll.\nApplies to: units with Adeptus Custodes, Terminator."
     }
   },
   {
@@ -6064,7 +6064,7 @@
       "duration": "battle"
     },
     "expected": {
-      "text": "If 1+ enemy units destroyed this attack:\n  -> gain 1 to pain-token-pool\nScope: unit. Duration: battle."
+      "text": "If 1+ enemy units destroyed this attack, for the rest of the battle, you gain 1 Pain Token Pool."
     }
   },
   {
@@ -6101,7 +6101,7 @@
       "duration": "permanent"
     },
     "expected": {
-      "text": "If at on model destroyed and the model is leading a unit:\n  -> destroy ? non-leader model(s) from unit\nScope: unit. Duration: permanent."
+      "text": "Each time a model in this unit is destroyed, while this model leads a unit, destroy 1 model in the unit."
     }
   },
   {
@@ -6140,7 +6140,7 @@
       ]
     },
     "expected": {
-      "text": "If the unit advanced this turn:\n  -> all friendly gains act after move\nScope: any on battlefield. Duration: turn.\nApplies to: units with Legiones Daemonica, Mounted."
+      "text": "If the unit Advanced this turn, until the end of the turn, all friendly units gain the Act After Move ability.\nApplies to: units with Legiones Daemonica, Mounted."
     }
   },
   {
@@ -6164,7 +6164,7 @@
       ]
     },
     "expected": {
-      "text": "tag the objective as held\nScope: unit. Duration: battle.\nApplies to: units with Heretic Astartes."
+      "text": "For the rest of the battle, the objective is marked as held.\nApplies to: units with Heretic Astartes."
     }
   }
 ]

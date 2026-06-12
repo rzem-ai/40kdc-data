@@ -448,7 +448,7 @@
               {
                 "type": "opponent-unit-within-range",
                 "parameters": {
-                  "range": 0
+                  "range": "engagement"
                 }
               }
             ]

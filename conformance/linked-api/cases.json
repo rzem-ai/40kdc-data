@@ -215,7 +215,6 @@
     "comparison": "set",
     "expected": [
       "accursed-weapon",
-      "armoured-limbs",
       "armoured-tracks",
       "autopistol",
       "axe-of-dismemberment",
@@ -231,7 +230,6 @@
       "combi-weapon",
       "cowards-bane",
       "daemongore-cannon",
-      "ectoplasma-cannon",
       "ectoplasma-destructor",
       "electroscourge",
       "exalted-chainblade",

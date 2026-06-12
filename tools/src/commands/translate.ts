@@ -9,7 +9,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-import { describeEffect, describeScope, type Effect, type AbilityScope } from "../translate/effect.js";
+import { describeAbility, type Effect, type AbilityScope } from "../translate/effect.js";
 
 interface Ability {
   ability_id: string;
@@ -41,9 +41,7 @@ export async function translateCommand(
 
     console.log(`\n═══ ${a.name} [${a.ability_id}] ═══`);
     if (meta.length) console.log(`    ${meta.join(" | ")}`);
-    console.log(describeEffect(a.effect));
-    const scope = describeScope(a.scope);
-    if (scope) console.log(scope);
+    console.log(describeAbility({ effect: a.effect, scope: a.scope }));
   }
 
   console.log(`\n── ${abilities.length} abilities translated ──`);

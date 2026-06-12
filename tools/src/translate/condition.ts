@@ -32,6 +32,63 @@ function str(v: unknown): string {
   return typeof v === "string" ? v : String(v);
 }
 
+/**
+ * A `timing-is` event token → natural GW-voice clause ("each time a model in
+ * this unit is destroyed", "at the start of the phase"). Structural phase/turn
+ * markers and the common trigger families are mapped explicitly; the fallback
+ * routes `after-*`/`on-*` prefixes to "after …"/"when …" (so the old "at on …"
+ * double-preposition can't occur) and everything else to "at <event>".
+ */
+const TIMING_PHRASES: Record<string, string> = {
+  "start-of-phase": "at the start of the phase",
+  "end-of-phase": "at the end of the phase",
+  "start-of-turn": "at the start of the turn",
+  "end-of-turn": "at the end of the turn",
+  "end-of-opponent-turn": "at the end of the opponent's turn",
+  "start-of-battle-round": "at the start of the battle round",
+  start: "at the start of the turn",
+  end: "at the end of the turn",
+  "command-phase": "in the Command phase",
+  "shooting-phase": "in the Shooting phase",
+  "on-model-destroyed": "each time a model in this unit is destroyed",
+  "model-destroyed": "each time a model in this unit is destroyed",
+  "first-model-destroyed": "the first time a model in this unit is destroyed",
+  "first-this-battle": "the first time this battle",
+  "first-time-this-phase": "the first time this phase",
+  "on-unit-destroyed": "each time this unit is destroyed",
+  "on-destroyed": "each time this unit is destroyed",
+  "enemy-unit-destroyed-in-melee": "each time an enemy unit is destroyed in melee",
+  "in-reserves": "while it is in Reserves",
+  "game-start-in-reserves": "if it begins the battle in Reserves",
+  "starts-in-strategic-reserves": "if it starts in Strategic Reserves",
+  "deep-strike-setup": "when it is set up by Deep Strike",
+  "deep-strike": "when it is set up by Deep Strike",
+  "set-up-from-reserves": "when it arrives from Reserves",
+  "arrives-from-strategic-reserves": "when it arrives from Strategic Reserves",
+  reinforcements: "when it arrives as Reinforcements",
+  "reinforcements-step": "during the Reinforcements step",
+  "post-deployment": "after deployment",
+  "declare-battle-formations": "when declaring Battle Formations",
+  "normal-move": "when it makes a Normal move",
+  "advance-move": "when it makes an Advance move",
+  advance: "when it Advances",
+  "fall-back-move": "when it makes a Fall Back move",
+  "fall-back": "when it Falls Back",
+  "charge-move": "when it makes a Charge move",
+  "once-per-battle": "once per battle",
+  "once-per-phase": "once per phase",
+  "once-per-opponent-turn": "once per opponent's turn",
+};
+
+export function describeTiming(timing: unknown): string {
+  const t = str(timing);
+  if (TIMING_PHRASES[t]) return TIMING_PHRASES[t];
+  if (t.startsWith("after-")) return `after ${dekebab(t.slice(6))}`;
+  if (t.startsWith("on-")) return `when ${dekebab(t.slice(3))}`;
+  if (t.endsWith("-destroyed")) return `each time ${dekebab(t)}`;
+  return `at ${dekebab(t)}`;
+}
+
 /** `2` + `objective` → `2+ objectives`. Nouns here are all regular plurals. */
 function count(n: unknown, noun: string): string {
   return `${str(n)}+ ${noun}s`;
@@ -58,7 +115,7 @@ export function describeCondition(c: Condition): string {
     case "phase-is":
       return `${negate}during the ${str(p.phase)} phase`;
     case "timing-is":
-      return `${negate}at ${dekebab(str(p.timing))}`;
+      return `${negate}${describeTiming(p.timing)}`;
     case "player-turn-is":
       return `${negate}in ${p.turn === "your-turn" ? "your" : p.turn === "opponent-turn" ? "the opponent's" : "either player's"} turn`;
     case "charged-this-turn":
@@ -80,6 +137,9 @@ export function describeCondition(c: Condition): string {
     case "is-attached":
       return `${negate}attached to a ${p.keyword ? `${str(p.keyword)} ` : ""}unit`;
     case "attack-is-type":
+      if (p.comparison === "strength-greater-than-toughness")
+        return `${negate}when this attack's Strength is greater than the target's Toughness`;
+      if (p.comparison != null) return `${negate}when ${dekebab(str(p.comparison))}`;
       return `${negate}for ${str(p.attack_type)} attacks`;
     case "is-battle-shocked":
       return `${negate}the unit is battle-shocked`;
@@ -93,10 +153,29 @@ export function describeCondition(c: Condition): string {
       if (n > 1) return `${negate}${subject} was hit by ${n}+ ${atk}attacks${weapon} this phase`;
       return `${negate}${subject} was hit by ${atk === "" ? "an attack" : `a ${atk}attack`}${weapon} this phase`;
     }
-    case "opponent-unit-within-range":
-      return `${negate}an enemy unit is within ${p.range === "engagement" ? "engagement range" : `${str(p.range)}"`}`;
-    case "unit-within-range-of":
-      return `${negate}within ${str(p.range)}" of ${str(p.target_type ?? "target")}${p.keyword ? ` (${str(p.keyword)})` : ""}`;
+    case "opponent-unit-within-range": {
+      let where: string;
+      if (p.weapon_name != null) where = `range of ${dekebab(str(p.weapon_name))}`;
+      else if (p.range_multiplier != null) where = "half range of its ranged weapons";
+      else if (p.range === "engagement") where = "engagement range";
+      else where = `${str(p.range)}"`;
+      return `${negate}an enemy unit is within ${where}`;
+    }
+    case "unit-within-range-of": {
+      const tt = str(p.target_type ?? "target");
+      // Targets that name a specific model, not a radius — no inches apply.
+      if (tt === "closest-eligible") return `${negate}the target is the closest eligible target`;
+      if (tt === "area-terrain") return `${negate}within an area terrain feature`;
+      const who =
+        tt === "friendly-keyword" && p.keyword
+          ? `a friendly ${str(p.keyword)} unit`
+          : tt === "friendly"
+            ? "a friendly unit"
+            : dekebab(tt);
+      // A missing range stays as `?"` so the audit still flags it as a data gap.
+      const dist = p.range != null ? `${str(p.range)}"` : '?"';
+      return `${negate}within ${dist} of ${who}`;
+    }
     case "within-range-of-objective":
       return `${negate}within range of an objective`;
     case "has-fought-this-phase":
@@ -115,8 +194,11 @@ export function describeCondition(c: Condition): string {
       if (p.exclude != null) s += ` (excluding ${dekebab(str(p.exclude))})`;
       return s;
     }
-    case "units-destroyed":
-      return `${negate}${count(p.count_min ?? 1, `${str(p.side)} unit`)} destroyed ${dekebab(str(p.window))}`;
+    case "units-destroyed": {
+      let s = `${negate}${count(p.count_min ?? 1, `${str(p.side)} unit`)} destroyed`;
+      if (p.window != null) s += ` ${dekebab(str(p.window))}`;
+      return s;
+    }
     case "units-destroyed-comparison": {
       const subj = (p.subject ?? {}) as Record<string, unknown>;
       const ref = (p.reference ?? {}) as Record<string, unknown>;
@@ -176,6 +258,9 @@ export function describeCondition(c: Condition): string {
       return s;
     }
     case "unit-has-tag": {
+      // Ability-gate use (no side/count) reads as a unit state; scoring use counts tagged units.
+      if (p.side == null && p.count_min == null)
+        return `${negate}the unit is tagged ${dekebab(str(p.tag))}`;
       let s = `${negate}${count(p.count_min ?? 1, `${str(p.side)} unit`)} tagged ${dekebab(str(p.tag))}`;
       if (p.window != null) s += ` (${dekebab(str(p.window))})`;
       return s;

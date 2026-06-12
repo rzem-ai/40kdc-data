@@ -1,19 +1,20 @@
 /**
- * Humanize an Ability-DSL `effect` tree into plain English — the
+ * Humanize an Ability-DSL `effect` tree into natural English — the
  * `ability.print()` of the dataset. Output is an *approximation* generated
- * purely from the structured data (no external rules text), ASCII-only, with
- * a fixed clause order: it is pinned byte-for-byte across the TS and Rust
- * ports by the `conformance/effect-translation` corpus, so any phrasing
- * change here is a semantic corpus change (bump `conformance/SPEC_VERSION`).
+ * purely from the structured data (no external rules text): subject-first,
+ * GW-datasheet voice, with scope range + duration woven into the sentence and
+ * single-leaf conditionals inlined. ASCII-only. It is pinned byte-for-byte
+ * across the TS / Rust / Python ports by the `conformance/effect-translation`
+ * corpus, so any phrasing change here is a semantic corpus change (bump
+ * `conformance/SPEC_VERSION`).
  *
- * Container nodes (`sequence`, `conditional`, `choice`, `dice-gated`,
- * `dice-pool-allocation`) render block-style with two-space indentation and
- * an ASCII `-> ` arrow; leaves render as single clauses. Unknown leaf types
- * and unrecognized modifier shapes degrade to a deterministic bracketed form
- * (`[the-type]`) rather than failing — coverage improves as authoring does.
+ * Container nodes (`sequence`, `choice`, `dice-gated`, `dice-pool-allocation`,
+ * and a `conditional` wrapping a container) render block-style with two-space
+ * indentation; a `conditional` wrapping a single leaf inlines to one sentence.
+ * Unknown leaf types degrade to a deterministic bracketed form (`[the-type]`).
  */
 
-import { describeCondition, dekebab, type Condition } from "./condition.js";
+import { describeCondition, describeTiming, dekebab, type Condition } from "./condition.js";
 
 /**
  * Minimal structural view of an effect node. Matches the ability-dsl effect
@@ -63,6 +64,19 @@ export interface AbilityLike {
   applies_to?: AbilityAppliesTo | null;
 }
 
+/** Rendering context threaded down from the ability (scope info the leaf needs). */
+interface Ctx {
+  /** Aura/blast radius in inches, for `*-within-aura` targets and within-range effects. */
+  rangeInches?: number;
+}
+
+const CONTAINER_TYPES = new Set([
+  "sequence",
+  "choice",
+  "dice-gated",
+  "dice-pool-allocation",
+]);
+
 /** JS-template stringification (numbers print without trailing `.0`). */
 function jstr(v: unknown): string {
   if (v == null) return "?";
@@ -70,22 +84,130 @@ function jstr(v: unknown): string {
   return String(v);
 }
 
-function formatTarget(t?: string): string {
-  return t ? dekebab(t) : "target";
+/** Uppercase the first character (idempotent; leaves the rest untouched). */
+function capitalize(s: string): string {
+  return s.length === 0 ? s : s[0].toUpperCase() + s.slice(1);
 }
 
+/** Small words kept lowercase mid-phrase in Title Case (`Benefit of Cover`, not `Benefit Of Cover`). */
+const TITLE_SMALL = new Set(["of", "or", "and", "the", "a", "an", "to", "in", "on", "for", "with"]);
+
+/** kebab/space token → Title Case (`deep-strike` → `Deep Strike`, `shoot-and-scoot` → `Shoot and Scoot`). */
+function titleCase(s: string): string {
+  return dekebab(s)
+    .split(" ")
+    .map((w, i) => {
+      if (w.length === 0) return w;
+      if (i > 0 && TITLE_SMALL.has(w.toLowerCase())) return w.toLowerCase();
+      return w[0].toUpperCase() + w.slice(1);
+    })
+    .join(" ");
+}
+
+/** A GW weapon keyword token → bracketed caps (`lethal-hits` → `[LETHAL HITS]`). */
+function bracketKeyword(k: unknown): string {
+  return `[${dekebab(jstr(k)).toUpperCase()}]`;
+}
+
+/** Dice tokens print with a capital `D` (`d3` → `D3`, `2d6` → `2D6`). */
+function diceCase(v: unknown): string {
+  return jstr(v).replace(/d/gi, "D");
+}
+
+/** A leadership/escape test token → GW name (`battle-shock` → `Battle-shock`). */
+const TEST_NAMES: Record<string, string> = {
+  "battle-shock": "Battle-shock",
+  "desperate-escape": "Desperate Escape",
+};
+function testName(test: unknown): string {
+  const t = jstr(test);
+  return TEST_NAMES[t] ?? titleCase(t);
+}
+
+/** Does a subject noun phrase take a plural verb? (`enemy units within 6"`, `all friendly units`). */
+function isPlural(subj: string): boolean {
+  return / units\b/.test(subj) || /^all /.test(subj) || /^(enemy|friendly) units/.test(subj);
+}
+
+/** Subject-verb agreement: pick the plural form of a present-tense verb when the subject is plural. */
+const PLURAL_VERBS: Record<string, string> = {
+  has: "have",
+  is: "are",
+  gets: "get",
+  gains: "gain",
+  suffers: "suffer",
+  retains: "retain",
+  makes: "make",
+};
+function v(subj: string, singular: string): string {
+  if (!isPlural(subj)) return singular;
+  return PLURAL_VERBS[singular] ?? singular.replace(/s$/, "");
+}
+
+/** Full characteristic name for a stat token (`Sv` → `Save`). */
+const STAT_NAMES: Record<string, string> = {
+  M: "Move",
+  T: "Toughness",
+  Sv: "Save",
+  W: "Wounds",
+  A: "Attacks",
+  Ld: "Leadership",
+  OC: "Objective Control",
+  S: "Strength",
+  WS: "Weapon Skill",
+  BS: "Ballistic Skill",
+  AP: "Armour Penetration",
+  D: "Damage",
+  Range: "Range",
+};
+
+function statName(stat: unknown): string {
+  const s = jstr(stat);
+  return STAT_NAMES[s] ?? titleCase(s);
+}
+
+/** Resource-pool token → display name (`cp` → `CP`, otherwise Title Case). */
+function poolName(pool: unknown): string {
+  const p = jstr(pool);
+  return p.toLowerCase() === "cp" ? "CP" : titleCase(p);
+}
+
+/** Roll noun for a roll token (`hit` → `Hit`, `attacks-characteristic` → `Attacks characteristic`). */
+const ROLL_NAMES: Record<string, string> = {
+  hit: "Hit",
+  wound: "Wound",
+  charge: "Charge",
+  damage: "Damage",
+  advance: "Advance",
+  save: "Saving throw",
+  leadership: "Leadership",
+};
+
+function rollName(roll: unknown): string {
+  const r = jstr(roll);
+  return ROLL_NAMES[r] ?? titleCase(r);
+}
+
+/** `+1` / `-1` from an operation + value (a negative value flips the sign, so never `+-1`). */
 function signed(operation: unknown, value: unknown): string {
-  const op = operation === "add" || operation === "improve" ? "+" : "-";
-  return `${op}${jstr(value)}`;
+  const positive = operation === "add" || operation === "improve";
+  let sign = positive ? 1 : -1;
+  const n = Number(value);
+  if (!Number.isNaN(n) && n < 0) {
+    sign = -sign;
+    value = Math.abs(n);
+  }
+  return `${sign > 0 ? "+" : "-"}${jstr(value)}`;
 }
 
+/** Dice comparison → "a 4+", "a 3 or less", etc. (for dice-gated thresholds). */
 function formatComparison(comp: string, threshold: unknown): string {
   const th = jstr(threshold);
   switch (comp) {
     case "gte":
-      return `${th}+`;
+      return `a ${th}+`;
     case "lte":
-      return `${th} or less`;
+      return `a ${th} or less`;
     case "gt":
       return `greater than ${th}`;
     case "lt":
@@ -93,135 +215,335 @@ function formatComparison(comp: string, threshold: unknown): string {
     case "eq":
       return `exactly ${th}`;
     default:
-      return `${th}+`;
+      return `a ${th}+`;
   }
 }
 
-/** Single-clause translation for leaf effects (and inline container forms). */
-export function describeEffectInline(e: Effect): string {
+/**
+ * Humanized subject for an effect `target`. Aura targets resolve their radius
+ * from the ability scope (threaded via {@link Ctx}); everything else is a fixed
+ * noun phrase in GW datasheet voice.
+ */
+function subject(target: string | undefined, ctx: Ctx): string {
+  const within = ctx.rangeInches != null ? ` within ${jstr(ctx.rangeInches)}"` : " nearby";
+  switch (target) {
+    case "self":
+    case "bearer":
+      return "this model";
+    case "unit":
+      return "the unit";
+    case "attached-unit":
+      return "the unit this model leads";
+    case "target":
+      return "the target";
+    case "attacker":
+      return "the attacking unit";
+    case "defender":
+      return "your unit";
+    case "all-friendly":
+      return "all friendly units";
+    case "all-enemy":
+      return "all enemy units";
+    case "friendly-within-aura":
+      return `friendly units${within}`;
+    case "enemy-within-aura":
+      return `enemy units${within}`;
+    default:
+      return "the unit";
+  }
+}
+
+/** Possessive form of a subject noun phrase (`the unit` → `the unit's`). */
+function possessive(s: string): string {
+  return s.endsWith("s") ? `${s}'` : `${s}'s`;
+}
+
+/** Possessive pronoun agreeing with the subject (`its` / `their`). */
+function pronoun(subj: string): string {
+  return isPlural(subj) ? "their" : "its";
+}
+
+/**
+ * Duration → woven clause. `lead` sits at the very front of the sentence
+ * ("Once per battle, …"); `trail` sits after the trigger/condition and before
+ * the effect ("…, until the end of the phase, …"). `permanent` adds nothing.
+ */
+function durationClauses(duration: string | undefined): { lead: string; trail: string } {
+  switch (duration) {
+    case "phase":
+      return { lead: "", trail: "until the end of the phase" };
+    case "turn":
+      return { lead: "", trail: "until the end of the turn" };
+    case "battle":
+      return { lead: "", trail: "for the rest of the battle" };
+    case "battle-round":
+      return { lead: "", trail: "until the end of the battle round" };
+    case "until-next-command-phase":
+      return { lead: "", trail: "until your next Command phase" };
+    case "one-use":
+      return { lead: "once per battle", trail: "" };
+    default: // permanent / absent
+      return { lead: "", trail: "" };
+  }
+}
+
+/**
+ * A condition rendered as a natural lead-in clause (lowercase-initial — the
+ * caller capitalizes at the sentence boundary). Falls back to `if <condition>`
+ * for shapes without a dedicated framing.
+ */
+function conditionLeadIn(c: Condition): string {
+  // Compound nodes recurse so each part reads in its natural framing.
+  if (c.operator === "and" && c.operands) return c.operands.map(conditionLeadIn).join(", ");
+  if (c.operator === "or" && c.operands) return c.operands.map(conditionLeadIn).join(" or ");
+  if (c.operator === "not" && c.operands)
+    return `unless ${c.operands.map((o) => conditionLeadIn(o).replace(/^if /, "")).join(" or ")}`;
+  if (c.negated) return `if ${describeCondition(c)}`;
+
+  const p = c.parameters ?? {};
+  switch (c.type) {
+    case "phase-is":
+      return `during the ${titleCase(jstr(p.phase))} phase`;
+    case "is-attached":
+      return `after being attached to a ${p.keyword ? `${jstr(p.keyword)} ` : ""}unit`;
+    case "timing-is":
+      return describeTiming(p.timing);
+    case "player-turn-is":
+      return p.turn === "your-turn"
+        ? "in your turn"
+        : p.turn === "opponent-turn"
+          ? "in the opponent's turn"
+          : "in either player's turn";
+    case "model-is-leader":
+      return "while this model leads a unit";
+    case "charged-this-turn":
+      return "if the unit charged this turn";
+    case "advanced-this-turn":
+      return "if the unit Advanced this turn";
+    case "remained-stationary":
+      return "if the unit Remained Stationary";
+    case "target-has-keyword":
+      return `against ${jstr(p.keyword)} targets`;
+    case "unit-has-keyword":
+      return `if the unit has the ${jstr(p.keyword)} keyword`;
+    case "is-battle-shocked":
+      return "while the unit is Battle-shocked";
+    case "unit-below-half-strength":
+      return "while the unit is below half strength";
+    case "unit-below-starting-strength":
+      return "while the unit is below its starting strength";
+    case "has-lost-wounds":
+      return "while the model has lost wounds";
+    case "attack-is-type":
+      if (p.comparison === "strength-greater-than-toughness")
+        return "when this attack's Strength is greater than the target's Toughness";
+      if (p.comparison != null) return `when ${dekebab(jstr(p.comparison))}`;
+      return `with ${jstr(p.attack_type)} attacks`;
+    case "destroyed-by-attack-type":
+      return `when destroyed by a ${jstr(p.attack_type)} attack`;
+    case "opponent-unit-within-range": {
+      let where: string;
+      if (p.weapon_name != null) where = `range of ${dekebab(jstr(p.weapon_name))}`;
+      else if (p.range_multiplier != null) where = "half range of its ranged weapons";
+      else where = p.range === "engagement" ? "engagement range" : `${jstr(p.range)}"`;
+      return `while an enemy unit is within ${where}`;
+    }
+    default:
+      return `if ${describeCondition(c)}`;
+  }
+}
+
+/** Single-clause translation for leaf effects (lowercase-initial, no period). */
+export function describeEffectInline(e: Effect, ctx: Ctx = {}): string {
   const m = e.modifier ?? {};
-  const target = formatTarget(e.target);
+  const subj = subject(e.target, ctx);
 
   switch (e.type) {
     case "stat-modifier": {
       const scope = m.attack_type ? ` (${jstr(m.attack_type)})` : "";
-      if (m.stat == null) return `modify stats for ${target}`;
-      if (m.operation === "set") return `set ${jstr(m.stat)} to ${jstr(m.value)}${scope} for ${target}`;
-      return `${signed(m.operation, m.value)} ${jstr(m.stat)}${scope} for ${target}`;
+      if (m.stat == null) return `modify ${possessive(subj)} characteristics${scope}`;
+      if (m.operation === "set")
+        return `modify ${possessive(subj)} ${statName(m.stat)} characteristic to ${jstr(m.value)}${scope}`;
+      let val = m.value;
+      let verb = m.operation === "subtract" || m.operation === "worsen" ? "subtract" : "add";
+      const n = Number(val); // a negative value flips the verb so we never say "add -1"
+      if (!Number.isNaN(n) && n < 0) {
+        verb = verb === "add" ? "subtract" : "add";
+        val = Math.abs(n);
+      }
+      const prep = verb === "add" ? "to" : "from";
+      return `${verb} ${jstr(val)} ${prep} ${possessive(subj)} ${statName(m.stat)} characteristic${scope}`;
     }
     case "roll-modifier": {
-      const ctx = m.context ? ` (${jstr(m.context)})` : "";
-      if (m.value == null) return `${dekebab(jstr(m.operation))} ${jstr(m.roll)} rolls${ctx} for ${target}`;
-      return `${signed(m.operation, m.value)} to ${jstr(m.roll)} rolls${ctx} for ${target}`;
+      const ctxNote = m.context ? ` (${jstr(m.context)})` : "";
+      if (m.critical_on != null) {
+        const crit = m.roll === "wound" ? "Critical Wounds" : "Critical Hits";
+        return `${subj} ${v(subj, "scores")} ${crit} on ${rollName(m.roll)} rolls of ${jstr(m.critical_on)}+`;
+      }
+      if (m.value == null) return `${dekebab(jstr(m.operation))} ${possessive(subj)} ${rollName(m.roll)} rolls${ctxNote}`;
+      return `${subj} ${v(subj, "gets")} ${signed(m.operation, m.value)} to ${rollName(m.roll)} rolls${ctxNote}`;
     }
     case "re-roll": {
-      const subset = m.subset ? ` (${dekebab(jstr(m.subset))})` : "";
-      const atk = m.attack_type ? ` (${jstr(m.attack_type)})` : "";
-      return `re-roll ${jstr(m.roll)} rolls${subset}${atk} for ${target}`;
+      const noun = rollName(m.roll);
+      const which = m.subset === "ones" ? `a ${noun} roll of 1` : `the ${noun} roll`;
+      return `you can re-roll ${which}`;
     }
     case "mortal-wounds": {
-      const amount = m.count ?? m.amount ?? (m.amount_table ? "variable" : "?");
-      const range = m.range ?? m.range_inches;
-      const within = range != null ? ` (within ${jstr(range)}")` : "";
-      return `deal ${jstr(amount)} mortal wounds to ${target}${within}`;
+      const range = m.range ?? m.range_inches ?? ctx.rangeInches;
+      const subjMW =
+        e.target === "enemy-within-aura" && range != null
+          ? `each enemy unit within ${jstr(range)}"`
+          : subj;
+      const verb = subjMW.startsWith("each ") ? "suffers" : v(subjMW, "suffers");
+      const a =
+        m.count != null
+          ? jstr(m.count)
+          : m.amount != null
+            ? jstr(m.amount)
+            : m.dice != null
+              ? diceCase(m.dice)
+              : m.table || m.amount_table
+                ? "a number of"
+                : null;
+      // Deadly-Demise-style triggers carry no count here — the amount is the
+      // model's Deadly Demise rating, so describe the trigger instead of "?".
+      if (a == null && m.trigger != null)
+        return `when this model is destroyed, ${subjMW} ${verb} mortal wounds (${titleCase(jstr(m.trigger))})`;
+      const amt = a ?? "?";
+      const noun = amt === "1" ? "mortal wound" : "mortal wounds";
+      return `${subjMW} ${verb} ${amt} ${noun}`;
     }
-    case "feel-no-pain":
-      return `${target} gains Feel No Pain ${jstr(m.threshold)}+`;
+    case "feel-no-pain": {
+      const vs = m.scope === "mortal" ? " against mortal wounds" : "";
+      return `${subj} ${v(subj, "has")} the Feel No Pain ${jstr(m.threshold)}+ ability${vs}`;
+    }
     case "ward":
-      return `${target} gains Ward ${jstr(m.threshold ?? m.value)}+`;
+      return `${subj} ${v(subj, "has")} the Ward ${jstr(m.threshold ?? m.value)}+ ability`;
     case "invulnerable-save":
-      return `${target} gains a ${jstr(m.invuln_sv ?? m.value)}+ invulnerable save`;
+      return `${subj} ${v(subj, "has")} a ${jstr(m.invuln_sv ?? m.value ?? m.threshold)}+ invulnerable save`;
     case "keyword-grant": {
-      const kw = Array.isArray(m.keywords) ? m.keywords.map(jstr).join(", ") : jstr(m.keyword ?? "keywords");
-      if (m.weapon_name != null) return `${target}'s ${jstr(m.weapon_name)} gains ${kw}`;
-      if (m.weapon_type != null) return `${target}'s ${jstr(m.weapon_type)} weapons gain ${kw}`;
-      return `${target}'s weapons gain ${kw}`;
+      const kw = Array.isArray(m.keywords)
+        ? m.keywords.map(bracketKeyword).join(" and ")
+        : bracketKeyword(m.keyword ?? "keywords");
+      if (m.weapon_name != null) return `${possessive(subj)} ${jstr(m.weapon_name)} gains ${kw}`;
+      if (m.weapon_type != null) return `${possessive(subj)} ${jstr(m.weapon_type)} weapons gain ${kw}`;
+      return `${possessive(subj)} weapons gain ${kw}`;
     }
     case "ability-grant": {
       const grant = m.grant_type ?? m.ability_id;
       const cap = m.capacity != null ? ` (${jstr(m.capacity)})` : "";
-      return `${target} gains ${grant != null ? dekebab(jstr(grant)) : "an ability"}${cap}`;
+      return grant != null
+        ? `${subj} ${v(subj, "gains")} the ${titleCase(jstr(grant))} ability${cap}`
+        : `${subj} ${v(subj, "gains")} an ability${cap}`;
     }
     case "movement-modifier": {
       const kind = m.move_type ?? m.type;
+      if (jstr(kind) === "move-through") return `${subj} can move through enemy models and terrain`;
       const dist = m.distance ?? m.value;
-      const inches = dist != null ? ` ${jstr(dist)}"` : "";
-      return `${target} gains ${kind != null ? dekebab(jstr(kind)) : "a movement effect"}${inches}`;
+      const inches = dist != null && jstr(dist) !== "0" ? ` ${jstr(dist)}"` : "";
+      return kind != null
+        ? `${subj} ${v(subj, "has")} the ${titleCase(jstr(kind))}${inches} ability`
+        : `${subj} ${v(subj, "gains")} a movement ability`;
     }
-    case "damage-reduction":
-      return `reduce incoming damage to ${target} by ${jstr(m.amount ?? m.value)}`;
-    case "resurrection":
-      return `return ${jstr(m.count ?? 1)} model(s) to ${target} with ${jstr(m.wounds_remaining ?? "full")} wounds`;
-    case "model-destruction":
-      return `destroy ${jstr(m.count)} non-leader model(s) from ${target}`;
+    case "damage-reduction": {
+      const r = jstr(m.reduction ?? m.amount ?? m.value);
+      const how =
+        r === "half"
+          ? "halve the Damage of that attack"
+          : r === "to-zero"
+            ? "reduce the Damage of that attack to 0"
+            : `reduce the Damage of that attack by ${r}`;
+      return `each time an attack targets ${subj}, ${how}`;
+    }
+    case "resurrection": {
+      const count = m.count != null ? diceCase(m.count) : "1";
+      const noun = count === "1" ? "destroyed model" : "destroyed models";
+      const wounds = m.wounds_remaining ?? "full";
+      return `return ${count} ${noun} to ${subj} with ${jstr(wounds)} wounds`;
+    }
+    case "model-destruction": {
+      const count = m.count != null ? diceCase(m.count) : "1";
+      const noun = count === "1" ? "model" : "models";
+      return `destroy ${count} ${noun} in ${subj}`;
+    }
     case "cp-gain":
-      return `gain ${jstr(m.amount)} CP`;
-    case "cp-refund":
-      return `refund ${jstr(m.amount)} CP`;
+      return `you gain ${jstr(m.amount ?? 1)}CP`;
+    case "cp-refund": {
+      const strat = m.stratagem != null ? `the ${titleCase(jstr(m.stratagem))} Stratagem` : "one Stratagem";
+      return `you can use ${strat} on ${subj} for 0CP`;
+    }
     case "resource-gain":
-      return `gain ${jstr(m.amount)} to ${jstr(m.pool_id)}`;
+      return `you gain ${jstr(m.amount ?? m.value)} ${poolName(m.pool_id ?? m.resource)}`;
     case "resource-spend":
-      return `spend ${jstr(m.amount)} from ${jstr(m.pool_id)}`;
+      return `spend ${jstr(m.amount ?? m.value)} ${poolName(m.pool_id ?? m.resource)}`;
     case "leadership-modifier": {
-      if (m.test != null && m.operation == null) return `force a ${dekebab(jstr(m.test))} test on ${target}`;
-      if (m.test != null) return `${dekebab(jstr(m.operation))} ${dekebab(jstr(m.test))} tests for ${target}`;
-      if (m.operation != null) return `${signed(m.operation, m.value)} Leadership for ${target}`;
-      return `modify Leadership for ${target}`;
+      const test = m.test != null ? `${testName(m.test)} test` : null;
+      if (test != null && m.operation == null) return `${subj} must take a ${test}`;
+      if (test != null && m.operation === "re-roll") return `${subj} can re-roll ${testName(m.test)} tests`;
+      if (test != null && m.value != null)
+        return `${m.operation === "add" ? "add" : "subtract"} ${jstr(m.value)} ${m.operation === "add" ? "to" : "from"} the ${testName(m.test)} test of ${subj}`;
+      if (m.operation != null && m.value != null)
+        return `${m.operation === "add" || m.operation === "improve" ? "add" : "subtract"} ${jstr(m.value)} ${m.operation === "add" || m.operation === "improve" ? "to" : "from"} the Leadership characteristic of ${subj}`;
+      return `modify ${possessive(subj)} Leadership characteristic`;
     }
     case "fight-first":
-      return `${target} fights first`;
+      return `${subj} ${v(subj, "has")} the Fights First ability`;
     case "fight-last":
-      return `${target} fights last`;
+      return `${subj} ${v(subj, "has")} the Fights Last ability`;
     case "fight-on-death":
-      return `${target} fights on death`;
+      return subj === "this model"
+        ? `each time this model is destroyed, it can fight before being removed from play`
+        : `each time a model in ${subj} is destroyed, it can fight before being removed from play`;
     case "shoot-on-death":
-      return `${target} shoots on death`;
+      return subj === "this model"
+        ? `each time this model is destroyed, it can shoot before being removed from play`
+        : `each time a model in ${subj} is destroyed, it can shoot before being removed from play`;
     case "deep-strike":
-      return `${target} can deep strike`;
+      return `${subj} has the Deep Strike ability`;
     case "fallback-and-act":
-      return `${target} can fall back and act`;
-    case "attack-restriction": {
-      const what = m.restriction ?? m.restriction_type;
-      const range = m.range != null ? ` (within ${jstr(m.range)}")` : "";
-      const max = m.max_models != null ? ` (max ${jstr(m.max_models)} models)` : "";
-      return `${target}: ${what != null ? dekebab(jstr(what)) : "attack restriction"}${range}${max}`;
-    }
+      return `${subj} is eligible to shoot and declare a charge in a turn in which it Fell Back`;
+    case "engagement-passthrough":
+      return `${subj} can move through enemy models`;
+    case "attack-restriction":
+      return describeAttackRestriction(m, subj);
     case "objective-control-modifier": {
-      if (m.operation != null) return `${signed(m.operation, m.value)} OC for ${target}`;
-      return `modify OC of ${target} by ${jstr(m.value)}`;
+      if (m.sticky)
+        return `${subj} ${v(subj, "retains")} control of objective markers even after no models remain in range, until the enemy retakes them (sticky objectives)`;
+      if (m.operation === "halve") return `halve the Objective Control characteristic of ${subj}`;
+      if (m.operation != null)
+        return `${subj} ${v(subj, "gets")} ${signed(m.operation, m.value)} to ${pronoun(subj)} Objective Control characteristic`;
+      return `modify ${possessive(subj)} Objective Control characteristic`;
     }
     case "bs-modifier":
-      return `${signed(m.operation, m.value)} BS for ${target}`;
+      return `${subj} ${v(subj, "gets")} ${signed(m.operation, m.value)} to Ballistic Skill`;
     case "charge-roll-modifier":
-      return `${signed(m.operation, m.value)} to charge rolls for ${target}`;
-    case "engagement-passthrough":
-      return `${target} can move through engagement range`;
+      return `${subj} ${v(subj, "gets")} ${signed(m.operation, m.value)} to Charge rolls`;
     case "terrain-area-tag":
-      return `tag the terrain area as ${dekebab(jstr(m.tag))}`;
+      return `the terrain area is marked as ${dekebab(jstr(m.tag))}`;
     case "objective-tag":
-      return `tag the objective as ${dekebab(jstr(m.tag))}`;
+      return `the objective is marked as ${dekebab(jstr(m.tag))}`;
     case "unit-tag":
-      return `tag ${target} as ${dekebab(jstr(m.tag))}`;
+      return `${subj} ${v(subj, "is")} marked as ${dekebab(jstr(m.tag))}`;
 
     // Container types — inline forms.
     case "conditional":
-      return `if ${describeCondition(e.condition ?? {})}: ${describeEffectInline(e.effect ?? {})}`;
+      return `${conditionLeadIn(e.condition ?? {})}, ${describeEffectInline(e.effect ?? {}, ctx)}`;
     case "sequence":
-      return (e.steps ?? []).map(describeEffectInline).join("; ");
+      return (e.steps ?? []).map((s) => describeEffectInline(s, ctx)).join("; ");
     case "choice": {
-      const label = e.choice_label ? ` (${e.choice_label})` : "";
-      return `choose one${label}: ${(e.options ?? []).map(describeEffectInline).join(" / ")}`;
+      const label = e.choice_label ? ` (${titleCase(e.choice_label)})` : "";
+      return `select one of the following${label}: ${(e.options ?? []).map((o) => describeEffectInline(o, ctx)).join(" / ")}`;
     }
     case "dice-gated": {
       const comp = formatComparison(e.comparison ?? "gte", e.threshold);
-      const success = e.on_success ? describeEffectInline(e.on_success) : "nothing";
-      const fail = e.on_fail ? `, otherwise ${describeEffectInline(e.on_fail)}` : "";
-      return `roll ${jstr(e.dice)}: on ${comp}, ${success}${fail}`;
+      const success = e.on_success ? describeEffectInline(e.on_success, ctx) : "nothing happens";
+      const fail = e.on_fail ? `; otherwise, ${describeEffectInline(e.on_fail, ctx)}` : "";
+      return `roll one ${diceCase(e.dice)}: on ${comp}, ${success}${fail}`;
     }
     case "dice-pool-allocation": {
       const pool = e.pool ? `${jstr(e.pool.count)}${jstr(e.pool.die)}` : "?";
       const opts = (e.options ?? [])
-        .map((o) => `${jstr(o.name)} (${jstr(o.requirement?.min_value)}+): ${describeEffectInline(o.effect ?? {})}`)
+        .map((o) => `${jstr(o.name)} (${jstr(o.requirement?.min_value)}+): ${describeEffectInline(o.effect ?? {}, ctx)}`)
         .join(" / ");
       return `roll ${pool}: ${opts}`;
     }
@@ -231,48 +553,85 @@ export function describeEffectInline(e: Effect): string {
   }
 }
 
+/** Per-slug GW-prose for `attack-restriction` (reads `restriction` or `restriction_type`). */
+function describeAttackRestriction(m: Record<string, unknown>, subj: string): string {
+  // Some entries express the restriction as a forbidden action (`attack_type: charge`).
+  if (m.restriction == null && m.restriction_type == null && m.attack_type != null)
+    return `${subj} cannot ${jstr(m.attack_type)}`;
+  const slug = jstr(m.restriction ?? m.restriction_type);
+  const range = m.range != null ? jstr(m.range) : null;
+  switch (slug) {
+    case "worsen-incoming-ap":
+      return `each time an attack targets ${subj}, worsen the Armour Penetration of that attack by ${jstr(m.value ?? 1)}`;
+    case "cannot-be-targeted-unless-closest-or-within-12":
+      return `${subj} can only be targeted if it is the closest eligible target or within 12"`;
+    case "targeting-range-limit":
+      return `${subj} can only target enemy units within ${range ?? "?"}"`;
+    case "reinforcement-denial":
+      return `enemy units cannot be set up from Reserves within ${range ?? "?"}" of ${subj}`;
+    case "must-be-warlord":
+      return "this model must be your Warlord";
+    case "cannot-be-warlord":
+      return "this model cannot be your Warlord";
+    case "unique-unit-limit":
+      return "you can include only one of this unit in your army";
+    case "no-charge":
+      return `${subj} cannot charge`;
+    default:
+      return `${subj}: ${dekebab(slug)}${range != null ? ` (within ${range}")` : ""}`;
+  }
+}
+
 /**
- * Block translation of an effect tree. Containers expand over multiple lines
- * with two-space indentation; leaves delegate to `describeEffectInline`.
+ * Block translation of a *container* effect tree (multi-line, two-space
+ * indentation). Leaves and conditionals are handled inline by the caller.
  */
-export function describeEffect(e: Effect, depth: number = 0): string {
+export function describeEffect(e: Effect, depth: number = 0, ctx: Ctx = {}): string {
   const indent = "  ".repeat(depth);
   const arrow = depth > 0 ? "-> " : "";
 
   switch (e.type) {
-    case "conditional":
-      return `${indent}If ${describeCondition(e.condition ?? {})}:\n` + describeEffect(e.effect ?? {}, depth + 1);
+    case "conditional": {
+      const inner = e.effect ?? {};
+      if (CONTAINER_TYPES.has(inner.type ?? "")) {
+        return `${indent}${capitalize(conditionLeadIn(e.condition ?? {}))}:\n` + describeEffect(inner, depth + 1, ctx);
+      }
+      return `${indent}${arrow}${capitalize(conditionLeadIn(e.condition ?? {}))}, ${describeEffectInline(inner, ctx)}.`;
+    }
     case "sequence":
-      return (e.steps ?? []).map((s) => describeEffect(s, depth)).join("\n");
+      return (e.steps ?? [])
+        .map((s) => describeEffect(s, depth, ctx))
+        .join("\n");
     case "choice": {
-      const label = e.choice_label ? ` (${e.choice_label})` : "";
+      const label = e.choice_label ? ` (${titleCase(e.choice_label)})` : "";
       return (
-        `${indent}${arrow}Choose one${label}:\n` +
-        (e.options ?? []).map((o, i) => `${indent}  ${i + 1}. ${describeEffectInline(o)}`).join("\n")
+        `${indent}Select one of the following${label}:\n` +
+        (e.options ?? []).map((o) => `${indent}  - ${capitalize(describeEffectInline(o, ctx))}.`).join("\n")
       );
     }
     case "dice-gated": {
       const comp = formatComparison(e.comparison ?? "gte", e.threshold);
-      const success = e.on_success ? describeEffectInline(e.on_success) : "nothing";
-      const fail = e.on_fail ? `, otherwise ${describeEffectInline(e.on_fail)}` : "";
-      return `${indent}${arrow}Roll ${jstr(e.dice)}: on ${comp}, ${success}${fail}`;
+      const success = e.on_success ? describeEffectInline(e.on_success, ctx) : "nothing happens";
+      const fail = e.on_fail ? `; otherwise, ${describeEffectInline(e.on_fail, ctx)}` : "";
+      return `${indent}${arrow}Roll one ${diceCase(e.dice)}: on ${comp}, ${success}${fail}.`;
     }
     case "dice-pool-allocation": {
       const pool = e.pool ? `${jstr(e.pool.count)}${jstr(e.pool.die)}` : "?";
       const lines = [`${indent}${arrow}Roll ${pool} (max ${jstr(e.max_activations)} activations):`];
       for (const opt of e.options ?? []) {
         lines.push(
-          `${indent}  - ${jstr(opt.name)}: need ${jstr(opt.requirement?.type)} of ${jstr(opt.requirement?.min_value)}+ -> ${describeEffectInline(opt.effect ?? {})}`
+          `${indent}  - ${jstr(opt.name)}: need ${jstr(opt.requirement?.type)} of ${jstr(opt.requirement?.min_value)}+ -> ${describeEffectInline(opt.effect ?? {}, ctx)}`
         );
       }
       return lines.join("\n");
     }
     default:
-      return `${indent}${arrow}${describeEffectInline(e)}`;
+      // Leaf at block position — render as a single capitalized sentence.
+      return `${indent}${arrow}${capitalize(describeEffectInline(e, ctx))}.`;
   }
 }
 
-/** `Scope: aura (6"). Duration: phase.` — empty string when absent. */
+/** `Scope: aura (6"). Duration: phase.` — retained for the legacy translate CLI footer. */
 export function describeScope(s?: AbilityScope): string {
   if (!s || (!s.range && !s.duration)) return "";
   const range = dekebab(s.range ?? "");
@@ -297,15 +656,49 @@ export function describeAppliesTo(a?: AbilityAppliesTo | null): string {
   return `Applies to: ${base}${exc}.`;
 }
 
+/** Join non-empty clauses with ", ", capitalize the sentence, and end with a period. */
+function assembleSentence(parts: string[]): string {
+  const body = parts.filter((p) => p.length > 0).join(", ");
+  if (body.length === 0) return "";
+  const period = body.endsWith(".") || body.endsWith(":") ? "" : ".";
+  return capitalize(body) + period;
+}
+
 /**
- * Full generated text for an ability: the effect tree, a trailing scope line,
- * and a trailing `Applies to:` line when the ability carries a curated
- * `applies_to` filter. This is the `ability.print()` consumers render when the
- * dataset carries no rules prose.
+ * Full generated text for an ability: a natural-English sentence (effect with
+ * scope range + duration woven in, single-leaf conditionals inlined) plus a
+ * trailing `Applies to:` line when the ability carries a curated `applies_to`
+ * filter. This is the `ability.print()` consumers render when the dataset
+ * carries no rules prose.
  */
 export function describeAbility(a: AbilityLike): string {
-  const effect = a.effect ? describeEffect(a.effect) : "";
-  const scope = describeScope(a.scope);
+  const core = a.effect ? renderTopLevel(a.effect, a.scope) : "";
   const applies = describeAppliesTo(a.applies_to);
-  return [effect, scope, applies].filter(Boolean).join("\n");
+  return [core, applies].filter(Boolean).join("\n");
+}
+
+/** Assemble the top-level sentence/block, weaving scope duration + range. */
+function renderTopLevel(e: Effect, scope?: AbilityScope): string {
+  const ctx: Ctx = { rangeInches: scope?.range_inches };
+  const { lead, trail } = durationClauses(scope?.duration);
+
+  if (e.type === "conditional") {
+    const inner = e.effect ?? {};
+    const leadIn = conditionLeadIn(e.condition ?? {});
+    if (CONTAINER_TYPES.has(inner.type ?? "")) {
+      // Block: "<lead-in>[, <duration>]:" then the indented container.
+      const header = [lead, leadIn, trail].filter((p) => p.length > 0).join(", ");
+      return capitalize(header) + ":\n" + describeEffect(inner, 1, ctx);
+    }
+    return assembleSentence([lead, leadIn, trail, describeEffectInline(inner, ctx)]);
+  }
+
+  if (CONTAINER_TYPES.has(e.type ?? "")) {
+    // Containers render block; a duration lead-in prefixes the block when present.
+    const block = describeEffect(e, 0, ctx);
+    const dur = lead || trail;
+    return dur ? capitalize(dur) + ":\n" + block : block;
+  }
+
+  return assembleSentence([lead, trail, describeEffectInline(e, ctx)]);
 }

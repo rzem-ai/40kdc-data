@@ -41,6 +41,8 @@ interface AbilityEntry {
   effect?: Effect;
   scope?: AbilityScope;
   applies_to?: AbilityAppliesTo | null;
+  /** Units that carry this ability — surfaced so a worklist row points at the datasheet. */
+  unit_ids?: string[];
 }
 
 /** One catalogued ability: its identity, the generated text, and any defect flags. */
@@ -48,6 +50,8 @@ export interface PhrasingRow {
   faction: string;
   ability_id: string;
   name: string;
+  /** Slugs of the units carrying this ability (for datasheet/Wahapedia lookup). */
+  unit_ids: string[];
   /** Full multi-line `describeAbility` output (effect + scope + applies). */
   text: string;
   flags: PhrasingFlag[];
@@ -75,7 +79,10 @@ export type PhrasingFlag =
 
 const PREP = "(?:at|on|in|of|to|by|for|from|with)";
 const DOUBLED_PREP = new RegExp(`\\b${PREP}\\s+${PREP}\\b`, "i");
-const TYPE_FALLBACK = /\[[^\]]+\]/;
+// The unknown-effect-type fallback emits a lowercase kebab token in brackets
+// (`[some-type]`); intentional GW weapon keywords are bracketed UPPERCASE
+// (`[LETHAL HITS]`) and must NOT be flagged.
+const TYPE_FALLBACK = /\[[a-z][a-z0-9-]*\]/;
 const SNAKE_CASE = /[a-z]+_[a-z]+/;
 const ZERO_INCH = /\b0"/;
 
@@ -124,6 +131,7 @@ export function auditPhrasing(
         faction,
         ability_id: a.ability_id,
         name: a.name ?? a.ability_id,
+        unit_ids: a.unit_ids ?? [],
         text,
         flags,
       });
@@ -180,13 +188,14 @@ function csvField(v: string): string {
  * artifact keeps the original newlines.
  */
 function csvReport(r: PhrasingReport): string {
-  const lines = ["faction,ability_id,name,flags,text"];
+  const lines = ["faction,ability_id,name,unit_ids,flags,text"];
   for (const row of r.rows) {
     lines.push(
       [
         csvField(row.faction),
         csvField(row.ability_id),
         csvField(row.name),
+        csvField(row.unit_ids.join(";")),
         csvField(row.flags.join(";")),
         csvField(row.text.replace(/\n/g, " / ")),
       ].join(","),

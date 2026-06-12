@@ -41,6 +41,63 @@ def _count(n: Any, noun: str) -> str:
     return f"{_str(n)}+ {noun}s"
 
 
+# A ``timing-is`` event token → natural GW-voice clause. Mirrors TS TIMING_PHRASES.
+_TIMING_PHRASES: dict[str, str] = {
+    "start-of-phase": "at the start of the phase",
+    "end-of-phase": "at the end of the phase",
+    "start-of-turn": "at the start of the turn",
+    "end-of-turn": "at the end of the turn",
+    "end-of-opponent-turn": "at the end of the opponent's turn",
+    "start-of-battle-round": "at the start of the battle round",
+    "start": "at the start of the turn",
+    "end": "at the end of the turn",
+    "command-phase": "in the Command phase",
+    "shooting-phase": "in the Shooting phase",
+    "on-model-destroyed": "each time a model in this unit is destroyed",
+    "model-destroyed": "each time a model in this unit is destroyed",
+    "first-model-destroyed": "the first time a model in this unit is destroyed",
+    "first-this-battle": "the first time this battle",
+    "first-time-this-phase": "the first time this phase",
+    "on-unit-destroyed": "each time this unit is destroyed",
+    "on-destroyed": "each time this unit is destroyed",
+    "enemy-unit-destroyed-in-melee": "each time an enemy unit is destroyed in melee",
+    "in-reserves": "while it is in Reserves",
+    "game-start-in-reserves": "if it begins the battle in Reserves",
+    "starts-in-strategic-reserves": "if it starts in Strategic Reserves",
+    "deep-strike-setup": "when it is set up by Deep Strike",
+    "deep-strike": "when it is set up by Deep Strike",
+    "set-up-from-reserves": "when it arrives from Reserves",
+    "arrives-from-strategic-reserves": "when it arrives from Strategic Reserves",
+    "reinforcements": "when it arrives as Reinforcements",
+    "reinforcements-step": "during the Reinforcements step",
+    "post-deployment": "after deployment",
+    "declare-battle-formations": "when declaring Battle Formations",
+    "normal-move": "when it makes a Normal move",
+    "advance-move": "when it makes an Advance move",
+    "advance": "when it Advances",
+    "fall-back-move": "when it makes a Fall Back move",
+    "fall-back": "when it Falls Back",
+    "charge-move": "when it makes a Charge move",
+    "once-per-battle": "once per battle",
+    "once-per-phase": "once per phase",
+    "once-per-opponent-turn": "once per opponent's turn",
+}
+
+
+def describe_timing(timing: Any) -> str:
+    """A ``timing-is`` event → natural GW-voice clause (no doubled prepositions)."""
+    t = _str(timing)
+    if t in _TIMING_PHRASES:
+        return _TIMING_PHRASES[t]
+    if t.startswith("after-"):
+        return f"after {dekebab(t[6:])}"
+    if t.startswith("on-"):
+        return f"when {dekebab(t[3:])}"
+    if t.endswith("-destroyed"):
+        return f"each time {dekebab(t)}"
+    return f"at {dekebab(t)}"
+
+
 def describe_condition(c: Condition) -> str:
     # Compound nodes first — join the operands with lowercase connectives.
     operands = c.get("operands")
@@ -59,7 +116,7 @@ def describe_condition(c: Condition) -> str:
     if ctype == "phase-is":
         return f"{negate}during the {_str(p.get('phase'))} phase"
     if ctype == "timing-is":
-        return f"{negate}at {dekebab(_str(p.get('timing')))}"
+        return f"{negate}{describe_timing(p.get('timing'))}"
     if ctype == "player-turn-is":
         turn = p.get("turn")
         if turn == "your-turn":
@@ -89,6 +146,10 @@ def describe_condition(c: Condition) -> str:
         kw = f"{_str(p.get('keyword'))} " if p.get("keyword") else ""
         return f"{negate}attached to a {kw}unit"
     if ctype == "attack-is-type":
+        if p.get("comparison") == "strength-greater-than-toughness":
+            return f"{negate}when this attack's Strength is greater than the target's Toughness"
+        if p.get("comparison") is not None:
+            return f"{negate}when {dekebab(_str(p.get('comparison')))}"
         return f"{negate}for {_str(p.get('attack_type'))} attacks"
     if ctype == "is-battle-shocked":
         return f"{negate}the unit is battle-shocked"
@@ -105,14 +166,31 @@ def describe_condition(c: Condition) -> str:
         article = "an attack" if atk == "" else f"a {atk}attack"
         return f"{negate}{subject} was hit by {article}{weapon} this phase"
     if ctype == "opponent-unit-within-range":
-        range_ = p.get("range")
-        within = "engagement range" if range_ == "engagement" else f'{_str(range_)}"'
+        if p.get("weapon_name") is not None:
+            within = f"range of {dekebab(_str(p.get('weapon_name')))}"
+        elif p.get("range_multiplier") is not None:
+            within = "half range of its ranged weapons"
+        elif p.get("range") == "engagement":
+            within = "engagement range"
+        else:
+            within = f'{_str(p.get("range"))}"'
         return f"{negate}an enemy unit is within {within}"
     if ctype == "unit-within-range-of":
-        target_type = p.get("target_type")
-        target = _str(target_type if target_type is not None else "target")
-        kw = f" ({_str(p.get('keyword'))})" if p.get("keyword") else ""
-        return f'{negate}within {_str(p.get("range"))}" of {target}{kw}'
+        tt = _str(p.get("target_type") if p.get("target_type") is not None else "target")
+        # Targets that name a specific model, not a radius — no inches apply.
+        if tt == "closest-eligible":
+            return f"{negate}the target is the closest eligible target"
+        if tt == "area-terrain":
+            return f"{negate}within an area terrain feature"
+        if tt == "friendly-keyword" and p.get("keyword"):
+            who = f"a friendly {_str(p.get('keyword'))} unit"
+        elif tt == "friendly":
+            who = "a friendly unit"
+        else:
+            who = dekebab(tt)
+        # A missing range stays as ?" so the audit still flags it as a data gap.
+        dist = f'{_str(p.get("range"))}"' if p.get("range") is not None else '?"'
+        return f"{negate}within {dist} of {who}"
     if ctype == "within-range-of-objective":
         return f"{negate}within range of an objective"
     if ctype == "has-fought-this-phase":
@@ -141,7 +219,10 @@ def describe_condition(c: Condition) -> str:
         count_min = p.get("count_min")
         n = count_min if count_min is not None else 1
         side_unit = f"{_str(p.get('side'))} unit"
-        return f"{negate}{_count(n, side_unit)} destroyed {dekebab(_str(p.get('window')))}"
+        s = f"{negate}{_count(n, side_unit)} destroyed"
+        if p.get("window") is not None:
+            s += f" {dekebab(_str(p.get('window')))}"
+        return s
     if ctype == "units-destroyed-comparison":
         subj = p.get("subject") or {}
         ref = p.get("reference") or {}
@@ -226,6 +307,9 @@ def describe_condition(c: Condition) -> str:
             s += " (most recently marked)"
         return s
     if ctype == "unit-has-tag":
+        # Ability-gate use (no side/count) reads as a unit state; scoring counts tagged units.
+        if p.get("side") is None and p.get("count_min") is None:
+            return f"{negate}the unit is tagged {dekebab(_str(p.get('tag')))}"
         count_min = p.get("count_min")
         n = count_min if count_min is not None else 1
         side_unit = f"{_str(p.get('side'))} unit"

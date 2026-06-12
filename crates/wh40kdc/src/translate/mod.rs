@@ -51,6 +51,71 @@ fn count(n: u64, noun: &str) -> String {
     format!("{n}+ {noun}s")
 }
 
+/// A `timing-is` event token → natural GW-voice clause ("each time a model in
+/// this unit is destroyed", "at the start of the phase"). Mirrors the TS/Python
+/// `describeTiming`: a missing/`after-`/`on-` prefix never produces "at on …".
+pub(super) fn describe_timing(t: &str) -> String {
+    let mapped = match t {
+        "start-of-phase" => "at the start of the phase",
+        "end-of-phase" => "at the end of the phase",
+        "start-of-turn" => "at the start of the turn",
+        "end-of-turn" => "at the end of the turn",
+        "end-of-opponent-turn" => "at the end of the opponent's turn",
+        "start-of-battle-round" => "at the start of the battle round",
+        "start" => "at the start of the turn",
+        "end" => "at the end of the turn",
+        "command-phase" => "in the Command phase",
+        "shooting-phase" => "in the Shooting phase",
+        "on-model-destroyed" => "each time a model in this unit is destroyed",
+        "model-destroyed" => "each time a model in this unit is destroyed",
+        "first-model-destroyed" => "the first time a model in this unit is destroyed",
+        "first-this-battle" => "the first time this battle",
+        "first-time-this-phase" => "the first time this phase",
+        "on-unit-destroyed" => "each time this unit is destroyed",
+        "on-destroyed" => "each time this unit is destroyed",
+        "enemy-unit-destroyed-in-melee" => "each time an enemy unit is destroyed in melee",
+        "in-reserves" => "while it is in Reserves",
+        "game-start-in-reserves" => "if it begins the battle in Reserves",
+        "starts-in-strategic-reserves" => "if it starts in Strategic Reserves",
+        "deep-strike-setup" => "when it is set up by Deep Strike",
+        "deep-strike" => "when it is set up by Deep Strike",
+        "set-up-from-reserves" => "when it arrives from Reserves",
+        "arrives-from-strategic-reserves" => "when it arrives from Strategic Reserves",
+        "reinforcements" => "when it arrives as Reinforcements",
+        "reinforcements-step" => "during the Reinforcements step",
+        "post-deployment" => "after deployment",
+        "declare-battle-formations" => "when declaring Battle Formations",
+        "normal-move" => "when it makes a Normal move",
+        "advance-move" => "when it makes an Advance move",
+        "advance" => "when it Advances",
+        "fall-back-move" => "when it makes a Fall Back move",
+        "fall-back" => "when it Falls Back",
+        "charge-move" => "when it makes a Charge move",
+        "once-per-battle" => "once per battle",
+        "once-per-phase" => "once per phase",
+        "once-per-opponent-turn" => "once per opponent's turn",
+        _ => "",
+    };
+    if !mapped.is_empty() {
+        return mapped.to_string();
+    }
+    if let Some(rest) = t.strip_prefix("after-") {
+        return format!("after {}", dekebab(rest));
+    }
+    if let Some(rest) = t.strip_prefix("on-") {
+        return format!("when {}", dekebab(rest));
+    }
+    if t.ends_with("-destroyed") {
+        return format!("each time {}", dekebab(t));
+    }
+    format!("at {}", dekebab(t))
+}
+
+/// TS `param != null` over the open parameter map.
+fn pnn(p: &Map<String, Value>, k: &str) -> bool {
+    matches!(p.get(k), Some(v) if !v.is_null())
+}
+
 fn phase_word(p: Phase) -> &'static str {
     match p {
         Phase::Command => "Command",
@@ -156,7 +221,7 @@ pub fn describe_condition(c: &Condition) -> String {
     describe_node(&c.0)
 }
 
-fn describe_node(n: &ConditionNode) -> String {
+pub(super) fn describe_node(n: &ConditionNode) -> String {
     match n {
         ConditionNode::CompoundCondition(c) => {
             let parts: Vec<String> = c.operands.iter().map(describe_node).collect();
@@ -177,7 +242,10 @@ fn describe_simple(s: &SimpleCondition) -> String {
     match s.type_ {
         // ── Ability-DSL conditions ──────────────────────────────────────────
         T::PhaseIs => format!("{negate}during the {} phase", pj(p, "phase")),
-        T::TimingIs => format!("{negate}at {}", dekebab(&pj(p, "timing"))),
+        T::TimingIs => format!(
+            "{negate}{}",
+            describe_timing(ps(p, "timing").unwrap_or("?"))
+        ),
         T::PlayerTurnIs => {
             let turn = match ps(p, "turn") {
                 Some("your-turn") => "your",
@@ -203,7 +271,15 @@ fn describe_simple(s: &SimpleCondition) -> String {
             };
             format!("{negate}attached to a {kw}unit")
         }
-        T::AttackIsType => format!("{negate}for {} attacks", pj(p, "attack_type")),
+        T::AttackIsType => {
+            match ps(p, "comparison") {
+                Some("strength-greater-than-toughness") => {
+                    format!("{negate}when this attack's Strength is greater than the target's Toughness")
+                }
+                Some(c) => format!("{negate}when {}", dekebab(c)),
+                None => format!("{negate}for {} attacks", pj(p, "attack_type")),
+            }
+        }
         T::IsBattleShocked => format!("{negate}the unit is battle-shocked"),
         T::HasLostWounds => format!("{negate}the model has lost wounds"),
         T::WasHitByAttack => {
@@ -230,7 +306,11 @@ fn describe_simple(s: &SimpleCondition) -> String {
             }
         }
         T::OpponentUnitWithinRange => {
-            let r = if ps(p, "range") == Some("engagement") {
+            let r = if pnn(p, "weapon_name") {
+                format!("range of {}", dekebab(&pj(p, "weapon_name")))
+            } else if pnn(p, "range_multiplier") {
+                "half range of its ranged weapons".to_string()
+            } else if ps(p, "range") == Some("engagement") {
                 "engagement range".to_string()
             } else {
                 format!("{}\"", pj(p, "range"))
@@ -238,15 +318,26 @@ fn describe_simple(s: &SimpleCondition) -> String {
             format!("{negate}an enemy unit is within {r}")
         }
         T::UnitWithinRangeOf => {
-            let kw = match ps(p, "keyword") {
-                Some(k) => format!(" ({k})"),
-                None => String::new(),
-            };
-            format!(
-                "{negate}within {}\" of {}{kw}",
-                pj(p, "range"),
-                ps(p, "target_type").unwrap_or("target")
-            )
+            let tt = ps(p, "target_type").unwrap_or("target");
+            if tt == "closest-eligible" {
+                format!("{negate}the target is the closest eligible target")
+            } else if tt == "area-terrain" {
+                format!("{negate}within an area terrain feature")
+            } else {
+                let who = if tt == "friendly-keyword" && ps(p, "keyword").is_some() {
+                    format!("a friendly {} unit", pj(p, "keyword"))
+                } else if tt == "friendly" {
+                    "a friendly unit".to_string()
+                } else {
+                    dekebab(tt)
+                };
+                let dist = if pnn(p, "range") {
+                    format!("{}\"", pj(p, "range"))
+                } else {
+                    "?\"".to_string()
+                };
+                format!("{negate}within {dist} of {who}")
+            }
         }
         T::WithinRangeOfObjective => format!("{negate}within range of an objective"),
         T::HasFoughtThisPhase => format!("{negate}has fought this phase"),
@@ -279,11 +370,16 @@ fn describe_simple(s: &SimpleCondition) -> String {
             }
             out
         }
-        T::UnitsDestroyed => format!(
-            "{negate}{} destroyed {}",
-            count(pu(p, "count_min", 1), &format!("{} unit", pj(p, "side"))),
-            dekebab(&pj(p, "window"))
-        ),
+        T::UnitsDestroyed => {
+            let mut s = format!(
+                "{negate}{} destroyed",
+                count(pu(p, "count_min", 1), &format!("{} unit", pj(p, "side")))
+            );
+            if pnn(p, "window") {
+                s.push_str(&format!(" {}", dekebab(&pj(p, "window"))));
+            }
+            s
+        }
         T::UnitsDestroyedComparison => {
             let empty = Map::new();
             let subj = po(p, "subject").unwrap_or(&empty);
@@ -418,6 +514,10 @@ fn describe_simple(s: &SimpleCondition) -> String {
             out
         }
         T::UnitHasTag => {
+            // Ability-gate use (no side/count) reads as a unit state; scoring counts tagged units.
+            if !pnn(p, "side") && !pnn(p, "count_min") {
+                return format!("{negate}the unit is tagged {}", dekebab(&pj(p, "tag")));
+            }
             let mut out = format!(
                 "{negate}{} tagged {}",
                 count(pu(p, "count_min", 1), &format!("{} unit", pj(p, "side"))),
