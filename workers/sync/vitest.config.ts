@@ -9,6 +9,13 @@ export default defineWorkersConfig(async () => {
       setupFiles: ["./test/apply-migrations.ts"],
       poolOptions: {
         workers: {
+          // Per-test isolated storage doesn't pop cleanly while a test holds
+          // open WebSockets / live DO SQLite handles (the same known friction
+          // shadowboxing's session-worker hit). Every test uses fresh random
+          // codes/ids, so shared storage is safe — but it must then be ONE
+          // worker, or parallel test files race the D1 migration setup.
+          isolatedStorage: false,
+          singleWorker: true,
           wrangler: { configPath: "./wrangler.jsonc" },
           miniflare: {
             bindings: {

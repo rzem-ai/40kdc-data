@@ -9,8 +9,24 @@
   import PwaInstallPrompt from "../../_shared/PwaInstallPrompt.svelte";
   import EntitlementGate from "../../_shared/EntitlementGate.svelte";
   import CloudSavesPane from "../../_shared/CloudSavesPane.svelte";
+  import SessionBar from "../../_shared/SessionBar.svelte";
   import { maybeCaptureEntitlement } from "../../_shared/entitlement.svelte";
   import { resolveLink } from "../../_shared/sync-api";
+  import {
+    createDocSession,
+    docSession,
+    joinDocSession,
+    parseSessionInvite,
+    registerDocSession,
+    sendOps,
+  } from "../../_shared/doc-session.svelte";
+  import { applyDocOps } from "../../_shared/doc-protocol";
+  import {
+    diffSessionDocs,
+    planToSessionDoc,
+    sessionDocToPlan,
+    type SessionDoc,
+  } from "./lib/session-doc";
   import {
     LIST_BUILDER_URL,
     MISSION_MATRIX_URL,
@@ -52,8 +68,8 @@
     { name: plan.teamName.trim() || "Team plan", payload: plan as unknown },
   ]);
 
-  /** Every inbound payload — cloud load, shortlink, (later) session welcome —
-   *  passes through sanitizePlan, the same defensive gate the #t= path uses. */
+  /** Every inbound payload — cloud load, shortlink, session welcome — passes
+   *  through sanitizePlan, the same defensive gate the #t= path uses. */
   function adoptPlan(payload: unknown, source: string): void {
     const result = sanitizePlan(payload);
     if (result) {
@@ -62,6 +78,56 @@
     } else {
       flash(`That ${source} couldn't be opened.`);
     }
+  }
+
+  // ── Live shared session (patron-created, free to join) ─────────────────────
+  // The plan replicates as an id-keyed SessionDoc; `lastSessionDoc` is the
+  // last state this client knows the server has. Local edits diff against it
+  // (id-disjoint set/del ops); remote ops/welcomes update it and replace the
+  // local plan. The loop is self-stabilizing: after adopting remote state the
+  // diff is empty, so nothing echoes.
+  let lastSessionDoc: SessionDoc | null = null;
+
+  registerDocSession({
+    onDoc(doc) {
+      lastSessionDoc = doc as SessionDoc;
+      const result = sanitizePlan(sessionDocToPlan(lastSessionDoc));
+      if (result) plan = result.plan;
+    },
+    onRemoteOps(ops) {
+      if (!lastSessionDoc) return;
+      try {
+        lastSessionDoc = applyDocOps(lastSessionDoc, ops) as SessionDoc;
+      } catch {
+        // Divergence — the next reconnect's welcome restores exact state.
+        return;
+      }
+      const result = sanitizePlan(sessionDocToPlan(lastSessionDoc));
+      if (result) plan = result.plan;
+    },
+  });
+
+  // Push local edits while live (editors only). Runs after every plan change;
+  // when the change came from the session itself the diff is empty.
+  $effect(() => {
+    const next = planToSessionDoc(plan);
+    if (docSession.status !== "connected" || docSession.role !== "editor" || !lastSessionDoc) {
+      return;
+    }
+    const ops = diffSessionDocs(lastSessionDoc, next);
+    if (ops.length > 0) {
+      lastSessionDoc = next;
+      sendOps(ops);
+    }
+  });
+
+  // A refused create (no/lapsed entitlement) opens the gate.
+  $effect(() => {
+    if (docSession.entitlementRequired) gateOpen = true;
+  });
+
+  function startSession(): void {
+    void createDocSession("team-plan", planToSessionDoc(plan), "captain");
   }
 
   const coverage = $derived(teamCoverage(plan));
@@ -98,6 +164,13 @@
         flash("That share link couldn't be opened.");
       }
       history.replaceState(null, "", location.pathname + location.search);
+    }
+
+    // Join a live session from an invite link (?session=CODE&token=…). The
+    // params stay in the URL so a refresh rejoins.
+    const invite = parseSessionInvite(location.search);
+    if (invite) {
+      joinDocSession(invite.code, invite.token, "guest");
     }
 
     // Open a `?s=CODE` shortlink (server-resolved; opening is free).
@@ -207,6 +280,11 @@
           Reset
         </button>
       </div>
+    </div>
+
+    <!-- Live shared session: group-edit this plan on a call -->
+    <div class="mb-4">
+      <SessionBar onStart={startSession} onFlash={flash} />
     </div>
 
     <!-- Cloud sync + short links (patron feature; opening links is free) -->

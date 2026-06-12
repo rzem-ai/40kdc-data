@@ -12,9 +12,15 @@
  * at-rest half.
  */
 import { authenticate, type VerifyEntitlementEnv } from "./verify-entitlement";
+import { DocRoom, type DocRoomEnv } from "./doc-room";
+import { SyncRegistry } from "./sync-registry";
 
-export interface Env extends VerifyEntitlementEnv {
+// The DO classes must be exported from the Worker's main module.
+export { DocRoom, SyncRegistry };
+
+export interface Env extends VerifyEntitlementEnv, DocRoomEnv {
   DB: D1Database;
+  DOC_ROOM: DurableObjectNamespace<DocRoom>;
   MAX_DOCS_PER_OWNER?: string;
   MAX_LINKS_PER_OWNER?: string;
   MAX_PAYLOAD_BYTES?: string;
@@ -26,6 +32,10 @@ export type DocKind = (typeof DOC_KINDS)[number];
 /** Same spoken-friendly alphabet as shadowboxing session codes (no 0/O/1/I/L). */
 const CODE_ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
 const LINK_CODE_LEN = 8;
+/** Live-session codes: 6 chars, spoken aloud on a call — same as shadowboxing. */
+const SESSION_CODE_LEN = 6;
+/** Code-collision retries at session create (31^6 codes; ~never needed). */
+const SESSION_MINT_ATTEMPTS = 3;
 /** PK-collision retries when minting a code (collisions are ~never at 31^8). */
 const LINK_MINT_ATTEMPTS = 5;
 
@@ -57,19 +67,27 @@ async function readJson(request: Request): Promise<Record<string, unknown>> {
   }
 }
 
-function newLinkCode(): string {
-  const bytes = crypto.getRandomValues(new Uint8Array(LINK_CODE_LEN));
+function newCode(len: number): string {
+  const bytes = crypto.getRandomValues(new Uint8Array(len));
   let code = "";
   for (const b of bytes) code += CODE_ALPHABET[b % CODE_ALPHABET.length];
   return code;
 }
 
+function newLinkCode(): string {
+  return newCode(LINK_CODE_LEN);
+}
+
 /** Codes are case-insensitive; canonicalize so pasted lowercase still hits. */
-function normalizeLinkCode(raw: string): string | null {
+function normalizeCode(raw: string, len: number): string | null {
   const up = raw.trim().toUpperCase();
-  if (up.length !== LINK_CODE_LEN) return null;
+  if (up.length !== len) return null;
   for (const ch of up) if (!CODE_ALPHABET.includes(ch)) return null;
   return up;
+}
+
+function normalizeLinkCode(raw: string): string | null {
+  return normalizeCode(raw, LINK_CODE_LEN);
 }
 
 function isDocKind(v: unknown): v is DocKind {
@@ -131,6 +149,16 @@ export default {
       return json({ kind: row.kind, payload: JSON.parse(row.payload), created_at: row.created_at });
     }
 
+    // GET /session/:code/ws → WebSocket upgrade. No entitlement check — the
+    // role-scoped link token IS the auth (joining is free; creation is gated).
+    const wsMatch = url.pathname.match(/^\/session\/([^/]+)\/ws$/);
+    if (request.method === "GET" && wsMatch) {
+      const code = normalizeCode(decodeURIComponent(wsMatch[1]), SESSION_CODE_LEN);
+      if (!code) return json({ error: "bad_code" }, 400);
+      // getByName → the same code always reaches the same room instance.
+      return env.DOC_ROOM.get(env.DOC_ROOM.idFromName(code)).fetch(request);
+    }
+
     // ── Everything below requires an owner identity ──────────────────────────
     const auth = await authenticate(request, env);
     if (!auth.ok) {
@@ -163,6 +191,31 @@ export default {
         } catch {
           // PK collision (astronomically rare) — roll a fresh code.
         }
+      }
+      return json({ error: "mint_failed" }, 500);
+    }
+
+    // POST /session → create a live editing room seeded with the creator's
+    // current document. Gated twice: entitlement (who may create) and the
+    // registry concurrency cap (the hard spend ceiling).
+    if (request.method === "POST" && url.pathname === "/session") {
+      const body = await readJson(request);
+      if (!isDocKind(body.kind)) return json({ error: "bad_kind" }, 400);
+      const text = payloadText(body.payload, env);
+      if (text === null) return json({ error: "bad_payload" }, 400);
+
+      const registry = env.SYNC_REGISTRY.get(env.SYNC_REGISTRY.idFromName("global"));
+      for (let attempt = 0; attempt < SESSION_MINT_ATTEMPTS; attempt++) {
+        const code = newCode(SESSION_CODE_LEN);
+        if (!(await registry.tryAcquire(code))) {
+          return json({ error: "at_capacity" }, 503);
+        }
+        const tokens = await env.DOC_ROOM.get(env.DOC_ROOM.idFromName(code)).init(code, body.kind, JSON.parse(text));
+        if (tokens) {
+          return json({ code, editorToken: tokens.editorToken, viewerToken: tokens.viewerToken });
+        }
+        // Code collided with a live room — release the duplicate slot, reroll.
+        await registry.release(code);
       }
       return json({ error: "mint_failed" }, 500);
     }

@@ -16,6 +16,13 @@
       "migrations_dir": "migrations"
     }
   ],
+  "durable_objects": {
+    "bindings": [
+      { "name": "DOC_ROOM", "class_name": "DocRoom" },
+      { "name": "SYNC_REGISTRY", "class_name": "SyncRegistry" }
+    ]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["DocRoom", "SyncRegistry"] }],
   // This worker holds NO secrets: the only auth material is the Ed25519
   // PUBLIC key below. Patron-gated routes 501 until it is set.
   "vars": {
@@ -25,6 +32,11 @@
     // Cost/abuse levers.
     "MAX_DOCS_PER_OWNER": "100",
     "MAX_LINKS_PER_OWNER": "200",
-    "MAX_PAYLOAD_BYTES": "262144"
+    "MAX_PAYLOAD_BYTES": "262144",
+    // Live-session cost levers (DocRoom + SyncRegistry).
+    "MAX_DOC_SESSIONS": "20",
+    "DOC_SESSION_TTL_MINUTES": "120",
+    "MAX_EDITORS": "10",
+    "MAX_VIEWERS": "20"
   }
 }

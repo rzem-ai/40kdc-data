@@ -143,16 +143,25 @@ jobs:
 
   sync-worker:
     # The cloud-sync worker (workers/sync): typecheck + vitest workers pool
-    # (docs CRUD, shortlinks, Ed25519 entitlement gate against D1/miniflare).
+    # (docs CRUD, shortlinks, Ed25519 gate, DocRoom live sessions against
+    # D1/DO miniflare). Deliberately NOT an npm workspace: the monorepo pins
+    # vitest 2.x while the workers pool needs vitest 3 + a current workerd,
+    # so the worker owns its own lockfile (same shape as shadowboxing's
+    # session-worker).
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: workers/sync
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
+          cache-dependency-path: workers/sync/package-lock.json
       - run: npm ci
-      - run: npm run typecheck --workspace @alpaca-software/40kdc-sync-worker
-      - run: npm test --workspace @alpaca-software/40kdc-sync-worker
+      - run: npm run typecheck
+      - run: npm test
 
   publish-crate:
     # Auto-publish wh40kdc to crates.io once main is green. Self-gates on the
