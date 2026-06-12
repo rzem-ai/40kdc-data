@@ -84,34 +84,6 @@
     ]
   },
   {
-    "id": "spearpoint-task-force",
-    "name": "Spearpoint Task Force",
-    "faction_id": "adeptus-astartes",
-    "detachment_rule_id": null,
-    "enhancement_ids": [
-      "spearpoint-paragon",
-      "stormseers-wisdom",
-      "hunters-eye",
-      "chogorian-huntmaster"
-    ],
-    "stratagem_ids": [
-      "armour-of-contempt",
-      "hunters-instincts",
-      "spear-thrust-and-sabre-swing",
-      "evasive-manoeuvres",
-      "withdraw-and-regroup",
-      "mobile-lethality"
-    ],
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    },
-    "detachment_points": 2,
-    "force_dispositions": [
-      "disruption"
-    ]
-  },
-  {
     "id": "librarius-conclave",
     "name": "Librarius Conclave",
     "faction_id": "adeptus-astartes",
@@ -273,35 +245,6 @@
     ]
   },
   {
-    "id": "shadowmark-talon",
-    "name": "Shadowmark Talon",
-    "faction_id": "adeptus-astartes",
-    "detachment_rule_id": null,
-    "enhancement_ids": [
-      "blackwing-shroud",
-      "unparalleled-tactician",
-      "coronal-susurrant",
-      "umbral-raptor",
-      "hunters-instincts"
-    ],
-    "stratagem_ids": [
-      "armour-of-contempt",
-      "stunning-fusillade",
-      "lay-low-the-tyrants",
-      "raptorial-vigilance",
-      "feint-and-thrust",
-      "into-darkness"
-    ],
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    },
-    "detachment_points": 2,
-    "force_dispositions": [
-      "disruption"
-    ]
-  },
-  {
     "id": "fulguris-task-force",
     "name": "Fulguris Task Force",
     "faction_id": "adeptus-astartes",
@@ -431,91 +374,6 @@
     ]
   },
   {
-    "id": "emperors-shield",
-    "name": "Emperor’s Shield",
-    "faction_id": "adeptus-astartes",
-    "detachment_rule_id": null,
-    "enhancement_ids": [
-      "champion-of-the-feast",
-      "disciple-of-rhetoricus",
-      "indomitable-champion",
-      "malodraxian-standard"
-    ],
-    "stratagem_ids": [
-      "armour-of-contempt",
-      "wrathful-conquerors",
-      "disciplined-extermination",
-      "fury-of-the-first",
-      "dropship-extraction",
-      "obdurate-vengeance"
-    ],
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    },
-    "detachment_points": 2,
-    "force_dispositions": [
-      "priority-assets"
-    ]
-  },
-  {
-    "id": "forgefathers-seekers",
-    "name": "Forgefather’s Seekers",
-    "faction_id": "adeptus-astartes",
-    "detachment_rule_id": null,
-    "enhancement_ids": [
-      "seekers-companions",
-      "immolator",
-      "forged-in-battle",
-      "adamantine-mantle"
-    ],
-    "stratagem_ids": [
-      "armour-of-contempt",
-      "immolation-protocols",
-      "crucible-of-battle",
-      "burning-vengeance",
-      "blazing-earth",
-      "wrathful-inferno"
-    ],
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    },
-    "detachment_points": 2,
-    "force_dispositions": [
-      "purge-the-foe"
-    ]
-  },
-  {
-    "id": "hammer-of-avernii",
-    "name": "Hammer of Avernii",
-    "faction_id": "adeptus-astartes",
-    "detachment_rule_id": null,
-    "enhancement_ids": [
-      "recalculating",
-      "spiritus-ferrum",
-      "medusan-roar-aura",
-      "iron-laurel",
-      "steel-font"
-    ],
-    "stratagem_ids": [
-      "armour-of-contempt",
-      "cogitated-ferocity",
-      "ruthless-butchery",
-      "augmetic-fortitude",
-      "dominator-beacon",
-      "dropship-extraction"
-    ],
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    },
-    "detachment_points": 2,
-    "force_dispositions": [
-      "priority-assets"
-    ]
-  },
-  {
     "id": "headhunter-task-force",
     "name": "Headhunter Task Force",
     "faction_id": "adeptus-astartes",
@@ -541,34 +399,6 @@
     "detachment_points": 2,
     "force_dispositions": [
       "priority-assets"
-    ]
-  },
-  {
-    "id": "reclamation-force",
-    "name": "Reclamation Force",
-    "faction_id": "adeptus-astartes",
-    "detachment_rule_id": null,
-    "enhancement_ids": [
-      "seals-of-reconquest",
-      "avenging-avatar-aura",
-      "scroll-of-proclamation",
-      "liberatum"
-    ],
-    "stratagem_ids": [
-      "crusading-conquerors",
-      "scions-of-guilliman",
-      "furious-dedication",
-      "ultramarian-destiny",
-      "fight-to-the-end",
-      "marching-ever-on"
-    ],
-    "game_version": {
-      "edition": "11th",
-      "dataslate": "pre-launch-provisional"
-    },
-    "detachment_points": 2,
-    "force_dispositions": [
-      "take-and-hold"
     ]
   }
 ]

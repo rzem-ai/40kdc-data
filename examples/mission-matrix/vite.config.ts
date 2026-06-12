@@ -2,8 +2,8 @@ import { readFileSync } from "node:fs";
 import { defineConfig, type Plugin } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import tailwindcss from "@tailwindcss/vite";
-import { VitePWA } from "vite-plugin-pwa";
 import { buildSha, dataPackageVersion } from "../_shared/build-stamp.js";
+import { pwaPlugin } from "../_shared/pwa-config.js";
 
 // Read this app's version straight from package.json (fs, not a JSON import, to
 // stay agnostic to Node's import-assertion syntax). Exposed to the app as the
@@ -83,59 +83,10 @@ export default defineConfig({
     stubNodeOnlyModules(),
     tailwindcss(),
     svelte(),
-    // PWA bindings. vite-plugin-pwa derives the manifest scope, start_url, icon
-    // paths, and service-worker registration scope from Vite's `base`, so the
-    // GitHub Pages subpath (TOOLLET_BASE) is handled automatically — no manual
-    // path wrangling needed.
-    VitePWA({
-      registerType: "autoUpdate",
-      // Static icons referenced from index.html (not in the build graph) so the
-      // precache manifest includes them.
-      includeAssets: ["favicon-32x32.png", "apple-touch-icon.png"],
-      manifest: {
-        name: "Mission Matrix",
-        short_name: "Mission Matrix",
-        description: "40kdc Force Disposition matchups — 11e WTC scoresheet",
-        // Match the dark shadowboxing shell so the splash screen is seamless.
-        theme_color: "#0f0f11",
-        background_color: "#0f0f11",
-        display: "standalone",
-        // Relative src so Vite's `base` prefixes them under the deploy subpath.
-        icons: [
-          { src: "pwa-192x192.png", sizes: "192x192", type: "image/png", purpose: "any" },
-          { src: "pwa-512x512.png", sizes: "512x512", type: "image/png", purpose: "any" },
-          { src: "pwa-maskable-512x512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
-        ],
-      },
-      workbox: {
-        // The app embeds the whole 40kdc dataset, so the main JS chunk is
-        // ~5.4 MB. That data *is* the app and must be cached for offline use,
-        // so lift Workbox's 2 MiB precache cap. Keep an explicit ceiling (not
-        // Infinity) so a runaway bundle fails the build loudly.
-        maximumFileSizeToCacheInBytes: 8 * 1024 * 1024,
-        // App shell (JS/CSS/HTML) is precached by default. Runtime-cache the
-        // Google Fonts CDN so Barlow / JetBrains Mono survive offline.
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: "CacheFirst",
-            options: {
-              cacheName: "google-fonts-stylesheets",
-              expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 },
-              cacheableResponse: { statuses: [0, 200] },
-            },
-          },
-          {
-            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
-            handler: "CacheFirst",
-            options: {
-              cacheName: "google-fonts-webfonts",
-              expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 365 },
-              cacheableResponse: { statuses: [0, 200] },
-            },
-          },
-        ],
-      },
+    // PWA bindings (shared config; see examples/_shared/pwa-config.ts).
+    pwaPlugin({
+      name: "Mission Matrix",
+      description: "40kdc Force Disposition matchups — 11e WTC scoresheet",
     }),
   ],
   define: {

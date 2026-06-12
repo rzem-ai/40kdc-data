@@ -89,7 +89,18 @@ class Dataset:
         self.target_profiles = id_collection(
             raw["target_profiles"], lambda p: p.get("faction_id")
         )
-        self.detachments = id_collection(raw["detachments"], lambda d: d.get("faction_id"))
+        # The generic Codex Space Marine detachments are replicated into every
+        # Codex-compatible chapter/supplement view (shared id, distinct faction);
+        # keep each faction's copy, collapse only within-faction dupes — mirroring
+        # the unit collection. Use by_faction / get_in_faction with a known faction.
+        self.detachments = Collection(
+            raw["detachments"],
+            id_of=lambda d: d["id"],
+            name_of=lambda d: d.get("name"),
+            dedupe_key_of=lambda d: f"{d['faction_id']}::{d['id']}",
+            faction_of=lambda d: d.get("faction_id"),
+            wrap=lambda d: d,
+        )
         # Allied rules aren't owned by one faction; allies_for matches on army_keywords_any.
         self.allied_rules = id_collection(raw["allied_rules"])
         self.enhancements = id_collection(raw["enhancements"])

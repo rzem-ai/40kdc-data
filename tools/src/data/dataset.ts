@@ -167,7 +167,21 @@ export class Dataset {
     });
 
     this.targetProfiles = idCollection(raw.targetProfiles, (p) => p.faction_id);
-    this.detachments = idCollection(raw.detachments, (d) => d.faction_id);
+    // A detachment id is shared across factions: the generic Codex Space Marine
+    // detachments are replicated into every Codex-compatible chapter/supplement
+    // (each as its own faction view), so keep each faction's copy and collapse
+    // only true within-faction duplicates — mirroring the unit collection. Use
+    // {@link Collection.getInFaction} / {@link Collection.byFaction} when a
+    // faction context is known; bare {@link Collection.get} returns whichever
+    // copy was registered first.
+    this.detachments = new Collection({
+      items: raw.detachments,
+      idOf: (d) => d.id,
+      nameOf: (d) => d.name,
+      dedupeKeyOf: (d) => `${d.faction_id}::${d.id}`,
+      factionOf: (d) => d.faction_id,
+      wrap: (d) => d,
+    });
     // Allied rules aren't owned by one faction (Daemonic Pact is shared by
     // Chaos Knights and CSM); `alliesFor` matches on `army_keywords_any` instead.
     this.alliedRules = idCollection(raw.alliedRules);

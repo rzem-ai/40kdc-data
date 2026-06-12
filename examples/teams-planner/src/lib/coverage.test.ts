@@ -5,6 +5,8 @@ import {
   autoArmyName,
   columnFull,
   detachmentName,
+  detachmentsForFactions,
+  factionFieldsDetachment,
   reconcileArmyName,
   effectivePlacement,
   factionOptions,
@@ -356,5 +358,39 @@ describe("factionOptions", () => {
     expect(opts.some((o) => o.id === "world-eaters")).toBe(true);
     const names = opts.map((o) => o.name);
     expect(names).toEqual([...names].sort((a, b) => a.localeCompare(b)));
+  });
+});
+
+describe("codex-supplement per-faction detachment views", () => {
+  const ids = (faction: string) => new Set(detachmentsForFactions([faction]).map((d) => d.id));
+
+  it("offers a Marine supplement the generic Codex detachments plus its own", () => {
+    const sw = ids("space-wolves");
+    // Generic Codex detachments are now fieldable by the supplement…
+    expect(sw.has("gladius-task-force")).toBe(true);
+    expect(sw.has("ironstorm-spearhead")).toBe(true);
+    // …alongside its own signature detachments…
+    expect(sw.has("champions-of-fenris")).toBe(true);
+    // …but never another Chapter's locked detachment.
+    expect(sw.has("spearpoint-task-force")).toBe(false); // White Scars
+    expect(sw.has("hammer-of-avernii")).toBe(false); // Iron Hands
+    expect(sw.has("blade-of-ultramar")).toBe(false); // Ultramarines
+  });
+
+  it("locks each chapter's signature detachment to that chapter", () => {
+    expect(ids("white-scars").has("spearpoint-task-force")).toBe(true);
+    expect(ids("raven-guard").has("shadowmark-talon")).toBe(true);
+    expect(ids("ultramarines").has("blade-of-ultramar")).toBe(true);
+    expect(ids("ultramarines").has("reclamation-force")).toBe(true);
+    // The generic parent fields none of the chapter-locked detachments.
+    expect(ids("adeptus-astartes").has("spearpoint-task-force")).toBe(false);
+  });
+
+  it("matches a shared generic detachment by faction membership, not owning id", () => {
+    // gladius is shared, so getInFaction-backed membership is faction-correct…
+    expect(factionFieldsDetachment("space-wolves", "gladius-task-force")).toBe(true);
+    expect(factionFieldsDetachment("white-scars", "gladius-task-force")).toBe(true);
+    // …while a chapter lock stays put.
+    expect(factionFieldsDetachment("space-wolves", "spearpoint-task-force")).toBe(false);
   });
 });

@@ -6,6 +6,7 @@
   import CoverageMatrix from "./lib/CoverageMatrix.svelte";
   import AppHeader from "../../_shared/AppHeader.svelte";
   import AppFooter from "../../_shared/AppFooter.svelte";
+  import PwaInstallPrompt from "../../_shared/PwaInstallPrompt.svelte";
   import {
     LIST_BUILDER_URL,
     MISSION_MATRIX_URL,
@@ -39,6 +40,7 @@
 
   let plan = $state<TeamPlan>(loadPlan());
   let toast = $state<string | null>(null);
+  let pwaPromptOpen = $state<boolean>(false);
 
   const coverage = $derived(teamCoverage(plan));
 
@@ -136,9 +138,13 @@
         <select
           class="focus-ring rounded border border-border-strong bg-panel px-2 py-1.5 text-sm text-text"
           value={String(plan.size)}
-          onchange={(e) => (plan = { ...plan, size: Number((e.currentTarget as HTMLSelectElement).value) === 8 ? 8 : 5 })}
+          onchange={(e) => {
+            const v = Number((e.currentTarget as HTMLSelectElement).value);
+            plan = { ...plan, size: v === 8 ? 8 : v === 6 ? 6 : 5 };
+          }}
         >
           <option value="5">5 players</option>
+          <option value="6">6 players</option>
           <option value="8">8 players</option>
         </select>
       </label>
@@ -203,4 +209,10 @@
       {toast}
     </div>
   {/if}
+
+  <PwaInstallPrompt
+    appName="Teams Planner"
+    storageKey="teams-planner.pwa-install-prompt.version"
+    bind:open={pwaPromptOpen}
+  />
 </div>

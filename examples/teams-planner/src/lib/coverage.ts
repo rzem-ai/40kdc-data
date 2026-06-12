@@ -73,8 +73,9 @@ export interface Player {
 
 export interface TeamPlan {
   teamName: string;
-  /** Roster size for the event — drives the "slots filled" hint, not the rule. */
-  size: 5 | 8;
+  /** Roster size for the event — drives the "slots filled" hint, not the rule.
+   *  6 is the European Team Championship roster size. */
+  size: 5 | 6 | 8;
   players: Player[];
 }
 
@@ -338,9 +339,19 @@ export function detachmentDispositions(id: string): ForceDispositionId[] {
   return (ds.detachments.get(id)?.force_dispositions ?? []) as ForceDispositionId[];
 }
 
-/** The faction a detachment belongs to (null when the id is unknown). */
+/**
+ * The faction a detachment belongs to (null when the id is unknown). Note: a
+ * generic Codex detachment id is shared across every Marine faction's view, so
+ * this returns whichever copy was registered first (the generic parent). When a
+ * faction context is known, prefer {@link factionFieldsDetachment}.
+ */
 export function detachmentFaction(id: string): string | null {
   return ds.detachments.get(id)?.faction_id ?? null;
+}
+
+/** Whether `factionId` can field detachment `id` (its per-faction view holds it). */
+export function factionFieldsDetachment(factionId: string, id: string): boolean {
+  return ds.detachments.getInFaction(id, factionId) != null;
 }
 
 /** The auto name for a combo: its detachment names joined with " / ". */

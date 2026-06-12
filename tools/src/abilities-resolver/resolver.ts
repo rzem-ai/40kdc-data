@@ -99,8 +99,13 @@ export function resolveEligibleAbilities(
       });
     }
 
-    // 3. Detachment stratagems.
-    const detachment = dataset.detachments.get(input.detachmentId);
+    // 3. Detachment stratagems. A generic Codex detachment id is shared across
+    // every faction's view, so prefer the copy in the resolving faction (its
+    // stratagem list is identical across copies, but this keeps lookups
+    // faction-correct); fall back to the first registered copy.
+    const detachment =
+      dataset.detachments.getInFaction(input.detachmentId, factionId) ??
+      dataset.detachments.get(input.detachmentId);
     if (detachment) {
       for (const stratId of detachment.stratagem_ids ?? []) {
         const stratagem = dataset.stratagems.get(stratId);

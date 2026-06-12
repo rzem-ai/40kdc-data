@@ -88,7 +88,10 @@ def test_translate_effect_op() -> None:
         },
     )
     assert resp["ok"]
-    assert resp["value"]["text"] == "unit gains Feel No Pain 5+\nScope: unit. Duration: phase."
+    assert (
+        resp["value"]["text"]
+        == "Until the end of the phase, the unit has the Feel No Pain 5+ ability."
+    )
 
 
 def test_export_unknown_format() -> None:

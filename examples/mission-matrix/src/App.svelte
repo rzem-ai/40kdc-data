@@ -38,7 +38,7 @@
   import MissionCard from "./lib/MissionCard.svelte";
   import TerrainSection from "./lib/TerrainSection.svelte";
   import Toast from "./lib/Toast.svelte";
-  import PwaInstallPrompt from "./lib/PwaInstallPrompt.svelte";
+  import PwaInstallPrompt from "../../_shared/PwaInstallPrompt.svelte";
   import TutorialModal from "./lib/TutorialModal.svelte";
   import SupportModal from "../../_shared/SupportModal.svelte";
   import AppHeader from "../../_shared/AppHeader.svelte";
@@ -528,7 +528,12 @@
   />
 
   <TutorialModal bind:open={tutorialOpen} />
-  <PwaInstallPrompt bind:open={pwaPromptOpen} suppressed={tutorialOpen} />
+  <PwaInstallPrompt
+    appName="Mission Matrix"
+    storageKey="mission-matrix.pwa-install-prompt.version"
+    bind:open={pwaPromptOpen}
+    suppressed={tutorialOpen}
+  />
   <SupportModal patreonUrl={PATREON_URL} appName="Mission Matrix" enabled={!pwaPromptOpen && !tutorialOpen} />
   <Toast message={toast} onDismiss={() => (toast = null)} />
 </div>

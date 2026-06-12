@@ -3,6 +3,7 @@ import { defineConfig, type Plugin } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import tailwindcss from "@tailwindcss/vite";
 import { buildSha, dataPackageVersion } from "../_shared/build-stamp.js";
+import { pwaPlugin } from "../_shared/pwa-config.js";
 
 // Read this app's version straight from package.json (fs, not a JSON import, to
 // stay agnostic to Node's import-assertion syntax). Exposed to the app as the
@@ -77,7 +78,16 @@ function stubNodeOnlyModules(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [stubNodeOnlyModules(), tailwindcss(), svelte()],
+  plugins: [
+    stubNodeOnlyModules(),
+    tailwindcss(),
+    svelte(),
+    // PWA bindings (shared config; see examples/_shared/pwa-config.ts).
+    pwaPlugin({
+      name: "Teams Planner",
+      description: "40kdc team Force Disposition coverage planner — 11e",
+    }),
+  ],
   define: {
     __APP_VERSION__: JSON.stringify(APP_VERSION),
     // Footer staleness stamp: bundled dataset version + build commit.

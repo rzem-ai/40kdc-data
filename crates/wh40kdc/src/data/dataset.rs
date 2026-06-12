@@ -238,7 +238,10 @@ impl Dataset {
             |d| d.id.to_string(),
             |d| Some(d.name.as_str()),
             |d| Some(d.faction_id.as_str()),
-            |d| d.id.to_string(),
+            // The generic Codex Space Marine detachments are replicated into every
+            // Codex-compatible chapter/supplement view (shared id, distinct
+            // faction); keep each faction's copy, collapse only within-faction dupes.
+            |d| format!("{}::{}", d.faction_id.as_str(), d.id.as_str()),
         );
         let allied_rules = id_name_collection(
             raw.allied_rules,

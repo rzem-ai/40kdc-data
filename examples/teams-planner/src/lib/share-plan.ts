@@ -15,6 +15,7 @@ import type { Army, Placement, Player, PrefTier, TeamPlan } from "./coverage";
 import {
   armyDispositions,
   detachmentFaction,
+  factionFieldsDetachment,
   detachmentsForFactions,
   isKnownDetachment,
   isKnownFaction,
@@ -113,9 +114,13 @@ function sanitizeArmies(
         const factionId =
           factionSet.has(stored)
             ? stored
-            : (ids.map(detachmentFaction).find((f) => f && factionSet.has(f)) ?? factionIds[0] ?? "");
-        // An army is single-faction; keep only its faction's detachments.
-        const detachmentIds = ids.filter((d) => detachmentFaction(d) === factionId);
+            : (ids
+                .map((d) => factionIds.find((f) => factionFieldsDetachment(f, d)) ?? detachmentFaction(d))
+                .find((f) => f && factionSet.has(f)) ?? factionIds[0] ?? "");
+        // An army is single-faction; keep only detachments this faction can field
+        // (a generic Codex detachment is shared, so match by faction membership,
+        // not by the detachment's owning-faction id).
+        const detachmentIds = ids.filter((d) => factionFieldsDetachment(factionId, d));
         return {
           id: asString(a.id) || synthId(`a${i}`),
           name: asString(a.name) || `Army ${i + 1}`,
@@ -137,7 +142,7 @@ function sanitizeArmies(
         id: synthId(`legacy${i}`),
         name: "",
         factionId,
-        detachmentIds: ids.filter((d) => detachmentFaction(d) === factionId),
+        detachmentIds: ids.filter((d) => factionFieldsDetachment(factionId, d)),
       }))
       .filter((a) => a.detachmentIds.length > 0);
   }
@@ -262,7 +267,7 @@ export function sanitizePlan(parsed: unknown): DecodeResult | null {
     return base;
   });
 
-  const size = raw.size === 8 ? 8 : 5;
+  const size = raw.size === 8 ? 8 : raw.size === 6 ? 6 : 5;
   return {
     plan: { teamName: asString(raw.teamName), size, players },
     dropped,

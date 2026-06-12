@@ -187,7 +187,9 @@
   }
 
   // ── Collapsed summary ───────────────────────────────────────────────────────
-  let collapsed = $state(false);
+  // Panels open collapsed (summary view) so a full roster stays scannable; the
+  // builder expands on demand.
+  let collapsed = $state(true);
   const coveredCount = $derived(coverage.size);
   const effTier = (d: ForceDispositionId): PrefTier | null => effectivePlacement(player, d)?.tier ?? null;
 
