@@ -1,4 +1,5 @@
 <script lang="ts">
+import { untrack } from 'svelte';
 import { ds } from '$lib/data/dataset';
 import {
 	emptyBuilderState,
@@ -73,12 +74,15 @@ function nextKey(): string {
 	return `u${keyCounter++}-${instanceNonce}`;
 }
 
-// Live-session tap (no-op without the prop; reads draft deeply so any
-// mutation — scalar, unit row, loadout Map replacement — schedules it).
+// Draft tap (no-op without the prop; reads draft deeply so any mutation —
+// scalar, unit row, loadout Map replacement — schedules it). The callback
+// itself runs untracked: a host that reads *and writes* its own state in the
+// handler (the doubles workspace mirroring armies) must not become a
+// dependency of this effect, or the write re-triggers it in a loop.
 $effect(() => {
 	if (!ondraftchange) return;
 	const snapshot = cloneSeed(draft);
-	ondraftchange(snapshot);
+	untrack(() => ondraftchange(snapshot));
 });
 
 /**

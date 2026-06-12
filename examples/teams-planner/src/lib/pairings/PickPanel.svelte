@@ -71,7 +71,7 @@
       {confirmLabel}
     </button>
     <span class="text-[11px] uppercase tracking-wide text-text-dim">
-      Opponent has chosen — reveal is simultaneous
+      Your opponent picks simultaneously — both reveal together
     </span>
   </div>
 </section>

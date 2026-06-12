@@ -7,6 +7,7 @@ import {
 	unitMatchesQuery,
 	alliesForState,
 	allyPointsLimit,
+	effectiveBattleSize,
 	groupAlliesByGod,
 	type BuilderState,
 } from '$lib/data/builder';
@@ -122,7 +123,7 @@ function toggle(key: string) {
 
 				<!-- Valid allies ("soup") pools — units from other factions a rule grants. -->
 				{#each allyGroups as group (group.rule.id)}
-					{@const cap = allyPointsLimit(group.rule, draft.battleSize)}
+					{@const cap = allyPointsLimit(group.rule, effectiveBattleSize(draft))}
 					<div class="mt-1 border-t border-dashed border-amber-500/25 pt-1">
 						<button
 							class="flex w-full items-center gap-1 px-0.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-amber-300 hover:text-amber-200"
