@@ -1,16 +1,18 @@
 /**
  * Global live-session registry — the hard ceiling on DocRoom spend, cloned
- * from shadowboxing's SessionRegistry cap mechanism (no keys/admin/digest:
- * identity lives at keys.alpacasoft.dev and alerts are a later hardening).
+ * from shadowboxing's SessionRegistry cap mechanism (no keys/admin: identity
+ * lives at keys.alpacasoft.dev).
  *
  * One singleton instance (`getByName("global")`) counts active rooms.
  * Creation past MAX_DOC_SESSIONS is refused cleanly; registrations carry a
  * timestamp and a sweep drops entries older than the room TTL so a crashed
- * room can't leak its slot forever.
+ * room can't leak its slot forever. Capacity refusals post a deduped Discord
+ * alert when the webhook secret is configured.
  */
 import { DurableObject } from "cloudflare:workers";
+import { sendDiscordAlert, type AlertsEnv } from "./alerts";
 
-export interface SyncRegistryEnv {
+export interface SyncRegistryEnv extends AlertsEnv {
   MAX_DOC_SESSIONS?: string;
   DOC_SESSION_TTL_MINUTES?: string;
 }
@@ -18,6 +20,8 @@ export interface SyncRegistryEnv {
 const DEFAULT_MAX_SESSIONS = 20;
 const DEFAULT_TTL_MINUTES = 120;
 const SWEEP_SLACK_MS = 30 * 60_000;
+/** Capacity alerts dedupe to one per this window. */
+const CAP_ALERT_DEDUPE_MS = 15 * 60_000;
 
 export class SyncRegistry extends DurableObject<SyncRegistryEnv> {
   constructor(ctx: DurableObjectState, env: SyncRegistryEnv) {
@@ -27,6 +31,10 @@ export class SyncRegistry extends DurableObject<SyncRegistryEnv> {
         CREATE TABLE IF NOT EXISTS active (
           code TEXT PRIMARY KEY,
           created_at INTEGER NOT NULL
+        );
+        CREATE TABLE IF NOT EXISTS meta (
+          k TEXT PRIMARY KEY,
+          v TEXT NOT NULL
         );
       `);
     });
@@ -47,7 +55,10 @@ export class SyncRegistry extends DurableObject<SyncRegistryEnv> {
     const count = this.ctx.storage.sql
       .exec<{ n: number }>("SELECT COUNT(*) AS n FROM active")
       .toArray()[0].n;
-    if (count >= this.maxSessions()) return false;
+    if (count >= this.maxSessions()) {
+      this.maybeCapacityAlert(count);
+      return false;
+    }
     this.ctx.storage.sql.exec(
       "INSERT INTO active (code, created_at) VALUES (?, ?) ON CONFLICT(code) DO UPDATE SET created_at = excluded.created_at",
       code,
@@ -66,5 +77,23 @@ export class SyncRegistry extends DurableObject<SyncRegistryEnv> {
     return this.ctx.storage.sql
       .exec<{ n: number }>("SELECT COUNT(*) AS n FROM active")
       .toArray()[0].n;
+  }
+
+  /** "Demand exceeds supply" signal, deduped to ≤1 per window. */
+  private maybeCapacityAlert(activeNow: number): void {
+    const row = this.ctx.storage.sql
+      .exec<{ v: string }>("SELECT v FROM meta WHERE k = 'last_cap_alert'")
+      .toArray()[0];
+    const now = Date.now();
+    if (row && now - Number(row.v) < CAP_ALERT_DEDUPE_MS) return;
+    this.ctx.storage.sql.exec(
+      "INSERT INTO meta (k, v) VALUES ('last_cap_alert', ?) ON CONFLICT(k) DO UPDATE SET v = excluded.v",
+      String(now),
+    );
+    void sendDiscordAlert(this.env, [
+      "**40kdc sync sessions — at capacity**",
+      `A session creation was just refused: ${activeNow}/${this.maxSessions()} rooms in use.`,
+      "If this keeps happening, raising MAX_DOC_SESSIONS is the lever (costs scale with it).",
+    ]);
   }
 }
