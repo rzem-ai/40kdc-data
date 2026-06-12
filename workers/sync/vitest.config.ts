@@ -21,6 +21,10 @@ export default defineWorkersConfig(async () => {
             bindings: {
               TEST_MIGRATIONS: migrations,
               ENTITLEMENT_PUBLIC_KEYS: TEST_PUBLIC_KEY_B64URL,
+              // Tiny quotas so the ceiling tests don't mint hundreds of rows
+              // (the 200-link loop blew the 5s test timeout on CI runners).
+              MAX_DOCS_PER_OWNER: "5",
+              MAX_LINKS_PER_OWNER: "5",
             },
           },
         },

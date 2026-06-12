@@ -120,9 +120,9 @@ describe("docs CRUD", () => {
 
   it("enforces the per-owner doc quota", async () => {
     const token = await mintToken("hoarder");
-    // The test env doesn't override MAX_DOCS_PER_OWNER, so the default (100)
-    // applies; creating 100 then one more proves the ceiling.
-    for (let i = 0; i < 100; i++) {
+    // The test env pins MAX_DOCS_PER_OWNER=5 (vitest.config.ts) so proving
+    // the ceiling doesn't need hundreds of inserts.
+    for (let i = 0; i < 5; i++) {
       const res = await api("/docs", {
         method: "POST",
         token,

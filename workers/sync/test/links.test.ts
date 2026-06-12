@@ -58,7 +58,8 @@ describe("shortlinks", () => {
 
   it("enforces the per-owner link quota", async () => {
     const token = await mintToken("link-hoarder");
-    for (let i = 0; i < 200; i++) {
+    // MAX_LINKS_PER_OWNER=5 in the test env (the real 200 blew CI's timeout).
+    for (let i = 0; i < 5; i++) {
       expect(
         (await api("/links", { method: "POST", token, body: { kind: "list", payload: { i } } }))
           .status,
