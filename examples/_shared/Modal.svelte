@@ -72,8 +72,9 @@
     margin: auto;
   }
   dialog::backdrop {
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(2px);
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
   }
   .panel {
     background: #1b1b1f;
