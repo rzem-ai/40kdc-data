@@ -69,6 +69,15 @@
   /** Plan vs pairings-simulator tab, mirrored to `#sim` so a refresh sticks.
    *  Sim state itself is local to the simulator component (never synced). */
   let view = $state<"plan" | "sim">(location.hash === "#sim" ? "sim" : "plan");
+  /**
+   * Arrived via a shared plan / live invite / shortlink: the user is mid-task
+   * (often joining someone's session on a phone), so the PWA install nudge
+   * must not cover the join prompt. Suppression skips this visit without
+   * stamping the version, so the nudge simply fires on a later plain visit.
+   */
+  const arrivedViaShare =
+    location.hash.startsWith("#t=") ||
+    ["d", "session", "s"].some((k) => new URLSearchParams(location.search).has(k));
   let toast = $state<string | null>(null);
   let pwaPromptOpen = $state<boolean>(false);
   let gateOpen = $state<boolean>(false);
@@ -367,6 +376,7 @@
     appName="Teams Planner"
     storageKey="teams-planner.pwa-install-prompt.version"
     bind:open={pwaPromptOpen}
+    suppressed={arrivedViaShare || docSession.status !== "idle"}
   />
 
   <!-- Cloud saves live behind the header chip (patron feature; opening links is free). -->
