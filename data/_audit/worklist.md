@@ -5,7 +5,7 @@ structural stub — an effect carrying an empty-modifier placeholder node that s
 DSL authored. This is the actionable counterpart to the per-faction `stub*` counts in
 [`CONTRIBUTING.md`](../../CONTRIBUTING.md) and [`summary.md`](summary.md).
 
-Total: 188 stub abilities.
+Total: 243 stub abilities.
 
 | faction | ability | shape | needs |
 |---|---|---|---|
@@ -41,8 +41,46 @@ Total: 188 stub abilities.
 | aeldari | prelude-performer | stat-modifier | stat-modifier: operation "undefined" not supported |
 | aeldari | presaged-rehearsal | stat-modifier | stat-modifier: operation "undefined" not supported |
 | aeldari | shadowfall-masks | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | a-weaponsmith-not-a-warlord | stat-modifier | stat-modifier: operation "undefined" not supported |
 | agents-of-the-imperium | backroom-deals | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | blind-grenades | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | bound-daemon | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | catechism-of-death | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | decoy-targets | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | dominate-will-psychic | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | ensnaring-trap | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | esoteric-explosives | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | extremis-sanction | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | fortis-doctrines | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | helix-gauntlet | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | hyperstimms | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | inconceivable-augmentation | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | indomitor-doctrines | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | infiltrator-comms-array | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | intraneural-biotech | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | jump-pack | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | malefic-warding | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | malus-codicium | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | micromelta-rounds | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | on-my-signal-fire | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | orbital-oversight | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | prime-target | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | proteus-doctrines | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | psychic-hood | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | spectrus-doctrines | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | storm-shield | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | teleport-homer | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | terminatus-assault | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | throne-of-judgement-aura | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | tox-cycler | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | turbo-boost | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | unflinching | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | unsubtle-crusader | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | vox-cast-proclamations-aura | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | vox-skull | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | ward-against-the-malefic-arts | stat-modifier | stat-modifier: operation "undefined" not supported |
 | agents-of-the-imperium | warrant-of-trade | stat-modifier | stat-modifier: operation "undefined" not supported |
+| agents-of-the-imperium | willsapping-salvo | stat-modifier | stat-modifier: operation "undefined" not supported |
 | chaos-daemons | shadow-form-abilities | stat-modifier | stat-modifier: operation "undefined" not supported |
 | chaos-knights | flush-the-quarry | engagement-passthrough | effect type "engagement-passthrough" is not modelled by the buff layer |
 | chaos-knights | grav-pinned | stat-modifier | stat-modifier: operation "undefined" not supported |
@@ -56,9 +94,14 @@ Total: 188 stub abilities.
 | chaos-space-marines | the-scent-of-blood | stat-modifier | stat-modifier: operation "undefined" not supported |
 | chaos-space-marines | wracking-agonies-psychic | stat-modifier | stat-modifier: operation "undefined" not supported |
 | death-guard | daemonforge | stat-modifier | stat-modifier: operation "undefined" not supported |
+| death-guard | damaged-1-6-wounds-remaining | stat-modifier | stat-modifier: operation "undefined" not supported |
 | death-guard | dark-ascension-aura | stat-modifier | stat-modifier: operation "undefined" not supported |
+| death-guard | desiccation-conduit-aura | stat-modifier | stat-modifier: operation "undefined" not supported |
 | death-guard | frenzy | stat-modifier | stat-modifier: operation "undefined" not supported |
 | death-guard | mind-breaking-mutations-aura | stat-modifier | stat-modifier: operation "undefined" not supported |
+| death-guard | nurgles-gift-aura | stat-modifier | stat-modifier: operation "undefined" not supported |
+| death-guard | pestilent-familiar-psychic | stat-modifier | stat-modifier: operation "undefined" not supported |
+| death-guard | putrescent-vitality-psychic | stat-modifier | stat-modifier: operation "undefined" not supported |
 | drukhari | cluster-caltrops | stat-modifier | stat-modifier: operation "undefined" not supported |
 | drukhari | contempt-for-rivals | stat-modifier | stat-modifier: operation "undefined" not supported |
 | drukhari | contracted-harvest | stat-modifier | stat-modifier: operation "undefined" not supported |
@@ -174,16 +217,28 @@ Total: 188 stub abilities.
 | tau-empire | negation-emitters | stat-modifier | stat-modifier: operation "undefined" not supported |
 | tau-empire | photon-casters | stat-modifier | stat-modifier: operation "undefined" not supported |
 | tau-empire | unmasking-suite | stat-modifier | stat-modifier: operation "undefined" not supported |
+| thousand-sons | arcane-might | stat-modifier | stat-modifier: operation "undefined" not supported |
 | thousand-sons | daemonforge | stat-modifier | stat-modifier: operation "undefined" not supported |
+| thousand-sons | damaged-1-6-wounds-remaining | stat-modifier | stat-modifier: operation "undefined" not supported |
 | thousand-sons | dark-ascension-aura | stat-modifier | stat-modifier: operation "undefined" not supported |
+| thousand-sons | empowered-manifestation | stat-modifier | stat-modifier: operation "undefined" not supported |
+| thousand-sons | empyric-onslaught | stat-modifier | stat-modifier: operation "undefined" not supported |
+| thousand-sons | flow-of-magic | stat-modifier | stat-modifier: operation "undefined" not supported |
 | thousand-sons | frenzy | stat-modifier | stat-modifier: operation "undefined" not supported |
 | thousand-sons | immaterial-flare-aura | stat-modifier | stat-modifier: operation "undefined" not supported |
+| thousand-sons | kaleidoscopic-tempest | stat-modifier | stat-modifier: operation "undefined" not supported |
 | thousand-sons | mind-breaking-mutations-aura | stat-modifier | stat-modifier: operation "undefined" not supported |
+| thousand-sons | noctilith-mantle | stat-modifier | stat-modifier: operation "undefined" not supported |
 | thousand-sons | sacrificial-blessing | stat-modifier | stat-modifier: operation "undefined" not supported |
+| thousand-sons | scouring-warpflame | stat-modifier | stat-modifier: operation "undefined" not supported |
 | thousand-sons | scryer-of-fates-psychic | stat-modifier | stat-modifier: operation "undefined" not supported |
 | thousand-sons | spirit-snare | stat-modifier | stat-modifier: operation "undefined" not supported |
+| thousand-sons | strands-of-time | stat-modifier | stat-modifier: operation "undefined" not supported |
 | thousand-sons | the-scent-of-blood | stat-modifier | stat-modifier: operation "undefined" not supported |
+| thousand-sons | through-the-veil | stat-modifier | stat-modifier: operation "undefined" not supported |
+| thousand-sons | warding-hex | stat-modifier | stat-modifier: operation "undefined" not supported |
 | thousand-sons | wracking-agonies-psychic | stat-modifier | stat-modifier: operation "undefined" not supported |
+| thousand-sons | wrath-of-the-doomed | stat-modifier | stat-modifier: operation "undefined" not supported |
 | tyranids | catalytic-biofortification | stat-modifier | stat-modifier: operation "undefined" not supported |
 | tyranids | counterpredation | stat-modifier | stat-modifier: operation "undefined" not supported |
 | tyranids | cryptophotaic-camouflage | stat-modifier | stat-modifier: operation "undefined" not supported |
