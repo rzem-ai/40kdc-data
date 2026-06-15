@@ -38,6 +38,7 @@ const FACTION_FILE_TYPES = {
 // global files directly under data/core.
 const GLOBAL_FILE_TYPES = {
   'weapon-keywords.json': 'weapon-keywords',
+  'unit-keywords.json': 'unit-keywords',
   'stratagems.json': 'stratagems',
 };
 
