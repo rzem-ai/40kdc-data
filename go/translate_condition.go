@@ -162,6 +162,12 @@ func describeCondition(c map[string]any) string {
 		return negate + "the unit is battle-shocked"
 	case "has-lost-wounds":
 		return negate + "the model has lost wounds"
+	case "wounds-remaining-at-or-below":
+		threshold := "0"
+		if p["threshold"] != nil {
+			threshold = cstr(p["threshold"])
+		}
+		return negate + "the model has " + threshold + " or fewer wounds remaining"
 	case "was-hit-by-attack":
 		subject := "the unit"
 		if p["subject"] == "target" {

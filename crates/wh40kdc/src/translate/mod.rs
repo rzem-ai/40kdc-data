@@ -282,6 +282,10 @@ fn describe_simple(s: &SimpleCondition) -> String {
         }
         T::IsBattleShocked => format!("{negate}the unit is battle-shocked"),
         T::HasLostWounds => format!("{negate}the model has lost wounds"),
+        T::WoundsRemainingAtOrBelow => format!(
+            "{negate}the model has {} or fewer wounds remaining",
+            pu(p, "threshold", 0)
+        ),
         T::WasHitByAttack => {
             let subject = if ps(p, "subject") == Some("target") {
                 "the target"

@@ -155,6 +155,10 @@ def describe_condition(c: Condition) -> str:
         return f"{negate}the unit is battle-shocked"
     if ctype == "has-lost-wounds":
         return f"{negate}the model has lost wounds"
+    if ctype == "wounds-remaining-at-or-below":
+        threshold = p.get("threshold")
+        threshold = threshold if threshold is not None else 0
+        return f"{negate}the model has {_str(threshold)} or fewer wounds remaining"
     if ctype == "was-hit-by-attack":
         subject = "the target" if p.get("subject") == "target" else "the unit"
         atk = f"{_str(p.get('attack_type'))} " if p.get("attack_type") else ""
