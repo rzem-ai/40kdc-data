@@ -232,6 +232,17 @@ func describeCondition(c map[string]any) string {
 		return negate + "has fought this phase"
 	case "destroyed-by-attack-type":
 		return negate + "destroyed by a " + cstr(p["attack_type"]) + " attack"
+	case "attack-stat-compare":
+		// Mirrors the TS/Rust arms byte-for-byte: missing params render as "" (not "?").
+		sv := func(v any) string {
+			if v == nil {
+				return ""
+			}
+			return cstr(v)
+		}
+		return negate + "the attack's " + sv(p["attacker_stat"]) + " is " + dekebab(sv(p["comparison"])) + " the target's " + sv(p["target_stat"])
+	case "made-ingress-move-this-turn":
+		return negate + "the unit made an ingress move this turn"
 
 	// Scoring conditions.
 	case "objective-majority":

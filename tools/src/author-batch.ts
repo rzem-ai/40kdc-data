@@ -32,6 +32,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { execFile } from "node:child_process";
+import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { createValidator } from "./schema-loader.js";
 import { hasEmptyModifier } from "./audit-coverage.js";
@@ -47,6 +48,8 @@ const ABILITY_SCHEMA_ID = "https://40kdc.dev/schemas/enrichment/ability-dsl/abil
 type Json = any;
 const readJSON = (p: string): Json => JSON.parse(readFileSync(p, "utf-8"));
 const writeJSON = (p: string, v: Json): void => writeFileSync(p, JSON.stringify(v, null, 2) + "\n");
+/** Stable digest of a stub's source rule — the resume key (rule changed ⇒ re-propose). */
+const srcHash = (s: string): string => createHash("sha1").update(s).digest("hex").slice(0, 12);
 
 const PARAMETERLESS = new Set(["deep-strike", "fallback-and-act", "fight-first", "fight-last", "shoot-on-death", "fight-on-death"]);
 
@@ -71,6 +74,8 @@ export interface Proposal {
   unencodable?: boolean;
   /** Canonical-key lint result (repair pass only). false = invented/out-of-vocab modifier keys. */
   canonical?: boolean;
+  /** Digest of the source rule at propose time — lets a resumed run skip unchanged stubs. */
+  src_hash?: string;
 }
 
 // ─── claude CLI bridge (subscription, structured output) ─────────────
@@ -118,7 +123,7 @@ const CLASSIFY_SYSTEM =
   `condition_kind — DEFAULT "none". Only set if the rule EXPLICITLY restricts: "phase" (+condition_param = phase name), "vs-keyword" (+param=keyword), ` +
   `"charged", "stationary", "below-half", "below-starting", "attached", "leading". Do NOT add a phase condition just because the ability operates in a phase. ` +
   `If the rule needs a compound/event trigger (e.g. a dice roll, an either/or choice, or "when a friendly VEHICLE is destroyed within 12\\"") set complex=true.\n` +
-  `scope_range — "self"|"unit"|"attached-unit"|"aura-6"|"aura-9"|"aura-12"|... . scope_duration — "phase"|"turn"|"battle-round"|"battle"|"permanent".\n` +
+  `scope_range — EXACTLY one of "self"|"unit"|"attached"|"aura-6"|"aura-9"|"aura-12"|"aura-custom"|"engagement-range"|"any-visible"|"any-on-battlefield"|"terrain-within-range" (a distance from the bearer; NEVER a target like "all-friendly"/"friendly-within-aura"). For an army-wide detachment/faction buff ("all friendly X units"), use "unit". scope_duration — "phase"|"turn"|"battle-round"|"battle"|"until-next-command-phase"|"one-use"|"permanent".\n` +
   `target — "self"|"unit"|"friendly-within-aura"|"enemy-within-aura"|"attacker"|"defender"|... (only values from the schema enum).\n` +
   `Never copy rule text into any field. Give confidence and a one-sentence reasoning.`;
 
@@ -174,16 +179,17 @@ export const REPAIR_SYSTEM =
   `  • dice-gated: {type:"dice-gated", dice:"D6"|..., threshold:int, comparison?:"greater-or-equal"|..., on_success:effect, on_fail?:effect}\n` +
   `  • dice-pool-allocation: {type:"dice-pool-allocation", pool:{count,die}, max_activations:int, options:[{name, requirement, effect}, ...]}\n\n` +
   `A condition is ONE of:\n` +
-  `  • simple: {type, parameters:{...}} — ALL params go UNDER "parameters", never as top-level keys (e.g. {"type":"unit-has-keyword","parameters":{"keyword":"VEHICLE"}}, NOT {"type":"unit-has-keyword","keyword":"VEHICLE"}). type ∈ [phase-is{phase}, timing-is{timing}, player-turn-is{turn}, unit-below-starting-strength, unit-below-half-strength, unit-has-keyword{keyword}, unit-within-range-of{target_type}, model-is-leader, target-has-keyword{keyword}, charged-this-turn, advanced-this-turn, remained-stationary, is-battle-shocked, has-lost-wounds, was-hit-by-attack{subject?:"self"|"target",attack_type?,weapon_name?,count_min?}, opponent-unit-within-range, within-range-of-objective, attack-is-type{attack_type}, has-fought-this-phase, destroyed-by-attack-type{attack_type}, controls-objective, is-attached, terrain-area-control, engagement-state, territory-control, fights-first, disposition-matches, units-destroyed{side,window,count_min}, units-destroyed-comparison, objective-majority]\n` +
+  `  • simple: {type, parameters:{...}} — ALL params go UNDER "parameters", never as top-level keys (e.g. {"type":"unit-has-keyword","parameters":{"keyword":"VEHICLE"}}, NOT {"type":"unit-has-keyword","keyword":"VEHICLE"}). type ∈ [phase-is{phase}, timing-is{timing}, player-turn-is{turn}, unit-below-starting-strength, unit-below-half-strength, unit-has-keyword{keyword}, unit-within-range-of{target_type}, model-is-leader, target-has-keyword{keyword}, charged-this-turn, advanced-this-turn, remained-stationary, is-battle-shocked, has-lost-wounds, was-hit-by-attack{subject?:"self"|"target",attack_type?,weapon_name?,count_min?}, opponent-unit-within-range, within-range-of-objective, attack-is-type{attack_type}, has-fought-this-phase, destroyed-by-attack-type{attack_type}, controls-objective, is-attached, terrain-area-control, engagement-state, territory-control, fights-first, disposition-matches, units-destroyed{side,window,count_min}, units-destroyed-comparison, objective-majority, attack-stat-compare{attacker_stat,comparison:"greater-than"|"less-than"|"greater-or-equal"|"less-or-equal"|"equal",target_stat} (e.g. attack S greater than unit T), made-ingress-move-this-turn]\n` +
   `  • compound: {operator:"and"|"or"|"not", operands:[condition, ...]} — use "not" with ONE operand to negate (e.g. "while not Battle-shocked" → {operator:"not", operands:[{type:"is-battle-shocked"}]}). Nest compounds freely.\n\n` +
   `Encode reactive/event triggers as a conditional whose condition is the trigger (e.g. an enemy destroyed a model nearby → destroyed-by-attack-type / opponent-unit-within-range). Encode "first time per turn"/"once per game" by choosing the correct timing condition; do not invent fields.\n` +
-  `scope = {range, duration}: range ∈ [self, unit, attached-unit, aura-6, aura-9, aura-12, ...]; duration ∈ [phase, turn, battle-round, battle, permanent]. Credit the aura in scope.range, NOT as a condition.\n` +
+  `scope = {range, duration}: range ∈ [self, unit, attached, aura-6, aura-9, aura-12, aura-custom, engagement-range, any-visible, any-on-battlefield, terrain-within-range] — this is the COMPLETE list. range is a distance from the bearer and is NEVER a target value: do NOT put "all-friendly"/"friendly-within-aura"/"all-enemy" here (those are effect targets). For an army-wide detachment/faction buff ("all friendly X units"), use range "unit" and express the audience via the effect target / applies_to keywords. duration ∈ [phase, turn, battle-round, battle, until-next-command-phase, one-use, permanent]. Credit the aura in scope.range, NOT as a condition.\n` +
   `behavior ∈ [passive, activated, reactive, aura].\n\n` +
   `CANONICAL MODIFIER KEYS — use ONLY the keys listed per type; never invent a key (an unknown key is silently ignored by consumers and corrupts the data):\n` +
-  `  stat-modifier.modifier: {stat, operation:"add"|"subtract"|"set", value:int}. stat ∈ [A,S,T,Sv,AP,OC,Ld,M,W,D] ONLY (use "M" for Move, never "Move"/"range"; weapon range is NOT a unit stat). operation:"set" IS allowed for "characteristic of N" rules (e.g. OC of 9). Optional narrowing: attack_type:"melee"|"ranged", weapon_type:"melee"|"ranged", or weapon_name:"<weapon>" for a single named weapon. Do NOT use weapon_keyword/weapon_filter/model_filter.\n` +
-  `  roll-modifier.modifier: {roll:"hit"|"wound"|"save"|"charge"|"damage", operation, value}. re-roll.modifier: {roll, subset:"ones"|"all-failures"}. Optional attack_type/weapon_type/weapon_name as above.\n` +
-  `  keyword-grant.modifier: {keywords:[...]} (array) — combat keywords as written ("Lethal Hits","Sustained Hits 1","Twin-linked"). Optional weapon_type:"melee"|"ranged", weapon_name.\n` +
-  `  feel-no-pain.modifier:{threshold:int}; damage-reduction.modifier:{reduction:int}; bs-modifier.modifier:{operation,value}; ability-grant.modifier:{grant_type:"kebab-label"}; objective-control-modifier.modifier:{operation:"add"|"set",value} or {sticky:true}; movement-modifier.modifier:{move_type:"kebab",value}; deep-strike.modifier:{} (parameterless).\n\n` +
+  `  stat-modifier.modifier: {stat, operation:"add"|"subtract"|"set", value:int}. stat ∈ [A,S,T,Sv,AP,OC,Ld,M,W,D] ONLY (use "M" for Move, never "Move"/"range"; weapon range is NOT a unit stat). operation:"set" IS allowed for "characteristic of N" rules (e.g. OC of 9). Optional narrowing: attack_type:"melee"|"ranged", weapon_type:"melee"|"ranged", weapon_name:"<weapon>" for a single named weapon, or weapon_keyword:"<ability>" to restrict to weapons with a keyword like "Torrent"/"Blast"/"Pistol". Do NOT use weapon_filter/model_filter.\n` +
+  `  roll-modifier.modifier: {roll:"hit"|"wound"|"save"|"charge"|"damage", operation, value}. re-roll.modifier: {roll, subset:"ones"|"all-failures"}. Optional attack_type/weapon_type/weapon_name/weapon_keyword as above.\n` +
+  `  keyword-grant.modifier: {keywords:[...]} (array) — combat keywords as written ("Lethal Hits","Sustained Hits 1","Twin-linked"). Optional weapon_type:"melee"|"ranged", weapon_name, weapon_keyword.\n` +
+  `  feel-no-pain.modifier:{threshold:int}; damage-reduction.modifier:{reduction:int}; bs-modifier.modifier:{operation,value}; ability-grant.modifier:{grant_type:"kebab-label"}; objective-control-modifier.modifier:{operation:"add"|"set",value} or {sticky:true}; movement-modifier.modifier:{move_type:"kebab",value}; deep-strike.modifier:{} (parameterless).\n` +
+  `  SCALING ("X per N models/units"): add a sibling \`scaling\`:{per:int, of:"enemy-models-in-range"|"friendly-models-in-range"|"models-in-bearer-unit"|"enemy-units-in-range"|"wounds-lost", within_inches?:int, round?:"down"|"up"} to the leaf and set modifier.value to the PER-INCREMENT amount (e.g. "+2 A per 5 enemy models within 6\\"" → {type:"stat-modifier",...,modifier:{stat:"A",operation:"add",value:2,attack_type:"melee"},scaling:{per:5,of:"enemy-models-in-range",within_inches:6}}). Do NOT flatten the scaling away.\n\n` +
   `dice-gated.comparison ∈ ["gte","lte","gt","lt","eq"] (use "gte" for "on a 2+"). dice e.g. "D6","2D6"; threshold int. on_success/on_fail are effect nodes.\n` +
   `ENCODING THE RESIDUE — these ARE expressible, do not punt on them:\n` +
   `  • "roll a D6, on 2+ <effect>" → dice-gated {dice:"D6", threshold:2, comparison:"gte", on_success:<effect>}.\n` +
@@ -270,10 +276,10 @@ const CANONICAL_MODIFIER_KEYS: Record<string, Set<string>> = {
   // weapon_type/weapon_name are valid narrowing keys (gold uses weapon_name): the
   // cruncher honors weapon_type as a phase gate and fail-safes (unsupported) on
   // weapon_name, so the data can carry them without risking a silent over-apply.
-  "stat-modifier": new Set(["stat", "operation", "value", "attack_type", "weapon_type", "weapon_name"]),
-  "roll-modifier": new Set(["roll", "operation", "value", "attack_type", "weapon_type", "weapon_name", "critical_on", "uses", "context"]),
-  "re-roll": new Set(["roll", "subset", "attack_type", "weapon_type", "weapon_name", "max_rerolls", "uses", "context"]),
-  "keyword-grant": new Set(["keyword", "keywords", "weapon_type", "weapon_name"]),
+  "stat-modifier": new Set(["stat", "operation", "value", "attack_type", "weapon_type", "weapon_name", "weapon_keyword"]),
+  "roll-modifier": new Set(["roll", "operation", "value", "attack_type", "weapon_type", "weapon_name", "weapon_keyword", "critical_on", "uses", "context"]),
+  "re-roll": new Set(["roll", "subset", "attack_type", "weapon_type", "weapon_name", "weapon_keyword", "max_rerolls", "uses", "context"]),
+  "keyword-grant": new Set(["keyword", "keywords", "weapon_type", "weapon_name", "weapon_keyword"]),
   "bs-modifier": new Set(["operation", "value", "attack_type"]),
   "feel-no-pain": new Set(["threshold"]),
   "damage-reduction": new Set(["reduction", "amount"]),
@@ -365,6 +371,23 @@ const chunk = <T>(arr: T[], n: number): T[][] => {
   return out;
 };
 
+/**
+ * Run `fn` over `items` with at most `limit` in flight. Items are independent
+ * `claude -p` batches, so this collapses ~N sequential round-trips to N/limit.
+ * `limit = 1` is exactly the old sequential behaviour. Tasks settle in completion
+ * order; `fn` must place its own result (these callers push/index into a shared array).
+ */
+async function mapLimit<T>(items: T[], limit: number, fn: (item: T, idx: number) => Promise<void>): Promise<void> {
+  let next = 0;
+  const worker = async (): Promise<void> => {
+    while (next < items.length) {
+      const idx = next++;
+      await fn(items[idx], idx);
+    }
+  };
+  await Promise.all(Array.from({ length: Math.max(1, Math.min(limit, items.length)) }, worker));
+}
+
 const classifyUserPrompt = (items: Json[]): string =>
   `Classify each ability below. Return results[] (one per ability, echo its ability_id):\n\n` +
   items.map((it) => `- ability_id: ${it.ability_id}\n  name: ${it.name}\n  rule: ${it.src?.description ?? "(none)"}`).join("\n");
@@ -381,7 +404,7 @@ export const repairUserPrompt = (items: { ability_id: string; rule: string; draf
 
 // ─── propose ─────────────────────────────────────────────────────────
 
-interface ProposeOpts { batch: number; model: string }
+interface ProposeOpts { batch: number; model: string; fresh?: boolean; concurrency?: number }
 
 async function proposeFaction(faction: string, opts: ProposeOpts, validate: (x: unknown) => boolean): Promise<Json> {
   const inputPath = resolve(INPUT_DIR, `${faction}.json`);
@@ -392,8 +415,29 @@ async function proposeFaction(faction: string, opts: ProposeOpts, validate: (x: 
   const original = new Map<string, Json>();
   for (const a of readJSON(resolve(ENRICHMENT_ROOT, faction, "abilities.json")) as Json[]) original.set(a.ability_id, a);
 
+  // Resume: reuse prior proposals whose source rule is unchanged (skip errored ones so
+  // they get retried). A checkpoint is written after every batch, so an interrupted run
+  // loses at most the batch in flight. `--fresh` forces a full re-propose.
+  const outPath = resolve(OUT_DIR, `${faction}.json`);
+  mkdirSync(OUT_DIR, { recursive: true });
+  const prior = new Map<string, Proposal>();
+  if (!opts.fresh && existsSync(outPath)) for (const p of readJSON(outPath) as Proposal[]) prior.set(p.ability_id, p);
+
   const proposals: Proposal[] = [];
-  for (const batch of chunk(input, opts.batch)) {
+  const pending: Json[] = [];
+  const hashById = new Map<string, string>();
+  for (const it of input) {
+    const h = srcHash(it.src?.description ?? "");
+    hashById.set(it.ability_id, h);
+    const prev = prior.get(it.ability_id);
+    if (prev && !prev.error && prev.src_hash === h) proposals.push(prev);
+    else pending.push(it);
+  }
+  const resumed = proposals.length;
+  if (resumed > 0) process.stderr.write(`  ${faction}: resuming — ${resumed} kept, ${pending.length} to (re)propose\n`);
+  const checkpoint = (): void => writeJSON(outPath, proposals);
+
+  await mapLimit(chunk(pending, opts.batch), opts.concurrency ?? 1, async (batch) => {
     let forms: Json[];
     try {
       ({ results: forms } = await callClaude(CLASSIFY_SYSTEM, classifyUserPrompt(batch), CLASSIFY_SCHEMA, opts.model));
@@ -401,7 +445,8 @@ async function proposeFaction(faction: string, opts: ProposeOpts, validate: (x: 
       // One flaky call shouldn't sink the run — record the batch as errored and move on.
       process.stderr.write(`  ${faction}: classify batch failed (${(e as Error).message.slice(0, 80)}) — skipping ${batch.length}\n`);
       for (const it of batch) proposals.push({ ability_id: it.ability_id, name: it.name, faction, schema_valid: false, final_faithful: false, error: "classify call failed" });
-      continue;
+      checkpoint();
+      return;
     }
     const byId = new Map<string, Json>(forms.map((f: Json) => [f.ability_id, f]));
 
@@ -440,11 +485,12 @@ async function proposeFaction(faction: string, opts: ProposeOpts, validate: (x: 
         verdict, final_faithful: !!verdict?.faithful && b.schemaValid,
       });
     }
+    for (const p of proposals) if (p.src_hash == null) p.src_hash = hashById.get(p.ability_id);
     process.stderr.write(`  ${faction}: ${proposals.length}/${input.length}\n`);
-  }
+    checkpoint();
+  });
 
-  mkdirSync(OUT_DIR, { recursive: true });
-  writeJSON(resolve(OUT_DIR, `${faction}.json`), proposals);
+  checkpoint();
   return {
     faction, total: proposals.length,
     schema_valid: proposals.filter((p) => p.schema_valid).length,
@@ -455,7 +501,7 @@ async function proposeFaction(faction: string, opts: ProposeOpts, validate: (x: 
 
 // ─── repair (full-tree pass over the residue) ────────────────────────
 
-interface RepairOpts { batch: number; model: string; types?: Set<string> }
+interface RepairOpts { batch: number; model: string; types?: Set<string>; concurrency?: number }
 
 /**
  * Re-author the complex residue in proposed/<faction>.json as full nested DSL.
@@ -487,7 +533,7 @@ async function repairFaction(faction: string, opts: RepairOpts, validate: (x: un
   for (const a of readJSON(resolve(ENRICHMENT_ROOT, faction, "abilities.json")) as Json[]) original.set(a.ability_id, a);
 
   let done = 0;
-  for (const batch of chunk(targets, opts.batch)) {
+  await mapLimit(chunk(targets, opts.batch), opts.concurrency ?? 1, async (batch) => {
     let results: Json[];
     try {
       ({ results } = await callClaude(REPAIR_SYSTEM,
@@ -495,7 +541,7 @@ async function repairFaction(faction: string, opts: RepairOpts, validate: (x: un
         REPAIR_SCHEMA, opts.model));
     } catch (e) {
       process.stderr.write(`  ${faction}: repair batch failed (${(e as Error).message.slice(0, 80)}) — skipping ${batch.length}\n`);
-      continue;
+      return;
     }
     const byId = new Map<string, Json>(results.map((r: Json) => [r.ability_id, r]));
 
@@ -542,7 +588,8 @@ async function repairFaction(faction: string, opts: RepairOpts, validate: (x: un
     }
     done += batch.length;
     process.stderr.write(`  ${faction}: repaired ${done}/${targets.length}\n`);
-  }
+    writeJSON(proposalsPath, proposals); // checkpoint — partial repairs survive an interruption
+  });
 
   writeJSON(proposalsPath, proposals);
   const repaired = proposals.filter((p) => p.repaired);
@@ -662,7 +709,7 @@ async function main(): Promise<void> {
     return;
   }
   if (!["propose", "repair", "apply"].includes(mode) || !target) {
-    console.error("Usage:\n  author-batch propose <faction|--all> [--batch N] [--model M]\n  author-batch repair  <faction|--all> [--types t1,t2] [--batch N] [--model M]\n  author-batch apply   <faction|--all> [--min-confidence high|medium] [--include-complex] [--dry-run]\n  author-batch review");
+    console.error("Usage:\n  author-batch propose <faction|--all> [--batch N] [--model M] [--concurrency N] [--fresh]\n  author-batch repair  <faction|--all> [--types t1,t2] [--batch N] [--model M] [--concurrency N]\n  author-batch apply   <faction|--all> [--min-confidence high|medium] [--include-complex] [--dry-run]\n  author-batch review");
     process.exit(1);
   }
 
@@ -671,7 +718,7 @@ async function main(): Promise<void> {
     const validateFn = ajv.getSchema(ABILITY_SCHEMA_ID);
     if (!validateFn) throw new Error(`ability schema not loaded: ${ABILITY_SCHEMA_ID}`);
     const validate = (x: unknown): boolean => !!validateFn(x);
-    const opts: ProposeOpts = { batch: Number(flag(argv, "--batch")) || 15, model: flag(argv, "--model") ?? "claude-haiku-4-5" };
+    const opts: ProposeOpts = { batch: Number(flag(argv, "--batch")) || 15, model: flag(argv, "--model") ?? "claude-haiku-4-5", fresh: argv.includes("--fresh"), concurrency: Number(flag(argv, "--concurrency")) || 1 };
     const summary: Json[] = [];
     for (const f of factionList(target, INPUT_DIR)) {
       try {
@@ -695,6 +742,7 @@ async function main(): Promise<void> {
       batch: Number(flag(argv, "--batch")) || 8,
       model: flag(argv, "--model") ?? "claude-sonnet-4-6",
       types: typesArg ? new Set(typesArg.split(",").map((t) => t.trim()).filter(Boolean)) : undefined,
+      concurrency: Number(flag(argv, "--concurrency")) || 1,
     };
     const summary: Json[] = [];
     for (const f of factionList(target, OUT_DIR)) {

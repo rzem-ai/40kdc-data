@@ -306,6 +306,7 @@ class WhenDrawn(TypedDict):
 
 class TargetRestrictions(TypedDict):
     required_keywords: NotRequired[KeywordList]
+    required_keywords_any: NotRequired[KeywordList]
     excluded_keywords: NotRequired[KeywordList]
     notes: NotRequired[str]
 
@@ -601,9 +602,25 @@ class SimpleCondition(TypedDict):
         "destroyed-while-on-objective",
         "destroyed-in-tagged-terrain",
         "operation-markers",
+        "attack-stat-compare",
+        "made-ingress-move-this-turn",
     ]
     parameters: NotRequired[dict[str, Any]]
     negated: NotRequired[bool]
+
+
+class Scaling(TypedDict):
+    per: int
+    of: Literal[
+        "enemy-models-in-range",
+        "friendly-models-in-range",
+        "models-in-bearer-unit",
+        "enemy-units-in-range",
+        "wounds-lost",
+    ]
+    within_inches: NotRequired[float]
+    round: NotRequired[Literal["down", "up"]]
+    max_value: NotRequired[int]
 
 
 class SingleEffect(TypedDict):
@@ -654,6 +671,7 @@ class SingleEffect(TypedDict):
         "all-enemy",
     ]
     modifier: NotRequired[dict[str, Any]]
+    scaling: NotRequired[Scaling]
 
 
 class Pool(TypedDict):
@@ -791,6 +809,14 @@ class SecondaryCard(TypedDict):
     actions: NotRequired[list[Action]]
     awards: NotRequired[list[Awards | Awards1]]
     text: NotRequired[str]
+    game_version: GameVersionRef
+
+
+class UnitKeyword(TypedDict):
+    id: EntityId
+    name: str
+    required_parameters: list[Literal["value"]]
+    effect: Effect | None
     game_version: GameVersionRef
 
 

@@ -30,6 +30,7 @@ type Dataset struct {
 	TerrainLayouts     *Collection[any]
 	HullShapes         *Collection[any]
 	ResourcePools      *Collection[any]
+	UnitKeywords       *Collection[any]
 
 	// Id-less collections, exposed as plain lists.
 	LeaderAttachments []any
@@ -120,6 +121,7 @@ func NewDataset(raw rawData) *Dataset {
 	ds.TerrainLayouts = idCollection(raw["terrain_layouts"], nil)
 	ds.HullShapes = idCollection(raw["hull_shapes"], nil)
 	ds.ResourcePools = idCollection(raw["resource_pools"], nil)
+	ds.UnitKeywords = idCollection(raw["unit_keywords"], nil)
 
 	ds.LeaderAttachments = raw["leader_attachments"]
 	ds.UnitCompositions = raw["unit_compositions"]

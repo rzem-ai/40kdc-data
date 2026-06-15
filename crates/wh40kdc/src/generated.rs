@@ -6890,6 +6890,237 @@ impl ::std::convert::TryFrom<::std::string::String> for ResourcePoolPoolType {
         value.parse()
     }
 }
+///Scales the effect's numeric `modifier.value`: it applies once per `per` of `of` (rounding `round`, default down), optionally capped at `max_value`. E.g. '+2 to the Attacks characteristic for every 5 enemy models within 6\"' → modifier.value 2 with scaling { per: 5, of: 'enemy-models-in-range', within_inches: 6 }.
+///
+/// <details><summary>JSON schema</summary>
+///
+/// ```json
+///{
+///  "description": "Scales the effect's numeric `modifier.value`: it applies once per `per` of `of` (rounding `round`, default down), optionally capped at `max_value`. E.g. '+2 to the Attacks characteristic for every 5 enemy models within 6\\\"' → modifier.value 2 with scaling { per: 5, of: 'enemy-models-in-range', within_inches: 6 }.",
+///  "type": "object",
+///  "required": [
+///    "of",
+///    "per"
+///  ],
+///  "properties": {
+///    "max_value": {
+///      "type": "integer"
+///    },
+///    "of": {
+///      "type": "string",
+///      "enum": [
+///        "enemy-models-in-range",
+///        "friendly-models-in-range",
+///        "models-in-bearer-unit",
+///        "enemy-units-in-range",
+///        "wounds-lost"
+///      ]
+///    },
+///    "per": {
+///      "type": "integer",
+///      "minimum": 1.0
+///    },
+///    "round": {
+///      "default": "down",
+///      "type": "string",
+///      "enum": [
+///        "down",
+///        "up"
+///      ]
+///    },
+///    "within_inches": {
+///      "type": "number"
+///    }
+///  },
+///  "additionalProperties": false
+///}
+/// ```
+/// </details>
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct Scaling {
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub max_value: ::std::option::Option<i64>,
+    pub of: ScalingOf,
+    pub per: ::std::num::NonZeroU64,
+    #[serde(default = "defaults::scaling_round")]
+    pub round: ScalingRound,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub within_inches: ::std::option::Option<f64>,
+}
+///`ScalingOf`
+///
+/// <details><summary>JSON schema</summary>
+///
+/// ```json
+///{
+///  "type": "string",
+///  "enum": [
+///    "enemy-models-in-range",
+///    "friendly-models-in-range",
+///    "models-in-bearer-unit",
+///    "enemy-units-in-range",
+///    "wounds-lost"
+///  ]
+///}
+/// ```
+/// </details>
+#[derive(
+    ::serde::Deserialize,
+    ::serde::Serialize,
+    Clone,
+    Copy,
+    Debug,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd
+)]
+pub enum ScalingOf {
+    #[serde(rename = "enemy-models-in-range")]
+    EnemyModelsInRange,
+    #[serde(rename = "friendly-models-in-range")]
+    FriendlyModelsInRange,
+    #[serde(rename = "models-in-bearer-unit")]
+    ModelsInBearerUnit,
+    #[serde(rename = "enemy-units-in-range")]
+    EnemyUnitsInRange,
+    #[serde(rename = "wounds-lost")]
+    WoundsLost,
+}
+impl ::std::fmt::Display for ScalingOf {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        match *self {
+            Self::EnemyModelsInRange => f.write_str("enemy-models-in-range"),
+            Self::FriendlyModelsInRange => f.write_str("friendly-models-in-range"),
+            Self::ModelsInBearerUnit => f.write_str("models-in-bearer-unit"),
+            Self::EnemyUnitsInRange => f.write_str("enemy-units-in-range"),
+            Self::WoundsLost => f.write_str("wounds-lost"),
+        }
+    }
+}
+impl ::std::str::FromStr for ScalingOf {
+    type Err = self::error::ConversionError;
+    fn from_str(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        match value {
+            "enemy-models-in-range" => Ok(Self::EnemyModelsInRange),
+            "friendly-models-in-range" => Ok(Self::FriendlyModelsInRange),
+            "models-in-bearer-unit" => Ok(Self::ModelsInBearerUnit),
+            "enemy-units-in-range" => Ok(Self::EnemyUnitsInRange),
+            "wounds-lost" => Ok(Self::WoundsLost),
+            _ => Err("invalid value".into()),
+        }
+    }
+}
+impl ::std::convert::TryFrom<&str> for ScalingOf {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<&::std::string::String> for ScalingOf {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<::std::string::String> for ScalingOf {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: ::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+///`ScalingRound`
+///
+/// <details><summary>JSON schema</summary>
+///
+/// ```json
+///{
+///  "default": "down",
+///  "type": "string",
+///  "enum": [
+///    "down",
+///    "up"
+///  ]
+///}
+/// ```
+/// </details>
+#[derive(
+    ::serde::Deserialize,
+    ::serde::Serialize,
+    Clone,
+    Copy,
+    Debug,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd
+)]
+pub enum ScalingRound {
+    #[serde(rename = "down")]
+    Down,
+    #[serde(rename = "up")]
+    Up,
+}
+impl ::std::fmt::Display for ScalingRound {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        match *self {
+            Self::Down => f.write_str("down"),
+            Self::Up => f.write_str("up"),
+        }
+    }
+}
+impl ::std::str::FromStr for ScalingRound {
+    type Err = self::error::ConversionError;
+    fn from_str(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        match value {
+            "down" => Ok(Self::Down),
+            "up" => Ok(Self::Up),
+            _ => Err("invalid value".into()),
+        }
+    }
+}
+impl ::std::convert::TryFrom<&str> for ScalingRound {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<&::std::string::String> for ScalingRound {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<::std::string::String> for ScalingRound {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: ::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::default::Default for ScalingRound {
+    fn default() -> Self {
+        ScalingRound::Down
+    }
+}
 ///`Scope`
 ///
 /// <details><summary>JSON schema</summary>
@@ -9223,11 +9454,13 @@ impl ::std::convert::TryFrom<::std::string::String> for Side {
 ///        "engagement-fronts",
 ///        "destroyed-while-on-objective",
 ///        "destroyed-in-tagged-terrain",
-///        "operation-markers"
+///        "operation-markers",
+///        "attack-stat-compare",
+///        "made-ingress-move-this-turn"
 ///      ]
 ///    }
 ///  },
-///  "$comment": "Board/meta-state and scoring predicates. `parameters` is intentionally open (additionalProperties: true); each type documents its own param convention. Combat-reactive predicate: `was-hit-by-attack` { subject?: 'self'|'target' (default 'self'), attack_type?: 'melee'|'ranged', weapon_name?: string, count_min?: int (default 1) } — the named unit was hit by at least count_min attacks this phase (distinct from `has-lost-wounds`, which fires only when a wound got through — a hit that is saved or shrugged still satisfies this). `subject:'self'` = the bearer was hit (reactive defensive triggers); `subject:'target'` = the unit the bearer attacked was hit (offensive follow-ups, e.g. a debuff applied to a unit the bearer's named weapon hit). Optional `attack_type`/`weapon_name` narrow which attacks count. Scoring predicates added for mission cards: `units-destroyed` { side: 'enemy'|'friendly', window: 'this-turn'|'previous-turn', count_min: int } — at least count_min units of `side` were destroyed in `window`. `units-destroyed-comparison` { subject: {side, window}, comparator: 'greater-than'|'greater-or-equal', reference: {side, window} } — compares two destruction tallies (e.g. more enemy units destroyed this turn than friendly last turn). `objective-majority` { relative_to: 'opponent' } — you control more objectives than the named party. `controls-objective` params: { count_min: int, objective_role?: 'central'|'expansion'|'non-home'|'home', exclude?: 'home', objective?: 'opponent-home'|'your-home', scope?: 'enemy-territory'|'your-territory' }. Mission-card extensions (11e primary deck): `action-completed` { action_id?: string, target_kind?: 'objective'|'terrain'|'enemy-unit'|'self', target_filter?: { in_enemy_territory?: bool, objective_role?: 'central'|'non-home', exclude?: 'home' }, count_min: int, window?: 'this-turn'|'previous-turn'|'cumulative' } — at least count_min instances of a named action were completed in the window. `objective-has-tag` { tag: 'baited'|'decoyed'|'cleansed'|'triangulated'|'consecrated'|'sabotaged'|'marked'|'vanguard'|'spotted', count_min: int, count_max?: int, objective?: 'opponent-home'|'your-home', scope?: 'enemy-territory'|'your-territory' } — at least count_min objectives carry the named transient tag. `unit-has-tag` { tag: 'doomed'|'condemned'|'spotted'|'surveilled', side: 'enemy'|'friendly', count_min: int, window?: 'destroyed-this-turn'|'left-battlefield-this-turn'|'this-turn'|'still-on-board' } — at least count_min units of `side` carry the tag (optionally with an event window — Punishment scores when a condemned unit was destroyed or left the battlefield this turn; Surveil the Foe scores on units tagged this turn). `terrain-has-tag` { tag: 'mined'|'trapped'|'marked'|'vanguard'|'plundered', friendly_units_min?: int, enemy_units_max?: int, last_marked?: bool, in_enemy_dz?: bool } — terrain piece state predicate; `last_marked` selects the most-recently-marked piece (Find and Deny / Recover the Relics' Overwhelming Force trigger). `new-objective-controlled` { count_min: int } — at least count_min objectives are controlled this turn that were not controlled in the previous command phase. `engagement-fronts` { count_min: int } — friendly units engage enemies in at least count_min distinct fronts; a 'front' is one of the four table quarters (board quadrants about the board's centre — each of the four areas formed by dividing the table along both centre lines). `destroyed-while-on-objective` { destroyer_on_objective?: bool, victim_on_objective?: bool, victim_started_turn_on_objective?: bool, objective_role?: 'central', count_min: int } — count_min enemy units were destroyed this turn under the named spatial condition (the destroying friendly unit, the destroyed enemy unit, or both were within range of an objective at the moment of the kill; `victim_started_turn_on_objective` instead tests the victim's position at the start of the turn, and `objective_role` narrows which objectives count — Secure Asset's central-objective kill row). `destroyed-in-tagged-terrain` { tag?: 'mined'|'trapped'|'marked'|'vanguard'|'plundered', at_start_of_turn?: bool, count_min: int } — count_min enemy units were destroyed this turn while in terrain carrying the named tag; with `at_start_of_turn` the victim must have been in that terrain at the start of the turn (Death Trap's kill bonus), otherwise the spatial test is at the moment of the kill (parallels `destroyed-while-on-objective`). With `tag` omitted, any terrain area qualifies (Search and Scour). `operation-markers` { side?: 'friendly'|'opponent', count_min?: int, count_max?: int, within_range_of?: 'opponent-home-objective', friendly_unit_in_same_terrain_area?: bool, no_enemy_in_terrain_area?: bool } — counts operation markers on the battlefield (side omitted counts both sides' markers); count_max: 0 is 'none remain', count_min == count_max == 1 is 'exactly one'; the terrain-area flags add the co-location proviso used by Locate and Deny / Extract Relic ('one of your units is within the same terrain area as that marker, and no enemy units are within it')."
+///  "$comment": "Board/meta-state and scoring predicates. `parameters` is intentionally open (additionalProperties: true); each type documents its own param convention. Combat-reactive predicate: `was-hit-by-attack` { subject?: 'self'|'target' (default 'self'), attack_type?: 'melee'|'ranged', weapon_name?: string, count_min?: int (default 1) } — the named unit was hit by at least count_min attacks this phase (distinct from `has-lost-wounds`, which fires only when a wound got through — a hit that is saved or shrugged still satisfies this). `subject:'self'` = the bearer was hit (reactive defensive triggers); `subject:'target'` = the unit the bearer attacked was hit (offensive follow-ups, e.g. a debuff applied to a unit the bearer's named weapon hit). Optional `attack_type`/`weapon_name` narrow which attacks count. Scoring predicates added for mission cards: `units-destroyed` { side: 'enemy'|'friendly', window: 'this-turn'|'previous-turn', count_min: int } — at least count_min units of `side` were destroyed in `window`. `units-destroyed-comparison` { subject: {side, window}, comparator: 'greater-than'|'greater-or-equal', reference: {side, window} } — compares two destruction tallies (e.g. more enemy units destroyed this turn than friendly last turn). `objective-majority` { relative_to: 'opponent' } — you control more objectives than the named party. `controls-objective` params: { count_min: int, objective_role?: 'central'|'expansion'|'non-home'|'home', exclude?: 'home', objective?: 'opponent-home'|'your-home', scope?: 'enemy-territory'|'your-territory' }. Mission-card extensions (11e primary deck): `action-completed` { action_id?: string, target_kind?: 'objective'|'terrain'|'enemy-unit'|'self', target_filter?: { in_enemy_territory?: bool, objective_role?: 'central'|'non-home', exclude?: 'home' }, count_min: int, window?: 'this-turn'|'previous-turn'|'cumulative' } — at least count_min instances of a named action were completed in the window. `objective-has-tag` { tag: 'baited'|'decoyed'|'cleansed'|'triangulated'|'consecrated'|'sabotaged'|'marked'|'vanguard'|'spotted', count_min: int, count_max?: int, objective?: 'opponent-home'|'your-home', scope?: 'enemy-territory'|'your-territory' } — at least count_min objectives carry the named transient tag. `unit-has-tag` { tag: 'doomed'|'condemned'|'spotted'|'surveilled', side: 'enemy'|'friendly', count_min: int, window?: 'destroyed-this-turn'|'left-battlefield-this-turn'|'this-turn'|'still-on-board' } — at least count_min units of `side` carry the tag (optionally with an event window — Punishment scores when a condemned unit was destroyed or left the battlefield this turn; Surveil the Foe scores on units tagged this turn). `terrain-has-tag` { tag: 'mined'|'trapped'|'marked'|'vanguard'|'plundered', friendly_units_min?: int, enemy_units_max?: int, last_marked?: bool, in_enemy_dz?: bool } — terrain piece state predicate; `last_marked` selects the most-recently-marked piece (Find and Deny / Recover the Relics' Overwhelming Force trigger). `new-objective-controlled` { count_min: int } — at least count_min objectives are controlled this turn that were not controlled in the previous command phase. `engagement-fronts` { count_min: int } — friendly units engage enemies in at least count_min distinct fronts; a 'front' is one of the four table quarters (board quadrants about the board's centre — each of the four areas formed by dividing the table along both centre lines). `destroyed-while-on-objective` { destroyer_on_objective?: bool, victim_on_objective?: bool, victim_started_turn_on_objective?: bool, objective_role?: 'central', count_min: int } — count_min enemy units were destroyed this turn under the named spatial condition (the destroying friendly unit, the destroyed enemy unit, or both were within range of an objective at the moment of the kill; `victim_started_turn_on_objective` instead tests the victim's position at the start of the turn, and `objective_role` narrows which objectives count — Secure Asset's central-objective kill row). `destroyed-in-tagged-terrain` { tag?: 'mined'|'trapped'|'marked'|'vanguard'|'plundered', at_start_of_turn?: bool, count_min: int } — count_min enemy units were destroyed this turn while in terrain carrying the named tag; with `at_start_of_turn` the victim must have been in that terrain at the start of the turn (Death Trap's kill bonus), otherwise the spatial test is at the moment of the kill (parallels `destroyed-while-on-objective`). With `tag` omitted, any terrain area qualifies (Search and Scour). `operation-markers` { side?: 'friendly'|'opponent', count_min?: int, count_max?: int, within_range_of?: 'opponent-home-objective', friendly_unit_in_same_terrain_area?: bool, no_enemy_in_terrain_area?: bool } — counts operation markers on the battlefield (side omitted counts both sides' markers); count_max: 0 is 'none remain', count_min == count_max == 1 is 'exactly one'; the terrain-area flags add the co-location proviso used by Locate and Deny / Extract Relic ('one of your units is within the same terrain area as that marker, and no enemy units are within it'). Combat/structural predicates: `attack-stat-compare` { attacker_stat: 'S'|'A'|'AP'|'D', comparison: 'greater-than'|'less-than'|'greater-or-equal'|'less-or-equal'|'equal', target_stat: 'T'|'Sv'|'W'|'OC' } — compares a characteristic of the incoming attack to a characteristic of the target unit (e.g. attack Strength greater than the unit's Toughness). `made-ingress-move-this-turn` {} — the named unit arrived from Reserves / made an ingress (Deep Strike-style set-up) move this turn (parallels charged-this-turn / advanced-this-turn)."
 ///}
 /// ```
 /// </details>
@@ -9286,7 +9519,9 @@ pub struct SimpleCondition {
 ///    "engagement-fronts",
 ///    "destroyed-while-on-objective",
 ///    "destroyed-in-tagged-terrain",
-///    "operation-markers"
+///    "operation-markers",
+///    "attack-stat-compare",
+///    "made-ingress-move-this-turn"
 ///  ]
 ///}
 /// ```
@@ -9382,6 +9617,10 @@ pub enum SimpleConditionType {
     DestroyedInTaggedTerrain,
     #[serde(rename = "operation-markers")]
     OperationMarkers,
+    #[serde(rename = "attack-stat-compare")]
+    AttackStatCompare,
+    #[serde(rename = "made-ingress-move-this-turn")]
+    MadeIngressMoveThisTurn,
 }
 impl ::std::fmt::Display for SimpleConditionType {
     fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
@@ -9429,6 +9668,8 @@ impl ::std::fmt::Display for SimpleConditionType {
             }
             Self::DestroyedInTaggedTerrain => f.write_str("destroyed-in-tagged-terrain"),
             Self::OperationMarkers => f.write_str("operation-markers"),
+            Self::AttackStatCompare => f.write_str("attack-stat-compare"),
+            Self::MadeIngressMoveThisTurn => f.write_str("made-ingress-move-this-turn"),
         }
     }
 }
@@ -9477,6 +9718,8 @@ impl ::std::str::FromStr for SimpleConditionType {
             "destroyed-while-on-objective" => Ok(Self::DestroyedWhileOnObjective),
             "destroyed-in-tagged-terrain" => Ok(Self::DestroyedInTaggedTerrain),
             "operation-markers" => Ok(Self::OperationMarkers),
+            "attack-stat-compare" => Ok(Self::AttackStatCompare),
+            "made-ingress-move-this-turn" => Ok(Self::MadeIngressMoveThisTurn),
             _ => Err("invalid value".into()),
         }
     }
@@ -9520,6 +9763,9 @@ impl ::std::convert::TryFrom<::std::string::String> for SimpleConditionType {
 ///    "modifier": {
 ///      "type": "object",
 ///      "additionalProperties": true
+///    },
+///    "scaling": {
+///      "$ref": "#/$defs/scaling"
 ///    },
 ///    "target": {
 ///      "type": "string",
@@ -9574,7 +9820,7 @@ impl ::std::convert::TryFrom<::std::string::String> for SimpleConditionType {
 ///      ]
 ///    }
 ///  },
-///  "$comment": "When `type` is `re-roll`, `modifier` must carry `roll` (string) and `subset` (`ones` | `all-failures`). Rerolls always target failures; the subset decides whether only 1s are rerolled or every failed die. The constraint is enforced by AJV at validation time and stripped from the codegen bundle (typify can't model if/then/else) — the generated TS/Rust types therefore see `modifier` as an open object, matching its other-`type` callers. When `type` is `feel-no-pain`, `modifier` carries `threshold` (the FNP save target) and optionally `scope` ∈ {`all`, `mortal`}; an absent scope defaults to `all` (fires on every unsaved wound). The two scopes compose independently against the mortal-wound stream. Tag effects (`terrain-area-tag`, `objective-tag`, `unit-tag`) set a transient marker on the named subject; `modifier` carries `tag` (string) and optionally `source` ('this-action'|'destroying-unit') and `clears_on` ('turn-rollover'|'never'). `target` for tag effects names the kind of entity the tag is applied to ('unit', 'self') — a placeholder, since the marker target is the objective/terrain/unit specified by the action context, not a combat target."
+///  "$comment": "Optional weapon narrowing on cruncher-interpreted modifiers (stat-modifier/roll-modifier/re-roll/keyword-grant): `weapon_type` ('melee'|'ranged'), `weapon_name` (one named weapon), or `weapon_keyword` (a weapon ability such as 'Torrent'|'Blast'|'Pistol' — restricts the effect to weapons carrying that keyword). When `type` is `re-roll`, `modifier` must carry `roll` (string) and `subset` (`ones` | `all-failures`). Rerolls always target failures; the subset decides whether only 1s are rerolled or every failed die. The constraint is enforced by AJV at validation time and stripped from the codegen bundle (typify can't model if/then/else) — the generated TS/Rust types therefore see `modifier` as an open object, matching its other-`type` callers. When `type` is `feel-no-pain`, `modifier` carries `threshold` (the FNP save target) and optionally `scope` ∈ {`all`, `mortal`}; an absent scope defaults to `all` (fires on every unsaved wound). The two scopes compose independently against the mortal-wound stream. Tag effects (`terrain-area-tag`, `objective-tag`, `unit-tag`) set a transient marker on the named subject; `modifier` carries `tag` (string) and optionally `source` ('this-action'|'destroying-unit') and `clears_on` ('turn-rollover'|'never'). `target` for tag effects names the kind of entity the tag is applied to ('unit', 'self') — a placeholder, since the marker target is the objective/terrain/unit specified by the action context, not a combat target."
 ///}
 /// ```
 /// </details>
@@ -9582,6 +9828,8 @@ impl ::std::convert::TryFrom<::std::string::String> for SimpleConditionType {
 pub struct SingleEffect {
     #[serde(default, skip_serializing_if = "::serde_json::Map::is_empty")]
     pub modifier: ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub scaling: ::std::option::Option<Scaling>,
     pub target: SingleEffectTarget,
     #[serde(rename = "type")]
     pub type_: SingleEffectType,
@@ -10259,6 +10507,11 @@ impl<'de> ::serde::Deserialize<'de> for StatValueString {
 ///              "type": "string"
 ///            },
 ///            "required_keywords": {
+///              "description": "AND set: the target must carry every keyword listed here.",
+///              "$ref": "#/$defs/keyword-list"
+///            },
+///            "required_keywords_any": {
+///              "description": "OR set: the target must carry at least one keyword listed here. Use for rules that target a unit with one of several keywords (e.g. Crushing Impact's MONSTER/VEHICLE, Explosives' EXPLOSIVES/GRENADES). Mirrors the `army_keywords_any` OR-gate on allied-rule.schema.json.",
 ///              "$ref": "#/$defs/keyword-list"
 ///            }
 ///          },
@@ -10488,6 +10741,11 @@ impl<'de> ::serde::Deserialize<'de> for StratagemName {
 ///      "type": "string"
 ///    },
 ///    "required_keywords": {
+///      "description": "AND set: the target must carry every keyword listed here.",
+///      "$ref": "#/$defs/keyword-list"
+///    },
+///    "required_keywords_any": {
+///      "description": "OR set: the target must carry at least one keyword listed here. Use for rules that target a unit with one of several keywords (e.g. Crushing Impact's MONSTER/VEHICLE, Explosives' EXPLOSIVES/GRENADES). Mirrors the `army_keywords_any` OR-gate on allied-rule.schema.json.",
 ///      "$ref": "#/$defs/keyword-list"
 ///    }
 ///  },
@@ -10502,8 +10760,12 @@ pub struct StratagemTargetRestrictions {
     pub excluded_keywords: ::std::option::Option<KeywordList>,
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub notes: ::std::option::Option<::std::string::String>,
+    ///AND set: the target must carry every keyword listed here.
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub required_keywords: ::std::option::Option<KeywordList>,
+    ///OR set: the target must carry at least one keyword listed here. Use for rules that target a unit with one of several keywords (e.g. Crushing Impact's MONSTER/VEHICLE, Explosives' EXPLOSIVES/GRENADES). Mirrors the `army_keywords_any` OR-gate on allied-rule.schema.json.
+    #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+    pub required_keywords_any: ::std::option::Option<KeywordList>,
 }
 impl ::std::default::Default for StratagemTargetRestrictions {
     fn default() -> Self {
@@ -10511,6 +10773,7 @@ impl ::std::default::Default for StratagemTargetRestrictions {
             excluded_keywords: Default::default(),
             notes: Default::default(),
             required_keywords: Default::default(),
+            required_keywords_any: Default::default(),
         }
     }
 }
@@ -12544,6 +12807,222 @@ impl<'de> ::serde::Deserialize<'de> for UnitCompositionModelsItemProfileName {
             .map_err(|e: self::error::ConversionError| {
                 <D::Error as ::serde::de::Error>::custom(e.to_string())
             })
+    }
+}
+///Catalog entry for a universal unit ability (a 'Core ability' in the rulebook: Deep Strike, Scouts X", Feel No Pain X+, Deadly Demise X, etc.). These are the unit-side counterpart of weapon-keyword.schema.json — community-authored mechanic labels, not reproduced rules text. A unit references a parameterised instance from its `ability_ids` (e.g. `scouts-6`); this catalog records the value-agnostic definition keyed by base id (e.g. `scouts`). The optional `effect` describes the mechanic in the Ability DSL; null when the behaviour is modelled per-faction in enrichment data rather than here.
+///
+/// <details><summary>JSON schema</summary>
+///
+/// ```json
+///{
+///  "title": "Unit Keyword",
+///  "description": "Catalog entry for a universal unit ability (a 'Core ability' in the rulebook: Deep Strike, Scouts X\", Feel No Pain X+, Deadly Demise X, etc.). These are the unit-side counterpart of weapon-keyword.schema.json — community-authored mechanic labels, not reproduced rules text. A unit references a parameterised instance from its `ability_ids` (e.g. `scouts-6`); this catalog records the value-agnostic definition keyed by base id (e.g. `scouts`). The optional `effect` describes the mechanic in the Ability DSL; null when the behaviour is modelled per-faction in enrichment data rather than here.",
+///  "type": "object",
+///  "required": [
+///    "effect",
+///    "game_version",
+///    "id",
+///    "name",
+///    "required_parameters"
+///  ],
+///  "properties": {
+///    "effect": {
+///      "description": "Mechanical effect of this ability. Null when the behaviour is authored per-faction in the enrichment Ability DSL rather than centrally here — engines resolve the per-faction record.",
+///      "oneOf": [
+///        {
+///          "$ref": "#/$defs/effect"
+///        },
+///        {
+///          "type": "null"
+///        }
+///      ]
+///    },
+///    "game_version": {
+///      "$ref": "#/$defs/game-version-ref"
+///    },
+///    "id": {
+///      "$ref": "#/$defs/entity-id"
+///    },
+///    "name": {
+///      "type": "string",
+///      "maxLength": 128,
+///      "minLength": 1
+///    },
+///    "required_parameters": {
+///      "description": "Parameter keys that must be supplied at each reference site (e.g. Scouts 6\" → ['value']). Empty for abilities that take no number (Deep Strike, Infiltrators, Stealth).",
+///      "type": "array",
+///      "items": {
+///        "type": "string",
+///        "enum": [
+///          "value"
+///        ]
+///      },
+///      "maxItems": 1,
+///      "uniqueItems": true
+///    }
+///  },
+///  "additionalProperties": false
+///}
+/// ```
+/// </details>
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct UnitKeyword {
+    ///Mechanical effect of this ability. Null when the behaviour is authored per-faction in the enrichment Ability DSL rather than centrally here — engines resolve the per-faction record.
+    pub effect: ::std::option::Option<Effect>,
+    pub game_version: GameVersionRef,
+    pub id: EntityId,
+    pub name: UnitKeywordName,
+    ///Parameter keys that must be supplied at each reference site (e.g. Scouts 6" → ['value']). Empty for abilities that take no number (Deep Strike, Infiltrators, Stealth).
+    pub required_parameters: Vec<UnitKeywordRequiredParametersItem>,
+}
+///`UnitKeywordName`
+///
+/// <details><summary>JSON schema</summary>
+///
+/// ```json
+///{
+///  "type": "string",
+///  "maxLength": 128,
+///  "minLength": 1
+///}
+/// ```
+/// </details>
+#[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[serde(transparent)]
+pub struct UnitKeywordName(::std::string::String);
+impl ::std::ops::Deref for UnitKeywordName {
+    type Target = ::std::string::String;
+    fn deref(&self) -> &::std::string::String {
+        &self.0
+    }
+}
+impl ::std::convert::From<UnitKeywordName> for ::std::string::String {
+    fn from(value: UnitKeywordName) -> Self {
+        value.0
+    }
+}
+impl ::std::str::FromStr for UnitKeywordName {
+    type Err = self::error::ConversionError;
+    fn from_str(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        if value.chars().count() > 128usize {
+            return Err("longer than 128 characters".into());
+        }
+        if value.chars().count() < 1usize {
+            return Err("shorter than 1 characters".into());
+        }
+        Ok(Self(value.to_string()))
+    }
+}
+impl ::std::convert::TryFrom<&str> for UnitKeywordName {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<&::std::string::String> for UnitKeywordName {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<::std::string::String> for UnitKeywordName {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: ::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl<'de> ::serde::Deserialize<'de> for UnitKeywordName {
+    fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+    where
+        D: ::serde::Deserializer<'de>,
+    {
+        ::std::string::String::deserialize(deserializer)?
+            .parse()
+            .map_err(|e: self::error::ConversionError| {
+                <D::Error as ::serde::de::Error>::custom(e.to_string())
+            })
+    }
+}
+///`UnitKeywordRequiredParametersItem`
+///
+/// <details><summary>JSON schema</summary>
+///
+/// ```json
+///{
+///  "type": "string",
+///  "enum": [
+///    "value"
+///  ]
+///}
+/// ```
+/// </details>
+#[derive(
+    ::serde::Deserialize,
+    ::serde::Serialize,
+    Clone,
+    Copy,
+    Debug,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd
+)]
+pub enum UnitKeywordRequiredParametersItem {
+    #[serde(rename = "value")]
+    Value,
+}
+impl ::std::fmt::Display for UnitKeywordRequiredParametersItem {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        match *self {
+            Self::Value => f.write_str("value"),
+        }
+    }
+}
+impl ::std::str::FromStr for UnitKeywordRequiredParametersItem {
+    type Err = self::error::ConversionError;
+    fn from_str(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        match value {
+            "value" => Ok(Self::Value),
+            _ => Err("invalid value".into()),
+        }
+    }
+}
+impl ::std::convert::TryFrom<&str> for UnitKeywordRequiredParametersItem {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &str,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<&::std::string::String>
+for UnitKeywordRequiredParametersItem {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: &::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
+    }
+}
+impl ::std::convert::TryFrom<::std::string::String>
+for UnitKeywordRequiredParametersItem {
+    type Error = self::error::ConversionError;
+    fn try_from(
+        value: ::std::string::String,
+    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+        value.parse()
     }
 }
 ///A minimum number of units carrying a keyword that the detachment requires.
@@ -14582,6 +15061,9 @@ pub mod defaults {
     }
     pub(super) fn piece_piece_type() -> super::PiecePieceType {
         super::PiecePieceType::Area
+    }
+    pub(super) fn scaling_round() -> super::ScalingRound {
+        super::ScalingRound::Down
     }
     pub(super) fn secondary_card_card_type() -> super::SecondaryCardCardType {
         super::SecondaryCardCardType::Secondary
