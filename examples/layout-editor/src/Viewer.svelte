@@ -88,7 +88,7 @@
 </script>
 
 <div class="app">
-  <AppHeader title="Terrain Layouts" tag="11e mission pairings · 60×44 portrait">
+  <AppHeader title="Terrain Layouts" tag="11e mission pairings · 60×44 portrait" appId="layout-editor">
     {#snippet nav()}
       <a class="edit-link" href="#edit" title="Open the layout authoring editor">✎ Editor</a>
     {/snippet}

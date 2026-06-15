@@ -17,3 +17,22 @@ export const LAYOUT_EDITOR_URL = "https://layout-editor.alpacasoft.dev";
 export const LIST_BUILDER_URL = "https://list-builder.alpacasoft.dev";
 export const HULL_TRACER_URL = "https://hull-tracer.alpacasoft.dev";
 export const TEAMS_PLANNER_URL = "https://teams-planner.alpacasoft.dev";
+
+/**
+ * The example-app family, one ordered source of truth for the header app
+ * switcher. `id` matches each app's package.json name; layout-editor's Viewer
+ * and Editor share the `layout-editor` id under the viewer-facing label.
+ */
+export type AppEntry = { id: string; label: string; tag: string; url: string };
+export const APPS: AppEntry[] = [
+  { id: "salvo", label: "Salvo", tag: "damage calculator", url: SALVO_URL },
+  { id: "list-builder", label: "List Builder", tag: "army lists", url: LIST_BUILDER_URL },
+  { id: "mission-matrix", label: "Mission Matrix", tag: "WTC scoresheet", url: MISSION_MATRIX_URL },
+  { id: "layout-editor", label: "Terrain Layouts", tag: "mission pairings", url: LAYOUT_EDITOR_URL },
+  { id: "teams-planner", label: "Teams Planner", tag: "disposition coverage", url: TEAMS_PLANNER_URL },
+  { id: "hull-tracer", label: "Hull Tracer", tag: "collision outlines", url: HULL_TRACER_URL },
+];
+
+/** The family minus the current app, for cross-app navigation. */
+export const siblingApps = (currentId: string): AppEntry[] =>
+  APPS.filter((a) => a.id !== currentId);

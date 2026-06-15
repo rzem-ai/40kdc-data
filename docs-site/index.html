@@ -110,6 +110,16 @@
         color: var(--text);
       }
       .desc p { margin: 0 0 10px 0; }
+      .gh-link {
+        display: inline-block;
+        margin-top: 10px;
+        font-size: 13px;
+        color: var(--muted);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 3px 10px;
+      }
+      .gh-link:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
       footer {
         margin-top: 48px;
         padding-top: 18px;
@@ -124,6 +134,7 @@
       <header>
         <h1>40kdc<span class="accent">-data</span></h1>
         <p class="tagline">A community-authored Warhammer 40K data layer.</p>
+        <a class="gh-link" href="https://github.com/wn-mitch/40kdc-data" target="_blank" rel="noopener">Source on GitHub ↗</a>
       </header>
 
       <section class="desc">

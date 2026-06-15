@@ -295,7 +295,7 @@
   <AppHeader
     title="Teams Planner"
     tag="Force Disposition coverage"
-    homeUrl="https://40kdc.alpacasoft.dev"
+    appId="teams-planner"
   >
     {#snippet nav()}
       <AccountChip onSignIn={() => (gateOpen = true)} onOpenCloud={() => (cloudOpen = true)} />

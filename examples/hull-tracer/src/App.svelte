@@ -94,7 +94,7 @@
 <svelte:window onkeydown={onKeydown} />
 
 <div class="app">
-  <AppHeader title="Hull Tracer" tag="40kdc model collision outlines" />
+  <AppHeader title="Hull Tracer" tag="40kdc model collision outlines" appId="hull-tracer" />
 
   <main>
     {#if !image}

@@ -32,7 +32,7 @@
 </script>
 
 <div class="app">
-  <AppHeader title="Salvo" tag="40k damage calculator" />
+  <AppHeader title="Salvo" tag="40k damage calculator" appId="salvo" />
 
   <nav class="view-tabs">
     <button

@@ -516,7 +516,7 @@ function copyEntry(entry: SavedEntry) {
 </script>
 
 <div class="flex h-screen flex-col">
-	<AppHeader title="List Builder" tag="40kdc army list builder" onBrand={handleCancel}>
+	<AppHeader title="List Builder" tag="40kdc army list builder" appId="list-builder" onHome={handleCancel} homeLabel="New list">
 		{#snippet nav()}
 			<AccountChip onSignIn={() => (gateOpen = true)} onOpenCloud={() => (cloudOpen = true)} />
 		{/snippet}

@@ -283,7 +283,7 @@
 />
 
 <div class="app">
-  <AppHeader title="Layout Editor" tag="11e terrain layouts · portrait">
+  <AppHeader title="Layout Editor" tag="11e terrain layouts · portrait" appId="layout-editor">
     {#snippet nav()}
       <button
         class="sym {symmetric ? 'on' : ''}"

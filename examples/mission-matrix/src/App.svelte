@@ -593,7 +593,7 @@
 </script>
 
 <div class="flex flex-col min-h-screen bg-bg">
-  <AppHeader title="Mission Matrix" tag="11e WTC scoresheet">
+  <AppHeader title="Mission Matrix" tag="11e WTC scoresheet" appId="mission-matrix">
     {#snippet nav()}
       <div class="flex items-center gap-2">
         <AccountChip onSignIn={() => (gateOpen = true)} onOpenCloud={() => (cloudOpen = true)} />

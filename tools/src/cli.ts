@@ -38,7 +38,9 @@ program
   .command("translate")
   .description("Translate ability DSL to plain English")
   .argument("[path]", "Path to abilities.json file")
-  .action(translateCommand);
+  .option("--gw", "Show official GW source text (from data/_audit/reauthor-input/) alongside each ability")
+  .option("--gw-file <path>", "Path to a reauthor-input JSON file (overrides auto-detect)")
+  .action((path, opts) => translateCommand(path, { gw: opts.gw, gwFile: opts.gwFile }));
 
 program
   .command("audit-coverage")
