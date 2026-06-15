@@ -139,7 +139,22 @@
     }
   },
   {
-    "caseId": "a-worthy-skull#6",
+    "caseId": "a-weaponsmith-not-a-warlord#6",
+    "effect": {
+      "type": "stat-modifier",
+      "target": "unit",
+      "modifier": {}
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "permanent"
+    },
+    "expected": {
+      "text": "Modify the unit's characteristics."
+    }
+  },
+  {
+    "caseId": "a-worthy-skull#7",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -190,7 +205,7 @@
     }
   },
   {
-    "caseId": "a-worthy-skull-stratagem#7",
+    "caseId": "a-worthy-skull-stratagem#8",
     "effect": {
       "type": "resource-gain",
       "target": "self",
@@ -208,7 +223,7 @@
     }
   },
   {
-    "caseId": "abbess-sanctorum#8",
+    "caseId": "abbess-sanctorum#9",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -245,7 +260,7 @@
     }
   },
   {
-    "caseId": "ablative-plating#9",
+    "caseId": "ablative-plating#10",
     "effect": {
       "type": "damage-reduction",
       "target": "self",
@@ -262,7 +277,7 @@
     }
   },
   {
-    "caseId": "abomination#10",
+    "caseId": "abomination#11",
     "effect": {
       "type": "feel-no-pain",
       "target": "unit",
@@ -279,7 +294,7 @@
     }
   },
   {
-    "caseId": "absolute-sensory-overload#11",
+    "caseId": "absolute-sensory-overload#12",
     "effect": {
       "type": "ability-grant",
       "target": "unit",
@@ -302,7 +317,7 @@
     }
   },
   {
-    "caseId": "absolutist-principles#12",
+    "caseId": "absolutist-principles#13",
     "effect": {
       "type": "sequence",
       "steps": [
@@ -346,7 +361,7 @@
     }
   },
   {
-    "caseId": "accelerator-mandible#13",
+    "caseId": "accelerator-mandible#14",
     "effect": {
       "type": "stat-modifier",
       "target": "unit",
@@ -361,7 +376,7 @@
     }
   },
   {
-    "caseId": "accuracy-under-pressure#14",
+    "caseId": "accuracy-under-pressure#15",
     "effect": {
       "type": "re-roll",
       "target": "unit",
@@ -384,7 +399,7 @@
     }
   },
   {
-    "caseId": "acheron-s-duty-bondsman#15",
+    "caseId": "acheron-s-duty-bondsman#16",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -410,7 +425,7 @@
     }
   },
   {
-    "caseId": "achillan-eye#16",
+    "caseId": "achillan-eye#17",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -437,7 +452,7 @@
     }
   },
   {
-    "caseId": "acrobatic#17",
+    "caseId": "acrobatic#18",
     "effect": {
       "type": "ability-grant",
       "target": "unit",
@@ -454,7 +469,7 @@
     }
   },
   {
-    "caseId": "acrobatic-escape#18",
+    "caseId": "acrobatic-escape#19",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -478,7 +493,7 @@
     }
   },
   {
-    "caseId": "acrobatic-gladiators#19",
+    "caseId": "acrobatic-gladiators#20",
     "effect": {
       "type": "ability-grant",
       "target": "unit",
@@ -495,7 +510,7 @@
     }
   },
   {
-    "caseId": "acrobatic-grace#20",
+    "caseId": "acrobatic-grace#21",
     "effect": {
       "type": "roll-modifier",
       "target": "attacker",
@@ -514,7 +529,7 @@
     }
   },
   {
-    "caseId": "acrobatic-onslaught#21",
+    "caseId": "acrobatic-onslaught#22",
     "effect": {
       "type": "stat-modifier",
       "target": "unit",
@@ -529,7 +544,7 @@
     }
   },
   {
-    "caseId": "acts-of-faith#22",
+    "caseId": "acts-of-faith#23",
     "effect": {
       "type": "roll-modifier",
       "target": "unit",
@@ -548,7 +563,7 @@
     }
   },
   {
-    "caseId": "adamantine-behemoth#23",
+    "caseId": "adamantine-behemoth#24",
     "effect": {
       "type": "movement-modifier",
       "target": "unit",
@@ -571,7 +586,7 @@
     }
   },
   {
-    "caseId": "adaptable-predators#24",
+    "caseId": "adaptable-predators#25",
     "effect": {
       "type": "fallback-and-act",
       "target": "unit",
@@ -586,7 +601,7 @@
     }
   },
   {
-    "caseId": "adaptive-instincts#25",
+    "caseId": "adaptive-instincts#26",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -613,7 +628,7 @@
     }
   },
   {
-    "caseId": "adaptive-strategy#26",
+    "caseId": "adaptive-strategy#27",
     "effect": {
       "type": "fallback-and-act",
       "target": "unit",
@@ -628,7 +643,7 @@
     }
   },
   {
-    "caseId": "advanced-armour#27",
+    "caseId": "advanced-armour#28",
     "effect": {
       "type": "feel-no-pain",
       "target": "unit",
@@ -645,7 +660,7 @@
     }
   },
   {
-    "caseId": "advanced-firepower#28",
+    "caseId": "advanced-firepower#29",
     "effect": {
       "type": "keyword-grant",
       "target": "unit",
@@ -664,7 +679,7 @@
     }
   },
   {
-    "caseId": "advanced-guardian-drone#29",
+    "caseId": "advanced-guardian-drone#30",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -692,7 +707,7 @@
     }
   },
   {
-    "caseId": "advanced-quantum-shielding#30",
+    "caseId": "advanced-quantum-shielding#31",
     "effect": {
       "type": "roll-modifier",
       "target": "attacker",
@@ -711,7 +726,7 @@
     }
   },
   {
-    "caseId": "advanced-scouting#31",
+    "caseId": "advanced-scouting#32",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -738,7 +753,7 @@
     }
   },
   {
-    "caseId": "aerial-seeding#32",
+    "caseId": "aerial-seeding#33",
     "effect": {
       "type": "deep-strike",
       "target": "unit",
@@ -755,7 +770,7 @@
     }
   },
   {
-    "caseId": "aerialists#33",
+    "caseId": "aerialists#34",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -781,7 +796,7 @@
     }
   },
   {
-    "caseId": "aethersails#34",
+    "caseId": "aethersails#35",
     "effect": {
       "type": "stat-modifier",
       "target": "unit",
@@ -800,7 +815,7 @@
     }
   },
   {
-    "caseId": "aetherstride-psychic#35",
+    "caseId": "aetherstride-psychic#36",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -857,7 +872,7 @@
     }
   },
   {
-    "caseId": "agent-of-discord-aura#36",
+    "caseId": "agent-of-discord-aura#37",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -884,7 +899,7 @@
     }
   },
   {
-    "caseId": "aggressive-advance#37",
+    "caseId": "aggressive-advance#38",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -923,7 +938,7 @@
     }
   },
   {
-    "caseId": "aggressive-leader-beast#38",
+    "caseId": "aggressive-leader-beast#39",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -987,7 +1002,7 @@
     }
   },
   {
-    "caseId": "agile-combatant#39",
+    "caseId": "agile-combatant#40",
     "effect": {
       "type": "fallback-and-act",
       "target": "unit",
@@ -1002,7 +1017,7 @@
     }
   },
   {
-    "caseId": "air-caste-colossus#40",
+    "caseId": "air-caste-colossus#41",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -1030,7 +1045,7 @@
     }
   },
   {
-    "caseId": "airborne-agility#41",
+    "caseId": "airborne-agility#42",
     "effect": {
       "type": "movement-modifier",
       "target": "unit",
@@ -1047,7 +1062,7 @@
     }
   },
   {
-    "caseId": "airborne-predator#42",
+    "caseId": "airborne-predator#43",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -1075,7 +1090,7 @@
     }
   },
   {
-    "caseId": "akshurs-binding-runes#43",
+    "caseId": "akshurs-binding-runes#44",
     "effect": {
       "type": "deep-strike",
       "target": "bearer",
@@ -1102,7 +1117,7 @@
     }
   },
   {
-    "caseId": "alchemicus-familiar#44",
+    "caseId": "alchemicus-familiar#45",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -1130,7 +1145,7 @@
     }
   },
   {
-    "caseId": "alchemyk-counteragents#45",
+    "caseId": "alchemyk-counteragents#46",
     "effect": {
       "type": "feel-no-pain",
       "target": "unit",
@@ -1147,7 +1162,7 @@
     }
   },
   {
-    "caseId": "all-seeing-mutant-hordes#46",
+    "caseId": "all-seeing-mutant-hordes#47",
     "effect": {
       "type": "sequence",
       "steps": [
@@ -1197,7 +1212,7 @@
     }
   },
   {
-    "caseId": "alpha-invader#47",
+    "caseId": "alpha-invader#48",
     "effect": {
       "type": "keyword-grant",
       "target": "unit",
@@ -1216,7 +1231,7 @@
     }
   },
   {
-    "caseId": "alpha-leader#48",
+    "caseId": "alpha-leader#49",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -1240,7 +1255,7 @@
     }
   },
   {
-    "caseId": "alpha-warrior#49",
+    "caseId": "alpha-warrior#50",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -1265,7 +1280,7 @@
     }
   },
   {
-    "caseId": "ancestral-overbleed#50",
+    "caseId": "ancestral-overbleed#51",
     "effect": {
       "type": "cp-refund",
       "target": "bearer",
@@ -1288,7 +1303,7 @@
     }
   },
   {
-    "caseId": "ancient-collector#51",
+    "caseId": "ancient-collector#52",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -1311,7 +1326,7 @@
     }
   },
   {
-    "caseId": "ancient-s-banner#52",
+    "caseId": "ancient-s-banner#53",
     "effect": {
       "type": "objective-control-modifier",
       "target": "unit",
@@ -1329,7 +1344,7 @@
     }
   },
   {
-    "caseId": "ancient-tactician#53",
+    "caseId": "ancient-tactician#54",
     "effect": {
       "type": "cp-gain",
       "target": "self",
@@ -1346,7 +1361,7 @@
     }
   },
   {
-    "caseId": "angel-s-wrath#54",
+    "caseId": "angel-s-wrath#55",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -1371,7 +1386,7 @@
     }
   },
   {
-    "caseId": "anguish-of-the-unredeemed#55",
+    "caseId": "anguish-of-the-unredeemed#56",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -1395,7 +1410,7 @@
     }
   },
   {
-    "caseId": "animalistic-rage#56",
+    "caseId": "animalistic-rage#57",
     "effect": {
       "type": "choice",
       "choice_label": "rage-attack",
@@ -1421,7 +1436,7 @@
     }
   },
   {
-    "caseId": "annihilate-the-unworthy#57",
+    "caseId": "annihilate-the-unworthy#58",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -1454,7 +1469,7 @@
     }
   },
   {
-    "caseId": "anvil-of-endurance#58",
+    "caseId": "anvil-of-endurance#59",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -1486,7 +1501,7 @@
     }
   },
   {
-    "caseId": "apex-beast#59",
+    "caseId": "apex-beast#60",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -1514,7 +1529,7 @@
     }
   },
   {
-    "caseId": "apothecary-s-narthecium#60",
+    "caseId": "apothecary-s-narthecium#61",
     "effect": {
       "type": "resurrection",
       "target": "unit",
@@ -1531,7 +1546,7 @@
     }
   },
   {
-    "caseId": "arbites-medi-kit#61",
+    "caseId": "arbites-medi-kit#62",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -1555,7 +1570,7 @@
     }
   },
   {
-    "caseId": "arcane-shield-psychic#62",
+    "caseId": "arcane-shield-psychic#63",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -1578,7 +1593,7 @@
     }
   },
   {
-    "caseId": "arcane-venting#63",
+    "caseId": "arcane-venting#64",
     "effect": {
       "type": "objective-tag",
       "target": "unit",
@@ -1601,7 +1616,7 @@
     }
   },
   {
-    "caseId": "arch-sorcerer-of-tzeentch-psychic#64",
+    "caseId": "arch-sorcerer-of-tzeentch-psychic#65",
     "effect": {
       "type": "leadership-modifier",
       "target": "self",
@@ -1619,7 +1634,7 @@
     }
   },
   {
-    "caseId": "archon-s-will#65",
+    "caseId": "archon-s-will#66",
     "effect": {
       "type": "invulnerable-save",
       "target": "self",
@@ -1636,7 +1651,7 @@
     }
   },
   {
-    "caseId": "armour-obliteration#66",
+    "caseId": "armour-obliteration#67",
     "effect": {
       "type": "mortal-wounds",
       "target": "enemy-within-aura",
@@ -1654,7 +1669,7 @@
     }
   },
   {
-    "caseId": "armour-of-corruption#67",
+    "caseId": "armour-of-corruption#68",
     "effect": {
       "type": "damage-reduction",
       "target": "unit",
@@ -1677,7 +1692,7 @@
     }
   },
   {
-    "caseId": "armour-of-fate#68",
+    "caseId": "armour-of-fate#69",
     "effect": {
       "type": "resurrection",
       "target": "self",
@@ -1695,7 +1710,7 @@
     }
   },
   {
-    "caseId": "armoured-frontis#69",
+    "caseId": "armoured-frontis#70",
     "effect": {
       "type": "damage-reduction",
       "target": "unit",
@@ -1712,7 +1727,7 @@
     }
   },
   {
-    "caseId": "armoured-resilience#70",
+    "caseId": "armoured-resilience#71",
     "effect": {
       "type": "damage-reduction",
       "target": "unit",
@@ -1729,7 +1744,7 @@
     }
   },
   {
-    "caseId": "aspect-training#71",
+    "caseId": "aspect-training#72",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -1750,7 +1765,7 @@
     }
   },
   {
-    "caseId": "astartes-banner#72",
+    "caseId": "astartes-banner#73",
     "effect": {
       "type": "objective-control-modifier",
       "target": "unit",
@@ -1768,7 +1783,7 @@
     }
   },
   {
-    "caseId": "astartes-shield#73",
+    "caseId": "astartes-shield#74",
     "effect": {
       "type": "invulnerable-save",
       "target": "self",
@@ -1785,7 +1800,7 @@
     }
   },
   {
-    "caseId": "aura-of-fervour-aura#74",
+    "caseId": "aura-of-fervour-aura#75",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -1823,7 +1838,7 @@
     }
   },
   {
-    "caseId": "auramite-sarcophagus#75",
+    "caseId": "auramite-sarcophagus#76",
     "effect": {
       "type": "cp-refund",
       "target": "self",
@@ -1847,7 +1862,7 @@
     }
   },
   {
-    "caseId": "bane-of-cowards#76",
+    "caseId": "bane-of-cowards#77",
     "effect": {
       "type": "attack-restriction",
       "target": "enemy-within-aura",
@@ -1864,7 +1879,7 @@
     }
   },
   {
-    "caseId": "bastion-of-corruption#77",
+    "caseId": "bastion-of-corruption#78",
     "effect": {
       "type": "attack-restriction",
       "target": "enemy-within-aura",
@@ -1882,7 +1897,7 @@
     }
   },
   {
-    "caseId": "battlefield-analysis#78",
+    "caseId": "battlefield-analysis#79",
     "effect": {
       "type": "cp-refund",
       "target": "self",
@@ -1899,7 +1914,7 @@
     }
   },
   {
-    "caseId": "battlesuit-support-system#79",
+    "caseId": "battlesuit-support-system#80",
     "effect": {
       "type": "fallback-and-act",
       "target": "unit",
@@ -1914,7 +1929,7 @@
     }
   },
   {
-    "caseId": "beacons-of-rage#80",
+    "caseId": "beacons-of-rage#81",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -1981,7 +1996,7 @@
     }
   },
   {
-    "caseId": "beguiling-grotesquerie#81",
+    "caseId": "beguiling-grotesquerie#82",
     "effect": {
       "type": "attack-restriction",
       "target": "bearer",
@@ -2005,7 +2020,7 @@
     }
   },
   {
-    "caseId": "benefit-of-cover#82",
+    "caseId": "benefit-of-cover#83",
     "effect": {
       "type": "bs-modifier",
       "target": "attacker",
@@ -2023,7 +2038,7 @@
     }
   },
   {
-    "caseId": "berzerker-frenzy#83",
+    "caseId": "berzerker-frenzy#84",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -2059,7 +2074,7 @@
     }
   },
   {
-    "caseId": "bestial-raiders#84",
+    "caseId": "bestial-raiders#85",
     "effect": {
       "type": "sequence",
       "steps": [
@@ -2106,7 +2121,7 @@
     }
   },
   {
-    "caseId": "big-bomms#85",
+    "caseId": "big-bomms#86",
     "effect": {
       "type": "mortal-wounds",
       "target": "defender",
@@ -2123,7 +2138,7 @@
     }
   },
   {
-    "caseId": "big-booms#86",
+    "caseId": "big-booms#87",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -2149,7 +2164,7 @@
     }
   },
   {
-    "caseId": "bilious-blessing#87",
+    "caseId": "bilious-blessing#88",
     "effect": {
       "type": "mortal-wounds",
       "target": "enemy-within-aura",
@@ -2182,7 +2197,7 @@
     }
   },
   {
-    "caseId": "blackstar-cluster-launcher#88",
+    "caseId": "blackstar-cluster-launcher#89",
     "effect": {
       "type": "mortal-wounds",
       "target": "defender",
@@ -2199,7 +2214,7 @@
     }
   },
   {
-    "caseId": "blackwing-mantle#89",
+    "caseId": "blackwing-mantle#90",
     "effect": {
       "type": "cp-refund",
       "target": "self",
@@ -2216,7 +2231,7 @@
     }
   },
   {
-    "caseId": "blade-of-celerity#90",
+    "caseId": "blade-of-celerity#91",
     "effect": {
       "type": "sequence",
       "steps": [
@@ -2246,7 +2261,7 @@
     }
   },
   {
-    "caseId": "blade-of-endless-bloodshed#91",
+    "caseId": "blade-of-endless-bloodshed#92",
     "effect": {
       "type": "sequence",
       "steps": [
@@ -2300,7 +2315,7 @@
     }
   },
   {
-    "caseId": "blastajet-force-field#92",
+    "caseId": "blastajet-force-field#93",
     "effect": {
       "type": "invulnerable-save",
       "target": "self",
@@ -2317,7 +2332,7 @@
     }
   },
   {
-    "caseId": "blessed-by-the-plague-god#93",
+    "caseId": "blessed-by-the-plague-god#94",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -2340,7 +2355,7 @@
     }
   },
   {
-    "caseId": "blessing-of-burning-blood#94",
+    "caseId": "blessing-of-burning-blood#95",
     "effect": {
       "type": "feel-no-pain",
       "target": "unit",
@@ -2357,7 +2372,7 @@
     }
   },
   {
-    "caseId": "blessings-of-khorne#95",
+    "caseId": "blessings-of-khorne#96",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -2517,7 +2532,7 @@
     }
   },
   {
-    "caseId": "blinding-spray#96",
+    "caseId": "blinding-spray#97",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -2541,7 +2556,7 @@
     }
   },
   {
-    "caseId": "blood-forged-armour#97",
+    "caseId": "blood-forged-armour#98",
     "effect": {
       "type": "sequence",
       "steps": [
@@ -2582,7 +2597,7 @@
     }
   },
   {
-    "caseId": "blood-tithe#98",
+    "caseId": "blood-tithe#99",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -2616,7 +2631,7 @@
     }
   },
   {
-    "caseId": "bloodied-terror#99",
+    "caseId": "bloodied-terror#100",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -2643,7 +2658,7 @@
     }
   },
   {
-    "caseId": "bloodrust-deluge#100",
+    "caseId": "bloodrust-deluge#101",
     "effect": {
       "type": "unit-tag",
       "target": "unit",
@@ -2667,7 +2682,7 @@
     }
   },
   {
-    "caseId": "blur-of-blades#101",
+    "caseId": "blur-of-blades#102",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -2688,7 +2703,7 @@
     }
   },
   {
-    "caseId": "bodyguard#102",
+    "caseId": "bodyguard#103",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -2711,7 +2726,7 @@
     }
   },
   {
-    "caseId": "bounding-assault#103",
+    "caseId": "bounding-assault#104",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -2736,7 +2751,7 @@
     }
   },
   {
-    "caseId": "broad-spectrum-data-tether#104",
+    "caseId": "broad-spectrum-data-tether#105",
     "effect": {
       "type": "cp-gain",
       "target": "self",
@@ -2753,7 +2768,7 @@
     }
   },
   {
-    "caseId": "brood-surge#105",
+    "caseId": "brood-surge#106",
     "effect": {
       "type": "shoot-on-death",
       "target": "self",
@@ -2768,7 +2783,7 @@
     }
   },
   {
-    "caseId": "brutal-example#106",
+    "caseId": "brutal-example#107",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -2791,7 +2806,7 @@
     }
   },
   {
-    "caseId": "cacophonic-accompaniment#107",
+    "caseId": "cacophonic-accompaniment#108",
     "effect": {
       "type": "sequence",
       "steps": [
@@ -2828,7 +2843,7 @@
     }
   },
   {
-    "caseId": "call-to-murder#108",
+    "caseId": "call-to-murder#109",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -2864,7 +2879,7 @@
     }
   },
   {
-    "caseId": "canoptek-swarm#109",
+    "caseId": "canoptek-swarm#110",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -2900,7 +2915,7 @@
     }
   },
   {
-    "caseId": "carnival-of-excess#110",
+    "caseId": "carnival-of-excess#111",
     "effect": {
       "type": "fight-first",
       "target": "unit",
@@ -2927,7 +2942,7 @@
     }
   },
   {
-    "caseId": "carrier-wave-aura#111",
+    "caseId": "carrier-wave-aura#112",
     "effect": {
       "type": "objective-control-modifier",
       "target": "unit",
@@ -2945,7 +2960,7 @@
     }
   },
   {
-    "caseId": "channeller-stones#112",
+    "caseId": "channeller-stones#113",
     "effect": {
       "type": "damage-reduction",
       "target": "self",
@@ -2962,7 +2977,7 @@
     }
   },
   {
-    "caseId": "chaos-icon#113",
+    "caseId": "chaos-icon#114",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -2989,7 +3004,31 @@
     }
   },
   {
-    "caseId": "cherub#114",
+    "caseId": "chaos-lord#115",
+    "effect": {
+      "type": "conditional",
+      "condition": {
+        "type": "model-is-leader"
+      },
+      "effect": {
+        "type": "re-roll",
+        "target": "unit",
+        "modifier": {
+          "roll": "hit",
+          "subset": "ones"
+        }
+      }
+    },
+    "scope": {
+      "range": "unit",
+      "duration": "permanent"
+    },
+    "expected": {
+      "text": "While this model leads a unit, you can re-roll a Hit roll of 1."
+    }
+  },
+  {
+    "caseId": "cherub#116",
     "effect": {
       "type": "cp-gain",
       "target": "self",
@@ -3006,7 +3045,7 @@
     }
   },
   {
-    "caseId": "chittering-swarm#115",
+    "caseId": "chittering-swarm#117",
     "effect": {
       "type": "sequence",
       "steps": [
@@ -3054,7 +3093,7 @@
     }
   },
   {
-    "caseId": "choice-samples#116",
+    "caseId": "choice-samples#118",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -3077,7 +3116,7 @@
     }
   },
   {
-    "caseId": "claimed-for-the-cult#117",
+    "caseId": "claimed-for-the-cult#119",
     "effect": {
       "type": "cp-gain",
       "target": "self",
@@ -3094,7 +3133,7 @@
     }
   },
   {
-    "caseId": "command-rod#118",
+    "caseId": "command-rod#120",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -3118,7 +3157,7 @@
     }
   },
   {
-    "caseId": "computational-mastermind#119",
+    "caseId": "computational-mastermind#121",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -3170,7 +3209,7 @@
     }
   },
   {
-    "caseId": "condemnatory-annihilation#120",
+    "caseId": "condemnatory-annihilation#122",
     "effect": {
       "type": "leadership-modifier",
       "target": "enemy-within-aura",
@@ -3187,7 +3226,7 @@
     }
   },
   {
-    "caseId": "covert-stealth-team#121",
+    "caseId": "covert-stealth-team#123",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -3231,7 +3270,7 @@
     }
   },
   {
-    "caseId": "crewed-platform#122",
+    "caseId": "crewed-platform#124",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -3260,7 +3299,7 @@
     }
   },
   {
-    "caseId": "cry-of-the-wind#123",
+    "caseId": "cry-of-the-wind#125",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -3295,7 +3334,7 @@
     }
   },
   {
-    "caseId": "cyberstimms#124",
+    "caseId": "cyberstimms#126",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -3319,7 +3358,7 @@
     }
   },
   {
-    "caseId": "daemonic-patrons#125",
+    "caseId": "daemonic-patrons#127",
     "effect": {
       "type": "sequence",
       "steps": [
@@ -3381,7 +3420,7 @@
     }
   },
   {
-    "caseId": "daemonic-strength#126",
+    "caseId": "daemonic-strength#128",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -3410,7 +3449,7 @@
     }
   },
   {
-    "caseId": "dark-angels-bodyguard#127",
+    "caseId": "dark-angels-bodyguard#129",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -3441,7 +3480,7 @@
     }
   },
   {
-    "caseId": "dark-pacts#128",
+    "caseId": "dark-pacts#130",
     "effect": {
       "type": "choice",
       "choice_label": "Dark Pact ability",
@@ -3475,7 +3514,7 @@
     }
   },
   {
-    "caseId": "dead-shot#129",
+    "caseId": "dead-shot#131",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -3501,7 +3540,7 @@
     }
   },
   {
-    "caseId": "deadly-demise-1#130",
+    "caseId": "deadly-demise-1#132",
     "effect": {
       "type": "dice-gated",
       "dice": "D6",
@@ -3526,7 +3565,7 @@
     }
   },
   {
-    "caseId": "deadly-demise-2d6#131",
+    "caseId": "deadly-demise-2d6#133",
     "effect": {
       "type": "dice-gated",
       "dice": "D6",
@@ -3551,7 +3590,7 @@
     }
   },
   {
-    "caseId": "death-befitting-an-officer#132",
+    "caseId": "death-befitting-an-officer#134",
     "effect": {
       "type": "dice-gated",
       "dice": "D6",
@@ -3572,7 +3611,7 @@
     }
   },
   {
-    "caseId": "death-korps-medi-pack#133",
+    "caseId": "death-korps-medi-pack#135",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -3596,7 +3635,7 @@
     }
   },
   {
-    "caseId": "deathstrike-missile#134",
+    "caseId": "deathstrike-missile#136",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -3646,7 +3685,7 @@
     }
   },
   {
-    "caseId": "devastating-assault#135",
+    "caseId": "devastating-assault#137",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -3671,7 +3710,7 @@
     }
   },
   {
-    "caseId": "direct-the-slaughter#136",
+    "caseId": "direct-the-slaughter#138",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -3700,7 +3739,7 @@
     }
   },
   {
-    "caseId": "disdain-for-the-weak#137",
+    "caseId": "disdain-for-the-weak#139",
     "effect": {
       "type": "sequence",
       "steps": [
@@ -3738,7 +3777,7 @@
     }
   },
   {
-    "caseId": "dread-dominion-aura#138",
+    "caseId": "dread-dominion-aura#140",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -3780,7 +3819,7 @@
     }
   },
   {
-    "caseId": "dread-foe#139",
+    "caseId": "dread-foe#141",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -3803,7 +3842,7 @@
     }
   },
   {
-    "caseId": "driven-by-hatred#140",
+    "caseId": "driven-by-hatred#142",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -3840,7 +3879,7 @@
     }
   },
   {
-    "caseId": "eager-to-kill#141",
+    "caseId": "eager-to-kill#143",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -3873,7 +3912,7 @@
     }
   },
   {
-    "caseId": "earthshaker-rounds#142",
+    "caseId": "earthshaker-rounds#144",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -3937,7 +3976,7 @@
     }
   },
   {
-    "caseId": "efficient-aggression#143",
+    "caseId": "efficient-aggression#145",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -3968,7 +4007,7 @@
     }
   },
   {
-    "caseId": "embodied-prophecy#144",
+    "caseId": "embodied-prophecy#146",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -4007,7 +4046,7 @@
     }
   },
   {
-    "caseId": "empyric-ambush#145",
+    "caseId": "empyric-ambush#147",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -4039,7 +4078,7 @@
     }
   },
   {
-    "caseId": "encephalic-diffusion-aura-psychic#146",
+    "caseId": "encephalic-diffusion-aura-psychic#148",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -4064,7 +4103,7 @@
     }
   },
   {
-    "caseId": "enfeebling-miasma#147",
+    "caseId": "enfeebling-miasma#149",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -4132,7 +4171,7 @@
     }
   },
   {
-    "caseId": "enhanced-toxic-miasma#148",
+    "caseId": "enhanced-toxic-miasma#150",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -4155,7 +4194,7 @@
     }
   },
   {
-    "caseId": "etheric-emergence#149",
+    "caseId": "etheric-emergence#151",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -4215,7 +4254,7 @@
     }
   },
   {
-    "caseId": "experimental-enhancements#150",
+    "caseId": "experimental-enhancements#152",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -4316,7 +4355,7 @@
     }
   },
   {
-    "caseId": "explosive-blight#151",
+    "caseId": "explosive-blight#153",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -4402,7 +4441,7 @@
     }
   },
   {
-    "caseId": "fade-away#152",
+    "caseId": "fade-away#154",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -4469,7 +4508,7 @@
     }
   },
   {
-    "caseId": "fail-not-the-blood-god#153",
+    "caseId": "fail-not-the-blood-god#155",
     "effect": {
       "type": "sequence",
       "steps": [
@@ -4512,7 +4551,7 @@
     }
   },
   {
-    "caseId": "fear-incarnate-aura#154",
+    "caseId": "fear-incarnate-aura#156",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -4535,7 +4574,7 @@
     }
   },
   {
-    "caseId": "fear-of-the-unseen-aura#155",
+    "caseId": "fear-of-the-unseen-aura#157",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -4558,30 +4597,7 @@
     }
   },
   {
-    "caseId": "fiery-faith#156",
-    "effect": {
-      "type": "conditional",
-      "condition": {
-        "type": "model-is-leader"
-      },
-      "effect": {
-        "type": "leadership-modifier",
-        "target": "unit",
-        "modifier": {
-          "operation": "re-roll"
-        }
-      }
-    },
-    "scope": {
-      "range": "unit",
-      "duration": "battle"
-    },
-    "expected": {
-      "text": "While this model leads a unit, for the rest of the battle, modify the unit's Leadership characteristic."
-    }
-  },
-  {
-    "caseId": "final-duty#157",
+    "caseId": "final-duty#158",
     "effect": {
       "type": "shoot-on-death",
       "target": "self",
@@ -4596,7 +4612,7 @@
     }
   },
   {
-    "caseId": "flawless-construction-moritoi#158",
+    "caseId": "flawless-construction-moritoi#159",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -4630,7 +4646,7 @@
     }
   },
   {
-    "caseId": "flush-the-quarry#159",
+    "caseId": "flush-the-quarry#160",
     "effect": {
       "type": "engagement-passthrough",
       "target": "unit",
@@ -4645,7 +4661,7 @@
     }
   },
   {
-    "caseId": "for-the-chapter#160",
+    "caseId": "for-the-chapter#161",
     "effect": {
       "type": "shoot-on-death",
       "target": "self",
@@ -4660,7 +4676,7 @@
     }
   },
   {
-    "caseId": "formless-horror#161",
+    "caseId": "formless-horror#162",
     "effect": {
       "type": "sequence",
       "steps": [
@@ -4697,7 +4713,7 @@
     }
   },
   {
-    "caseId": "frantic-focus#162",
+    "caseId": "frantic-focus#163",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -4731,7 +4747,7 @@
     }
   },
   {
-    "caseId": "frenzon#163",
+    "caseId": "frenzon#164",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -4755,7 +4771,7 @@
     }
   },
   {
-    "caseId": "gateways-to-glory#164",
+    "caseId": "gateways-to-glory#165",
     "effect": {
       "type": "sequence",
       "steps": [
@@ -4785,7 +4801,7 @@
     }
   },
   {
-    "caseId": "grim-determination#165",
+    "caseId": "grim-determination#166",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -4823,7 +4839,7 @@
     }
   },
   {
-    "caseId": "hagiomnifex#166",
+    "caseId": "hagiomnifex#167",
     "effect": {
       "type": "choice",
       "choice_label": "hagiomnifex-sermon",
@@ -4892,7 +4908,7 @@
     }
   },
   {
-    "caseId": "harbingers-of-dread#167",
+    "caseId": "harbingers-of-dread#168",
     "effect": {
       "type": "sequence",
       "steps": [
@@ -4980,7 +4996,7 @@
     }
   },
   {
-    "caseId": "healing-tears#168",
+    "caseId": "healing-tears#169",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -5068,7 +5084,7 @@
     }
   },
   {
-    "caseId": "icon-of-war#169",
+    "caseId": "icon-of-war#170",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -5096,7 +5112,7 @@
     }
   },
   {
-    "caseId": "imperious-advance#170",
+    "caseId": "imperious-advance#171",
     "effect": {
       "type": "engagement-passthrough",
       "target": "unit",
@@ -5111,7 +5127,7 @@
     }
   },
   {
-    "caseId": "inevitable-death#171",
+    "caseId": "inevitable-death#172",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -5175,7 +5191,7 @@
     }
   },
   {
-    "caseId": "inspirational-battle-cantics#172",
+    "caseId": "inspirational-battle-cantics#173",
     "effect": {
       "type": "unit-tag",
       "target": "unit",
@@ -5198,7 +5214,7 @@
     }
   },
   {
-    "caseId": "march-of-the-honoured-dead#173",
+    "caseId": "march-of-the-honoured-dead#174",
     "effect": {
       "type": "sequence",
       "steps": [
@@ -5236,7 +5252,7 @@
     }
   },
   {
-    "caseId": "murderous-imperative#174",
+    "caseId": "murderous-imperative#175",
     "effect": {
       "type": "sequence",
       "steps": [
@@ -5290,7 +5306,7 @@
     }
   },
   {
-    "caseId": "neurostatic-interference-aura#175",
+    "caseId": "neurostatic-interference-aura#176",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -5335,7 +5351,7 @@
     }
   },
   {
-    "caseId": "noospheric-recon#176",
+    "caseId": "noospheric-recon#177",
     "effect": {
       "type": "sequence",
       "steps": [
@@ -5390,7 +5406,7 @@
     }
   },
   {
-    "caseId": "omnicogitator#177",
+    "caseId": "omnicogitator#178",
     "effect": {
       "type": "sequence",
       "steps": [
@@ -5424,7 +5440,7 @@
     }
   },
   {
-    "caseId": "outrider-gangs#178",
+    "caseId": "outrider-gangs#179",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -5476,7 +5492,7 @@
     }
   },
   {
-    "caseId": "pact-of-destruction#179",
+    "caseId": "pact-of-destruction#180",
     "effect": {
       "type": "sequence",
       "steps": [
@@ -5523,7 +5539,7 @@
     }
   },
   {
-    "caseId": "parasitic-infection#180",
+    "caseId": "parasitic-infection#181",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -5585,7 +5601,7 @@
     }
   },
   {
-    "caseId": "parasitic-woe-reaper#181",
+    "caseId": "parasitic-woe-reaper#182",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -5615,7 +5631,7 @@
     }
   },
   {
-    "caseId": "rearm-reload-fire#182",
+    "caseId": "rearm-reload-fire#183",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -5640,7 +5656,7 @@
     }
   },
   {
-    "caseId": "seed-the-garden-of-nurgle#183",
+    "caseId": "seed-the-garden-of-nurgle#184",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -5689,7 +5705,7 @@
     }
   },
   {
-    "caseId": "shadow-of-khorne-aura#184",
+    "caseId": "shadow-of-khorne-aura#185",
     "effect": {
       "type": "sequence",
       "steps": [
@@ -5739,7 +5755,7 @@
     }
   },
   {
-    "caseId": "shudderblink#185",
+    "caseId": "shudderblink#186",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -5793,7 +5809,7 @@
     }
   },
   {
-    "caseId": "super-heavy-walker#186",
+    "caseId": "super-heavy-walker#187",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -5866,7 +5882,7 @@
     }
   },
   {
-    "caseId": "swooping-descent#187",
+    "caseId": "swooping-descent#188",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -5922,7 +5938,7 @@
     }
   },
   {
-    "caseId": "the-betrayer#188",
+    "caseId": "the-betrayer#189",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -5989,7 +6005,7 @@
     }
   },
   {
-    "caseId": "the-dark-master-aura#189",
+    "caseId": "the-dark-master-aura#190",
     "effect": {
       "type": "terrain-area-tag",
       "target": "self",
@@ -6006,7 +6022,7 @@
     }
   },
   {
-    "caseId": "the-hammer-falls#190",
+    "caseId": "the-hammer-falls#191",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -6039,7 +6055,7 @@
     }
   },
   {
-    "caseId": "torture-device#191",
+    "caseId": "torture-device#192",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -6068,7 +6084,7 @@
     }
   },
   {
-    "caseId": "triarchal-menhirs#192",
+    "caseId": "triarchal-menhirs#193",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -6105,7 +6121,7 @@
     }
   },
   {
-    "caseId": "unholy-avalanche#193",
+    "caseId": "unholy-avalanche#194",
     "effect": {
       "type": "conditional",
       "condition": {
@@ -6144,7 +6160,7 @@
     }
   },
   {
-    "caseId": "warp-tainted#194",
+    "caseId": "warp-tainted#195",
     "effect": {
       "type": "objective-tag",
       "target": "unit",

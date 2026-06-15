@@ -68,12 +68,12 @@
     },
     {
       "faction": "agents-of-the-imperium",
-      "total": 92,
+      "total": 130,
       "offensive": 23,
       "defensive": 8,
-      "inert": 63,
+      "inert": 101,
       "stub": 2,
-      "stubStructural": 2,
+      "stubStructural": 40,
       "gwTextLeak": 0,
       "defensiveSkipped": 2
     },
@@ -123,12 +123,12 @@
     },
     {
       "faction": "death-guard",
-      "total": 107,
-      "offensive": 25,
+      "total": 113,
+      "offensive": 26,
       "defensive": 7,
-      "inert": 78,
+      "inert": 83,
       "stub": 8,
-      "stubStructural": 4,
+      "stubStructural": 9,
       "gwTextLeak": 0,
       "defensiveSkipped": 3
     },
@@ -233,12 +233,12 @@
     },
     {
       "faction": "thousand-sons",
-      "total": 113,
+      "total": 125,
       "offensive": 30,
       "defensive": 9,
-      "inert": 79,
+      "inert": 91,
       "stub": 17,
-      "stubStructural": 10,
+      "stubStructural": 22,
       "gwTextLeak": 0,
       "defensiveSkipped": 2
     },
@@ -266,12 +266,12 @@
     }
   ],
   "totals": {
-    "total": 2867,
-    "offensive": 704,
+    "total": 2923,
+    "offensive": 705,
     "defensive": 256,
-    "inert": 1993,
+    "inert": 2048,
     "stub": 154,
-    "stubStructural": 188,
+    "stubStructural": 243,
     "gwTextLeak": 0,
     "defensiveSkipped": 59
   },
@@ -282,7 +282,7 @@
     },
     {
       "reason": "stat-modifier: operation \"undefined\" not supported",
-      "count": 181
+      "count": 236
     },
     {
       "reason": "effect type \"movement-modifier\" is not modelled by the buff layer",
@@ -554,16 +554,6 @@
     }
   ],
   "worklist": [
-    {
-      "faction": "_core",
-      "ability_id": "benefit-of-cover",
-      "name": "Benefit of Cover",
-      "shape": "bs-modifier",
-      "stub": false,
-      "offensive": false,
-      "defensive": true,
-      "gap": null
-    },
     {
       "faction": "adepta-sororitas",
       "ability_id": "sworn-protectors",
@@ -9415,6 +9405,386 @@
       "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
     },
     {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "extremis-sanction",
+      "name": "Extremis Sanction",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "decoy-targets",
+      "name": "Decoy Targets",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "esoteric-explosives",
+      "name": "Esoteric Explosives",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "intraneural-biotech",
+      "name": "Intraneural Biotech",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "micromelta-rounds",
+      "name": "Micromelta Rounds",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "prime-target",
+      "name": "Prime Target",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "hyperstimms",
+      "name": "Hyperstimms",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "willsapping-salvo",
+      "name": "Willsapping Salvo",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "orbital-oversight",
+      "name": "Orbital Oversight",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "blind-grenades",
+      "name": "Blind Grenades",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "ensnaring-trap",
+      "name": "Ensnaring Trap",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "on-my-signal-fire",
+      "name": "On My Signal, Fire!",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "tox-cycler",
+      "name": "Tox-cycler",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "ward-against-the-malefic-arts",
+      "name": "Ward Against the Malefic Arts",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "vox-cast-proclamations-aura",
+      "name": "Vox-cast Proclamations (Aura)",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "vox-skull",
+      "name": "Vox-skull",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "throne-of-judgement-aura",
+      "name": "Throne of Judgement (Aura)",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "unsubtle-crusader",
+      "name": "Unsubtle Crusader",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "malus-codicium",
+      "name": "Malus Codicium",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "dominate-will-psychic",
+      "name": "Dominate Will (Psychic)",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "catechism-of-death",
+      "name": "Catechism of Death",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "unflinching",
+      "name": "Unflinching",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "jump-pack",
+      "name": "Jump Pack",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "psychic-hood",
+      "name": "Psychic Hood",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "terminatus-assault",
+      "name": "Terminatus Assault",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "teleport-homer",
+      "name": "Teleport Homer",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "storm-shield",
+      "name": "Storm Shield",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "turbo-boost",
+      "name": "Turbo-boost",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "proteus-doctrines",
+      "name": "Proteus Doctrines",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "fortis-doctrines",
+      "name": "Fortis Doctrines",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "indomitor-doctrines",
+      "name": "Indomitor Doctrines",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "spectrus-doctrines",
+      "name": "Spectrus Doctrines",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "helix-gauntlet",
+      "name": "Helix Gauntlet",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "infiltrator-comms-array",
+      "name": "Infiltrator Comms Array",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "malefic-warding",
+      "name": "Malefic Warding",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "bound-daemon",
+      "name": "Bound Daemon",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "inconceivable-augmentation",
+      "name": "Inconceivable Augmentation",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "agents-of-the-imperium",
+      "ability_id": "a-weaponsmith-not-a-warlord",
+      "name": "A Weaponsmith, Not a Warlord",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
       "faction": "astra-militarum",
       "ability_id": "deadly-demise-1",
       "name": "Deadly Demise 1",
@@ -17233,6 +17603,66 @@
       "offensive": false,
       "defensive": false,
       "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
+    },
+    {
+      "faction": "death-guard",
+      "ability_id": "nurgles-gift-aura",
+      "name": "Nurgle's Gift (Aura)",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "death-guard",
+      "ability_id": "damaged-1-6-wounds-remaining",
+      "name": "Damaged: 1-6 Wounds Remaining",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "death-guard",
+      "ability_id": "chaos-lord",
+      "name": "Chaos Lord",
+      "shape": "conditional",
+      "stub": false,
+      "offensive": true,
+      "defensive": false,
+      "gap": null
+    },
+    {
+      "faction": "death-guard",
+      "ability_id": "desiccation-conduit-aura",
+      "name": "Desiccation Conduit (Aura)",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "death-guard",
+      "ability_id": "putrescent-vitality-psychic",
+      "name": "Putrescent Vitality (Psychic)",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "death-guard",
+      "ability_id": "pestilent-familiar-psychic",
+      "name": "Pestilent Familiar (Psychic)",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
     },
     {
       "faction": "drukhari",
@@ -26915,6 +27345,126 @@
       "gap": "effect type \"ability-grant\" is not modelled by the buff layer"
     },
     {
+      "faction": "thousand-sons",
+      "ability_id": "flow-of-magic",
+      "name": "Flow of Magic",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "thousand-sons",
+      "ability_id": "arcane-might",
+      "name": "Arcane Might",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "thousand-sons",
+      "ability_id": "empowered-manifestation",
+      "name": "Empowered Manifestation",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "thousand-sons",
+      "ability_id": "empyric-onslaught",
+      "name": "Empyric Onslaught",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "thousand-sons",
+      "ability_id": "noctilith-mantle",
+      "name": "Noctilith Mantle",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "thousand-sons",
+      "ability_id": "warding-hex",
+      "name": "Warding Hex",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "thousand-sons",
+      "ability_id": "wrath-of-the-doomed",
+      "name": "Wrath of the Doomed",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "thousand-sons",
+      "ability_id": "strands-of-time",
+      "name": "Strands of Time",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "thousand-sons",
+      "ability_id": "through-the-veil",
+      "name": "Through the Veil",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "thousand-sons",
+      "ability_id": "scouring-warpflame",
+      "name": "Scouring Warpflame",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "thousand-sons",
+      "ability_id": "kaleidoscopic-tempest",
+      "name": "Kaleidoscopic Tempest",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
+      "faction": "thousand-sons",
+      "ability_id": "damaged-1-6-wounds-remaining",
+      "name": "Damaged: 1-6 Wounds Remaining",
+      "shape": "stat-modifier",
+      "stub": true,
+      "offensive": false,
+      "defensive": false,
+      "gap": "stat-modifier: operation \"undefined\" not supported"
+    },
+    {
       "faction": "tyranids",
       "ability_id": "deep-strike",
       "name": "Deep Strike",
@@ -29219,6 +29769,16 @@
       "ability_id": "scorn-the-witch",
       "name": "Scorn the Witch",
       "shape": "feel-no-pain",
+      "stub": false,
+      "offensive": false,
+      "defensive": true,
+      "gap": null
+    },
+    {
+      "faction": "_core",
+      "ability_id": "benefit-of-cover",
+      "name": "Benefit of Cover",
+      "shape": "bs-modifier",
       "stub": false,
       "offensive": false,
       "defensive": true,
