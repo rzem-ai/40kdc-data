@@ -451,7 +451,14 @@ export interface Detachment {
   id: EntityId;
   name: string;
   faction_id: EntityId;
+  /**
+   * Deprecated single-rule link, kept for back-compat (and referenced by allied-rule). A detachment may have more than one rule ability — prefer `detachment_rule_ids`.
+   */
   detachment_rule_id?: EntityId | null;
+  /**
+   * ability_ids of every detachment-rule ability this detachment provides (a detachment rule may have multiple named parts). These match the enrichment `abilities.json` / raw-text-store ids, so the downstream lookup `store[ability_id]` resolves. Empty/absent until linked by author:reconcile.
+   */
+  detachment_rule_ids?: EntityId[];
   /**
    * 11e: the detachment-point cost (1–3) charged against the army's detachment-point budget. null when not yet assigned.
    */
@@ -882,6 +889,7 @@ export interface SimpleCondition {
     | "remained-stationary"
     | "is-battle-shocked"
     | "has-lost-wounds"
+    | "wounds-remaining-at-or-below"
     | "was-hit-by-attack"
     | "opponent-unit-within-range"
     | "within-range-of-objective"

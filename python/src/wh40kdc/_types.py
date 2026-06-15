@@ -185,6 +185,7 @@ class Detachment(TypedDict):
     name: str
     faction_id: EntityId
     detachment_rule_id: NotRequired[EntityId | None]
+    detachment_rule_ids: NotRequired[list[EntityId]]
     detachment_points: NotRequired[int | None]
     force_dispositions: NotRequired[list[EntityId]]
     tags: NotRequired[list[str]]
@@ -577,6 +578,7 @@ class SimpleCondition(TypedDict):
         "remained-stationary",
         "is-battle-shocked",
         "has-lost-wounds",
+        "wounds-remaining-at-or-below",
         "was-hit-by-attack",
         "opponent-unit-within-range",
         "within-range-of-objective",

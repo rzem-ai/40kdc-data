@@ -145,6 +145,8 @@ export function describeCondition(c: Condition): string {
       return `${negate}the unit is battle-shocked`;
     case "has-lost-wounds":
       return `${negate}the model has lost wounds`;
+    case "wounds-remaining-at-or-below":
+      return `${negate}the model has ${Number(p.threshold ?? 0)} or fewer wounds remaining`;
     case "was-hit-by-attack": {
       const subject = p.subject === "target" ? "the target" : "the unit";
       const atk = p.attack_type ? `${str(p.attack_type)} ` : "";

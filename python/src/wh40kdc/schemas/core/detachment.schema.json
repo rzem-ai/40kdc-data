@@ -12,7 +12,14 @@
       "oneOf": [
         { "$ref": "../defs/common.schema.json#/$defs/entity-id" },
         { "type": "null" }
-      ]
+      ],
+      "description": "Deprecated single-rule link, kept for back-compat (and referenced by allied-rule). A detachment may have more than one rule ability — prefer `detachment_rule_ids`."
+    },
+    "detachment_rule_ids": {
+      "type": "array",
+      "items": { "$ref": "../defs/common.schema.json#/$defs/entity-id" },
+      "uniqueItems": true,
+      "description": "ability_ids of every detachment-rule ability this detachment provides (a detachment rule may have multiple named parts). These match the enrichment `abilities.json` / raw-text-store ids, so the downstream lookup `store[ability_id]` resolves. Empty/absent until linked by author:reconcile."
     },
     "detachment_points": {
       "oneOf": [
