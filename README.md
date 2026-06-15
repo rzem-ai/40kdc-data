@@ -188,6 +188,8 @@ Package code is MIT; the schema content it describes is CC0.
 
 ### Go
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/wn-mitch/40kdc-data/go.svg)](https://pkg.go.dev/github.com/wn-mitch/40kdc-data/go)
+
 The [`wh40kdc`](go/) Go module mirrors the same surface — the embedded dataset
 behind a linked `Dataset` API, all roster importers/exporters, the cruncher and
 attribution, the abilities resolver, scoring, terrain geometry, the DSL/scoring
@@ -214,7 +216,7 @@ the trade-off in more detail.
 
 ### Parity guarantee
 
-All official ports — TypeScript, Rust, and the planned Python and R packages —
+All official ports — TypeScript, Rust, Python, and Go (R planned) —
 are held in behavioral agreement by a shared conformance corpus in
 [`conformance/`](conformance/). Within the documented tolerances (notably
 `±5e-4` per cruncher stage; byte-equal export goldens otherwise), the same
