@@ -68,6 +68,20 @@ const FACTION_FILES: Record<string, string[]> = {
   "thousand-sons": ["thousandsons"],
   tyranids: ["tyranids"],
   "world-eaters": ["worldeaters"],
+  // Space Marine chapters: own datacards file where one exists, else the generic
+  // space_marines file (shared detachments/enhancements/stratagems).
+  "black-templars": ["blacktemplar", "space_marines"],
+  "blood-angels": ["bloodangels", "space_marines"],
+  "dark-angels": ["darkangels", "space_marines"],
+  deathwatch: ["deathwatch", "space_marines"],
+  "space-wolves": ["spacewolves", "space_marines"],
+  "crimson-fists": ["space_marines"],
+  "imperial-fists": ["space_marines"],
+  "iron-hands": ["space_marines"],
+  "raven-guard": ["space_marines"],
+  salamanders: ["space_marines"],
+  ultramarines: ["space_marines"],
+  "white-scars": ["space_marines"],
 };
 // universal sources appended to every faction (core stratagems + global enhancements).
 const GLOBAL_FILES = ["core", "enhancements"];
@@ -124,21 +138,24 @@ function harvest(node: Json, out: Map<string, string>): void {
 
 const readJSON = (p: string): Json => JSON.parse(readFileSync(p, "utf-8"));
 
+interface Bucket { total: number; had: number; filled: number; missing: number }
 interface FactionResult {
   faction: string;
-  enrichment: number;
-  alreadyInStore: number;
+  enrichment: Bucket;
+  enhancements: Bucket;
+  stratagems: Bucket;
   filled: number;
-  stillMissing: number;
-  filledIds: string[];
-  missingByType: Record<string, number>;
   missingSample: string[];
 }
+const DEFAULT_GV = { edition: "11th", dataslate: "pre-launch-provisional" };
 
 async function backfillFaction(faction: string): Promise<FactionResult | null> {
   const enrPath = join(ENRICH, faction, "abilities.json");
-  if (!existsSync(enrPath)) return null;
-  const enrichment: Json[] = readJSON(enrPath);
+  const corePath = (kind: string): string => join(REPO, "data/core", faction, `${kind}.json`);
+  const enrichment: Json[] = existsSync(enrPath) ? readJSON(enrPath) : [];
+  const coreEnh: Json[] = existsSync(corePath("enhancements")) ? readJSON(corePath("enhancements")) : [];
+  const coreStrat: Json[] = existsSync(corePath("stratagems")) ? readJSON(corePath("stratagems")) : [];
+  if (!enrichment.length && !coreEnh.length && !coreStrat.length) return null;
 
   const storePath = join(STORE_ROOT, `${faction}.json`);
   const store: Json[] = existsSync(storePath) ? readJSON(storePath) : [];
@@ -155,78 +172,77 @@ async function backfillFaction(faction: string): Promise<FactionResult | null> {
     harvest(data, text);
     for (const k of text.keys()) if (!before.has(k) && !refOf.has(k)) refOf.set(k, `10th/json/${base}.json`);
   }
-
-  const lookup = (a: Json): { t: string; ref: string } | null => {
-    const cands = [a.ability_id, slug(a.name), baseName(a.ability_id), baseName(slug(a.name))];
-    for (const c of cands) if (c && text.has(c)) return { t: text.get(c)!, ref: refOf.get(c) ?? "10th/json/?.json" };
+  const lookup = (key: string, name: string): { t: string; ref: string } | null => {
+    for (const c of [key, slug(name), baseName(key), baseName(slug(name))])
+      if (c && text.has(c)) return { t: text.get(c)!, ref: refOf.get(c) ?? "10th/json/?.json" };
     return null;
   };
 
   const newEntries: Json[] = [];
-  const filledIds: string[] = [];
-  const missingByType: Record<string, number> = {};
+  const added = new Set<string>();
   const missingSample: string[] = [];
-  for (const a of enrichment) {
-    if (have.has(a.ability_id)) continue;
-    const hit = lookup(a);
-    if (hit) {
-      newEntries.push({
-        ability_id: a.ability_id,
-        name: a.name,
-        faction_id: faction,
-        unit_ids: a.unit_ids ?? [],
-        ability_type: a.ability_type ?? null,
-        game_version: a.game_version ?? { edition: "11th", dataslate: "pre-launch-provisional" },
-        source: { kind: "game-datacards", ref: hit.ref, edition: "10e" },
-        raw_text: hit.t,
-      });
-      filledIds.push(a.ability_id);
-    } else {
-      const ty = a.ability_type ?? "unknown";
-      missingByType[ty] = (missingByType[ty] ?? 0) + 1;
-      if (missingSample.length < 30) missingSample.push(`${a.ability_id} [${ty}]`);
+  // fill one entity keyed by `key`; returns 'had' | 'filled' | 'missing'
+  const fill = (key: string, name: string, ability_type: string, unit_ids: Json, game_version: Json): "had" | "filled" | "missing" => {
+    if (have.has(key) || added.has(key)) return "had";
+    const hit = lookup(key, name);
+    if (!hit) {
+      if (missingSample.length < 30) missingSample.push(`${key} [${ability_type}]`);
+      return "missing";
     }
-  }
+    newEntries.push({
+      ability_id: key, name, faction_id: faction, unit_ids: unit_ids ?? [],
+      ability_type, game_version: game_version ?? DEFAULT_GV,
+      source: { kind: "game-datacards", ref: hit.ref, edition: "10e" }, raw_text: hit.t,
+    });
+    added.add(key);
+    return "filled";
+  };
+
+  const tally = (items: Json[], make: (e: Json) => ["had" | "filled" | "missing"]): Bucket => {
+    const b: Bucket = { total: items.length, had: 0, filled: 0, missing: 0 };
+    for (const e of items) b[make(e)[0]]++;
+    return b;
+  };
+  const eBucket = tally(enrichment, (a) => [fill(a.ability_id, a.name, a.ability_type ?? "unknown", a.unit_ids, a.game_version)]);
+  const hBucket = tally(coreEnh, (e) => [fill(e.ability_id ?? e.id, e.name, "enhancement", [], e.game_version)]);
+  const sBucket = tally(coreStrat, (e) => [fill(e.ability_id ?? e.id, e.name, "stratagem", [], e.game_version)]);
 
   if (newEntries.length && !DRY) {
     if (!existsSync(STORE_ROOT)) mkdirSync(STORE_ROOT, { recursive: true });
     writeFileSync(storePath, JSON.stringify([...store, ...newEntries], null, 2) + "\n");
   }
-
-  return {
-    faction,
-    enrichment: enrichment.length,
-    alreadyInStore: enrichment.filter((e) => have.has(e.ability_id)).length,
-    filled: newEntries.length,
-    stillMissing: enrichment.length - enrichment.filter((e) => have.has(e.ability_id)).length - newEntries.length,
-    filledIds,
-    missingByType,
-    missingSample,
-  };
+  return { faction, enrichment: eBucket, enhancements: hBucket, stratagems: sBucket, filled: newEntries.length, missingSample };
 }
 
 async function main(): Promise<void> {
+  const CORE = resolve(REPO, "data/core");
   const factions = factionArgs.length
     ? factionArgs
-    : readdirSync(ENRICH).filter((f) => !f.startsWith("_") && existsSync(join(ENRICH, f, "abilities.json")));
+    : [...new Set([
+        ...readdirSync(ENRICH).filter((f) => !f.startsWith("_") && existsSync(join(ENRICH, f, "abilities.json"))),
+        ...readdirSync(CORE).filter((f) => !f.startsWith("_") && (existsSync(join(CORE, f, "enhancements.json")) || existsSync(join(CORE, f, "stratagems.json")))),
+      ])].sort();
 
   const results: FactionResult[] = [];
   for (const f of factions) {
     const r = await backfillFaction(f);
     if (r) {
       results.push(r);
-      console.log(`${f.padEnd(26)} enr=${String(r.enrichment).padStart(4)} had=${String(r.alreadyInStore).padStart(4)} filled=${String(r.filled).padStart(4)} missing=${String(r.stillMissing).padStart(4)}`);
+      const e = r.enrichment, h = r.enhancements, s = r.stratagems;
+      console.log(`${f.padEnd(24)} enr +${String(e.filled).padStart(4)}  enh +${String(h.filled).padStart(3)}  strat +${String(s.filled).padStart(3)}  (faction total filled ${r.filled})`);
     }
   }
-  const tot = results.reduce(
-    (a, r) => ({ enr: a.enr + r.enrichment, had: a.had + r.alreadyInStore, filled: a.filled + r.filled, missing: a.missing + r.stillMissing }),
-    { enr: 0, had: 0, filled: 0, missing: 0 },
-  );
-  console.log("—".repeat(60));
-  console.log(`TOTAL enrichment=${tot.enr} already-in-store=${tot.had} FILLED=${tot.filled} still-missing=${tot.missing}${DRY ? "  (DRY RUN — nothing written)" : ""}`);
+  const sum = (sel: (r: FactionResult) => Bucket) =>
+    results.reduce((a, r) => { const b = sel(r); return { total: a.total + b.total, had: a.had + b.had, filled: a.filled + b.filled, missing: a.missing + b.missing }; }, { total: 0, had: 0, filled: 0, missing: 0 } as Bucket);
+  const e = sum((r) => r.enrichment), h = sum((r) => r.enhancements), s = sum((r) => r.stratagems);
+  const totalFilled = results.reduce((a, r) => a + r.filled, 0);
+  console.log("—".repeat(72));
+  const line = (name: string, b: Bucket) => console.log(`${name.padEnd(16)} total=${String(b.total).padStart(5)}  had=${String(b.had).padStart(5)}  filled=${String(b.filled).padStart(5)}  missing=${String(b.missing).padStart(5)}`);
+  line("enrichment", e); line("core enhancements", h); line("core stratagems", s);
+  console.log(`TOTAL ENTRIES FILLED THIS RUN: ${totalFilled}${DRY ? "  (DRY RUN — nothing written)" : ""}`);
 
   if (REPORT_PATH) {
-    writeFileSync(resolve(REPO, REPORT_PATH), JSON.stringify({ generated: "backfill-store", totals: tot, results }, null, 2) + "\n");
+    writeFileSync(resolve(REPO, REPORT_PATH), JSON.stringify({ generated: "backfill-store", totals: { enrichment: e, enhancements: h, stratagems: s, filled: totalFilled }, results }, null, 2) + "\n");
     console.log(`report → ${REPORT_PATH}`);
   }
 }
