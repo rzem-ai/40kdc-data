@@ -81,6 +81,7 @@
     "author:seed-core": "tsx src/author-seed-core.ts",
     "author:backfill-store": "tsx src/author-backfill-store.ts",
     "author:review": "tsx src/author-batch.ts review",
+    "author:report": "tsx src/audit-phrasing.ts --review",
     "bundle:schemas": "tsx src/bundle-schemas.ts",
     "codegen:types": "json2ts -i ../crates/wh40kdc/schemas/bundled.schema.json -o src/generated.ts --unreachableDefinitions --bannerComment \"/* Generated from crates/wh40kdc/schemas/bundled.schema.json by 'npm run codegen:types'. DO NOT EDIT BY HAND. */\"",
     "copy:schemas": "rm -rf schemas && cp -R ../schemas schemas",
