@@ -105,19 +105,31 @@ export function emptyBuilderState(): BuilderState {
 
 // ── Dataset lookups ──────────────────────────────────────────────────────────
 
-export function unitRaw(datasheetId: string, factionId?: string): Unit | undefined {
-	// Allied units come from another faction; the same id may exist under several
-	// factions, so resolve that faction's copy and fall back to the default.
-	if (factionId) {
-		const scoped = ds.units.getInFaction(datasheetId, factionId);
+export function unitRaw(
+	datasheetId: string,
+	factionId?: string,
+	armyFactionId?: string,
+): Unit | undefined {
+	// The same datasheet id can exist under several factions with different
+	// faction_keywords (e.g. shared Chaos units like Chaos Spawn). Resolve the
+	// faction-scoped copy: an allied unit's `factionId` wins; otherwise scope to
+	// the army's own faction so own-army units don't fall back to whichever copy
+	// happens to be registered first (which would carry the wrong keywords).
+	const fid = factionId ?? armyFactionId;
+	if (fid) {
+		const scoped = ds.units.getInFaction(datasheetId, fid);
 		if (scoped) return scoped.raw;
 	}
 	return ds.units.get(datasheetId)?.raw;
 }
 
-/** Resolve a builder unit's datasheet, honouring its (possibly allied) faction. */
-export function buRaw(bu: BuilderUnit): Unit | undefined {
-	return unitRaw(bu.datasheetId, bu.factionId);
+/**
+ * Resolve a builder unit's datasheet, honouring its (possibly allied) faction.
+ * `armyFactionId` scopes own-army units (those with no ally `factionId`) to the
+ * army's faction; pass `state.factionId` / `draft.factionId` from the call site.
+ */
+export function buRaw(bu: BuilderUnit, armyFactionId?: string): Unit | undefined {
+	return unitRaw(bu.datasheetId, bu.factionId, armyFactionId);
 }
 
 /** Units in a faction, sorted by name; empty when factionId is null. */
@@ -344,9 +356,10 @@ export interface DraftGroup extends Section {
  * order is preserved *within* a section (roster order is user-meaningful).
  */
 export function groupDraftByRole(state: BuilderState): DraftGroup[] {
+	const armyFaction = state.factionId ?? undefined;
 	const buckets = new Map<string, { section: Section; units: BuilderUnit[] }>();
 	for (const bu of state.units) {
-		const raw = buRaw(bu);
+		const raw = buRaw(bu, armyFaction);
 		const s: Section = raw
 			? sectionOf(raw)
 			: { key: 'other', label: ROLE_LABELS.other, order: ROLE_INDEX.other + UNIT_TYPE_KEYWORDS.length };
@@ -359,7 +372,7 @@ export function groupDraftByRole(state: BuilderState): DraftGroup[] {
 		.map(({ section, units }) => ({
 			...section,
 			units,
-			points: units.reduce((sum, u) => sum + unitPoints(u), 0),
+			points: units.reduce((sum, u) => sum + unitPoints(u, armyFaction), 0),
 		}));
 }
 
@@ -417,8 +430,8 @@ export function reconcileLoadout(
  * when any profile has a numeric range — the same test `Datacard` uses). Lets the
  * builder's right panel show the selected unit's live datacard.
  */
-export function builderUnitToDatacardData(bu: BuilderUnit): DatacardData {
-	const unit = buRaw(bu);
+export function builderUnitToDatacardData(bu: BuilderUnit, armyFactionId?: string): DatacardData {
+	const unit = buRaw(bu, armyFactionId);
 	const equipped = [...bu.loadout.entries()].filter(([, c]) => c > 0).map(([id]) => id);
 	const ranged: string[] = [];
 	const melee: string[] = [];
@@ -445,8 +458,8 @@ export function builderUnitToDatacardData(bu: BuilderUnit): DatacardData {
  * Returns 0 for the base when no tier covers the count (caller surfaces a
  * violation rather than guessing).
  */
-export function unitPoints(bu: BuilderUnit): number {
-	const unit = buRaw(bu);
+export function unitPoints(bu: BuilderUnit, armyFactionId?: string): number {
+	const unit = buRaw(bu, armyFactionId);
 	if (!unit) return 0;
 	const base = baseUnitPoints(unit, bu.modelCount);
 	const enh = bu.enhancementId ? (ds.enhancements.get(bu.enhancementId)?.cost ?? 0) : 0;
@@ -472,7 +485,8 @@ export function pointsTierMissing(unit: Unit, modelCount: number): boolean {
 }
 
 export function totalPoints(state: BuilderState): number {
-	return state.units.reduce((sum, u) => sum + unitPoints(u), 0);
+	const armyFaction = state.factionId ?? undefined;
+	return state.units.reduce((sum, u) => sum + unitPoints(u, armyFaction), 0);
 }
 
 export function pointsLimit(state: BuilderState): number {
@@ -504,8 +518,8 @@ export function wargearOptionsFor(datasheetId: string): WargearOption[] {
 }
 
 /** Inclusive [min,max] count range per weapon/wargear id, for stepper bounds. */
-export function loadoutBounds(bu: BuilderUnit): Map<string, WeaponBound> {
-	const unit = buRaw(bu);
+export function loadoutBounds(bu: BuilderUnit, armyFactionId?: string): Map<string, WeaponBound> {
+	const unit = buRaw(bu, armyFactionId);
 	if (!unit) return new Map();
 	return weaponBounds(unit, bu.modelCount, ds.wargearOptionsOf(unit));
 }
@@ -525,8 +539,8 @@ export function itemName(id: string): string {
 }
 
 /** Loadout-rule violations for a builder unit (empty = legal). */
-export function loadoutViolations(bu: BuilderUnit) {
-	const unit = buRaw(bu);
+export function loadoutViolations(bu: BuilderUnit, armyFactionId?: string) {
+	const unit = buRaw(bu, armyFactionId);
 	if (!unit) return [];
 	return validateLoadout(unit, bu.modelCount, ds.wargearOptionsOf(unit), bu.loadout);
 }
@@ -715,8 +729,12 @@ export function grantSelectionCount(state: BuilderState, keyword: string): numbe
  * it was included under (`cannot_be_warlord`). The detail panel shows the Warlord
  * control only when this is true.
  */
-export function canBeWarlord(bu: BuilderUnit, detachmentIds: string[] = []): boolean {
-	const raw = buRaw(bu);
+export function canBeWarlord(
+	bu: BuilderUnit,
+	detachmentIds: string[] = [],
+	armyFactionId?: string,
+): boolean {
+	const raw = buRaw(bu, armyFactionId);
 	if (!raw) return false;
 	if (!effectiveKeywords(raw, detachmentIds, bu.selectedGrants ?? []).has('character')) return false;
 	if (bu.allyRuleId && ds.alliedRules.get(bu.allyRuleId)?.cannot_be_warlord) return false;
@@ -740,13 +758,14 @@ export interface BuilderViolation {
  */
 function allyViolations(state: BuilderState): BuilderViolation[] {
 	const out: BuilderViolation[] = [];
+	const armyFaction = state.factionId ?? undefined;
 	for (const { rule, label } of alliesForState(state)) {
 		const allyUnits = state.units.filter((u) => u.allyRuleId === rule.id);
 		if (allyUnits.length === 0) continue;
 
 		const cap = allyPointsLimit(rule, effectiveBattleSize(state));
 		if (cap != null) {
-			const spent = allyUnits.reduce((s, u) => s + unitPoints(u), 0);
+			const spent = allyUnits.reduce((s, u) => s + unitPoints(u, armyFaction), 0);
 			if (spent > cap) {
 				out.push({ unitKey: null, message: `${label}: ${spent} allied pts over the ${cap} pt limit` });
 			}
@@ -774,7 +793,7 @@ function allyViolations(state: BuilderState): BuilderViolation[] {
 			let bl = 0;
 			let nonBl = 0;
 			for (const u of allyUnits) {
-				const raw = buRaw(u);
+				const raw = buRaw(u, armyFaction);
 				if (!raw || !keywordSet(raw).has(lk)) continue;
 				if (keywordSet(raw).has('battleline')) bl += 1;
 				else nonBl += 1;
@@ -787,7 +806,7 @@ function allyViolations(state: BuilderState): BuilderViolation[] {
 		if (armyAny.length > 0) {
 			for (const u of state.units) {
 				if (u.allyRuleId) continue; // allied units are the granted exception
-				const raw = buRaw(u);
+				const raw = buRaw(u, armyFaction);
 				if (!raw) continue;
 				if (!armyAny.some((k) => keywordSet(raw).has(k))) {
 					out.push({
@@ -800,7 +819,7 @@ function allyViolations(state: BuilderState): BuilderViolation[] {
 		if (rule.warlord_required_keyword) {
 			const wk = rule.warlord_required_keyword.toLowerCase();
 			const warlord = state.units.find((u) => u.isWarlord);
-			const raw = warlord ? buRaw(warlord) : undefined;
+			const raw = warlord ? buRaw(warlord, armyFaction) : undefined;
 			if (warlord && raw && !keywordSet(raw).has(wk)) {
 				out.push({ unitKey: null, message: `${label}: Warlord must have ${rule.warlord_required_keyword}` });
 			}
@@ -816,11 +835,12 @@ function allyViolations(state: BuilderState): BuilderViolation[] {
  */
 function constructionViolations(state: BuilderState): BuilderViolation[] {
 	const out: BuilderViolation[] = [];
+	const armyFaction = state.factionId ?? undefined;
 
 	// Datasheet-name caps.
 	const counts = new Map<string, { count: number; cap: number; name: string }>();
 	for (const u of state.units) {
-		const raw = buRaw(u);
+		const raw = buRaw(u, armyFaction);
 		if (!raw) continue;
 		// Effective keywords include detachment grants (e.g. Houndpack Lance makes
 		// War Dogs Battleline → cap 6 instead of 3).
@@ -842,7 +862,7 @@ function constructionViolations(state: BuilderState): BuilderViolation[] {
 		out.push({ unitKey: null, message: `Enhancement '${ds.enhancements.get(id)?.name ?? id}' used more than once` });
 	}
 	for (const u of state.units) {
-		if (u.enhancementId && buRaw(u)?.role === 'epic-hero') {
+		if (u.enhancementId && buRaw(u, armyFaction)?.role === 'epic-hero') {
 			out.push({ unitKey: u.key, message: 'Epic Heroes cannot take Enhancements' });
 		}
 	}
@@ -850,7 +870,7 @@ function constructionViolations(state: BuilderState): BuilderViolation[] {
 	// Epic Hero uniqueness.
 	const epic = new Map<string, { count: number; name: string }>();
 	for (const u of state.units) {
-		const raw = buRaw(u);
+		const raw = buRaw(u, armyFaction);
 		if (raw?.role !== 'epic-hero') continue;
 		const e = epic.get(u.datasheetId);
 		if (e) e.count += 1;
@@ -883,7 +903,7 @@ function constructionViolations(state: BuilderState): BuilderViolation[] {
 		for (const req of det?.unit_minimums ?? []) {
 			const k = req.keyword.toLowerCase();
 			const have = state.units.filter((u) => {
-				const raw = buRaw(u);
+				const raw = buRaw(u, armyFaction);
 				return raw ? effectiveKeywords(raw, state.detachmentIds, u.selectedGrants ?? []).has(k) : false;
 			}).length;
 			if (have < req.min) {
@@ -917,8 +937,9 @@ export function builderViolations(state: BuilderState): BuilderViolation[] {
 			message: `only one ‘${conflict.tag}’ detachment allowed: ${conflict.detachmentNames.join(', ')}`,
 		});
 	}
+	const armyFaction = state.factionId ?? undefined;
 	for (const bu of state.units) {
-		const unit = buRaw(bu);
+		const unit = buRaw(bu, armyFaction);
 		if (!unit) {
 			out.push({ unitKey: bu.key, message: 'unresolved datasheet' });
 			continue;
@@ -933,7 +954,7 @@ export function builderViolations(state: BuilderState): BuilderViolation[] {
 		if (pointsTierMissing(unit, bu.modelCount)) {
 			out.push({ unitKey: bu.key, message: 'no points cost for this model count' });
 		}
-		for (const v of loadoutViolations(bu)) {
+		for (const v of loadoutViolations(bu, armyFaction)) {
 			out.push({ unitKey: bu.key, message: v.message });
 		}
 	}
@@ -959,6 +980,7 @@ function ref(id: string, name: string) {
  * text self-describing.
  */
 export function builderToRoster(state: BuilderState): Roster {
+	const armyFaction = state.factionId ?? undefined;
 	const factionName = state.factionId
 		? (ds.factions.get(state.factionId)?.name ?? state.factionId)
 		: null;
@@ -969,7 +991,7 @@ export function builderToRoster(state: BuilderState): Roster {
 
 	const byKey = new Map(state.units.map((u) => [u.key, u]));
 	const units = state.units.map((bu) => {
-		const unit = buRaw(bu);
+		const unit = buRaw(bu, armyFaction);
 		const name = unit?.name ?? bu.datasheetId;
 		const enh = bu.enhancementId ? ds.enhancements.get(bu.enhancementId) : undefined;
 		const wargear = [...bu.loadout.entries()]
@@ -980,7 +1002,7 @@ export function builderToRoster(state: BuilderState): Roster {
 			});
 		// A leader's attachment is emitted on its own row, pointing at the bodyguard.
 		const bodyguard = bu.attachedToKey ? byKey.get(bu.attachedToKey) : undefined;
-		const bodyguardRaw = bodyguard ? buRaw(bodyguard) : undefined;
+		const bodyguardRaw = bodyguard ? buRaw(bodyguard, armyFaction) : undefined;
 		const leader_attachment = bodyguard
 			? {
 					bodyguard_ref: ref(bodyguard.datasheetId, bodyguardRaw?.name ?? bodyguard.datasheetId),
@@ -1063,7 +1085,7 @@ export function rosterTextToBuilderState(
 			datasheetId,
 			modelCount: ru.model_count,
 			// Imports under-record always-on base weapons — repair against bounds.
-			loadout: reconcileLoadout(datasheetId, ru.model_count, loadout),
+			loadout: reconcileLoadout(datasheetId, ru.model_count, loadout, roster.faction_id ?? undefined),
 			enhancementId: ru.enhancement?.id ?? null,
 			isWarlord: ru.is_warlord,
 		};

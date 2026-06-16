@@ -36,11 +36,11 @@ function weaponRows(ids: string[]): WeaponRow[] {
 		return view.raw.profiles.map((p) => ({
 			name: multi ? `${view.name} — ${p.name}` : view.name,
 			range: typeof p.range === 'number' ? `${p.range}"` : null,
-			attacks: stat(p.stats.a),
-			skill: p.stats.bs != null ? `${p.stats.bs}+` : p.stats.ws != null ? `${p.stats.ws}+` : '-',
-			strength: stat(p.stats.s),
-			ap: stat(p.stats.ap),
-			damage: stat(p.stats.d)
+			attacks: stat(p.stats.A),
+			skill: p.stats.BS != null ? `${p.stats.BS}+` : p.stats.WS != null ? `${p.stats.WS}+` : '-',
+			strength: stat(p.stats.S),
+			ap: stat(p.stats.AP),
+			damage: stat(p.stats.D)
 		}));
 	});
 }
@@ -82,15 +82,15 @@ const keywords = $derived([
 				</div>
 				{#each unit.raw.profiles as p, i (i)}
 					<div class="text-text font-mono flex gap-2 text-xs">
-						<span class="w-6 text-center">{stat(p.m)}"</span>
-						<span class="w-4 text-center">{stat(p.t)}</span>
-						<span class="w-5 text-center">{stat(p.sv)}+</span>
+						<span class="w-6 text-center">{stat(p.M)}"</span>
+						<span class="w-4 text-center">{stat(p.T)}</span>
+						<span class="w-5 text-center">{stat(p.Sv)}+</span>
 						<span class="text-text-muted w-5 text-center"
 							>{p.invuln_sv != null ? `${p.invuln_sv}+` : '—'}</span
 						>
-						<span class="w-4 text-center">{stat(p.w)}</span>
-						<span class="w-5 text-center">{stat(p.ld)}+</span>
-						<span class="w-5 text-center">{stat(p.oc)}</span>
+						<span class="w-4 text-center">{stat(p.W)}</span>
+						<span class="w-5 text-center">{stat(p.Ld)}+</span>
+						<span class="w-5 text-center">{stat(p.OC)}</span>
 					</div>
 					{#if unit.raw.profiles.length > 1 && p.name}
 						<div class="text-text-muted pl-1 text-xs">{p.name}</div>

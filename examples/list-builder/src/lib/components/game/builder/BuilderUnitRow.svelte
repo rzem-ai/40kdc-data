@@ -19,8 +19,9 @@ interface Props {
 }
 let { unit, draft, selected, onselect, onclone, onremove }: Props = $props();
 
-const raw = $derived(unitRaw(unit.datasheetId, unit.factionId));
-const points = $derived(unitPoints(unit));
+const armyFaction = $derived(draft.factionId ?? undefined);
+const raw = $derived(unitRaw(unit.datasheetId, unit.factionId, armyFaction));
+const points = $derived(unitPoints(unit, armyFaction));
 const summary = $derived(loadoutSummary(unit));
 const hasIssues = $derived(builderViolations(draft).some((v) => v.unitKey === unit.key));
 /** Leaders attached to this row (so a bodyguard shows it's being led). */

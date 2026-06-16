@@ -453,8 +453,7 @@ function handleSaveDoubles(draft: DoublesDraft) {
 				: `list-${now}-${Math.floor(Math.random() * 1e6)}`;
 		persist([...entries, { id, ...base }]);
 	}
-	for (const army of armyEntries) downloadJson(army.rosterJson, army.name);
-	flash(`Saved “${name}” — both armies' roster-json downloaded.`);
+	flash(`Saved “${name}” to library.`);
 	view = "list";
 	doublesSeed = undefined;
 	editingId = null;
@@ -477,9 +476,7 @@ function handleSave(rosterJson: string, name: string, disposition: string | null
 				: `list-${now}-${Math.floor(Math.random() * 1e6)}`;
 		persist([...entries, { id, name, rosterJson, disposition, modified: now }]);
 	}
-	copyToClipboard(rosterJson);
-	downloadJson(rosterJson, name);
-	flash(`Saved “${name}” — roster-json copied to clipboard & downloaded.`);
+	flash(`Saved “${name}” to library.`);
 	view = "list";
 	seed = undefined;
 	editingId = null;
@@ -512,6 +509,11 @@ function downloadJson(text: string, name: string) {
 function copyEntry(entry: SavedEntry) {
 	copyToClipboard(entry.rosterJson);
 	flash(`Copied “${entry.name}” roster-json to clipboard.`);
+}
+
+function downloadEntry(entry: SavedEntry) {
+	downloadJson(entry.rosterJson, entry.name);
+	flash(`Downloaded “${entry.name}” roster-json.`);
 }
 </script>
 
@@ -605,6 +607,11 @@ function copyEntry(entry: SavedEntry) {
 									class="text-text-dim hover:text-text shrink-0 text-xs"
 									onclick={() => copyEntry(entry)}
 									title="Copy roster-json to clipboard">Copy</button
+								>
+								<button
+									class="text-text-dim hover:text-text shrink-0 text-xs"
+									onclick={() => downloadEntry(entry)}
+									title="Download roster-json file">Download</button
 								>
 								<button
 									class="text-text-dim shrink-0 text-xs hover:text-red-400"

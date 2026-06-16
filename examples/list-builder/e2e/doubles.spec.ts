@@ -4,8 +4,7 @@ import { test, expect, type Page } from '@playwright/test';
  * Doubles flow: build a solo army, flip the header toggle into the team
  * workspace, build Army B on its own tab, watch the team-level advisories
  * react, save to the library (badge + reopen), and round-trip the composed
- * #dbl= share link. Downloads are stubbed out (saving auto-downloads both
- * armies' roster-json, which would otherwise hang a headless run).
+ * #dbl= share link. Saving persists to the library only (no auto-download).
  */
 
 const pointsSelect = (page: Page) =>
@@ -72,10 +71,7 @@ test('solo → doubles: toggle, build both armies, team checks react, save + reo
 	await dispositionSelect(page).selectOption({ index: 1 });
 	await expect(page.getByText('no team Force Disposition', { exact: false })).toHaveCount(0);
 
-	// Save: stub the download anchor clicks, then check the library row.
-	await page.evaluate(() => {
-		HTMLAnchorElement.prototype.click = function () {};
-	});
+	// Save: persists to the library (no download), then check the library row.
 	await page.getByRole('button', { name: 'Save to Library' }).click();
 	const row = page.locator('li', { hasText: 'Hammer Time' });
 	await expect(row).toBeVisible();

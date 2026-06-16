@@ -26,13 +26,14 @@ interface Props {
 }
 let { unit, draft, onchange, onwarlord }: Props = $props();
 
-const raw = $derived(unit ? unitRaw(unit.datasheetId, unit.factionId) : undefined);
+const armyFaction = $derived(draft.factionId ?? undefined);
+const raw = $derived(unit ? unitRaw(unit.datasheetId, unit.factionId, armyFaction) : undefined);
 const enhancements = $derived(
 	unit ? eligibleEnhancements(draft.detachmentIds, raw, unit.selectedGrants ?? []) : [],
 );
-const points = $derived(unit ? unitPoints(unit) : 0);
+const points = $derived(unit ? unitPoints(unit, armyFaction) : 0);
 const modelRange = $derived(raw?.model_count ?? null);
-const warlordEligible = $derived(unit ? canBeWarlord(unit, draft.detachmentIds) : false);
+const warlordEligible = $derived(unit ? canBeWarlord(unit, draft.detachmentIds, armyFaction) : false);
 const leader = $derived(!!raw && isLeader(raw));
 /** Count-limited detachment grants this unit can take (e.g. Houndpack CHARACTER). */
 const grants = $derived(
@@ -55,7 +56,7 @@ const bodyguards = $derived(
 	unit && leader
 		? attachableBodyguards(draft, unit).map((b) => ({
 				key: b.key,
-				name: unitRaw(b.datasheetId, b.factionId)?.name ?? b.datasheetId,
+				name: unitRaw(b.datasheetId, b.factionId, armyFaction)?.name ?? b.datasheetId,
 			}))
 		: [],
 );
@@ -187,7 +188,7 @@ function setAttachment(key: string) {
 
 			<!-- Live datacard for the selected unit (reflects the equipped loadout). -->
 			<div class="border-panel-border/50 border-t pt-1">
-				<Datacard data={builderUnitToDatacardData(unit)} />
+				<Datacard data={builderUnitToDatacardData(unit, armyFaction)} />
 			</div>
 		</div>
 	{/if}

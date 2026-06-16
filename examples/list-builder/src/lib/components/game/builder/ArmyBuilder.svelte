@@ -160,7 +160,11 @@ function toggleDetachment(id: string, on: boolean) {
 }
 
 function addUnit(datasheetId: string, factionId?: string, allyRuleId?: string) {
-	const raw = unitRaw(datasheetId, factionId);
+	// Own-army units carry no factionId (kept out of the share encoding); resolve
+	// them against the army faction so shared datasheet ids (e.g. Chaos Spawn)
+	// pick this faction's copy rather than whichever was registered first.
+	const armyFaction = draft.factionId ?? undefined;
+	const raw = unitRaw(datasheetId, factionId, armyFaction);
 	if (!raw) return;
 	const modelCount = raw.model_count?.min ?? 1;
 	const bu: BuilderUnit = {
@@ -172,7 +176,7 @@ function addUnit(datasheetId: string, factionId?: string, allyRuleId?: string) {
 		// Reconcile so always-on base weapons are seeded and phantom negatives
 		// (a replacement-target weapon that's never carried) don't surface as
 		// "below min" violations on fresh adds.
-		loadout: reconcileLoadout(datasheetId, modelCount, defaultLoadout(raw, modelCount), factionId),
+		loadout: reconcileLoadout(datasheetId, modelCount, defaultLoadout(raw, modelCount), factionId ?? armyFaction),
 		enhancementId: null,
 		isWarlord: false,
 	};

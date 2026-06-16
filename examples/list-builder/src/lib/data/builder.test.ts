@@ -439,6 +439,56 @@ describe('valid allies (soup)', () => {
 	});
 });
 
+describe('shared Chaos datasheets resolve to the army faction', () => {
+	// Chaos Spawn / Master of Executions / Rhino share one datasheet id across
+	// several Chaos faction files with different faction_keywords. Own-army units
+	// carry no factionId (kept out of the share encoding), so resolution must fall
+	// back to the army faction or they pick the first-registered copy (Heretic
+	// Astartes) and trip keyword checks that expect the army's own keyword.
+	it('picks the army-faction copy for a shared own-army datasheet id', () => {
+		const we = unitRaw('chaos-spawn', undefined, 'world-eaters');
+		expect(we?.faction_keywords).toContain('World Eaters');
+		const moe = unitRaw('master-of-executions', undefined, 'world-eaters');
+		expect(moe?.faction_keywords).toContain('World Eaters');
+		// An ally's explicit faction still wins over the army fallback.
+		const csm = unitRaw('chaos-spawn', 'chaos-space-marines', 'world-eaters');
+		expect(csm?.faction_keywords).toContain('Heretic Astartes');
+	});
+
+	it('does not flag own World Eaters units when a Chaos Knights ally is present', () => {
+		const ckRule = alliesForState({ ...emptyBuilderState(), factionId: 'world-eaters' }).find(
+			(g) => g.rule.id === 'world-eaters-chaos-knights',
+		);
+		expect(ckRule).toBeDefined();
+		expect(ckRule!.units.length).toBeGreaterThan(0);
+
+		const own = (id: string, key: string): BuilderUnit => ({
+			key,
+			datasheetId: id,
+			modelCount: unitRaw(id, undefined, 'world-eaters')?.model_count?.min ?? 1,
+			loadout: new Map(),
+			enhancementId: null,
+			isWarlord: false,
+		});
+		const ally: BuilderUnit = {
+			key: 'ck',
+			datasheetId: ckRule!.units[0].id,
+			factionId: 'chaos-knights',
+			allyRuleId: 'world-eaters-chaos-knights',
+			modelCount: 1,
+			loadout: new Map(),
+			enhancementId: null,
+			isWarlord: false,
+		};
+		const issues = builderViolations({
+			...emptyBuilderState(),
+			factionId: 'world-eaters',
+			units: [own('chaos-spawn', 's'), own('master-of-executions', 'm'), ally],
+		});
+		expect(issues.some((v) => /every army model must have/.test(v.message))).toBe(false);
+	});
+});
+
 describe('daemon allies grouped by Chaos god', () => {
 	it("splits Daemonic Pact's pool into the four gods plus Undivided, losing no units", () => {
 		const pact = alliesForState({ ...emptyBuilderState(), factionId: 'chaos-knights' }).find(
