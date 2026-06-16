@@ -19,6 +19,7 @@
     onCopyShare,
     onReset,
     onGoLive,
+    onLoadExample,
   }: {
     plan: TeamPlan;
     coverage: TeamCoverage;
@@ -31,6 +32,7 @@
     onCopyShare: () => void;
     onReset: () => void;
     onGoLive: () => void;
+    onLoadExample: () => void;
   } = $props();
 </script>
 
@@ -45,7 +47,7 @@
       oninput={(e) => onPlanChange({ ...plan, teamName: (e.currentTarget as HTMLInputElement).value })}
     />
   </label>
-  <label class="flex flex-col gap-1">
+  <label class="flex flex-col gap-1" data-tour="size">
     <span class="font-heading text-[10px] font-bold uppercase tracking-wider text-text-dim">Team size</span>
     <select
       class="focus-ring rounded border border-border-strong bg-panel px-2 py-1.5 text-sm text-text"
@@ -61,6 +63,14 @@
     </select>
   </label>
   <div class="ml-auto flex gap-2">
+    <button
+      type="button"
+      class="focus-ring rounded border border-border-strong px-3 py-1.5 text-xs uppercase tracking-wide text-text-muted hover:border-accent hover:text-accent"
+      onclick={onLoadExample}
+      title="Fill the planner with a demo team and walk through the features"
+    >
+      Load example plan
+    </button>
     {#if showGoLive}
       <button
         type="button"
@@ -73,6 +83,7 @@
     {/if}
     <button
       type="button"
+      data-tour="share"
       class="focus-ring rounded border border-border-strong px-3 py-1.5 text-xs uppercase tracking-wide text-text-muted hover:border-accent hover:text-accent"
       onclick={onCopyShare}
     >
@@ -94,7 +105,7 @@
 </div>
 
 <!-- Players -->
-<div class="flex flex-col gap-2">
+<div class="flex flex-col gap-2" data-tour="player">
   {#each plan.players as p (p.id)}
     <PlayerRow
       player={p}

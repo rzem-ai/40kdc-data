@@ -101,3 +101,63 @@ summary,
 *::-webkit-scrollbar-track {
   background: transparent;
 }
+
+/* driver.js guided tour ("Load example plan"), themed to the shadowboxing
+   dialect: panel-surface popover, condensed heading, accent on the forward
+   button. Arrow dropped — the spotlight already marks the target. */
+.driver-popover.tp-tour {
+  background: var(--color-panel-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-panel-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  font-family: var(--font-body);
+  max-width: 22rem;
+}
+.driver-popover.tp-tour .driver-popover-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-text);
+}
+.driver-popover.tp-tour .driver-popover-description {
+  color: var(--color-text-muted);
+  line-height: 1.45;
+}
+.driver-popover.tp-tour .driver-popover-progress-text {
+  color: var(--color-text-dim);
+  font-size: 0.75rem;
+}
+.driver-popover.tp-tour .driver-popover-navigation-btns button {
+  background: var(--color-panel);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  text-shadow: none;
+  font-family: var(--font-body);
+}
+.driver-popover.tp-tour .driver-popover-navigation-btns button:hover {
+  background: var(--color-panel-hover);
+  border-color: var(--color-accent);
+  color: var(--color-text);
+}
+.driver-popover.tp-tour .driver-popover-next-btn {
+  background: var(--color-accent);
+  color: var(--color-accent-foreground);
+  border-color: var(--color-accent);
+}
+.driver-popover.tp-tour .driver-popover-next-btn:hover {
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+  color: var(--color-accent-foreground);
+}
+.driver-popover.tp-tour .driver-popover-close-btn {
+  color: var(--color-text-dim);
+}
+.driver-popover.tp-tour .driver-popover-close-btn:hover {
+  color: var(--color-text);
+}
+.driver-popover.tp-tour .driver-popover-arrow {
+  display: none;
+}

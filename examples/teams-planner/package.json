@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@alpaca-software/40kdc-data": "*",
+    "driver.js": "^1.4.0",
     "fflate": "^0.8.3"
   },
   "devDependencies": {

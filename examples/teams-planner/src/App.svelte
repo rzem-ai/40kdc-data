@@ -1,6 +1,8 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onMount, tick } from "svelte";
   import { teamCoverage, type Player, type TeamPlan } from "./lib/coverage";
+  import { examplePlan } from "./lib/example-plan";
+  import { startTour } from "./lib/tour";
   import { decodePlan, sanitizePlan } from "./lib/share-plan";
   import PlanView from "./lib/PlanView.svelte";
   import SharePlanModal from "./lib/SharePlanModal.svelte";
@@ -283,6 +285,16 @@
     plan = emptyPlan();
   }
 
+  /** Fill the planner with a realistic demo plan, then walk the guided tour over
+   *  the populated UI. `tick()` waits for the matrix/rows to render so the tour's
+   *  element anchors resolve. */
+  function loadExample() {
+    if (plan.players.length > 0 && !confirm("Replace the current plan with the example?")) return;
+    plan = examplePlan();
+    view = "plan";
+    void tick().then(() => startTour());
+  }
+
   function setView(next: "plan" | "sim") {
     view = next;
     // `#t=` import already cleared its hash in onMount; `#sim` is the only
@@ -318,6 +330,7 @@
       <button
         type="button"
         role="tab"
+        data-tour="sim"
         aria-selected={view === "sim"}
         class="focus-ring rounded-t px-3 py-1.5 font-heading text-xs font-bold uppercase tracking-wider
                {view === 'sim' ? 'bg-panel-surface text-text' : 'text-text-dim hover:text-text-muted'}"
@@ -339,6 +352,7 @@
         onCopyShare={() => (sharePlanOpen = true)}
         onReset={resetPlan}
         onGoLive={startLive}
+        onLoadExample={loadExample}
       />
     {:else}
       <PairingsSimulator {plan} />

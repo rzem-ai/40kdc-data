@@ -28,6 +28,18 @@
   const lockCap = $derived(dispositionCap(plan.size));
   const legality = $derived(teamLegalityIssues(plan));
 
+  // First coverable cell, used to anchor the guided tour's "lock" step on a real
+  // chunky toggle. `null` when no player covers anything yet.
+  const firstLockAnchor = $derived.by(() => {
+    for (const p of plan.players) {
+      const cov = coverage.perPlayer.get(p.id);
+      for (const d of DISPOSITIONS) {
+        if (cov?.has(d) && effectivePlacement(p, d)) return `${p.id}|${d}`;
+      }
+    }
+    return null;
+  });
+
   // Toggle the captain's lock for a player on a disposition. Pins the player's
   // *effective* army (the one the cell shows) so a later preference reshuffle
   // can't silently re-point the committed assignment.
@@ -41,7 +53,7 @@
   }
 </script>
 
-<section class="rounded-md border border-panel-border bg-panel-surface shadow-sm">
+<section class="rounded-md border border-panel-border bg-panel-surface shadow-sm" data-tour="matrix">
   <!-- Readiness banner -->
   <div
     class="flex flex-wrap items-center justify-between gap-2 rounded-t-md px-3 py-2
@@ -98,6 +110,7 @@
         <tbody>
           {#each plan.players as p (p.id)}
             {@const cov = coverage.perPlayer.get(p.id)}
+            {@const rowLocked = Object.keys(p.locked ?? {}).length > 0}
             <tr class="border-t border-panel-border">
               <td class="sticky left-0 z-10 max-w-[10rem] truncate bg-panel-surface px-3 py-1.5 text-text">
                 {p.name || "(unnamed)"}
@@ -108,37 +121,46 @@
                 {@const army = eff ? findArmy(p, eff.armyId) : null}
                 {@const locked = !!p.locked?.[d]}
                 {@const blocked = !locked && columnFull(plan.size, coverage, d)}
-                <td
-                  class="px-2 py-1.5 text-center align-top {locked ? 'bg-accent-dim' : ''} {blocked ? 'opacity-40' : ''}"
-                >
+                {@const otherLock = rowLocked && !locked}
+                <td class="p-1 align-top">
                   {#if !eff}
-                    <span class="text-text-dim" aria-label="cannot field {DISPOSITION_LABELS[d]}">·</span>
+                    <span
+                      class="inline-block py-1 text-text-dim"
+                      aria-label="cannot field {DISPOSITION_LABELS[d]}">·</span
+                    >
                   {:else}
-                    <div class="flex flex-col items-center gap-0.5">
-                      <span
-                        style="color:{DISPOSITION_COLORS[d]}"
-                        title="{eff.tier} — {DISPOSITION_LABELS[d]}"
-                        aria-label="{eff.tier} {DISPOSITION_LABELS[d]}"
-                      >
-                        {TIER_SYMBOL[eff.tier]}
-                      </span>
-                      <span class="max-w-[6rem] truncate text-[10px] leading-tight text-text-muted" title={army?.name}>
-                        {army?.name}
-                      </span>
-                      <input
-                        type="checkbox"
-                        class="focus-ring h-3 w-3 cursor-pointer disabled:cursor-not-allowed"
-                        checked={locked}
-                        disabled={blocked}
-                        onchange={() => toggleLock(p, d)}
-                        title={locked
-                          ? `Locked in for ${DISPOSITION_LABELS[d]}`
+                    <button
+                      type="button"
+                      data-tour={firstLockAnchor === `${p.id}|${d}` ? "lock" : undefined}
+                      aria-pressed={locked}
+                      disabled={blocked || otherLock}
+                      onclick={() => toggleLock(p, d)}
+                      class="focus-ring flex w-full flex-col items-center gap-0 rounded border px-1.5 py-1
+                             leading-tight transition-colors active:translate-y-px
+                             disabled:cursor-not-allowed disabled:opacity-50
+                             {locked ? 'shadow-sm' : 'bg-panel hover:bg-panel-hover'}"
+                      style={locked
+                        ? `background:${DISPOSITION_COLORS[d]};border-color:${DISPOSITION_COLORS[d]};color:var(--color-bg-dark)`
+                        : `border-color:${DISPOSITION_COLORS[d]};color:${DISPOSITION_COLORS[d]}`}
+                      title={locked
+                        ? `Locked in for ${DISPOSITION_LABELS[d]}`
+                        : otherLock
+                          ? `${p.name || "player"} is already locked into another disposition`
                           : blocked
                             ? `${DISPOSITION_LABELS[d]} already has ${lockCap} locked player${lockCap === 1 ? "" : "s"}`
                             : `Lock ${p.name || "player"} into ${DISPOSITION_LABELS[d]}`}
-                        aria-label="Lock {p.name || 'player'} into {DISPOSITION_LABELS[d]}"
-                      />
-                    </div>
+                      aria-label="Lock {p.name || 'player'} into {DISPOSITION_LABELS[d]}"
+                    >
+                      <span class="text-sm leading-none" title="{eff.tier} — {DISPOSITION_LABELS[d]}"
+                        >{TIER_SYMBOL[eff.tier]}</span
+                      >
+                      <span class="max-w-[6.5rem] truncate text-[10px] leading-tight" title={army?.name}>
+                        {army?.name}
+                      </span>
+                      <span class="font-heading text-[10px] font-bold uppercase tracking-wide">
+                        {locked ? "🔒 Locked" : "Lock"}
+                      </span>
+                    </button>
                   {/if}
                 </td>
               {/each}
@@ -146,7 +168,7 @@
           {/each}
         </tbody>
         <tfoot>
-          <tr class="border-t-2 border-border-strong">
+          <tr class="border-t-2 border-border-strong" data-tour="coverage-footer">
             <td class="sticky left-0 z-10 bg-panel-surface px-3 py-1.5 font-heading text-[11px] font-bold uppercase tracking-wide text-text-muted">
               Covered by
             </td>
