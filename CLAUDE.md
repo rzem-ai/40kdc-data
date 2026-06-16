@@ -190,6 +190,14 @@ across implementations by the `conformance/share/` corpus.
   per-faction "views" — select the view whose faction ability matches the target
   faction's faction rule. Run `npx tsx tools/src/convert-faction.ts <faction-id>`
   to regenerate core data from this source (e.g., `convert-faction.ts world-eaters`).
+- **game-datacards** (`github.com/game-datacards/datasources`, `10th/json/`):
+  community-extracted datasheet text. Source for the **raw-text store backfill**
+  (`npm run author:backfill-store`) — populates the out-of-repo `40kdc-abilities`
+  store with verbatim prose for ability_ids that have none, **fill-only** (never
+  overwrites newer 11e text from `author:ingest`). 10e provenance is stamped on
+  each entry. Coverage is tracked by `npm run audit:store-coverage`
+  (`data/_audit/store-coverage.md`). As with all raw text, it lands ONLY in the
+  out-of-repo store, never in this repo.
 
 ## Commit Style
 

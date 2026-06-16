@@ -168,15 +168,16 @@ If the schema genuinely cannot express it:
    is a `SPEC_VERSION`-bumping change (Step 7 handles the bump + regen).
 3. Implement it, re-author the affected abilities against it, and `validate`.
 4. **ALWAYS run the CONTRIBUTING.md downstream regen after any schema edit** — the
-   generated TS/Rust/Python artifacts drift otherwise and CI fails. Run, from the repo
+   generated TS/Rust/Python/Go artifacts drift otherwise and CI fails. Run, from the repo
    root:
    ```bash
    cd tools && npm run bundle:schemas && npm run codegen:types && npm run codegen:data && cd ..
    cargo run -p xtask -- codegen && cargo run -p xtask -- bundle-data
    python3 python/codegen/sync_bundle.py && python3 python/codegen/sync_spec.py && python3 python/codegen/gen_typeddicts.py
-   cd tools && npm test && npm run validate          # then cross-impl: python3 tooling/parity/differ.py --pair ts,py (and rust,py)
+   bash go/codegen/sync.sh                            # Go schema/types/bundle/spec
+   cd tools && npm test && npm run validate           # TS-only locally; CI runs the cross-impl parity differ
    ```
-   `gen_typeddicts.py` needs the Python dev deps (`cd python && uv pip install -e ".[dev]"`); the parity differ needs built runners. If a step's toolchain is absent, report it as a required follow-up rather than skipping silently. This regen covers the *schema-derived* artifacts; the *data-derived* artifacts (conformance corpus + embedded bundles) are handled by **Step 7**, which runs every authoring run regardless of whether a schema changed. A pure additive schema change does not by itself touch a conformance golden — but authoring abilities usually does (Step 7 decides the `SPEC_VERSION` bump).
+   `gen_typeddicts.py` needs the Python dev deps (`cd python && uv pip install -e ".[dev]"`). **Run only the TS checks locally** — the cross-impl parity differ (`tooling/parity/differ.py`) and the Rust/Python/Go suites are run by CI on every push (`parity.yml` + the `conformance`/`rust`/`python`/`go` jobs), so don't run them here. The *regen* above is still mandatory (CI fails on `git diff --exit-code` drift); if a regen toolchain is absent, report it as a **blocking** follow-up rather than skipping silently. This regen covers the *schema-derived* artifacts; the *data-derived* artifacts (conformance corpus + embedded bundles) are handled by **Step 7**, which runs every authoring run regardless of whether a schema changed. A pure additive schema change does not by itself touch a conformance golden — but authoring abilities usually does (Step 7 decides the `SPEC_VERSION` bump).
 5. **Surface every schema change in the final report for explicit approval** — the
    project requires a Schema Change issue before merge.
 
@@ -297,32 +298,55 @@ the final report.
 3. `npm run author:apply -- <faction>` (autonomous). Splices the gated set into stubs;
    already-authored entries are skipped as "not-a-stub".
 
-### 6. Validate & measure
+### 6. Validate, measure & emit the fidelity-review report
 
 `npm run validate` (must pass) and `npm run audit:coverage`. A `gw-leak` > 0 is a real
 problem — locate and strip the prose before finishing.
 
+Then emit the **fidelity-review report** — the human-readable side-by-side of source rule
+vs authored DSL:
+
+```bash
+cd tools && npm run author:report -- <faction> && cd ..   # omit <faction> for all factions
+```
+
+This is `audit:phrasing --review`: it runs the real `describeAbility` (DSL→English) over every
+authored ability and joins, per ability, **the units that carry it** (names from
+`data/core/<faction>/units.json`), its **`ability_id`**, the **verbatim GW source text** (from
+the out-of-repo `40kdc-abilities` store), and the **DSL→English** readout. Output goes to
+`_private/reports/ability-review-<faction>.md` — **git-ignored, because it embeds GW text; never
+commit it.** Skim it to confirm each authored entry is a faithful strongest-case estimate of its
+rule (strongest-case and `[APPROX]` simplifications are expected, per the IP/fidelity sections);
+surface any genuine mismatch in the final report. Abilities with no store text (e.g. universal
+USRs) render `_(not in raw-text store)_` — expected, not a defect.
+
 ### 7. Make it push-ready — regenerate the data-derived artifacts
 
-Authoring abilities is a **data change**, and three CI jobs (`conformance`, `rust`, `python`
-in `.github/workflows/validate.yml`) gate on `git diff --exit-code` against artifacts derived
-from `data/**`. They drift the moment new abilities land, so a run is NOT push-ready until
-they are regenerated — even with no schema change. The committed, data-derived artifacts are:
+Authoring abilities is a **data change**, and four CI jobs (`conformance`, `rust`, `python`,
+`go` in `.github/workflows/validate.yml`) gate on `git diff --exit-code` against artifacts
+derived from `data/**`. They drift the moment new abilities land, so a run is NOT push-ready
+until they are regenerated — even with no schema change. **Regeneration is mandatory; only the
+cross-impl *verification* is deferred to CI (see the verify step below).** The committed,
+data-derived artifacts are:
 
 - `conformance/effect-translation/cases.json` (+ any other corpus golden) — the
   effect-translation cases are **generated from the ability data**, so new abilities = new cases.
 - `crates/wh40kdc/src/data/bundle.generated.json` — the Rust embedded dataset.
 - `python/src/wh40kdc/_bundle.json` — the Python embedded dataset.
+- `go/bundle.json` (+ `go/spec.go`) — the Go embedded dataset; `go/codegen/sync.sh` rebuilds it
+  from the Rust bundle (the shared bundler), same as Python.
 
 (The TS embedded bundle, `tools/src/data/bundle.generated.ts`, is gitignored / rebuilt on
 demand — nothing to commit there.)
 
-Run, from the repo root (order matters — Python's `sync_bundle.py` reads the Rust bundle):
+Run, from the repo root (order matters — Python's `sync_bundle.py` and Go's `sync.sh` both read
+the Rust bundle, so regenerate it first):
 
 ```bash
 cd tools && npm run build && npm run gen:conformance && cd ..   # corpus from current data
-cargo run -p xtask -- bundle-data                               # Rust embedded dataset
+cargo run -p xtask -- bundle-data                               # Rust embedded dataset (shared bundler)
 python3 python/codegen/sync_bundle.py                           # Python embedded dataset (reads the Rust bundle)
+bash go/codegen/sync.sh                                         # Go embedded dataset (reads the Rust bundle)
 ```
 
 Then decide the **`SPEC_VERSION`** bump. Per `CONFORMANCE.md`, any semantic corpus change
@@ -339,6 +363,7 @@ If that prints anything, bump it (single integer, +1) and mirror it into Python:
 ```bash
 echo $(( $(cat conformance/SPEC_VERSION) + 1 )) > conformance/SPEC_VERSION
 python3 python/codegen/sync_spec.py        # rewrites python/src/wh40kdc/_spec.py to match
+bash go/codegen/sync.sh                     # re-syncs go/spec.go to the bumped SPEC_VERSION
 ```
 
 **Windows CRLF caveat (cross-platform safe).** With `core.autocrlf=true` and no `.gitattributes`,
@@ -348,36 +373,37 @@ genuine diff. This is the sanctioned Step-7 exception to the "never revert" rule
 only paths this step just generated); on Linux it's a harmless no-op:
 
 ```bash
-for f in $(git diff --name-only conformance crates/wh40kdc/src/data/bundle.generated.json python/src/wh40kdc/_bundle.json); do
+for f in $(git diff --name-only conformance crates/wh40kdc/src/data/bundle.generated.json python/src/wh40kdc/_bundle.json go/bundle.json go/spec.go); do
   git diff --ignore-cr-at-eol --quiet -- "$f" && git checkout -- "$f"   # restore line-ending-only churn
 done
 ```
 
-**Verify the cross-impl tie-out** (the whole point of the corpus — don't skip):
+**Verify locally with TS only — defer the cross-impl tie-out to CI.** Run just the TS
+conformance suite, which checks the freshly regenerated corpus against the TS reference:
 
 ```bash
 cd tools && npx vitest run test/conformance.test.ts && cd ..   # TS reference vs goldens
-cargo test -p wh40kdc --test conformance                       # Rust roster/normalize goldens
-python3 tooling/parity/differ.py --pair ts,rust                # REQUIRED — see note
-python3 tooling/parity/differ.py --pair ts,py
-python3 tooling/parity/differ.py --pair rust,py
 ```
 
-All must report `OK` / exit 0. **The parity differ is not optional and not redundant with
-the conformance suites:** the suites only check each impl against the committed goldens for
-the areas they cover (roster, normalize, scoring), but the `effect-translation` /
-`scoring-translation` *describer* output — the most likely thing to diverge when a new
-condition/effect type is added (Step 2b) — is cross-checked **only** by the differ. A run
-that skips the differ can ship a golden the other two impls can't reproduce, which is the
-exact load-bearing rule in `CLAUDE.md`. The differ builds the Rust/Python runners on first
-use (`--release` for Rust), so it needs those toolchains and some disk; if a build fails for
-lack of space, `cargo clean` first. (A local Windows `cargo test --workspace` may also show
-`LNK1318` doctest linker errors — a `link.exe`/PDB flake, not a data problem, absent on CI's
-Linux runners; the targeted runs above are the real gates.) After this step,
-`git diff --ignore-cr-at-eol` should show only: the authored `data/enrichment/**`, `data/_audit/**`,
-the three regenerated bundles/corpus, and (if bumped) `SPEC_VERSION` + `_spec.py`. If a
-required toolchain (Rust, Python) is missing, regenerate what you can and list the rest as a
-**blocking** follow-up in the final report — the branch is not push-ready until all three run.
+**Do NOT run the Rust/Python/Go conformance suites or the parity differ locally** — the
+existing CI runs all of them on every push, and they are the slow, toolchain-heavy steps
+this skill deliberately offloads:
+- `validate.yml`'s `conformance`, `rust`, `python`, and `go` jobs each **regenerate that port's
+  artifacts and fail on `git diff --exit-code`**, then run its conformance/test suite — so any
+  stale bundle or non-reproducing golden turns CI red.
+- `parity.yml` runs `tooling/parity/differ.py` for **every** language pair (ts/rust/py/go),
+  which is the only check of the `effect-translation` / `scoring-translation` describer output
+  — exactly the cross-impl reproduction the `CLAUDE.md` load-bearing rule requires. CI performing
+  that reproduction before merge satisfies the rule; doing it locally is redundant.
+
+This is the intended tradeoff: **regeneration is still mandatory** (CI's drift checks gate on the
+committed bundles/corpus being fresh — that is why the regen above is not skippable), but the
+cross-impl *test execution* is CI's job. If a regen toolchain (Rust for the shared bundler,
+Python, Go) is missing locally, the corresponding committed bundle can't be refreshed and CI
+will fail on drift — regenerate what you can and list the rest as a **blocking** follow-up in the
+final report. After this step, `git diff --ignore-cr-at-eol` should show only: the authored
+`data/enrichment/**`, `data/_audit/**`, the regenerated bundles/corpus (Rust/Python/Go + TS
+corpus), and (if bumped) `SPEC_VERSION` + `_spec.py` + `go/spec.go`.
 
 ## Model selection (cost)
 
@@ -396,6 +422,9 @@ Two layers; use the cheapest that's safe for each.
 End with one consolidated summary:
 - **Authored:** count applied to live data; coverage (off/def); `validate` result;
   `gw-leak` count.
+- **Fidelity-review report (Step 6):** the path written
+  (`_private/reports/ability-review-<faction>.md`) and any source-vs-DSL mismatches the
+  side-by-side surfaced (genuine errors only — strongest-case / `[APPROX]` modeling is expected).
 - **Stubs remaining,** bucketed by why: not-faithful (verifier rejected), complex,
   unencodable (flagged — need hand-authoring), schema-invalid.
 - **Schema changes (NEED APPROVAL):** any condition type / effect field / modifier key
@@ -406,13 +435,16 @@ End with one consolidated summary:
 - **Review items:** "merged into authored" unit-link additions; any same-name collisions.
 - **Assumptions** you made (faction/edition inference, best-effort `unit_id` slugs, …).
 - **Questions** for the user — bundled here, nowhere else.
-- **Push-ready state (Step 7):** confirm the data-derived artifacts were regenerated and the
-  TS + Rust conformance suites are green; state the `SPEC_VERSION` (and whether it was bumped);
-  flag any regen step whose toolchain was missing as a **blocking** follow-up.
+- **Push-ready state (Step 7):** confirm all data-derived artifacts (Rust/Python/Go bundles +
+  TS corpus) were regenerated and the **TS conformance suite** is green locally; state that the
+  Rust/Python/Go suites and the cross-impl parity differ are deferred to CI (`conformance`/`rust`/
+  `python`/`go` jobs + `parity.yml`); state the `SPEC_VERSION` (and whether it was bumped); flag
+  any regen step whose toolchain was missing as a **blocking** follow-up (a stale committed bundle
+  turns CI red).
 - **Recommended next actions:** commit in two repos — the `data/enrichment/<faction>` changes
-  **together with** the Step-7 regen outputs (`conformance/**`, the Rust/Python bundles,
-  `SPEC_VERSION`/`_spec.py`) as one push-ready commit, and the `40kdc-abilities` store repo
-  separately; hand-author / Opus-retry the listed residue.
+  **together with** the Step-7 regen outputs (`conformance/**`, the Rust/Python/Go bundles,
+  `SPEC_VERSION`/`_spec.py`/`go/spec.go`) as one push-ready commit, and the `40kdc-abilities` store
+  repo separately; hand-author / Opus-retry the listed residue.
 
 ## The raw-text lookup store
 
@@ -437,5 +469,8 @@ merges), author-input entries are replaced by id, the store merges additively, a
 - `tools/src/author-seed.ts` (`kebab`, stub shape), `author-input.ts`
   (`AuthorInputEntry`/`SourceRule`), `author-batch.ts` (propose/repair/apply engine +
   classify/repair prompts), `audit-coverage.ts` (`hasEmptyModifier`) — reused, not edited.
+- `tools/src/audit-phrasing.ts` — the DSL→English cataloguer; its `--review` mode
+  (`npm run author:report`) emits the Step-6 fidelity-review report (unit name · `ability_id` ·
+  GW text · DSL→English) to the git-ignored `_private/reports/`.
 - `schemas/enrichment/ability-dsl/{ability,effect,scope,condition}.schema.json` — the
   DSL contract the gate enforces (read to explain a gate/skip).

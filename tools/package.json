@@ -1,6 +1,6 @@
 {
   "name": "@alpaca-software/40kdc-data",
-  "version": "0.5.17",
+  "version": "0.5.18",
   "type": "module",
   "description": "The 40kdc Warhammer 40K dataset behind a linked, typed API — find units, follow them to their weapons, abilities, phases, and factions. Also validates data against the canonical JSON Schemas.",
   "keywords": [
@@ -67,6 +67,7 @@
     "validate:enrichment": "tsx src/cli.ts validate-enrichment",
     "translate": "tsx src/cli.ts translate",
     "audit:coverage": "tsx src/cli.ts audit-coverage --write",
+    "audit:store-coverage": "tsx src/audit-store-coverage.ts",
     "audit:phrasing": "tsx src/cli.ts audit-phrasing --write",
     "scrub:defensive-flag": "tsx src/scrub-defensive-flag.ts",
     "extract:faction-pack": "tsx src/extract-faction-pack.ts",
@@ -78,7 +79,9 @@
     "author:apply": "tsx src/author-batch.ts apply",
     "author:reconcile": "tsx src/author-reconcile.ts",
     "author:seed-core": "tsx src/author-seed-core.ts",
+    "author:backfill-store": "tsx src/author-backfill-store.ts",
     "author:review": "tsx src/author-batch.ts review",
+    "author:report": "tsx src/audit-phrasing.ts --review",
     "bundle:schemas": "tsx src/bundle-schemas.ts",
     "codegen:types": "json2ts -i ../crates/wh40kdc/schemas/bundled.schema.json -o src/generated.ts --unreachableDefinitions --bannerComment \"/* Generated from crates/wh40kdc/schemas/bundled.schema.json by 'npm run codegen:types'. DO NOT EDIT BY HAND. */\"",
     "copy:schemas": "rm -rf schemas && cp -R ../schemas schemas",
